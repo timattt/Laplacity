@@ -22,5 +22,8 @@ public class Globals {
 
 	// Resource manager
 	public static AssetManager assetManager;
+	
+	// FIELD
+	public static final float FIELD_TILE_SIZE = 1f;
 
 }
