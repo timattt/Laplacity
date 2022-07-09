@@ -26,5 +26,5 @@
 * Запуск сборки Android на эмуляторе, либо на подключенном устройстве
 
 ```
-./gradlew android:installDebug android:run
+./gradlew android:run
 ```
