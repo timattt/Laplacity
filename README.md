@@ -14,17 +14,17 @@
 * Запуск на компьютере
 
 ```
-./gradlew desktop:run
+gradlew desktop:run
 ```
 
 * Сборка устоновочных **apk** файлов для Андройда.
 
 ```
-./gradlew android:installDebug
+gradlew android:installDebug
 ```
 
 * Запуск сборки Android на эмуляторе, либо на подключенном устройстве
 
 ```
-./gradlew android:run
+gradlew android:run
 ```
