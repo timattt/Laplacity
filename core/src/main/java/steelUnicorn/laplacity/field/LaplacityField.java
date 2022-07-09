@@ -1,7 +1,14 @@
 package steelUnicorn.laplacity.field;
 
+import static steelUnicorn.laplacity.Globals.*;
+
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+
+import steelUnicorn.laplacity.field.tiles.FieldTile;
 
 public class LaplacityField extends Group {
 
@@ -12,42 +19,106 @@ public class LaplacityField extends Group {
 	private int fieldWidth;
 	private int fieldHeight;
 	
-	public LaplacityField(Texture tileMap) {
+	private float tileSize;
+	
+	public LaplacityField(Texture tileMap, Stage stage, World world) {
+		loadTilemap(tileMap, stage);
+		createBox2dObjects(world);
+	}
+	
+	private void loadTilemap(Texture tileMap, Stage stage) {
 		fieldWidth = tileMap.getWidth();
 		fieldHeight = tileMap.getHeight();
-		loadTilemap(tileMap);
+		tileSize = SCREEN_WORLD_HEIGHT / fieldHeight;
+		tiles = new FieldTile[fieldWidth][fieldHeight];
+		
+		tileMap.getTextureData().prepare();
+		Pixmap pxmap = tileMap.getTextureData().consumePixmap();
+		
+		for (int i = 0; i < fieldWidth; i++) {
+			for (int j = 0; j < fieldHeight; j++) {
+				int c = pxmap.getPixel(i, j);
+				// black
+				if (c == 255) {
+					tiles[i][j] = new FieldTile(i, j, this);
+				}
+				
+				if (tiles[i][j] != null) {
+					stage.addActor(tiles[i][j]);
+				}
+			}
+		}
+		
+		tileMap.getTextureData().disposePixmap();
 	}
 	
-	private void loadTilemap(Texture tileMap) {
-		// TODO load from texture
+	private void createBox2dObjects(World world) {
+		// TODO create box2d objects
 	}
 	
-	public void updateModeFlight() {
+	private void updateModeFlight() {
 		
 	}
 	
-	public void updateModeNone() {
+	private void updateModeNone() {
 		
 	}
 	
-	public void updateModeDirichlet() {
+	private void updateModeDirichlet() {
 		
 	}
 	
-	public void updateModeEraser() {
+	private void updateModeEraser() {
 		
 	}
 
-	public void updateModeProtons() {
+	private void updateModeProtons() {
 		
 	}
 	
-	public void updateModeElectrons() {
+	private void updateModeElectrons() {
 		
 	}
 
 	@Override
 	public void act(float delta) {
+		
+		// TODO make camera move
+		camera.position.x = fieldWidth / 2 * tileSize - SCREEN_WORLD_WIDTH / 2;
+		camera.update();
+		
 		super.act(delta);
+		switch (gameScreen.getCurrentGameMode()) {
+		case none:
+			updateModeNone();
+			break;
+		case flight:
+			updateModeFlight();
+			break;
+		case dirichlet:
+			updateModeDirichlet();
+			break;
+		case eraser:
+			updateModeEraser();
+			break;
+		case protons:
+			updateModeProtons();
+			break;
+		case electrons:
+			updateModeElectrons();
+			break;
+		}
+	}
+
+	public int getFieldWidth() {
+		return fieldWidth;
+	}
+
+	public int getFieldHeight() {
+		return fieldHeight;
+	}
+
+	public float getTileSize() {
+		return tileSize;
 	}
 }

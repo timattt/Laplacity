@@ -1,10 +1,12 @@
 package steelUnicorn.laplacity;
 
 import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.LaplacityAssets.*;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -20,28 +22,30 @@ public class Laplacity extends Game {
 		loadAssets();
 		
 		game = this;
-		camera = new OrthographicCamera(100, 100);
+		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
 		guiViewport = new ScreenViewport();
-		gameViewport = new ExtendViewport(100, 100, camera);
+		gameViewport = new ExtendViewport(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT, camera);
 		guiViewport.setUnitsPerPixel(0.5f);
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		
 		camera.position.x = camera.position.y = 0;
 		
-		setScreen(mainMenuScreen);
+		setScreen(gameScreen);
 	}
 	
 	private void loadAssets() {
 		assetManager = new AssetManager();
-
-		
+		assetManager.load("levels/testLevel.png", Texture.class);
 		assetManager.finishLoading();
+		
+		LEVEL1_TILEMAP = assetManager.get("levels/testLevel.png", Texture.class);
 	}
 	
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0.6f, 0, 1);
+		shapeRenderer.setProjectionMatrix(camera.combined);
+		ScreenUtils.clear(1, 1, 1, 1);
 		super.render();
 	}
 
