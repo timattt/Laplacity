@@ -52,6 +52,13 @@ public class MainMenuScreen extends ScreenAdapter {
 
 		TextButton button = new TextButton("Play", skin);
 		button.setName("playBtn");
+		button.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				// TODO Auto-generated method stub
+				game.setScreen(gameScreen);
+			}
+		});
 		mainMenu.add(button).width(120).space(20);
 
 		mainMenu.row();
