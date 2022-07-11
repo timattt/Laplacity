@@ -18,6 +18,13 @@ public class FieldTile extends Actor {
 	// Field potential
 	private float potential;
 	
+	// charge density
+	private float chargeDensity;
+	
+	public float getChargeDensity() {
+		return chargeDensity;
+	}
+
 	public FieldTile(int gridX, int gridY, LaplacityField field) {
 		super();
 		setParent(field);
