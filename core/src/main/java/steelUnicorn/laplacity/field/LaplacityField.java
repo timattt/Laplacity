@@ -121,4 +121,8 @@ public class LaplacityField extends Group {
 	public float getTileSize() {
 		return tileSize;
 	}
+
+	public FieldTile[][] getTiles() {
+		return tiles;
+	}
 }

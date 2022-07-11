@@ -15,6 +15,9 @@ public class FieldTile extends Actor {
 	private int gridX;
 	private int gridY;
 	
+	// Field potential
+	private float potential;
+	
 	public FieldTile(int gridX, int gridY, LaplacityField field) {
 		super();
 		setParent(field);
@@ -36,6 +39,14 @@ public class FieldTile extends Actor {
 
 	@Override
 	public void act(float delta) {		
+	}
+
+	public float getPotential() {
+		return potential;
+	}
+
+	public void setPotential(float potential) {
+		this.potential = potential;
 	}
 
 }

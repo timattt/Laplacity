@@ -10,7 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.LaplacityAssets;
+import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
 
@@ -63,6 +65,14 @@ public class GameScreen extends ScreenAdapter {
 
 	public GameMode getCurrentGameMode() {
 		return currentGameMode;
+	}
+	
+	public void changeGameMode(GameMode mode) {
+		if (mode == GameMode.flight) {
+			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
+		}
+		
+		currentGameMode = mode;
 	}
 	
 }
