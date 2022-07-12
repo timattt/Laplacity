@@ -5,11 +5,10 @@ import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.physics.box2d.World;
 
 public class Electron extends ChargedParticle {
 
-	public Electron(float x, float y, World world) {
+	public Electron(float x, float y) {
 		super(x, y, ELECTRON_SIZE, ELECTRON_CHARGE);
 		body.setLinearVelocity(40f, 90f);
 		setName("Electron");

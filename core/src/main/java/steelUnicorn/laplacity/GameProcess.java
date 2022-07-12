@@ -86,7 +86,7 @@ public class GameProcess {
 		levelStage.addActor(field);
 		
 		findMainParticleStartPos(level, TMP1);
-		mainParticle = new Electron(TMP1.x, TMP1.y, levelWorld);
+		mainParticle = new Electron(TMP1.x, TMP1.y);
 		levelStage.addActor(mainParticle);
 	}
 	
