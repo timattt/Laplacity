@@ -3,6 +3,7 @@ package steelUnicorn.laplacity;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -35,4 +36,7 @@ public class Globals {
 	// Resource manager
 	public static AssetManager assetManager;
 
+	// TMP
+	public static final Vector2 TMP1 = new Vector2();
+	
 }

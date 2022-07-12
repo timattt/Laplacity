@@ -1,14 +1,19 @@
 package steelUnicorn.laplacity.field;
 
+import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
+import steelUnicorn.laplacity.field.tiles.BarrierTile;
+import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
+import steelUnicorn.laplacity.field.tiles.FinishTile;
+import steelUnicorn.laplacity.field.tiles.WallTile;
 
 public class LaplacityField extends Group {
 
@@ -21,12 +26,7 @@ public class LaplacityField extends Group {
 	
 	private float tileSize;
 	
-	public LaplacityField(Texture tileMap, Stage stage, World world) {
-		loadTilemap(tileMap, stage);
-		createBox2dObjects(world);
-	}
-	
-	private void loadTilemap(Texture tileMap, Stage stage) {
+	public void init(Texture tileMap) {
 		fieldWidth = tileMap.getWidth();
 		fieldHeight = tileMap.getHeight();
 		tileSize = SCREEN_WORLD_HEIGHT / fieldHeight;
@@ -36,26 +36,31 @@ public class LaplacityField extends Group {
 		Pixmap pxmap = tileMap.getTextureData().consumePixmap();
 		
 		for (int i = 0; i < fieldWidth; i++) {
-			for (int j = 0; j < fieldHeight; j++) {
-				int c = pxmap.getPixel(i, j);
+			for (int k = 0; k < fieldHeight; k++) {
+				int j = fieldHeight - k - 1;
+				int c = pxmap.getPixel(i, k);
 				// black
 				if (c == 255) {
-					tiles[i][j] = new FieldTile(i, j, this);
+					tiles[i][j] = new WallTile(i, j);
 				}
-				
-				if (tiles[i][j] != null) {
-					stage.addActor(tiles[i][j]);
+				// green
+				if (c == 16711935) {
+					tiles[i][j] = new FinishTile(i, j);
+				}
+				// blue
+				if (c == 65535) {
+					tiles[i][j] = new BarrierTile(i, j);
+				}
+				// red
+				if (c == -16776961) {
+					tiles[i][j] = new DeadlyTile(i, j);
 				}
 			}
 		}
 		
 		tileMap.getTextureData().disposePixmap();
 	}
-	
-	private void createBox2dObjects(World world) {
-		// TODO create box2d objects
-	}
-	
+
 	private void updateModeFlight() {
 		
 	}
@@ -88,7 +93,7 @@ public class LaplacityField extends Group {
 		camera.update();
 		
 		super.act(delta);
-		switch (gameScreen.getCurrentGameMode()) {
+		switch (currentGameMode) {
 		case none:
 			updateModeNone();
 			break;
@@ -108,6 +113,15 @@ public class LaplacityField extends Group {
 			updateModeElectrons();
 			break;
 		}
+	}
+	
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+	}
+
+	public void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
+		res.set((gridX - fieldWidth / 2 + 0.5f) * tileSize, (gridY - fieldHeight / 2 + 0.5f) * tileSize);
 	}
 
 	public int getFieldWidth() {
