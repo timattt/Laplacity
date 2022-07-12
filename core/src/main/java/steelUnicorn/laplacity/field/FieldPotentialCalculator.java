@@ -1,5 +1,7 @@
 package steelUnicorn.laplacity.field;
 
+import com.badlogic.gdx.math.Vector2;
+
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
 
@@ -123,6 +125,13 @@ public class FieldPotentialCalculator {
 		for (int j = 0; j < M; j++)
 			for (int i = 0; i < N; i++)
 				tiles[j][i].setPotential(potential_vector[k++]);
+	}
+	
+	/**
+	 * Считаем силу в заданной точке. И кладем ее в result.
+	 */
+	public static void calculateForce(float x, float y, FieldTile[][] tiles, Vector2 result) {
+		// TODO IGOR
 	}
 
 }
