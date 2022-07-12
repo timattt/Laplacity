@@ -16,7 +16,7 @@ public class FieldPotentialCalculator {
 	private static void intermediateConvolution(float[] dst, float[] u, int N, int M, float h) {
 		int n = u.length;
 		if ((M * N != n) || (dst.length != n)) {
-			//throw
+			throw new RuntimeException("Fatal error: mismatched field and/or intermediate buffer dimensions");
 		}
 		if (M == 1) { // degenerate case, this means a three-diagonal matrix
 			dst[0] = -4 * u[0] + u[1];
@@ -58,7 +58,7 @@ public class FieldPotentialCalculator {
 	private static void gradDescend(float[] f, float[] dst, float precision, int N, int M, float h, int n_iter) {
 		int n = f.length;
 		if (M * N != n) {
-			// Throw exception here!
+			throw new RuntimeException("Fatal error: mismatched field and intermediate buffer dimensions");
 		}
 		for (int k = 0; k < n_iter; k++) {
 			intermediateConvolution(rk_buffer, dst, N, M, h); // now "rk_buffer" is "a @ x" in Python notation
@@ -106,12 +106,10 @@ public class FieldPotentialCalculator {
 	public static void calculateFieldPotential(FieldTile[][] tiles) {
 		int M = tiles.length, N = 0;
 		if (M == 0) {
-			//throw
+			throw new RuntimeException("Fatal error: zero field dimensions");
 		} else {
 			N = tiles[0].length;
-			if (N == 0) {
-				//throw
-			}
+			if (N == 0) throw new RuntimeException("Fatal error: zero field dimensions");
 		}
 		int n = M * N;
 		if (n != buf_length)
