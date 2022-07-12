@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.screens;
 
 import static steelUnicorn.laplacity.Globals.*;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,9 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 public class MainMenuScreen extends ScreenAdapter {
 	Stage menuStage;
 
-	private Table levels;
-	private Table options;
-	private Table credits;
+	private Table levelsTab;
+	private Table optionsTab;
+	private Table creditsTab;
 
 	/**
 	 * Constructor of mainMenuScreen that construct ui
@@ -53,8 +52,15 @@ public class MainMenuScreen extends ScreenAdapter {
 	 * @param skin
 	 */
 	private void createLevels(Skin skin) {
-		levels = new Table();
-		levels.setName("tab");
+		levelsTab = new Table();
+		levelsTab.setName("tab");
+
+		Label description = new Label("Levels:", skin);
+		levelsTab.add(description).spaceBottom(20);
+		levelsTab.row();
+
+		Table levels = new Table();
+		levelsTab.add(levels);
 
 		int levelCount = 10; //TODO - получить количество уровней
 		int levelsRow = 4;
@@ -83,8 +89,15 @@ public class MainMenuScreen extends ScreenAdapter {
 	 * @param skin
 	 */
 	private void createOptions(Skin skin) {
-		options = new Table();
-		options.setName("tab");
+		optionsTab = new Table();
+		optionsTab.setName("tab");
+
+		Label description = new Label("Options:", skin);
+		optionsTab.add(description).spaceBottom(20);
+		optionsTab.row();
+
+		Table options = new Table();
+		optionsTab.add(options).spaceBottom(20);
 
 		CheckBox checkBox = new CheckBox("Enable sound", skin);
 		checkBox.setName("sound_checkbox");
@@ -102,14 +115,14 @@ public class MainMenuScreen extends ScreenAdapter {
 	 * @param skin
 	 */
 	private void createCredits(Skin skin) {
-		credits = new Table();
-		credits.setName("tab");
+		creditsTab = new Table();
+		creditsTab.setName("tab");
 
 		Label label = new Label("Credits:\n"
 				+ "Made by Steel Unicorn\n"
 				+ "steel-unicorn.org", skin);
 		label.setName("credits_label");
-		credits.add(label);
+		creditsTab.add(label);
 	}
 
 	/**
@@ -127,17 +140,19 @@ public class MainMenuScreen extends ScreenAdapter {
 		tmpTab.setName("tab");
 		root.add(tmpTab).expandX();
 
+		//play
 		TextButton button = new TextButton("Play", skin);
 		button.setName("playBtn");
 		button.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
-				root.getCell(root.findActor("tab")).setActor(levels);
+				root.getCell(root.findActor("tab")).setActor(levelsTab);
 			}
 		});
 		mainMenu.add(button).width(120).space(20);
 
+		//options
 		mainMenu.row();
 		button = new TextButton("Options", skin);
 		button.setName("optionsBtn");
@@ -145,11 +160,12 @@ public class MainMenuScreen extends ScreenAdapter {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
-				root.getCell(root.findActor("tab")).setActor(options);
+				root.getCell(root.findActor("tab")).setActor(optionsTab);
 			}
 		});
 		mainMenu.add(button).width(120).space(20);
 
+		//credits
 		mainMenu.row();
 		button = new TextButton("Credits", skin);
 		button.setName("creditsBtn");
@@ -157,7 +173,7 @@ public class MainMenuScreen extends ScreenAdapter {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
-				root.getCell(root.findActor("tab")).setActor(credits);
+				root.getCell(root.findActor("tab")).setActor(creditsTab);
 			}
 		});
 		mainMenu.add(button).width(120).space(20);
