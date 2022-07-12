@@ -8,7 +8,7 @@ public class FieldPotentialCalculator {
 	public static int n_iter = 1000; // Maybe just find the appropriate values and leave them constant
 	// Or maybe make a slider in settings: "Physical simulation precision" ?:hmmm:
 
-	private static float[] intermediateConvolution(float[] u, int N, int M) {
+	private static float[] intermediateConvolution(float[] u, int N, int M, float h) {
 		int n = u.length;
 		if (M * N != n) { // this is impossible, but...
 			// throw exception here!
@@ -48,6 +48,8 @@ public class FieldPotentialCalculator {
 				f[l + i] = u[l + i - N] + u[l + i - 1] - 4 * u[l + i] + u[l + i + 1];
 			f[l + N - 1] =  u[l - 1] + u[l + N - 2] - 4 * u[l + N - 1]; // the last, "degenerate" row
 			}
+		for (int i = 0; i < n; i++)
+			f[i] /= (h * h);
 		return f;
 	}
 
@@ -59,7 +61,7 @@ public class FieldPotentialCalculator {
 		float[] x = new float[n];
 		float[] rk_buffer = new float[n];
 		for (int k = 0; k < n_iter; k++) {
-			rk_buffer = intermediateConvolution(x, N, M); // now "rk_buffer" is "a @ x" in Python notation
+			rk_buffer = intermediateConvolution(x, N, M, h); // now "rk_buffer" is "a @ x" in Python notation
 			float tk_numerator = 0, tk_denumerator = 0;
 			// now let's calculate residual (element-wise) and descend step value ("tk" variable)
 			for (int i = 0; i < n; i++) {
