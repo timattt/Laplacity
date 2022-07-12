@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity.field;
 
-import com.badlogic.gdx.math.Vector2;
-
+import java.util.Arrays;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
 
@@ -14,6 +13,7 @@ public class FieldPotentialCalculator {
 	private static float[] rk_buffer;
 	private static float[] density_vector;
 	private static float[] potential_vector;
+	private static float[] a_conv_rk;
 
 	private static void intermediateConvolution(float[] dst, float[] u, int N, int M, float h) {
 		int n = u.length;
@@ -34,7 +34,7 @@ public class FieldPotentialCalculator {
 		} else { // M and N are at least two, the "normal" case
 			// Multiplying the first block (the first "row" of the grid)
 			dst[0] = -4 * u[0] + u[1] + u[N]; // the first, "degenerate" row
-			for (int i = 1; i < N - 1;)
+			for (int i = 1; i < N - 1; i++)
 				dst[i] = u[i - 1] - 4 * u[i] + u[i + 1] + u[i + N];
 			dst[N - 1] =  u[N - 2] - 4 * u[N - 1] + u [N + N - 1]; // the last, "degenerate" row
 
@@ -62,15 +62,17 @@ public class FieldPotentialCalculator {
 		if (M * N != n) {
 			throw new RuntimeException("Fatal error: mismatched field and intermediate buffer dimensions");
 		}
+		Arrays.fill(dst, 0.0f);
 		for (int k = 0; k < n_iter; k++) {
 			intermediateConvolution(rk_buffer, dst, N, M, h); // now "rk_buffer" is "a @ x" in Python notation
+			for (int i = 0; i < n; i++)
+				rk_buffer[i] -= f[i];
+			intermediateConvolution(a_conv_rk, rk_buffer, N, M, h);
 			float tk_numerator = 0, tk_denumerator = 0;
 			// now let's calculate residual (element-wise) and descend step value ("tk" variable)
 			for (int i = 0; i < n; i++) {
-				float res = rk_buffer[i] - f[i];
-				tk_numerator += res * res;
-				tk_denumerator += res * rk_buffer[i];
-				rk_buffer[i] = res;
+				tk_numerator += rk_buffer[i] * rk_buffer[i];
+				tk_denumerator += rk_buffer[i] * a_conv_rk[i];
 			}
 			/*
 			 * After this loop "rk_buffer" holds a residuals vector (rk),
@@ -102,6 +104,7 @@ public class FieldPotentialCalculator {
 		density_vector = new float[new_length];
 		potential_vector = new float[new_length];
 		rk_buffer = new float[new_length];
+		a_conv_rk = new float[new_length];
 		buf_length = new_length;
 	}
 
@@ -119,19 +122,12 @@ public class FieldPotentialCalculator {
 		int k = 0;
 		for (int j = 0; j < M; j++)
 			for (int i = 0; i < N; i++)
-				density_vector[k++] = tiles[j][i].getChargeDensity();
+				density_vector[k++] = (-4 * (float)Math.PI) * tiles[j][i].getChargeDensity();
 		gradDescend(density_vector, potential_vector, precision, N, M, GameProcess.field.getTileSize(), n_iter);
 		k = 0;
 		for (int j = 0; j < M; j++)
 			for (int i = 0; i < N; i++)
 				tiles[j][i].setPotential(potential_vector[k++]);
-	}
-	
-	/**
-	 * Считаем силу в заданной точке. И кладем ее в result.
-	 */
-	public static void calculateForce(float x, float y, FieldTile[][] tiles, Vector2 result) {
-		// TODO IGOR
 	}
 
 }
