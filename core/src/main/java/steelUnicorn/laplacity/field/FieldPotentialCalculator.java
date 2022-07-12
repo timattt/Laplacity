@@ -1,8 +1,12 @@
 package steelUnicorn.laplacity.field;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
 
 public class FieldPotentialCalculator {
+	public static float precision = 0.001f; // IDK what to do with these parameters
+	public static int n_iter = 1000; // Maybe just find the appropriate values and leave them constant
+	// Or maybe make a slider in settings: "Physical simulation precision" ?:hmmm:
 
 	private static float[] intermediateConvolution(float[] u, int N, int M) {
 		int n = u.length;
@@ -80,12 +84,32 @@ public class FieldPotentialCalculator {
 			}
 			if (delta < precision)
 				break;
+			/*
+			 * The case when it does not converge is not handled.
+			 * Well, it *must* converge with that given matrix, but still it may take more iterations that n_iter.
+			 * Maybe here we should throw an exception that would show a message like "Your field is too powerful:( , move your charges a bit!"
+			 * and switch the gamemode back from simulation to edit?
+			 * TODO: exception handling
+			 */
 		}
 		return x;
 	}
 
 	public static void calculateFieldPotential(FieldTile[][] tiles) {
-		// TODO calculate Dirichlet task here
+		int M = tiles.length;
+		int N = tiles[0].length;
+		// N or M can be zero, maybe throw an exception so that our app fall gracefully :)
+		int n = M * N;
+		float[] density_vector = new float[n];
+		int k = 0;
+		for (int j = 0; j < M; j++)
+			for (int i = 0; i < N; i++)
+				density_vector[k++] = tiles[j][i].getChargeDensity();
+		float[] potential_vector = gradDescend(density_vector, precision, N, M, GameProcess.field.getTileSize(), n_iter);
+		k = 0;
+		for (int j = 0; j < M; j++)
+			for (int i = 0; i < N; i++)
+				tiles[j][i].setPotential(potential_vector[k++]);
 	}
 
 }
