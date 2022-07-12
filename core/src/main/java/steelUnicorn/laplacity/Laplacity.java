@@ -7,6 +7,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -31,12 +32,13 @@ public class Laplacity extends Game {
 		
 		camera.position.x = camera.position.y = 0;
 		
-		setScreen(gameScreen);
+		setScreen(mainMenuScreen);
 	}
 	
 	private void loadAssets() {
 		assetManager = new AssetManager();
 		assetManager.load("levels/testLevel.png", Texture.class);
+		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.finishLoading();
 		
 		LEVEL1_TILEMAP = assetManager.get("levels/testLevel.png", Texture.class);
