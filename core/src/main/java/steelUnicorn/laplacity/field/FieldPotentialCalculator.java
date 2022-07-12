@@ -4,64 +4,64 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
 
 public class FieldPotentialCalculator {
-	public static float precision = 0.001f; // IDK what to do with these parameters
-	public static int n_iter = 1000; // Maybe just find the appropriate values and leave them constant
-	// Or maybe make a slider in settings: "Physical simulation precision" ?:hmmm:
 
-	private static float[] intermediateConvolution(float[] u, int N, int M, float h) {
+	public static final float precision = 0.001f;
+	public static final int n_iter = 1000;
+
+	private static int buf_length = 0;
+	private static float[] rk_buffer;
+	private static float[] density_vector;
+	private static float[] potential_vector;
+
+	private static void intermediateConvolution(float[] dst, float[] u, int N, int M, float h) {
 		int n = u.length;
-		if (M * N != n) { // this is impossible, but...
-			// throw exception here!
+		if ((M * N != n) || (dst.length != n)) {
+			//throw
 		}
-		float[] f = new float[n];
-
 		if (M == 1) { // degenerate case, this means a three-diagonal matrix
-			f[0] = -4 * u[0] + u[1];
+			dst[0] = -4 * u[0] + u[1];
 			for (int i = 1; i < N - 1; i++)
-				f[i] = u[i - 1] - 4 * u[i] + u[i + 1];
-			f[N - 1] = u[N - 2] - 4 * u[N - 1];
+				dst[i] = u[i - 1] - 4 * u[i] + u[i + 1];
+			dst[N - 1] = u[N - 2] - 4 * u[N - 1];
 		}
 		else if (N == 1) { // another degenerate case, this is also a three-diagonal matrix
-			f[0] = -4 * u[0] + u[1];
+			dst[0] = -4 * u[0] + u[1];
 			for (int j = 1; j < M - 1; j++)
-				f[j] = u[j - 1] - 4 * u[j] + u[j + 1];
-			f[M - 1] = u[M - 2] - 4 * u[M - 1];
+				dst[j] = u[j - 1] - 4 * u[j] + u[j + 1];
+			dst[M - 1] = u[M - 2] - 4 * u[M - 1];
 		} else { // M and N are at least two, the "normal" case
 			// Multiplying the first block (the first "row" of the grid)
-			f[0] = -4 * u[0] + u[1] + u[N]; // the first, "degenerate" row
+			dst[0] = -4 * u[0] + u[1] + u[N]; // the first, "degenerate" row
 			for (int i = 1; i < N - 1;)
-				f[i] = u[i - 1] - 4 * u[i] + u[i + 1] + u[i + N];
-			f[N - 1] =  u[N - 2] - 4 * u[N - 1] + u [N + N - 1]; // the last, "degenerate" row
+				dst[i] = u[i - 1] - 4 * u[i] + u[i + 1] + u[i + N];
+			dst[N - 1] =  u[N - 2] - 4 * u[N - 1] + u [N + N - 1]; // the last, "degenerate" row
 
 			// Multiplying the normal blocks in between
 			for (int j = 1; j < M - 1; j++){
 				int l = j * N; // auxilary variable, see below how it's used
-				f[l] = u[l - N] - 4 * u[l] + u[l + 1] + u[l + N]; // the first, "degenerate" row
+				dst[l] = u[l - N] - 4 * u[l] + u[l + 1] + u[l + N]; // the first, "degenerate" row
 				for (int i = 1; i < N - 1; i++)
-					f[l + i] = u[l + i - N] + u[l + i - 1] - 4 * u[l + i] + u[l + i + 1] + u[l + i + N];
-				f[l + N - 1] =  u[l - 1] + u[l + N - 2] - 4 * u[l + N - 1] + u [l + N + N - 1]; // the last, "degenerate" row
+					dst[l + i] = u[l + i - N] + u[l + i - 1] - 4 * u[l + i] + u[l + i + 1] + u[l + i + N];
+				dst[l + N - 1] =  u[l - 1] + u[l + N - 2] - 4 * u[l + N - 1] + u [l + N + N - 1]; // the last, "degenerate" row
 			}
 			// Multiplying the last block
 			int l = (M - 1) * N;
-			f[l] = u[l - N] - 4 * u[l] + u[l + 1]; // the first, "degenerate" row
+			dst[l] = u[l - N] - 4 * u[l] + u[l + 1]; // the first, "degenerate" row
 			for (int i = 1; i < N - 1; i++)
-				f[l + i] = u[l + i - N] + u[l + i - 1] - 4 * u[l + i] + u[l + i + 1];
-			f[l + N - 1] =  u[l - 1] + u[l + N - 2] - 4 * u[l + N - 1]; // the last, "degenerate" row
+				dst[l + i] = u[l + i - N] + u[l + i - 1] - 4 * u[l + i] + u[l + i + 1];
+			dst[l + N - 1] =  u[l - 1] + u[l + N - 2] - 4 * u[l + N - 1]; // the last, "degenerate" row
 			}
 		for (int i = 0; i < n; i++)
-			f[i] /= (h * h);
-		return f;
+			dst[i] /= (h * h);
 	}
 
-	private static float[] gradDescend(float[] f, float precision, int N, int M, float h, int n_iter) {
+	private static void gradDescend(float[] f, float[] dst, float precision, int N, int M, float h, int n_iter) {
 		int n = f.length;
 		if (M * N != n) {
 			// Throw exception here!
 		}
-		float[] x = new float[n];
-		float[] rk_buffer = new float[n];
 		for (int k = 0; k < n_iter; k++) {
-			rk_buffer = intermediateConvolution(x, N, M, h); // now "rk_buffer" is "a @ x" in Python notation
+			intermediateConvolution(rk_buffer, dst, N, M, h); // now "rk_buffer" is "a @ x" in Python notation
 			float tk_numerator = 0, tk_denumerator = 0;
 			// now let's calculate residual (element-wise) and descend step value ("tk" variable)
 			for (int i = 0; i < n; i++) {
@@ -78,11 +78,11 @@ public class FieldPotentialCalculator {
 			float tk = tk_numerator / tk_denumerator;
 			float delta = 0, local_delta = 0;
 			for (int i = 0; i < n; i++) {
-				float next_x = x[i] - (tk * rk_buffer[i]);
-				local_delta = Math.abs(x[i] - next_x);
+				float next_x = dst[i] - (tk * rk_buffer[i]);
+				local_delta = Math.abs(dst[i] - next_x);
 				if (local_delta > delta)
 					delta = local_delta;
-				x[i] = next_x;
+				dst[i] = next_x;
 			}
 			if (delta < precision)
 				break;
@@ -94,20 +94,33 @@ public class FieldPotentialCalculator {
 			 * TODO: exception handling
 			 */
 		}
-		return x;
+	}
+
+	private static void resizeBuffers(int new_length) {
+		density_vector = new float[new_length];
+		potential_vector = new float[new_length];
+		rk_buffer = new float[new_length];
+		buf_length = new_length;
 	}
 
 	public static void calculateFieldPotential(FieldTile[][] tiles) {
-		int M = tiles.length;
-		int N = tiles[0].length;
-		// N or M can be zero, maybe throw an exception so that our app fall gracefully :)
+		int M = tiles.length, N = 0;
+		if (M == 0) {
+			//throw
+		} else {
+			N = tiles[0].length;
+			if (N == 0) {
+				//throw
+			}
+		}
 		int n = M * N;
-		float[] density_vector = new float[n];
+		if (n != buf_length)
+			resizeBuffers(n);
 		int k = 0;
 		for (int j = 0; j < M; j++)
 			for (int i = 0; i < N; i++)
 				density_vector[k++] = tiles[j][i].getChargeDensity();
-		float[] potential_vector = gradDescend(density_vector, precision, N, M, GameProcess.field.getTileSize(), n_iter);
+		gradDescend(density_vector, potential_vector, precision, N, M, GameProcess.field.getTileSize(), n_iter);
 		k = 0;
 		for (int j = 0; j < M; j++)
 			for (int i = 0; i < N; i++)
