@@ -15,6 +15,10 @@ public class Settings {
 
 	private static float soundVolume;
 	private static float musicVolume;
+	public static enum VOLUME {
+		OFF,
+		ON
+	}
 
 	/**
 	 * Uploading settings using preferences

@@ -108,13 +108,13 @@ public class MainMenuScreen extends ScreenAdapter {
 		//Sound and music
 		CheckBox checkBox = new CheckBox("Enable sound", skin);
 		checkBox.setName("sound_checkbox");
-		checkBox.setChecked(Settings.getSoundVolume() == 1);
+		checkBox.setChecked(Settings.getSoundVolume() == Settings.VOLUME.ON.ordinal());
 
 		checkBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				CheckBox box = (CheckBox) actor;
-				Settings.setSoundVolume(box.isChecked() ? 1 : 0);
+				Settings.setSoundVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
 				Gdx.app.log("SoundVolumeChanged", String.valueOf(Settings.getSoundVolume())); //logging for check changes
 			}
 		});
@@ -123,12 +123,12 @@ public class MainMenuScreen extends ScreenAdapter {
 		options.row();
 		checkBox = new CheckBox("Enable Music", skin);
 		checkBox.setName("music_checkbox");
-		checkBox.setChecked(Settings.getMusicVolume() == 1);
+		checkBox.setChecked(Settings.getMusicVolume() == Settings.VOLUME.ON.ordinal());
 		checkBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				CheckBox box = (CheckBox) actor;
-				Settings.setMusicVolume(box.isChecked() ? 1 : 0);
+				Settings.setMusicVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
 				Gdx.app.log("MusicVolumeChanged", String.valueOf(Settings.getMusicVolume())); //logging for check changes
 			}
 		});
