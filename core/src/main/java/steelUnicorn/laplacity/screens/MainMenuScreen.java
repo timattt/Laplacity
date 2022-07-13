@@ -66,20 +66,12 @@ public class MainMenuScreen extends ScreenAdapter {
 		levelsTab.add(levels);
 
 		final int levelsRow = 4;
-		//Gdx.app.log("lvls1", "start of level uploading");
 		FileHandle[] lvlImages = Gdx.files.internal("levels/").list();
-		//Gdx.app.log("lvls2", String.valueOf(lvlImages.length));
+
 		for (int i = 0; i < lvlImages.length; i++) {
-			LevelButton btn = new LevelButton(String.valueOf(i), skin, lvlImages[i]);
+			LevelButton btn = new LevelButton(String.valueOf(i + 1), skin, lvlImages[i].path());
 			btn.setName("level" + String.valueOf(i));
-			btn.addListener(new ChangeListener() {
-				@Override
-				public void changed(ChangeEvent event, Actor actor) {
-					// TODO Auto-generated method stub
-					//LevelButton but = (LevelButton)actor;
-					game.setScreen(gameScreen);
-				}
-			});
+			btn.addListener(LevelButton.listener);
 
 			levels.add(btn).space(20);
 			//new Row
