@@ -111,25 +111,21 @@ public class FieldPotentialCalculator {
 	}
 
 	public static void calculateFieldPotential(FieldTile[][] tiles) {
-		int M = tiles.length, N = 0;
-		if (M == 0) {
+		int field_width = GameProcess.field.getFieldWidth(), field_height =  GameProcess.field.getFieldHeight();
+		if ((field_width == 0) || (field_height == 0))
 			throw new RuntimeException("Fatal error: zero field dimensions");
-		} else {
-			N = tiles[0].length;
-			if (N == 0) throw new RuntimeException("Fatal error: zero field dimensions");
-		}
-		int n = M * N;
+		int n = field_width * field_height;
 		if (n != buf_length)
 			resizeBuffers(n);
 		int k = 0;
-		for (int j = 0; j < M; j++)
-			for (int i = 0; i < N; i++)
-				density_vector[k++] = -tiles[j][i].getChargeDensity();
-		gradDescend(density_vector, potential_vector, precision, N, M, GameProcess.field.getTileSize(), n_iter);
+		for (int i = 0; i < field_width; i++)
+			for (int j = 0; j < field_height; j++)
+				density_vector[k++] = tiles[i][j].getChargeDensity();
+		gradDescend(density_vector, potential_vector, precision, field_height, field_width, GameProcess.field.getTileSize(), n_iter);
 		k = 0;
-		for (int j = 0; j < M; j++)
-			for (int i = 0; i < N; i++)
-				tiles[j][i].setPotential(potential_vector[k++]);
+		for (int i = 0; i < field_width; i++)
+			for (int j = 0; j < field_height; j++)
+				tiles[i][j].setPotential(potential_vector[k++]);
 	}
 	
 	/**
@@ -137,6 +133,8 @@ public class FieldPotentialCalculator {
 	 */
 	public static void calculateForce(float x, float y, FieldTile[][] tiles, Vector2 result) {
 		// TODO IGOR
+		// Don't call me like that. I'm Inge.
+		// You wouldn't call Helge by the name Oleg, right?
 	}
 
 }
