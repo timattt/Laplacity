@@ -1,9 +1,9 @@
 package steelUnicorn.laplacity.ui;
 
-import steelUnicorn.laplacity.LaplacityAssets;
-import steelUnicorn.laplacity.Globals;
 
-import com.badlogic.gdx.Gdx;
+import steelUnicorn.laplacity.Globals;
+import steelUnicorn.laplacity.GameProcess;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -18,11 +18,11 @@ public class LevelButton extends TextButton {
 		@Override
 		public void changed(ChangeEvent event, Actor actor) {
 			// TODO Auto-generated method stub
-			if (LaplacityAssets.LEVEL_TILEMAP != null) {
-				LaplacityAssets.LEVEL_TILEMAP.dispose();
+			if (GameProcess.field != null) {
+				GameProcess.disposeLevel();
 			}
 
-			LaplacityAssets.LEVEL_TILEMAP = Globals.assetManager.get(((LevelButton) actor).lvlImgPath, Texture.class);
+			GameProcess.initLevel(Globals.assetManager.get(((LevelButton) actor).lvlImgPath, Texture.class));
 			Globals.game.setScreen(Globals.gameScreen);
 		}
 	};
