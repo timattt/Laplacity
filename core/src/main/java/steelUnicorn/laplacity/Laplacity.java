@@ -4,7 +4,9 @@ import static steelUnicorn.laplacity.Globals.*;
 import static steelUnicorn.laplacity.LaplacityAssets.*;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -37,11 +39,15 @@ public class Laplacity extends Game {
 	
 	private void loadAssets() {
 		assetManager = new AssetManager();
-		assetManager.load("levels/testLevel.png", Texture.class);
+
+		FileHandle[] lvls = Gdx.files.internal("levels/").list();
+		for (FileHandle lvl : lvls) {
+			assetManager.load(lvl.path(), Texture.class);
+		}
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.finishLoading();
 		
-		LEVEL1_TILEMAP = assetManager.get("levels/testLevel.png", Texture.class);
+		LEVEL_TILEMAP = assetManager.get("levels/level1.png", Texture.class);
 	}
 	
 	@Override

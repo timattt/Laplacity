@@ -9,7 +9,7 @@ import steelUnicorn.laplacity.LaplacityAssets;
 public class GameScreen extends ScreenAdapter {
 	
 	public GameScreen() {
-		initLevel(LaplacityAssets.LEVEL1_TILEMAP);
+		initLevel(LaplacityAssets.LEVEL_TILEMAP);
 	}
 	
 	@Override
