@@ -127,14 +127,42 @@ public class FieldPotentialCalculator {
 			for (int j = 0; j < field_height; j++)
 				tiles[i][j].setPotential(potential_vector[k++]);
 	}
+
+	private static float twoPointScheme(float f_minus, float f_plus, float step) {
+		return 0.5f * (f_plus - f_minus) / step;
+	}
 	
 	/**
 	 * Считаем силу в заданной точке. И кладем ее в result.
+	 * Перед вызовом убедись, что поле -- это не палка размерности M*1 или 1*N
+	 * Потенциал для такой фигни скорее всего считается, а сила нет
+	 * Можно сделать, чтобы считалось, но это по-моему лишнее
 	 */
 	public static void calculateForce(float x, float y, FieldTile[][] tiles, Vector2 result) {
-		// TODO IGOR
-		// Don't call me like that. I'm Inge.
-		// You wouldn't call Helge by the name Oleg, right?
-	}
+		// Get integer indices of the tile the (x,y) poitn currently in\
+		float h = GameProcess.field.getTileSize();
+		int i = (int)(x / h);
+		int j = (int)(y / h);
+		// Check if we aren't out of boundaries:
+		if ((i < 0) || (j < 0) || (i >= GameProcess.field.getFieldWidth()) || (j >= GameProcess.field.getFieldHeight() )) {
+			throw new RuntimeException("Attempt to calculate force outside the game field");
+		}
+		// Separately calculate derivatives:
+			if (i == 0) { // (x,y) is adjacent to the lower edge
+				result.x = -twoPointScheme(0.0f, tiles[i + 1][j].getPotential(), h);
+			} else if (i == GameProcess.field.getFieldWidth() - 1) { // Upper edge
+				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), 0.0f, h);
+			} else { // Inner point
+				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), tiles[i + 1][j].getPotential(), h);
+			}
+			// Repeat this for y
+			if (j == 0) { //Left edge
+				result.y = -twoPointScheme(0.0f, tiles[i][j + 1].getPotential(), h);
+			} else if (j == GameProcess.field.getFieldHeight() - 1) { // Right edge
+				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h);
+			} else { // Inner point
+				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h);
+			}
+		}
 
 }
