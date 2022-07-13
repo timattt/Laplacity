@@ -4,10 +4,13 @@ import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+
+import steelUnicorn.laplacity.ui.LevelButton;
 
 public class MainMenuScreen extends ScreenAdapter {
 	Stage menuStage;
@@ -62,21 +65,25 @@ public class MainMenuScreen extends ScreenAdapter {
 		Table levels = new Table();
 		levelsTab.add(levels);
 
-		int levelCount = 10; //TODO - получить количество уровней
-		int levelsRow = 4;
-
-		for (int i = 1; i <= levelCount; i++) {
-			TextButton btn = new TextButton(String.valueOf(i), skin);
-			btn.setName(String.valueOf(i) + "_level");
+		final int levelsRow = 4;
+		//Gdx.app.log("lvls1", "start of level uploading");
+		FileHandle[] lvlImages = Gdx.files.internal("levels/").list();
+		//Gdx.app.log("lvls2", String.valueOf(lvlImages.length));
+		for (int i = 0; i < lvlImages.length; i++) {
+			LevelButton btn = new LevelButton(String.valueOf(i), skin, lvlImages[i]);
+			btn.setName("level" + String.valueOf(i));
 			btn.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
 					// TODO Auto-generated method stub
+					//LevelButton but = (LevelButton)actor;
 					game.setScreen(gameScreen);
 				}
 			});
+
 			levels.add(btn).space(20);
-			if (i % levelsRow == 0 && i != levelCount) {
+			//new Row
+			if ((i + 1) % levelsRow == 0 && (i + 1) != lvlImages.length) {
 				levels.row();
 			}
 		}
