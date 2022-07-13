@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.Globals.*;
 import static steelUnicorn.laplacity.LaplacityAssets.*;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.utils.Settings;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Laplacity extends Game {
@@ -21,6 +23,10 @@ public class Laplacity extends Game {
 	@Override
 	public void create() {
 		loadAssets();
+		Settings.loadSettings();
+		//logging for checking saving
+		Gdx.app.log("Settings Sound", String.valueOf(Settings.getSoundVolume()));
+		Gdx.app.log("Settings Music", String.valueOf(Settings.getMusicVolume()));
 		
 		game = this;
 		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
@@ -62,6 +68,7 @@ public class Laplacity extends Game {
 	public void dispose () {
 		super.dispose();
 		assetManager.dispose();
+		Settings.saveSettings();
 	}
 	
 }
