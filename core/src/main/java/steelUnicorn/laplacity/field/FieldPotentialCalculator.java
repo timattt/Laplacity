@@ -149,19 +149,19 @@ public class FieldPotentialCalculator {
 		}
 		// Separately calculate derivatives:
 			if (i == 0) { // (x,y) is adjacent to the lower edge
-				result.x = -twoPointScheme(0.0f, tiles[i + 1][j].getPotential(), h);
+				result.x = -twoPointScheme(0.0f, tiles[i + 1][j].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
 			} else if (i == GameProcess.field.getFieldWidth() - 1) { // Upper edge
-				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), 0.0f, h);
+				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), 0.0f, h) * GameProcess.ELECTRON_CHARGE;
 			} else { // Inner point
-				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), tiles[i + 1][j].getPotential(), h);
+				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), tiles[i + 1][j].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
 			}
 			// Repeat this for y
 			if (j == 0) { //Left edge
-				result.y = -twoPointScheme(0.0f, tiles[i][j + 1].getPotential(), h);
+				result.y = -twoPointScheme(0.0f, tiles[i][j + 1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
 			} else if (j == GameProcess.field.getFieldHeight() - 1) { // Right edge
-				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h);
+				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h) * GameProcess.ELECTRON_CHARGE;
 			} else { // Inner point
-				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h);
+				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
 			}
 		}
 
