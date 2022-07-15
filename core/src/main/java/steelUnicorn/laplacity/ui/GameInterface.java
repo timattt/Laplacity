@@ -68,6 +68,7 @@ public class GameInterface extends Stage {
 			public void changed(ChangeEvent event, Actor actor) {
 				Gdx.app.log("game ui", "reload pressed");
 				//TODO level reload
+				GameProcess.reloadLevel();
 			}
 		});
 

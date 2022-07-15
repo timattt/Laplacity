@@ -122,6 +122,15 @@ public class GameProcess {
 		
 		currentGameMode = mode;
 	}
+
+	/**
+	 * Called when reload button is pressed on GameInterfece
+	 */
+	public static void reloadLevel() {
+		//TODO implement (just reload position and velocities?)
+		mainParticle.setPosition(Globals.TMP1.x, Globals.TMP1.y);
+		currentGameMode = GameMode.none;
+	}
 	
 	public static Body registerPhysicalObject(Actor act, BodyDef bodydef) {
 		levelStage.addActor(act);
