@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -51,6 +52,7 @@ public class Laplacity extends Game {
 			assetManager.load(lvl.path(), Texture.class);
 		}
 		assetManager.load("ui/uiskin.json", Skin.class);
+		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
 		assetManager.finishLoading();
 	}
 	
