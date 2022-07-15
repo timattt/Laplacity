@@ -14,12 +14,11 @@ public class GameScreen extends ScreenAdapter {
 
 	public GameScreen() {
 		initLevel(LaplacityAssets.LEVEL1_TILEMAP);
-		gi = new GameInterface(Globals.guiViewport);
 	}
 
 	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(gi);
+		Gdx.input.setInputProcessor(gameUI);
 		super.show();
 	}
 
@@ -35,14 +34,12 @@ public class GameScreen extends ScreenAdapter {
 			return;
 		}
 		updateLevel(delta);
-		gi.draw();
 		super.render(delta);
 	}
 
 	@Override
 	public void dispose() {
 		disposeLevel();
-		gi.dispose();
 		super.dispose();
 	}
 	

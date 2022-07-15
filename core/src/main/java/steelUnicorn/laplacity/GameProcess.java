@@ -20,6 +20,7 @@ import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.Electron;
 import steelUnicorn.laplacity.particles.HitController;
+import steelUnicorn.laplacity.ui.GameInterface;
 
 public class GameProcess {
 
@@ -35,9 +36,10 @@ public class GameProcess {
 	public static final Array<ChargedParticle> particles = new Array<ChargedParticle>();
 	//========================================================================================
 	
-	// Stage and world
+	// Stage and world and ui
 	private static Stage levelStage;
 	private static World levelWorld;
+	public static GameInterface gameUI;
 
 	// Mode
 	public static GameMode currentGameMode;
@@ -53,6 +55,7 @@ public class GameProcess {
 	//========================================================================================	
 	public static void initLevel(Texture level) {
 		levelStage = new Stage(gameViewport);
+		gameUI = new GameInterface(guiViewport);
 		levelWorld = new World(Vector2.Zero, false);
 		shapeRenderer = new ShapeRenderer();
 		currentGameMode = GameMode.none;
@@ -69,11 +72,14 @@ public class GameProcess {
 		
 		levelWorld.step(delta, 6, 2);
 		levelStage.act();
+
+		gameUI.draw();
 	}
 	
 	public static void disposeLevel() {
 		levelStage.dispose();
 		field = null;
+		gameUI.dispose();
 	}
 	//========================================================================================
 	
