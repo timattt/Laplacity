@@ -1,19 +1,15 @@
 package steelUnicorn.laplacity.particles;
 
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import steelUnicorn.laplacity.field.tiles.DeadlyTile;
-import steelUnicorn.laplacity.field.tiles.FieldTile;
-
 public class HitController implements ContactListener {
 
 	@Override
 	public void beginContact(Contact contact) {
-		
+		/*
 		Body body1 = contact.getFixtureA().getBody();
 		Body body2 = contact.getFixtureB().getBody();
 		
@@ -38,7 +34,7 @@ public class HitController implements ContactListener {
 				part.delete();
 			}
 		}
-		
+		*/
 	}
 
 	@Override

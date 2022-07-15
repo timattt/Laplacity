@@ -11,25 +11,14 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
-public class FieldTile extends Actor {
-
-	// grid
-	protected int gridX;
-	protected int gridY;
-	
-	// Field potential
-	protected float potential;
-	
-	// charge density
-	protected float chargeDensity;
+public class FieldTile extends EmptyTile {
 	
 	// Body
 	protected Body body;
 
 	public FieldTile(int gridX, int gridY) {
-		super();
+		super(gridX, gridY);
 		setParent(field);
 		this.gridX = gridX;
 		this.gridY = gridY;
@@ -58,10 +47,6 @@ public class FieldTile extends Actor {
 		shape.dispose();
 	}
 
-	public float getChargeDensity() {
-		return chargeDensity;
-	}
-
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		float sz = field.getTileSize();
@@ -75,46 +60,4 @@ public class FieldTile extends Actor {
 		drawArrow(); 
 	}
 	
-	protected void drawArrow() {
-		/*
-		float sz = field.getTileSize();
-		int w = field.getFieldWidth();
-		int h = field.getFieldHeight();
-		TMP1.set((gridX)*sz, (gridY)*sz);
-		FieldPotentialCalculator.calculateForce(TMP1.x, TMP1.y, field.getTiles(), TMP2);
-		TMP2.scl(0.03f);
-		TMP1.sub(sz*(w/2 - 0.5f), sz*(h/2 - 0.5f));
-		TMP2.add(TMP1);
-		
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(1f, 1f, 0, 1f);
-		shapeRenderer.line(TMP1, TMP2);
-		shapeRenderer.end();
-		*/
-	}
-
-	public void setChargeDensity(float chargeDensity) {
-		this.chargeDensity = chargeDensity;
-	}
-
-	@Override
-	public void act(float delta) {		
-	}
-
-	public float getPotential() {
-		return potential;
-	}
-
-	public void setPotential(float potential) {
-		this.potential = potential;
-	}
-
-	public int getGridX() {
-		return gridX;
-	}
-
-	public int getGridY() {
-		return gridY;
-	}
-
 }

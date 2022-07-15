@@ -1,10 +1,11 @@
 package steelUnicorn.laplacity.field;
 
 import java.util.Arrays;
+
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.field.tiles.FieldTile;
+import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
 public class FieldPotentialCalculator {
 
@@ -110,7 +111,7 @@ public class FieldPotentialCalculator {
 		buf_length = new_length;
 	}
 
-	public static void calculateFieldPotential(FieldTile[][] tiles) {
+	public static void calculateFieldPotential(EmptyTile[][] tiles) {
 		int field_width = GameProcess.field.getFieldWidth(), field_height =  GameProcess.field.getFieldHeight();
 		if ((field_width == 0) || (field_height == 0))
 			throw new RuntimeException("Fatal error: zero field dimensions");
@@ -138,7 +139,7 @@ public class FieldPotentialCalculator {
 	 * Потенциал для такой фигни скорее всего считается, а сила нет
 	 * Можно сделать, чтобы считалось, но это по-моему лишнее
 	 */
-	public static void calculateForce(float x, float y, FieldTile[][] tiles, Vector2 result) {
+	public static void calculateForce(float x, float y, EmptyTile[][] tiles, Vector2 result) {
 		// Get integer indices of the tile the (x,y) poitn currently in\
 		float h = GameProcess.field.getTileSize();
 		int i = (int)(x / h);
@@ -162,6 +163,14 @@ public class FieldPotentialCalculator {
 				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h) * GameProcess.ELECTRON_CHARGE;
 			} else { // Inner point
 				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
+			}
+			
+			// TODO IGOR
+			if (Double.isNaN(result.x)) {
+				result.x = 0;
+			}
+			if (Double.isNaN(result.y)) {
+				result.y = 0;
 			}
 		}
 

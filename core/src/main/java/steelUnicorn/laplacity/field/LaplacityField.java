@@ -12,14 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
-import steelUnicorn.laplacity.field.tiles.FieldTile;
 import steelUnicorn.laplacity.field.tiles.FinishTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
 
 public class LaplacityField extends Group {
 
 	// Tiles
-	private FieldTile[][] tiles;
+	private EmptyTile[][] tiles;
 	
 	// Sizes
 	private int fieldWidth;
@@ -31,7 +30,7 @@ public class LaplacityField extends Group {
 		fieldWidth = tileMap.getWidth();
 		fieldHeight = tileMap.getHeight();
 		tileSize = SCREEN_WORLD_HEIGHT / fieldHeight;
-		tiles = new FieldTile[fieldWidth][fieldHeight];
+		tiles = new EmptyTile[fieldWidth][fieldHeight];
 		
 		tileMap.getTextureData().prepare();
 		Pixmap pxmap = tileMap.getTextureData().consumePixmap();
@@ -125,7 +124,7 @@ public class LaplacityField extends Group {
 		res.set((gridX - fieldWidth / 2 + 0.5f) * tileSize, (gridY - fieldHeight / 2 + 0.5f) * tileSize);
 	}
 	
-	public FieldTile getTileFromWorldCoords(float x, float y) {
+	public EmptyTile getTileFromWorldCoords(float x, float y) {
 		int i = (int) (x / tileSize + fieldWidth / 2);
 		int j = (int) (y / tileSize + fieldHeight / 2);
 		if (i >= 0 && j >= 0 && i < fieldWidth && j < fieldHeight) {
@@ -147,12 +146,12 @@ public class LaplacityField extends Group {
 		return tileSize;
 	}
 
-	public FieldTile[][] getTiles() {
+	public EmptyTile[][] getTiles() {
 		return tiles;
 	}
 	
 	public void fillCircleWithRandomDensity(float x, float y, float r, float val) {
-		FieldTile center = getTileFromWorldCoords(x, y);
+		EmptyTile center = getTileFromWorldCoords(x, y);
 		
 		int i = center.getGridX();
 		int j = center.getGridY();
@@ -167,7 +166,7 @@ public class LaplacityField extends Group {
 				TMP1.sub(center.getX(), center.getY());
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r && Math.random() < DIRICHLET_SPRAY_TILE_PROBABILITY) {
-					FieldTile tile = tiles[u][v];
+					EmptyTile tile = tiles[u][v];
 					tile.setChargeDensity((float) (Math.random() * val));
 				}
 			}
@@ -175,7 +174,7 @@ public class LaplacityField extends Group {
 	}
 	
 	public void clearCircleDensity(float x, float y, float r) {
-		FieldTile center = getTileFromWorldCoords(x, y);
+		EmptyTile center = getTileFromWorldCoords(x, y);
 		
 		int i = center.getGridX();
 		int j = center.getGridY();
@@ -190,7 +189,7 @@ public class LaplacityField extends Group {
 				TMP1.sub(center.getX(), center.getY());
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
-					FieldTile tile = tiles[u][v];
+					EmptyTile tile = tiles[u][v];
 					tile.setChargeDensity(0);
 				}
 			}

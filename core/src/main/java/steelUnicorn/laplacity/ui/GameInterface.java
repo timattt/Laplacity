@@ -70,21 +70,14 @@ public class GameInterface extends Stage implements GestureListener {
 			}
 		});
 
-		createIcon(icons, "reload", root, new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.log("game ui", "reload pressed");
-				//TODO level reload
-				GameProcess.reloadLevel();
-			}
-		});
-
 		//modes
 		createModeIcon(icons, "flight", root, GameMode.flight);
+		createModeIcon(icons, "reload", root, GameMode.none);
 		createModeIcon(icons, "eraser", root, GameMode.eraser);
 		createModeIcon(icons, "electrons", root, GameMode.electrons);
 		createModeIcon(icons, "protons", root, GameMode.protons);
 		createModeIcon(icons, "dirichlet", root, GameMode.dirichlet);
+		
 	}
 
 	/**
@@ -115,7 +108,7 @@ public class GameInterface extends Stage implements GestureListener {
 		createIcon(icons, name, root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				GameProcess.currentGameMode = mode;
+				changeGameMode(mode);
 				Gdx.app.log("game ui", GameProcess.currentGameMode.toString());
 			}
 		});
@@ -128,6 +121,10 @@ public class GameInterface extends Stage implements GestureListener {
 
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
+		if (changingDir) {
+			return false;
+		}
+		
 		TMP3.set(x, y, 0);
 		camera.unproject(TMP3);
 		if (currentGameMode == GameMode.electrons) {
@@ -151,6 +148,10 @@ public class GameInterface extends Stage implements GestureListener {
 	
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
+		if (changingDir) {
+			return false;
+		}
+		
 		TMP3.set(x, y, 0);
 		camera.unproject(TMP3);
 		if (currentGameMode == GameMode.dirichlet) {
@@ -175,6 +176,43 @@ public class GameInterface extends Stage implements GestureListener {
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
 		return false;
+	}
+
+	private float getlen2ToMainParticle(float scX, float scY) {
+		TMP3.set(scX, scY, 0);
+		camera.unproject(TMP3);
+		TMP3.sub(mainParticle.getX(), mainParticle.getY(), 0);
+		return TMP3.len2();
+	}
+	
+	private boolean changingDir = false;
+	
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		float len2 = getlen2ToMainParticle(screenX, screenY);
+
+		if (len2 < ELECTRON_SIZE * ELECTRON_SIZE) {
+			changingDir = true;
+		} else {
+			changingDir = false;
+		}
+		return super.touchDown(screenX, screenY, pointer, button);
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		changingDir = false;
+		return super.touchUp(screenX, screenY, pointer, button);
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		if (changingDir) {
+			getlen2ToMainParticle(screenX, screenY);
+			mainParticle.setDir(TMP3.x, TMP3.y);
+		}
+		
+		return super.touchDragged(screenX, screenY, pointer);
 	}
 
 	@Override

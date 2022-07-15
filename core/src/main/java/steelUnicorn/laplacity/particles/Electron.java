@@ -9,10 +9,13 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class Electron extends ChargedParticle {
 
-	public Electron(float x, float y) {
-		super(x, y, ELECTRON_SIZE, ELECTRON_CHARGE);
-		body.setLinearVelocity(40f, 90f);
+	public Electron(float x, float y, boolean isStatic) {
+		super(x, y, ELECTRON_SIZE, ELECTRON_CHARGE, isStatic);
 		setName("Electron");
+	}
+	
+	public Electron(float x, float y) {
+		this(x, y, true);
 	}
 
 	@Override

@@ -17,11 +17,11 @@ public class ChargedParticle extends Actor {
 	// Charge
 	protected float charge;
 	
-	public ChargedParticle(float x, float y, float rad, float charge) {
+	public ChargedParticle(float x, float y, float rad, float charge, boolean isStatic) {
 		this.charge = charge;
 		
 		BodyDef bodydef = new BodyDef();
-		bodydef.type = BodyType.DynamicBody;
+		bodydef.type = isStatic ? BodyType.StaticBody : BodyType.DynamicBody;
 		bodydef.position.set(x, y);
 		
 		body = registerPhysicalObject(this, bodydef);
@@ -31,7 +31,7 @@ public class ChargedParticle extends Actor {
 		
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = cir;
-		fxt.density = 10000;
+		fxt.density = 1;
 		fxt.restitution = 1f;
 		
 		body.createFixture(fxt);
@@ -40,6 +40,10 @@ public class ChargedParticle extends Actor {
 		cir.dispose();
 		
 		setPosition(x, y);
+	}
+	
+	public ChargedParticle(float x, float y, float rad, float charge) {
+		this(x, y, rad, charge, true);
 	}
 
 	@Override

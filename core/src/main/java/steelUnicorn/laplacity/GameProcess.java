@@ -18,9 +18,9 @@ import com.badlogic.gdx.utils.Array;
 import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.field.tiles.FieldTile;
+import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
-import steelUnicorn.laplacity.particles.Electron;
+import steelUnicorn.laplacity.particles.ControllableElectron;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
 
@@ -32,7 +32,7 @@ public class GameProcess {
 	public static LaplacityField field;
 	
 	// Main electron
-	public static Electron mainParticle;
+	public static ControllableElectron mainParticle;
 	
 	// Other particles
 	public static final Array<ChargedParticle> particles = new Array<ChargedParticle>();
@@ -90,10 +90,9 @@ public class GameProcess {
 	public static void updateLevel(float delta) {
 		levelStage.draw();
 		//debugRend.render(levelWorld, Globals.camera.combined);
+
+		levelWorld.step(1f/60f, 6, 2);
 		
-		if (currentGameMode == GameMode.flight) {
-			levelWorld.step(delta, 6, 2);
-		}
 		levelStage.act();
 
 		gameUI.draw();
@@ -115,7 +114,7 @@ public class GameProcess {
 		levelStage.addActor(field);
 		
 		findMainParticleStartPos(level, TMP1);
-		mainParticle = new Electron(TMP1.x, TMP1.y);
+		mainParticle = new ControllableElectron(TMP1.x, TMP1.y);
 	}
 	
 	private static void findMainParticleStartPos(Texture tileMap, Vector2 res) {
@@ -146,20 +145,16 @@ public class GameProcess {
 	public static void changeGameMode(GameMode mode) {
 		if (mode == GameMode.flight) {
 			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
+			mainParticle.startFlight();
+		}
+		
+		if (currentGameMode == GameMode.flight) {
+			mainParticle.reset();
 		}
 		
 		currentGameMode = mode;
 	}
 
-	/**
-	 * Called when reload button is pressed on GameInterfece
-	 */
-	public static void reloadLevel() {
-		//TODO implement (just reload position and velocities?)
-		mainParticle.setPosition(Globals.TMP1.x, Globals.TMP1.y);
-		currentGameMode = GameMode.none;
-	}
-	
 	public static Body registerPhysicalObject(Actor act, BodyDef bodydef) {
 		levelStage.addActor(act);
 		return levelWorld.createBody(bodydef);
@@ -172,7 +167,7 @@ public class GameProcess {
 	
 	public static void addStaticParticle(ChargedParticle part) {
 		particles.add(part);
-		FieldTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
+		EmptyTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
 		if (tl != null) {
 			tl.setChargeDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 		}

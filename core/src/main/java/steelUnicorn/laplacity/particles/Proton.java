@@ -11,7 +11,6 @@ public class Proton extends ChargedParticle {
 
 	public Proton(float x, float y) {
 		super(x, y, PROTON_SIZE, PROTON_CHARGE);
-		body.setLinearVelocity(40f, 90f);
 		setName("Electron");
 	}
 
