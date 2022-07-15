@@ -2,8 +2,10 @@ package steelUnicorn.laplacity;
 
 import static steelUnicorn.laplacity.Globals.*;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -39,7 +41,8 @@ public class GameProcess {
 	// Stage and world and ui
 	private static Stage levelStage;
 	private static World levelWorld;
-	public static GameInterface gameUI;
+	private static GameInterface gameUI;
+	public static InputMultiplexer inputMultiplexer;
 
 	// Mode
 	public static GameMode currentGameMode;
@@ -49,9 +52,6 @@ public class GameProcess {
 	
 	// Hits
 	private static final HitController hitController = new HitController();
-	
-	// Controlls
-	public static final LaplacityIngameController controller = new LaplacityIngameController();
 	
 	// Constants
 	public static final float ELECTRON_CHARGE = -10f;
@@ -72,6 +72,9 @@ public class GameProcess {
 	public static void initLevel(Texture level) {
 		levelStage = new Stage(gameViewport);
 		gameUI = new GameInterface(guiViewport);
+		inputMultiplexer = new InputMultiplexer();
+		inputMultiplexer.addProcessor(gameUI);
+		inputMultiplexer.addProcessor(new GestureDetector(gameUI));
 		levelWorld = new World(Vector2.Zero, false);
 		currentGameMode = GameMode.none;
 		field = new LaplacityField();

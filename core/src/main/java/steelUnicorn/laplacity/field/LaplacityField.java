@@ -187,6 +187,7 @@ public class LaplacityField extends Group {
 				int v = q + j;
 				
 				fromGridToWorldCoords(u, v, TMP1);
+				TMP1.sub(center.getX(), center.getY());
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					FieldTile tile = tiles[u][v];
