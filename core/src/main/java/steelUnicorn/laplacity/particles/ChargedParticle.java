@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.particles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -44,20 +43,20 @@ public class ChargedParticle extends Actor {
 	}
 
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-	}
-
-	@Override
 	public void act(float delta) {
+		setPosition(body.getPosition().x, body.getPosition().y);
 		super.act(delta);
 	}
-	
+
 	public void setPosition(float x, float y) {
 		body.setTransform(x, y, 0);
 		super.setPosition(x, y);
 	}
 	
+	public float getCharge() {
+		return charge;
+	}
+
 	public void delete() {
 		deleteObject(this, body);
 	}

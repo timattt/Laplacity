@@ -40,6 +40,7 @@ public class FieldTile extends Actor {
 		
 		field.fromGridToWorldCoords(gridX, gridY, TMP1);
 		bodydef.position.set(TMP1);
+		setPosition(TMP1.x, TMP1.y);
 
 		body = registerPhysicalObject(this, bodydef);
 
@@ -70,6 +71,30 @@ public class FieldTile extends Actor {
 		shapeRenderer.setColor(getColor());
 		shapeRenderer.rect((gridX - w/2)*sz, (gridY - h/2)*sz, sz, sz);
 		shapeRenderer.end();
+		
+		drawArrow(); 
+	}
+	
+	protected void drawArrow() {
+		/*
+		float sz = field.getTileSize();
+		int w = field.getFieldWidth();
+		int h = field.getFieldHeight();
+		TMP1.set((gridX)*sz, (gridY)*sz);
+		FieldPotentialCalculator.calculateForce(TMP1.x, TMP1.y, field.getTiles(), TMP2);
+		TMP2.scl(0.03f);
+		TMP1.sub(sz*(w/2 - 0.5f), sz*(h/2 - 0.5f));
+		TMP2.add(TMP1);
+		
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(1f, 1f, 0, 1f);
+		shapeRenderer.line(TMP1, TMP2);
+		shapeRenderer.end();
+		*/
+	}
+
+	public void setChargeDensity(float chargeDensity) {
+		this.chargeDensity = chargeDensity;
 	}
 
 	@Override
@@ -82,6 +107,14 @@ public class FieldTile extends Actor {
 
 	public void setPotential(float potential) {
 		this.potential = potential;
+	}
+
+	public int getGridX() {
+		return gridX;
+	}
+
+	public int getGridY() {
+		return gridY;
 	}
 
 }

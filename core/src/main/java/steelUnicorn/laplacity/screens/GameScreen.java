@@ -2,14 +2,13 @@ package steelUnicorn.laplacity.screens;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-
-import steelUnicorn.laplacity.LaplacityAssets;
+import com.badlogic.gdx.input.GestureDetector;
 
 public class GameScreen extends ScreenAdapter {
 	
 	public GameScreen() {
-		initLevel(LaplacityAssets.LEVEL_TILEMAP);
 	}
 	
 	@Override
@@ -25,6 +24,18 @@ public class GameScreen extends ScreenAdapter {
 	public void dispose() {
 		disposeLevel();
 		super.dispose();
+	}
+
+	@Override
+	public void show() {
+		Gdx.input.setInputProcessor(new GestureDetector(controller));
+		super.show();
+	}
+
+	@Override
+	public void hide() {
+		Gdx.input.setInputProcessor(null);
+		super.hide();
 	}
 	
 }

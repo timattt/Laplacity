@@ -4,7 +4,6 @@ import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -17,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.tiles.FieldTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.Electron;
 import steelUnicorn.laplacity.particles.HitController;
@@ -48,26 +48,46 @@ public class GameProcess {
 	// Hits
 	private static final HitController hitController = new HitController();
 	
+	// Controlls
+	public static final LaplacityIngameController controller = new LaplacityIngameController();
+	
+	// Constants
+	public static final float ELECTRON_CHARGE = -10f;
+	public static final float PROTON_CHARGE = 10f;
+	
+	public static final float ELECTRON_SIZE = 2f;
+	public static final float PROTON_SIZE = 2f;
+	
+	// BRUSHES
+	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
+	public static final float BRUSH_RADIUS = 5f;
+	public static final float MAX_DENSITY = 5f;
+	public static final double DIRICHLET_SPRAY_TILE_PROBABILITY = 0.2;
+	
 	// Methods
 	// GAME LOOP
 	//========================================================================================	
 	public static void initLevel(Texture level) {
 		levelStage = new Stage(gameViewport);
 		levelWorld = new World(Vector2.Zero, false);
-		shapeRenderer = new ShapeRenderer();
 		currentGameMode = GameMode.none;
 		field = new LaplacityField();
 		debugRend = new Box2DDebugRenderer();
 		levelWorld.setContactListener(hitController);
 		
 		loadObjects(level);
+		
+		camera.position.setZero();
+		camera.update();
 	}
 	
 	public static void updateLevel(float delta) {
 		levelStage.draw();
-		debugRend.render(levelWorld, Globals.camera.combined);
+		//debugRend.render(levelWorld, Globals.camera.combined);
 		
-		levelWorld.step(delta, 6, 2);
+		if (currentGameMode == GameMode.flight) {
+			levelWorld.step(delta, 6, 2);
+		}
 		levelStage.act();
 	}
 	
@@ -87,7 +107,6 @@ public class GameProcess {
 		
 		findMainParticleStartPos(level, TMP1);
 		mainParticle = new Electron(TMP1.x, TMP1.y);
-		levelStage.addActor(mainParticle);
 	}
 	
 	private static void findMainParticleStartPos(Texture tileMap, Vector2 res) {
@@ -133,11 +152,12 @@ public class GameProcess {
 		act.remove();
 	}
 	
-	// Constants
-	public static final float ELECTRON_CHARGE = 10f;
-	public static final float PROTON_CHARGE = -10f;
-	
-	public static final float ELECTRON_SIZE = 2f;
-	public static final float PROTON_SIZE = 2f;
+	public static void addStaticParticle(ChargedParticle part) {
+		particles.add(part);
+		FieldTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
+		if (tl != null) {
+			tl.setChargeDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+		}
+	}
 	
 }

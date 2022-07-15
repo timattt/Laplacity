@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity;
 
 import static steelUnicorn.laplacity.Globals.*;
-import static steelUnicorn.laplacity.LaplacityAssets.*;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -36,6 +36,7 @@ public class Laplacity extends Game {
 		guiViewport.setUnitsPerPixel(0.5f);
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
+		shapeRenderer = new ShapeRenderer();
 		
 		camera.position.x = camera.position.y = 0;
 		
@@ -51,8 +52,6 @@ public class Laplacity extends Game {
 		}
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.finishLoading();
-		
-		LEVEL_TILEMAP = assetManager.get("levels/level1.png", Texture.class);
 	}
 	
 	@Override

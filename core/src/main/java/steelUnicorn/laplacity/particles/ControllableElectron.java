@@ -13,7 +13,7 @@ public class ControllableElectron extends Electron {
 	@Override
 	public void act(float delta) {
 		FieldPotentialCalculator.calculateForce(getX(), getY(), field.getTiles(), TMP1);
-		body.applyForceToCenter(TMP1, true);
+		body.applyForceToCenter(TMP1.scl(charge), true);
 		super.act(delta);
 	}
 
