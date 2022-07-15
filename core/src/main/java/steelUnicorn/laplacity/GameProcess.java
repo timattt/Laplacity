@@ -60,6 +60,8 @@ public class GameProcess {
 	public static final float ELECTRON_SIZE = 2f;
 	public static final float PROTON_SIZE = 2f;
 	
+	public static final float PARTICLE_MASS = 1f;
+	
 	// BRUSHES
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final float BRUSH_RADIUS = 5f;
