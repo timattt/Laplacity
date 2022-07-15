@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
+import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
 import steelUnicorn.laplacity.field.tiles.FinishTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
@@ -42,18 +43,23 @@ public class LaplacityField extends Group {
 				// black
 				if (c == 255) {
 					tiles[i][j] = new WallTile(i, j);
-				}
+				} else
 				// green
 				if (c == 16711935) {
 					tiles[i][j] = new FinishTile(i, j);
-				}
+				} else
 				// blue
 				if (c == 65535) {
 					tiles[i][j] = new BarrierTile(i, j);
-				}
+				} else
 				// red
 				if (c == -16776961) {
 					tiles[i][j] = new DeadlyTile(i, j);
+				}
+				
+				// empty
+				else {
+					tiles[i][j] = new EmptyTile(i, j);
 				}
 			}
 		}
@@ -86,12 +92,7 @@ public class LaplacityField extends Group {
 	}
 
 	@Override
-	public void act(float delta) {
-		
-		// TODO make camera move
-		camera.position.x = fieldWidth / 2 * tileSize - SCREEN_WORLD_WIDTH / 2;
-		camera.update();
-		
+	public void act(float delta) {		
 		super.act(delta);
 		switch (currentGameMode) {
 		case none:
@@ -123,6 +124,16 @@ public class LaplacityField extends Group {
 	public void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
 		res.set((gridX - fieldWidth / 2 + 0.5f) * tileSize, (gridY - fieldHeight / 2 + 0.5f) * tileSize);
 	}
+	
+	public FieldTile getTileFromWorldCoords(float x, float y) {
+		int i = (int) (x / tileSize + fieldWidth / 2);
+		int j = (int) (y / tileSize + fieldHeight / 2);
+		if (i >= 0 && j >= 0 && i < fieldWidth && j < fieldHeight) {
+			return tiles[i][j];
+		} else {
+			return null;
+		}
+	}
 
 	public int getFieldWidth() {
 		return fieldWidth;
@@ -138,5 +149,50 @@ public class LaplacityField extends Group {
 
 	public FieldTile[][] getTiles() {
 		return tiles;
+	}
+	
+	public void fillCircleWithRandomDensity(float x, float y, float r, float val) {
+		FieldTile center = getTileFromWorldCoords(x, y);
+		
+		int i = center.getGridX();
+		int j = center.getGridY();
+		int side = (int) (r / tileSize + 1);
+		
+		for (int p = -side; p < side; p++) {
+			for (int q = -side; q < side; q++) {
+				int u = p + i;
+				int v = q + j;
+				
+				fromGridToWorldCoords(u, v, TMP1);
+				TMP1.sub(center.getX(), center.getY());
+				
+				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r && Math.random() < DIRICHLET_SPRAY_TILE_PROBABILITY) {
+					FieldTile tile = tiles[u][v];
+					tile.setChargeDensity((float) (Math.random() * val));
+				}
+			}
+		}
+	}
+	
+	public void clearCircleDensity(float x, float y, float r) {
+		FieldTile center = getTileFromWorldCoords(x, y);
+		
+		int i = center.getGridX();
+		int j = center.getGridY();
+		int side = (int) (r / tileSize + 1);
+		
+		for (int p = -side; p < side; p++) {
+			for (int q = -side; q < side; q++) {
+				int u = p + i;
+				int v = q + j;
+				
+				fromGridToWorldCoords(u, v, TMP1);
+				
+				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
+					FieldTile tile = tiles[u][v];
+					tile.setChargeDensity(0);
+				}
+			}
+		}
 	}
 }
