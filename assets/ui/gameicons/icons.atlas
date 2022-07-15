@@ -3,14 +3,14 @@ size: 191, 31
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-dirich
+dirichlet
   rotate: false
   xy: 1, 1
   size: 19, 29
   orig: 30, 30
   offset: 7, 0
   index: -1
-electron
+electrons
   rotate: false
   xy: 22, 1
   size: 28, 28
@@ -24,7 +24,7 @@ eraser
   orig: 30, 30
   offset: 1, 1
   index: -1
-proton
+protons
   rotate: false
   xy: 82, 1
   size: 28, 28
@@ -45,7 +45,7 @@ return
   orig: 30, 30
   offset: 1, 4
   index: -1
-start
+flight
   rotate: false
   xy: 166, 1
   size: 24, 26
