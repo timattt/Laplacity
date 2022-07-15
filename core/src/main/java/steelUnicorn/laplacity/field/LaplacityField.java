@@ -90,6 +90,7 @@ public class LaplacityField extends Group {
 		
 		// TODO make camera move
 		camera.position.x = fieldWidth / 2 * tileSize - SCREEN_WORLD_WIDTH / 2;
+		camera.position.y = fieldHeight / 2 * tileSize - SCREEN_WORLD_HEIGHT / 2;
 		camera.update();
 		
 		super.act(delta);
