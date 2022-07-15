@@ -136,6 +136,7 @@ public class GameProcess {
 	// Constants
 	public static final float ELECTRON_CHARGE = 10f;
 	public static final float PROTON_CHARGE = -10f;
+	public static final float MAX_CHARGE_DENSITY = 100f;
 	
 	public static final float ELECTRON_SIZE = 2f;
 	public static final float PROTON_SIZE = 2f;

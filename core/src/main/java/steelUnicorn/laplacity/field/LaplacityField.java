@@ -3,12 +3,16 @@ package steelUnicorn.laplacity.field;
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.Globals.*;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap.Blending;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
@@ -20,6 +24,10 @@ public class LaplacityField extends Group {
 	// Tiles
 	private FieldTile[][] tiles;
 	
+	// Rendering visible density tiles
+	private Pixmap densityPixmap;
+	private Texture densityTexture;
+
 	// Sizes
 	private int fieldWidth;
 	private int fieldHeight;
@@ -58,6 +66,12 @@ public class LaplacityField extends Group {
 			}
 		}
 		
+		densityPixmap = new Pixmap(fieldWidth, fieldHeight, Format.RGBA8888);
+		densityPixmap.setBlending(Blending.None);
+		densityPixmap.setColor(Color.CLEAR);
+		densityPixmap.fill();
+		densityTexture = new Texture(densityPixmap);
+
 		tileMap.getTextureData().disposePixmap();
 	}
 
@@ -116,6 +130,20 @@ public class LaplacityField extends Group {
 		}
 	}
 	
+	public void updateDensityTexture() {
+		Color chargeColor = new Color(Color.VIOLET);
+		float chargeDensity = 0.0f;
+		for (int i = 0; i < fieldWidth; i++) {
+			for (int j = 0; j < fieldHeight; j++) {
+				if ((chargeDensity = tiles[i][j].getChargeDensity()) != 0) {
+					chargeColor.a = chargeDensity / GameProcess.MAX_CHARGE_DENSITY;
+					densityPixmap.drawPixel(i, j, Color.rgba8888(chargeColor));
+				}
+			}
+		}
+		densityTexture.draw(densityPixmap, 0, 0);
+	}
+
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
@@ -139,5 +167,9 @@ public class LaplacityField extends Group {
 
 	public FieldTile[][] getTiles() {
 		return tiles;
+	}
+
+	public Texture getDensityTexture() {
+		return densityTexture;
 	}
 }
