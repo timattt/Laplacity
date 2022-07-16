@@ -184,4 +184,11 @@ public class GameProcess {
 		}
 	}
 	
+	public static void deleteStaticParticle(ChargedParticle part) {
+		part.delete();
+		if (!particles.removeValue(part, false)) {
+			throw new RuntimeException("Not deleted!");
+		}
+	}
+	
 }
