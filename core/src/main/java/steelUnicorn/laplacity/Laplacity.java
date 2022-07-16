@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -15,15 +16,25 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import de.eskalon.commons.core.ManagedGame;
+import de.eskalon.commons.screen.ManagedScreen;
+import de.eskalon.commons.screen.ScreenManager;
+import de.eskalon.commons.screen.transition.ScreenTransition;
+import de.eskalon.commons.screen.transition.impl.SlidingDirection;
+import de.eskalon.commons.screen.transition.impl.SlidingInTransition;
+import de.eskalon.commons.screen.transition.impl.SlidingOutTransition;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.utils.Settings;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
-public class Laplacity extends Game {
+public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
+	private SpriteBatch batch;
+
 	@Override
 	public void create() {
+		super.create();
 		loadAssets();
 		Settings.loadSettings();
 		//logging for checking saving
@@ -35,13 +46,22 @@ public class Laplacity extends Game {
 		guiViewport = new ScreenViewport();
 		gameViewport = new ExtendViewport(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT, camera);
 		guiViewport.setUnitsPerPixel(0.5f);
-		gameScreen = new GameScreen();
-		mainMenuScreen = new MainMenuScreen();
+		//gameScreen = new GameScreen();
+		//mainMenuScreen = new MainMenuScreen();
 		shapeRenderer = new ShapeRenderer();
 		
 		camera.position.x = camera.position.y = 0;
 		
-		setScreen(mainMenuScreen);
+		this.batch = new SpriteBatch();
+		//SlidingOutTransition slidingOutTransition = new SlidingOutTransition(batch, SlidingDirection.DOWN, 0.35F);
+		SlidingInTransition slideIn = new SlidingInTransition(batch, SlidingDirection.DOWN, 0.6f);
+		SlidingOutTransition slideOut = new SlidingOutTransition(batch, SlidingDirection.UP, 0.6f);
+		this.screenManager.addScreen(nameGameScreen, new GameScreen());
+		this.screenManager.addScreen(nameMainMenuScreen, new MainMenuScreen());
+		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
+		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
+
+		this.screenManager.pushScreen(nameMainMenuScreen, nameSlideIn);
 	}
 	
 	private void loadAssets() {

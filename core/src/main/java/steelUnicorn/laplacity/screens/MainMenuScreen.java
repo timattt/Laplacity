@@ -15,10 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.ui.LevelButton;
 import steelUnicorn.laplacity.utils.Settings;
 
-public class MainMenuScreen extends ScreenAdapter {
+public class MainMenuScreen extends ManagedScreen {
 	Stage menuStage;
 
 	private Table levelsTab;
@@ -50,6 +51,14 @@ public class MainMenuScreen extends ScreenAdapter {
 		createCredits(skin);
 
 		createMainMenu(root, skin);
+	}
+
+	@Override
+	public void create() {
+	}
+
+	@Override
+	public void resize(int width, int height) {
 	}
 
 	/**
@@ -210,7 +219,6 @@ public class MainMenuScreen extends ScreenAdapter {
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-		super.render(delta);
 		Gdx.gl.glClearColor(0.5f, 0.5f, 0.95f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -227,7 +235,10 @@ public class MainMenuScreen extends ScreenAdapter {
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		super.hide();
 		Gdx.input.setInputProcessor(null);
+	}
+
+	@Override
+	public void dispose() {
 	}
 }

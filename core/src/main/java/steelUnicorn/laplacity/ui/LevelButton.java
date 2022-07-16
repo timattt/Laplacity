@@ -23,7 +23,8 @@ public class LevelButton extends TextButton {
 			}
 
 			GameProcess.initLevel(Globals.assetManager.get(((LevelButton) actor).lvlImgPath, Texture.class));
-			Globals.game.setScreen(Globals.gameScreen);
+			//Globals.game.setScreen(Globals.gameScreen);
+			Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
 		}
 	};
 	public LevelButton(String text, Skin skin, String lvlImgPath) {
