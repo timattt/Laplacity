@@ -2,7 +2,6 @@ package steelUnicorn.laplacity;
 
 import static steelUnicorn.laplacity.Globals.*;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
@@ -12,13 +11,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import de.eskalon.commons.core.ManagedGame;
 import de.eskalon.commons.screen.ManagedScreen;
-import de.eskalon.commons.screen.ScreenManager;
 import de.eskalon.commons.screen.transition.ScreenTransition;
 import de.eskalon.commons.screen.transition.impl.SlidingDirection;
 import de.eskalon.commons.screen.transition.impl.SlidingInTransition;
@@ -46,22 +43,21 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		guiViewport = new ScreenViewport();
 		gameViewport = new ExtendViewport(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT, camera);
 		guiViewport.setUnitsPerPixel(0.5f);
-		//gameScreen = new GameScreen();
-		//mainMenuScreen = new MainMenuScreen();
+		gameScreen = new GameScreen();
+		mainMenuScreen = new MainMenuScreen();
 		shapeRenderer = new ShapeRenderer();
 		
 		camera.position.x = camera.position.y = 0;
 		
 		this.batch = new SpriteBatch();
-		//SlidingOutTransition slidingOutTransition = new SlidingOutTransition(batch, SlidingDirection.DOWN, 0.35F);
 		SlidingInTransition slideIn = new SlidingInTransition(batch, SlidingDirection.DOWN, 0.6f);
 		SlidingOutTransition slideOut = new SlidingOutTransition(batch, SlidingDirection.UP, 0.6f);
-		this.screenManager.addScreen(nameGameScreen, new GameScreen());
-		this.screenManager.addScreen(nameMainMenuScreen, new MainMenuScreen());
+		this.screenManager.addScreen(nameGameScreen, gameScreen);
+		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
-		this.screenManager.pushScreen(nameMainMenuScreen, nameSlideIn);
+		this.screenManager.pushScreen(nameMainMenuScreen, null);
 	}
 	
 	private void loadAssets() {
@@ -79,7 +75,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	@Override
 	public void render () {
 		shapeRenderer.setProjectionMatrix(camera.combined);
-		ScreenUtils.clear(1, 1, 1, 1);
 		super.render();
 	}
 
