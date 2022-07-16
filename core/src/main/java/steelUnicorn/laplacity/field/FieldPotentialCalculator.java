@@ -90,6 +90,14 @@ public class FieldPotentialCalculator {
 			 * tk_numerator is dot(rk, rk),
 			 * and tk_denumerator is dot((a @ x), rk)
 			 */
+			// Check if denumarator is zero
+			if (Math.abs(tk_denumerator) < precision) { // (= is close to zero, may cause NAN or INF)
+				if (Math.abs(tk_numerator) < precision) { // if rk is close to zero too
+					break; // then we have already solved the problem
+				} else {
+					throw new RuntimeException("Fatal computational error: redraw your field");
+				}
+			}
 			float tk = tk_numerator / tk_denumerator;
 			float delta = 0, local_delta = 0;
 			for (int i = 0; i < n; i++) {
@@ -171,14 +179,6 @@ public class FieldPotentialCalculator {
 				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h) * GameProcess.ELECTRON_CHARGE;
 			} else { // Inner point
 				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
-			}
-			
-			// TODO IGOR
-			if (Double.isNaN(result.x)) {
-				result.x = 0;
-			}
-			if (Double.isNaN(result.y)) {
-				result.y = 0;
 			}
 		}
 
