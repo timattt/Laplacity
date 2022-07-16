@@ -91,10 +91,11 @@ public class GameProcess {
 		levelStage.draw();
 		//debugRend.render(levelWorld, Globals.camera.combined);
 
-		levelWorld.step(1f/60f, 6, 2);
+		if (currentGameMode == GameMode.flight) {
+			levelWorld.step(1f/60f, 6, 2);
+		}
 		
 		levelStage.act();
-
 		gameUI.draw();
 	}
 	
@@ -143,26 +144,34 @@ public class GameProcess {
 	}
 	
 	public static void changeGameMode(GameMode mode) {
-		if (mode == GameMode.flight) {
+		boolean nowFlight = mode == GameMode.flight;
+		boolean wasFlight = currentGameMode == GameMode.flight;
+		
+		currentGameMode = mode;
+		
+		if (nowFlight) {
 			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
 			mainParticle.startFlight();
 		}
-		
-		if (currentGameMode == GameMode.flight) {
+	
+		if (wasFlight) {
 			mainParticle.reset();
-		}
-		
-		currentGameMode = mode;
+		}	
 	}
 
-	public static Body registerPhysicalObject(Actor act, BodyDef bodydef) {
+	public static void registerObject(Actor act) {
 		levelStage.addActor(act);
+	}
+	
+	public static Body registerPhysicalObject(BodyDef bodydef) {
 		return levelWorld.createBody(bodydef);
 	}
 	
 	public static void deleteObject(Actor act, Body body) {
-		levelWorld.destroyBody(body);
-		act.remove();
+		if (body != null)
+			levelWorld.destroyBody(body);
+		if (act != null)
+			act.remove();
 	}
 	
 	public static void addStaticParticle(ChargedParticle part) {

@@ -19,19 +19,16 @@ public class FieldTile extends EmptyTile {
 
 	public FieldTile(int gridX, int gridY) {
 		super(gridX, gridY);
-		setParent(field);
-		this.gridX = gridX;
-		this.gridY = gridY;
 		setColor(new Color(0.3f, 0.3f, 0.3f, 1));
 		
+		// physics
 		BodyDef bodydef = new BodyDef();
 		bodydef.type = BodyType.StaticBody;
 		
 		field.fromGridToWorldCoords(gridX, gridY, TMP1);
 		bodydef.position.set(TMP1);
-		setPosition(TMP1.x, TMP1.y);
 
-		body = registerPhysicalObject(this, bodydef);
+		body = registerPhysicalObject(bodydef);
 
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(field.getTileSize() / 2, field.getTileSize() / 2);

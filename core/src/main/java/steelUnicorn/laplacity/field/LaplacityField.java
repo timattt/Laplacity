@@ -5,7 +5,6 @@ import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
@@ -115,11 +114,6 @@ public class LaplacityField extends Group {
 		}
 	}
 	
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-	}
-
 	public void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
 		res.set((gridX - fieldWidth / 2 + 0.5f) * tileSize, (gridY - fieldHeight / 2 + 0.5f) * tileSize);
 	}
@@ -152,6 +146,10 @@ public class LaplacityField extends Group {
 	
 	public void fillCircleWithRandomDensity(float x, float y, float r, float val) {
 		EmptyTile center = getTileFromWorldCoords(x, y);
+
+		if (center == null) {
+			return;
+		}
 		
 		int i = center.getGridX();
 		int j = center.getGridY();

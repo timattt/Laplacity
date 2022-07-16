@@ -24,7 +24,8 @@ public class ChargedParticle extends Actor {
 		bodydef.type = isStatic ? BodyType.StaticBody : BodyType.DynamicBody;
 		bodydef.position.set(x, y);
 		
-		body = registerPhysicalObject(this, bodydef);
+		registerObject(this);
+		body = registerPhysicalObject(bodydef);
 		
 		CircleShape cir = new CircleShape();
 		cir.setRadius(rad);

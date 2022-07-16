@@ -21,6 +21,14 @@ public class EmptyTile extends Actor {
 	
 	public EmptyTile(int gridX, int gridY) {
 		super();
+		this.gridX = gridX;
+		this.gridY = gridY;
+
+		registerObject(this);
+		
+		field.fromGridToWorldCoords(gridX, gridY, TMP1);
+		setPosition(TMP1.x, TMP1.y);
+		
 		setColor(0f, 0f, 0f, 0f);
 		setName("Empty");
 	}
@@ -30,7 +38,7 @@ public class EmptyTile extends Actor {
 		float sz = field.getTileSize();
 		int w = field.getFieldWidth();
 		int h = field.getFieldHeight();
-		
+
 		// TODO tmp density draw
 		if (chargeDensity > 0.1) {
 			shapeRenderer.begin(ShapeType.Filled);
@@ -44,6 +52,7 @@ public class EmptyTile extends Actor {
 	
 	protected void drawArrow() {
 		/*
+		if (gridX % 4 == 0 && gridY % 4 == 0) {
 		float sz = field.getTileSize();
 		int w = field.getFieldWidth();
 		int h = field.getFieldHeight();
@@ -57,7 +66,7 @@ public class EmptyTile extends Actor {
 		shapeRenderer.setColor(1f, 1f, 0, 1f);
 		shapeRenderer.line(TMP1, TMP2);
 		shapeRenderer.end();
-		*/
+		}*/
 	}
 
 	public void setChargeDensity(float chargeDensity) {
