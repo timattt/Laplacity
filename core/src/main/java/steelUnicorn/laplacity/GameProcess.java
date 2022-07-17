@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
+import steelUnicorn.laplacity.field.DensityRenderer;
 import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
@@ -88,6 +89,8 @@ public class GameProcess {
 		
 		camera.position.setZero();
 		camera.update();
+		
+		DensityRenderer.init();
 	}
 	
 	public static void updateLevel(float delta) {
@@ -101,6 +104,8 @@ public class GameProcess {
 		levelStage.act();
 		gameUI.draw();
 		
+		DensityRenderer.render(levelStage.getBatch());
+
 		if (hitController.isHitted()) {
 			changeGameMode(GameMode.none);
 		}
@@ -110,6 +115,7 @@ public class GameProcess {
 	}
 	
 	public static void disposeLevel() {
+		DensityRenderer.cleanup();
 		levelStage.dispose();
 		field = null;
 		gameUI.dispose();
@@ -121,8 +127,9 @@ public class GameProcess {
 	}
 	
 	private static void loadObjects(Texture level) {
-		field.init(level);
 		levelStage.addActor(field);
+		field.init(level);
+		
 		
 		findMainParticleStartPos(level, TMP1);
 		mainParticle = new ControllableElectron(TMP1.x, TMP1.y);

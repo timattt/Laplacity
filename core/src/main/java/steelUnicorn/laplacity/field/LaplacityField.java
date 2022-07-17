@@ -3,16 +3,11 @@ package steelUnicorn.laplacity.field;
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.Globals.*;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Pixmap.Blending;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
@@ -24,10 +19,6 @@ public class LaplacityField extends Group {
 
 	// Tiles
 	private EmptyTile[][] tiles;
-	
-	// Rendering visible density tiles
-	private Pixmap densityPixmap;
-	private Texture densityTexture;
 
 	// Sizes
 	private int fieldWidth;
@@ -71,12 +62,6 @@ public class LaplacityField extends Group {
 				}
 			}
 		}
-		
-		densityPixmap = new Pixmap(fieldWidth, fieldHeight, Format.RGBA8888);
-		densityPixmap.setBlending(Blending.None);
-		densityPixmap.setColor(Color.CLEAR);
-		densityPixmap.fill();
-		densityTexture = new Texture(densityPixmap);
 
 		tileMap.getTextureData().disposePixmap();
 	}
@@ -130,25 +115,6 @@ public class LaplacityField extends Group {
 		}
 	}
 
-	public void updateDensityTexture() {
-		Color chargeColor = new Color(Color.VIOLET);
-		float chargeDensity = 0.0f;
-		for (int i = 0; i < fieldWidth; i++) {
-			for (int j = 0; j < fieldHeight; j++) {
-				if ((chargeDensity = tiles[i][j].getChargeDensity()) != 0) {
-					chargeColor.a = chargeDensity / GameProcess.MAX_CHARGE_DENSITY;
-					densityPixmap.drawPixel(i, j, Color.rgba8888(chargeColor));
-				}
-			}
-		}
-		densityTexture.draw(densityPixmap, 0, 0);
-	}
-
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-	}
-
 	public void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
 		res.set((gridX - fieldWidth / 2 + 0.5f) * tileSize, (gridY - fieldHeight / 2 + 0.5f) * tileSize);
 	}
@@ -179,9 +145,6 @@ public class LaplacityField extends Group {
 		return tiles;
 	}
 
-	public Texture getDensityTexture() {
-		return densityTexture;
-	
 	public void fillCircleWithRandomDensity(float x, float y, float r, float val) {
 		EmptyTile center = getTileFromWorldCoords(x, y);
 
@@ -207,6 +170,8 @@ public class LaplacityField extends Group {
 				}
 			}
 		}
+		
+		DensityRenderer.updateDensity();
 	}
 	
 	public void clearCircleDensity(float x, float y, float r) {
@@ -240,5 +205,7 @@ public class LaplacityField extends Group {
 				k--;
 			}
 		}
+		
+		DensityRenderer.updateDensity();
 	}
 }
