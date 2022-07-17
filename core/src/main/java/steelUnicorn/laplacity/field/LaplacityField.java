@@ -62,6 +62,8 @@ public class LaplacityField extends Group {
 				}
 			}
 		}
+		
+		TilesBodyHandler.createBoddies(tiles);
 
 		tileMap.getTextureData().disposePixmap();
 	}
