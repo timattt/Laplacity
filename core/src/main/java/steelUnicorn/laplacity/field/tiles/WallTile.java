@@ -6,6 +6,7 @@ public class WallTile extends FieldTile {
 		super(gridX, gridY);
 		setColor(0f, 0f, 0f, 1f);
 		setName("Wall");
+		setAllowDensityChange(false);
 	}
 
 }

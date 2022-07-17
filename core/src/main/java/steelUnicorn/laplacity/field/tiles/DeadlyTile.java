@@ -6,6 +6,7 @@ public class DeadlyTile extends FieldTile {
 		super(gridX, gridY);
 		setColor(1f, 0f, 0f, 1f);
 		setName("Deadly");
+		setAllowDensityChange(false);
 	}
 
 }

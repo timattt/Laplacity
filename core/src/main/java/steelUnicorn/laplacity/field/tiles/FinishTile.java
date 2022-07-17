@@ -6,6 +6,7 @@ public class FinishTile extends FieldTile {
 		super(gridX, gridY);
 		setColor(0f, 1f, 0f, 1f);
 		setName("Finish");
+		setAllowDensityChange(false);
 	}
 
 }

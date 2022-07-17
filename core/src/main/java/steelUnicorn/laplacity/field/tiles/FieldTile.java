@@ -47,11 +47,9 @@ public class FieldTile extends EmptyTile {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		float sz = field.getTileSize();
-		int w = field.getFieldWidth();
-		int h = field.getFieldHeight();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(getColor());
-		shapeRenderer.rect((gridX - w/2)*sz, (gridY - h/2)*sz, sz, sz);
+		shapeRenderer.rect(gridX*sz, gridY*sz, sz, sz);
 		shapeRenderer.end();
 		
 		drawArrow(); 

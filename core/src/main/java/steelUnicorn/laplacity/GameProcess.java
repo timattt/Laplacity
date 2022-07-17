@@ -92,7 +92,8 @@ public class GameProcess {
 		
 		loadObjects(level);
 		
-		camera.position.setZero();
+		camera.position.x = SCREEN_WORLD_WIDTH / 2;
+		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
 		camera.update();
 		
 		DensityRenderer.init();
@@ -135,7 +136,6 @@ public class GameProcess {
 	private static void loadObjects(Texture level) {
 		levelStage.addActor(field);
 		field.init(level);
-		
 		
 		findMainParticleStartPos(level, TMP1);
 		mainParticle = new ControllableElectron(TMP1.x, TMP1.y);
@@ -198,10 +198,10 @@ public class GameProcess {
 	}
 	
 	public static void addStaticParticle(ChargedParticle part) {
-		particles.add(part);
 		EmptyTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
-		if (tl != null) {
+		if (tl != null && tl.isAllowDensityChange()) {
 			tl.setChargeDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+			particles.add(part);
 		}
 	}
 	

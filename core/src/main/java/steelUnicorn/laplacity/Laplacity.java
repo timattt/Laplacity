@@ -39,7 +39,8 @@ public class Laplacity extends Game {
 		mainMenuScreen = new MainMenuScreen();
 		shapeRenderer = new ShapeRenderer();
 		
-		camera.position.x = camera.position.y = 0;
+		camera.position.x = SCREEN_WORLD_WIDTH / 2;
+		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
 		
 		setScreen(mainMenuScreen);
 	}

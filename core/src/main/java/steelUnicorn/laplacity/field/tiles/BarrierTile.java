@@ -6,6 +6,7 @@ public class BarrierTile extends FieldTile {
 		super(gridX, gridY);
 		setColor(0f, 0f, 1f, 1f);
 		setName("Barrier");
+		setAllowDensityChange(false);
 	}
 
 }

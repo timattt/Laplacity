@@ -47,7 +47,7 @@ public class DensityRenderer {
 		float tileSize = field.getTileSize();
 		
 		batch.begin();
-		batch.draw(densityTexture, -fieldWidth * tileSize / 2, -fieldHeight * tileSize / 2, fieldWidth * tileSize, fieldHeight * tileSize);
+		batch.draw(densityTexture, 0, 0, fieldWidth * tileSize, fieldHeight * tileSize);
 		batch.end();
 	}
 	

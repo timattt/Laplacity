@@ -170,8 +170,7 @@ public class GameInterface extends Stage implements GestureListener {
 			TrajectoryRenderer.updateTrajectory();
 		} else {
 			camera.position.x -= deltaX * Globals.SCREEN_WORLD_WIDTH / Gdx.graphics.getWidth();
-			float mx = field.getFieldWidth() / 2 * field.getTileSize() - Globals.SCREEN_WORLD_WIDTH / 2;
-			camera.position.x = Math.max(-mx, Math.min(mx, camera.position.x));
+			camera.position.x = Math.max(Globals.SCREEN_WORLD_WIDTH / 2, Math.min(field.getFieldWidth() * field.getTileSize() - Globals.SCREEN_WORLD_WIDTH / 2, camera.position.x));
 			camera.update();
 		}
 		

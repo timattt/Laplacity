@@ -116,12 +116,12 @@ public class LaplacityField extends Group {
 	}
 
 	public void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
-		res.set((gridX - fieldWidth / 2 + 0.5f) * tileSize, (gridY - fieldHeight / 2 + 0.5f) * tileSize);
+		res.set((gridX + 0.5f) * tileSize, (gridY + 0.5f) * tileSize);
 	}
 	
 	public EmptyTile getTileFromWorldCoords(float x, float y) {
-		int i = (int) (x / tileSize + fieldWidth / 2);
-		int j = (int) (y / tileSize + fieldHeight / 2);
+		int i = (int) (x / tileSize);
+		int j = (int) (y / tileSize);
 		if (i >= 0 && j >= 0 && i < fieldWidth && j < fieldHeight) {
 			return tiles[i][j];
 		} else {
