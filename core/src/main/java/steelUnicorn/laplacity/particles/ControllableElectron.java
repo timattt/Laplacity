@@ -6,6 +6,7 @@ import static steelUnicorn.laplacity.Globals.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.GameMode;
@@ -51,6 +52,11 @@ public class ControllableElectron extends Electron {
 		dirY = y;
 	}
 	
+	public void getDir(Vector2 dest) {
+		dest.x = dirX;
+		dest.y = dirY;
+	}
+	
 	public void startFlight() {
 		body.setLinearVelocity(dirX, dirY);
 	}
@@ -61,4 +67,7 @@ public class ControllableElectron extends Electron {
 		body.setAngularVelocity(0);
 	}
 
+	public float getMass() {
+		return body.getMass();
+	}
 }

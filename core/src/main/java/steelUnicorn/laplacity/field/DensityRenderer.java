@@ -17,6 +17,9 @@ public class DensityRenderer {
 	private static Pixmap densityPixmap;
 	private static Texture densityTexture;
 	
+	// Utils
+	private static final Color tmpColor = new Color();
+	
 	public static void init() {
 		int fieldWidth = field.getFieldWidth();
 		int fieldHeight = field.getFieldHeight();
@@ -29,20 +32,13 @@ public class DensityRenderer {
 	}
 	
 	public static void updateDensity() {
-		int fieldWidth = field.getFieldWidth();
-		int fieldHeight = field.getFieldHeight();
-		
-		Color chargeColor = new Color(Color.VIOLET);
-		float chargeDensity = 0.0f;
-		for (int i = 0; i < fieldWidth; i++) {
-			for (int j = 0; j < fieldHeight; j++) {
-				if ((chargeDensity = field.getTiles()[i][j].getChargeDensity()) != 0) {
-					chargeColor.a = chargeDensity / GameProcess.MAX_DENSITY;
-					densityPixmap.drawPixel(i, fieldHeight - j - 1, Color.rgba8888(chargeColor));
-				}
-			}
-		}
 		densityTexture.draw(densityPixmap, 0, 0);
+	}
+	
+	public static void setTileDensity(int x, int y, float val) {
+		tmpColor.set(Color.VIOLET);
+		tmpColor.a = val / GameProcess.MAX_DENSITY;
+		densityPixmap.drawPixel(x, field.getFieldHeight() - y - 1, Color.rgba8888(tmpColor));
 	}
 	
 	public static void render(Batch batch) {

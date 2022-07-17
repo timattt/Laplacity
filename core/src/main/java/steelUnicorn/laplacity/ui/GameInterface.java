@@ -18,7 +18,9 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.Globals;
+import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.GameMode;
+import steelUnicorn.laplacity.field.TrajectoryRenderer;
 import steelUnicorn.laplacity.particles.Electron;
 import steelUnicorn.laplacity.particles.Proton;
 
@@ -129,9 +131,13 @@ public class GameInterface extends Stage implements GestureListener {
 		camera.unproject(TMP3);
 		if (currentGameMode == GameMode.electrons) {
 			addStaticParticle(new Electron(TMP3.x, TMP3.y));
+			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
+			TrajectoryRenderer.updateTrajectory();
 		}
 		if (currentGameMode == GameMode.protons) {
 			addStaticParticle(new Proton(TMP3.x, TMP3.y));
+			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
+			TrajectoryRenderer.updateTrajectory();
 		}
 		return true;
 	}
@@ -156,8 +162,12 @@ public class GameInterface extends Stage implements GestureListener {
 		camera.unproject(TMP3);
 		if (currentGameMode == GameMode.dirichlet) {
 			field.fillCircleWithRandomDensity(TMP3.x, TMP3.y, BRUSH_RADIUS, MAX_DENSITY);
+			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
+			TrajectoryRenderer.updateTrajectory();
 		} else if (currentGameMode == GameMode.eraser) {
 			field.clearCircleDensity(TMP3.x, TMP3.y, BRUSH_RADIUS);
+			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
+			TrajectoryRenderer.updateTrajectory();
 		} else {
 			camera.position.x -= deltaX * Globals.SCREEN_WORLD_WIDTH / Gdx.graphics.getWidth();
 			float mx = field.getFieldWidth() / 2 * field.getTileSize() - Globals.SCREEN_WORLD_WIDTH / 2;
@@ -210,6 +220,7 @@ public class GameInterface extends Stage implements GestureListener {
 		if (changingDir) {
 			getlen2ToMainParticle(screenX, screenY);
 			mainParticle.setDir(TMP3.x, TMP3.y);
+			TrajectoryRenderer.updateTrajectory();
 		}
 		
 		return super.touchDragged(screenX, screenY, pointer);

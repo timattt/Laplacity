@@ -20,6 +20,7 @@ import steelUnicorn.laplacity.field.DensityRenderer;
 import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.ControllableElectron;
@@ -70,6 +71,10 @@ public class GameProcess {
 	public static final float MAX_DENSITY = 5f;
 	public static final double DIRICHLET_SPRAY_TILE_PROBABILITY = 0.2;
 	
+	// TRAJECTORY
+	public static final int TRAJECTORY_POINTS = 10;
+	public static final float TRAJECTORY_STEP = 0.2f;
+	
 	// Methods
 	// GAME LOOP
 	//========================================================================================	
@@ -105,6 +110,7 @@ public class GameProcess {
 		gameUI.draw();
 		
 		DensityRenderer.render(levelStage.getBatch());
+		TrajectoryRenderer.render();
 
 		if (hitController.isHitted()) {
 			changeGameMode(GameMode.none);

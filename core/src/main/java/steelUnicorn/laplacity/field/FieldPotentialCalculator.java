@@ -23,8 +23,8 @@ public class FieldPotentialCalculator {
 	// Buffer for trajectory calculation
 	private static Vector2[] trajectory;
 	private static float trajLength;
-	private static Vector2 forceBuf;
-	private static Vector2 currentVelocity;
+	private static final Vector2 forceBuf = new Vector2();
+	private static final Vector2 currentVelocity = new Vector2();
 
 	private static void intermediateConvolution(float[] dst, float[] u, int N, int M, float h) {
 		int n = u.length;
@@ -162,7 +162,9 @@ public class FieldPotentialCalculator {
 		int j = (int)(y / h);
 		// Check if we aren't out of boundaries:
 		if ((i < 0) || (j < 0) || (i >= GameProcess.field.getFieldWidth()) || (j >= GameProcess.field.getFieldHeight() )) {
-			throw new RuntimeException("Attempt to calculate force outside the game field");
+			result.setZero();
+			return;
+			//throw new RuntimeException("Attempt to calculate force outside the game field");
 		}
 		// Separately calculate derivatives:
 			if (i == 0) { // (x,y) is adjacent to the lower edge
@@ -191,20 +193,23 @@ public class FieldPotentialCalculator {
 	 * @param step Integration step
 	 * @param n Number of iterations
 	 */
-	public static void calculateTrajectory(Vector2 departure, Vector2 initVelocity, float step, int n) {
+	public static void calculateTrajectory(Vector2 departure, Vector2 initVelocity, float mass, float charge, float step, int n) {
 		// Resize buffer if needed
 		if (trajLength != n) {
 			trajectory = new Vector2[n];
+			for (int i = 0; i < n; i++) {
+				trajectory[i] = new Vector2();
+			}
 			trajLength = n;
 		}
 		calculateForce(departure.x, departure.y, GameProcess.field.getTiles(), forceBuf);
-		currentVelocity.x = initVelocity.x + forceBuf.x * (step / GameProcess.PARTICLE_MASS);
-		currentVelocity.y = initVelocity.y + forceBuf.y * (step / GameProcess.PARTICLE_MASS);
-		trajectory[0].x = departure.x + currentVelocity.x * step;
-		trajectory[0].y = departure.y + currentVelocity.y * step;
+		currentVelocity.x = initVelocity.x;
+		currentVelocity.y = initVelocity.y;
+		trajectory[0].x = departure.x;
+		trajectory[0].y = departure.y;
 		for (int k = 1; k < n; k++) {
 			calculateForce(trajectory[k - 1].x, trajectory[k - 1].y, GameProcess.field.getTiles(), forceBuf);
-			currentVelocity.mulAdd(forceBuf, step / GameProcess.PARTICLE_MASS);
+			currentVelocity.mulAdd(forceBuf,  step * charge / mass);
 			trajectory[k].x = trajectory[k - 1].x + currentVelocity.x * step;
 			trajectory[k].y = trajectory[k - 1].y + currentVelocity.y * step;
 		}

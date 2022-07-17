@@ -6,6 +6,8 @@ import static steelUnicorn.laplacity.Globals.*;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import steelUnicorn.laplacity.field.DensityRenderer;
+
 public class EmptyTile extends Actor {
 
 	// grid
@@ -58,6 +60,7 @@ public class EmptyTile extends Actor {
 
 	public void setChargeDensity(float chargeDensity) {
 		this.chargeDensity = chargeDensity;
+		DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
 	}
 
 	@Override
