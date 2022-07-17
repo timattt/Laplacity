@@ -26,6 +26,9 @@ buildscript {
 }
 
 allprojects {
+	repositories {
+        maven { url 'https://jitpack.io' }
+    }
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
 }
@@ -49,6 +52,12 @@ configure(subprojects - project(':android')) {
 		}
 	}
 
+}
+
+project(':core') {
+	dependencies {
+		implementation "com.github.crykn:libgdx-screenmanager:0.6.8"
+	}
 }
 
 subprojects {

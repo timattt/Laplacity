@@ -20,6 +20,14 @@ public class Globals {
 	public static ExtendViewport gameViewport;
 	public static ShapeRenderer shapeRenderer;
 	
+	// Screen names
+	public static final String nameMainMenuScreen = "mainMenu";
+	public static final String nameGameScreen = "game";
+
+	// Tramsition names
+	public static final String nameSlideIn = "slideIn";
+	public static final String nameSlideOut = "slideOut";
+	
 	// Ingame viewport
 	/**
 	 * Сколько приходится игровых единиц на ширину экрана

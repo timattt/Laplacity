@@ -2,24 +2,36 @@ package steelUnicorn.laplacity.screens;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 
-public class GameScreen extends ScreenAdapter {
+import de.eskalon.commons.screen.ManagedScreen;
+
+public class GameScreen extends ManagedScreen {
 
 	public GameScreen() {
 	}
 
 	@Override
+	public void create() {
+		addInputProcessor(inputMultiplexer);
+	}
+
+	@Override
 	public void show() {
-		Gdx.input.setInputProcessor(inputMultiplexer);
 		super.show();
 	}
 
 	@Override
 	public void hide() {
-		Gdx.input.setInputProcessor(null);
-		super.hide();
+	}
+
+	@Override
+	public void resize(int width, int height){
+	}
+
+	@Override
+	public Color getClearColor() {
+		return Color.WHITE;
 	}
 
 	@Override
@@ -28,13 +40,11 @@ public class GameScreen extends ScreenAdapter {
 			return;
 		}
 		updateLevel(delta);
-		super.render(delta);
 	}
 
 	@Override
 	public void dispose() {
 		disposeLevel();
-		super.dispose();
 	}
 
 }

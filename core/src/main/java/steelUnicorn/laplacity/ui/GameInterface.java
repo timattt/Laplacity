@@ -68,7 +68,8 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				Gdx.app.log("game ui", "return pressed");
-				Globals.game.setScreen(Globals.mainMenuScreen);
+				//Globals.game.setScreen(Globals.mainMenuScreen);
+				Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
 			}
 		});
 
