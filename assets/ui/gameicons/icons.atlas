@@ -1,0 +1,54 @@
+icons.png
+size: 191, 31
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dirichlet
+  rotate: false
+  xy: 1, 1
+  size: 19, 29
+  orig: 30, 30
+  offset: 7, 0
+  index: -1
+electrons
+  rotate: false
+  xy: 22, 1
+  size: 28, 28
+  orig: 30, 30
+  offset: 1, 1
+  index: -1
+eraser
+  rotate: false
+  xy: 52, 1
+  size: 28, 28
+  orig: 30, 30
+  offset: 1, 1
+  index: -1
+protons
+  rotate: false
+  xy: 82, 1
+  size: 28, 28
+  orig: 30, 30
+  offset: 1, 1
+  index: -1
+reload
+  rotate: false
+  xy: 138, 1
+  size: 26, 26
+  orig: 30, 30
+  offset: 2, 2
+  index: -1
+return
+  rotate: true
+  xy: 112, 1
+  size: 28, 24
+  orig: 30, 30
+  offset: 1, 4
+  index: -1
+flight
+  rotate: false
+  xy: 166, 1
+  size: 24, 26
+  orig: 30, 30
+  offset: 4, 2
+  index: -1

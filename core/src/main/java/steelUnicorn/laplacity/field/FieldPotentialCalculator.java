@@ -1,21 +1,30 @@
 package steelUnicorn.laplacity.field;
 
 import java.util.Arrays;
+
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.field.tiles.FieldTile;
+import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
 public class FieldPotentialCalculator {
 
+	// Constants
 	public static final float precision = 0.001f;
 	public static final int n_iter = 1000;
 
+	// Buffers for potential calculation
 	private static int buf_length = 0;
 	private static float[] rk_buffer;
 	private static float[] density_vector;
 	private static float[] potential_vector;
 	private static float[] a_conv_rk;
+
+	// Buffer for trajectory calculation
+	private static Vector2[] trajectory;
+	private static float trajLength;
+	private static Vector2 forceBuf;
+	private static Vector2 currentVelocity;
 
 	private static void intermediateConvolution(float[] dst, float[] u, int N, int M, float h) {
 		int n = u.length;
@@ -81,6 +90,14 @@ public class FieldPotentialCalculator {
 			 * tk_numerator is dot(rk, rk),
 			 * and tk_denumerator is dot((a @ x), rk)
 			 */
+			// Check if denumarator is zero
+			if (Math.abs(tk_denumerator) < precision) { // (= is close to zero, may cause NAN or INF)
+				if (Math.abs(tk_numerator) < precision) { // if rk is close to zero too
+					break; // then we have already solved the problem
+				} else {
+					throw new RuntimeException("Fatal computational error: redraw your field");
+				}
+			}
 			float tk = tk_numerator / tk_denumerator;
 			float delta = 0, local_delta = 0;
 			for (int i = 0; i < n; i++) {
@@ -110,7 +127,7 @@ public class FieldPotentialCalculator {
 		buf_length = new_length;
 	}
 
-	public static void calculateFieldPotential(FieldTile[][] tiles) {
+	public static void calculateFieldPotential(EmptyTile[][] tiles) {
 		int field_width = GameProcess.field.getFieldWidth(), field_height =  GameProcess.field.getFieldHeight();
 		if ((field_width == 0) || (field_height == 0))
 			throw new RuntimeException("Fatal error: zero field dimensions");
@@ -138,7 +155,7 @@ public class FieldPotentialCalculator {
 	 * Потенциал для такой фигни скорее всего считается, а сила нет
 	 * Можно сделать, чтобы считалось, но это по-моему лишнее
 	 */
-	public static void calculateForce(float x, float y, FieldTile[][] tiles, Vector2 result) {
+	public static void calculateForce(float x, float y, EmptyTile[][] tiles, Vector2 result) {
 		// Get integer indices of the tile the (x,y) poitn currently in\
 		float h = GameProcess.field.getTileSize();
 		int i = (int)(x / h);
@@ -164,5 +181,40 @@ public class FieldPotentialCalculator {
 				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
 			}
 		}
+
+	/**
+	 * Calculate trajectory of an electron using simplectic Euler method.
+	 * Calculates n trajectory points following departure point and stores them in array inside the class
+	 * The array is accessible via getTrajectory() method
+	 * @param departure Initial trajectory point
+	 * @param initVelocity Initial velocity
+	 * @param step Integration step
+	 * @param n Number of iterations
+	 */
+	public static void calculateTrajectory(Vector2 departure, Vector2 initVelocity, float step, int n) {
+		// Resize buffer if needed
+		if (trajLength != n) {
+			trajectory = new Vector2[n];
+			trajLength = n;
+		}
+		calculateForce(departure.x, departure.y, GameProcess.field.getTiles(), forceBuf);
+		currentVelocity.x = initVelocity.x + forceBuf.x * (step / GameProcess.PARTICLE_MASS);
+		currentVelocity.y = initVelocity.y + forceBuf.y * (step / GameProcess.PARTICLE_MASS);
+		trajectory[0].x = departure.x + currentVelocity.x * step;
+		trajectory[0].y = departure.y + currentVelocity.y * step;
+		for (int k = 1; k < n; k++) {
+			calculateForce(trajectory[k - 1].x, trajectory[k - 1].y, GameProcess.field.getTiles(), forceBuf);
+			currentVelocity.mulAdd(forceBuf, step / GameProcess.PARTICLE_MASS);
+			trajectory[k].x = trajectory[k - 1].x + currentVelocity.x * step;
+			trajectory[k].y = trajectory[k - 1].y + currentVelocity.y * step;
+		}
+	}
+
+	/**
+	 * Access the trajectory stored after latest calculateTrajectory() call
+	 */
+	public static Vector2[] getTrajectory() {
+		return trajectory;
+	}
 
 }
