@@ -1,5 +1,6 @@
 package steelUnicorn.laplacity;
 
+import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.Gdx;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -18,17 +20,16 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import de.eskalon.commons.core.ManagedGame;
 import de.eskalon.commons.screen.ManagedScreen;
 import de.eskalon.commons.screen.transition.ScreenTransition;
-import de.eskalon.commons.screen.transition.impl.SlidingDirection;
-import de.eskalon.commons.screen.transition.impl.SlidingInTransition;
-import de.eskalon.commons.screen.transition.impl.SlidingOutTransition;
+import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.ui.GameInterface;
 import steelUnicorn.laplacity.utils.Settings;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
-	private SpriteBatch batch;
+	private SpriteBatch transitionBatch;
 
 	@Override
 	public void create() {
@@ -47,14 +48,17 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		shapeRenderer = new ShapeRenderer();
-		GameProcess.inputMultiplexer = new InputMultiplexer();
+		gameUI = new GameInterface(guiViewport);
+		inputMultiplexer = new InputMultiplexer();
+		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		
 		camera.position.x = SCREEN_WORLD_WIDTH / 2;
 		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
 		
-		this.batch = new SpriteBatch();
-		SlidingInTransition slideIn = new SlidingInTransition(batch, SlidingDirection.DOWN, 0.6f);
-		SlidingOutTransition slideOut = new SlidingOutTransition(batch, SlidingDirection.UP, 0.6f);
+		// transition
+		this.transitionBatch = new SpriteBatch();
+		BlendingTransition slideIn = new BlendingTransition(transitionBatch, 1f);
+		BlendingTransition slideOut = new BlendingTransition(transitionBatch, 1f);
 		this.screenManager.addScreen(nameGameScreen, gameScreen);
 		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);

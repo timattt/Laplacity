@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -44,7 +43,7 @@ public class GameProcess {
 	// Stage and world and ui
 	private static Stage levelStage;
 	private static World levelWorld;
-	private static GameInterface gameUI;
+	public static GameInterface gameUI;
 	public static InputMultiplexer inputMultiplexer;
 
 	// Mode
@@ -75,13 +74,16 @@ public class GameProcess {
 	public static final int TRAJECTORY_POINTS = 10;
 	public static final float TRAJECTORY_STEP = 0.2f;
 	
+	// SCORE
+	public static final float SCORE_PER_PARTICLE = 1f;
+	public static final float SCORE_PER_DENSITY_UNIT = 0.01f;
+	public static final float MAX_SCORE = 100f;
+	
 	// Methods
 	// GAME LOOP
 	//========================================================================================	
 	public static void initLevel(Texture level) {
 		levelStage = new Stage(gameViewport);
-		gameUI = new GameInterface(guiViewport);
-		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		levelWorld = new World(Vector2.Zero, false);
 		currentGameMode = GameMode.none;
 		field = new LaplacityField();
@@ -214,6 +216,20 @@ public class GameProcess {
 		changeGameMode(GameMode.none);
 		Gdx.app.log("game process", "Level finished");
 		// TODO ELVEG
+	}
+	
+	public static float calculateScore() {
+		float dens = 0;
+		
+		for (int x = 0; x < field.getFieldWidth(); x++) {
+			for (int y = 0; y < field.getFieldHeight(); y++) {
+				dens += Math.abs(field.getTiles()[x][y].getChargeDensity()) * SCORE_PER_DENSITY_UNIT;
+			}
+		}
+		
+		float part = particles.size * SCORE_PER_PARTICLE;
+		
+		return 0.5f * MAX_SCORE / (1f + dens) + 0.5f * MAX_SCORE / (part + 1f);
 	}
 	
 }
