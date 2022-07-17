@@ -54,6 +54,7 @@ public class MainMenuScreen extends ManagedScreen {
 
 	@Override
 	public void create() {
+		this.addInputProcessor(menuStage);
 	}
 
 	@Override
@@ -226,15 +227,12 @@ public class MainMenuScreen extends ManagedScreen {
 
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
 		super.show();
-		Gdx.input.setInputProcessor(menuStage);
 	}
 
 	@Override
 	public void hide() {
-		// TODO Auto-generated method stub
-		Gdx.input.setInputProcessor(null);
+		// Don't needed
 	}
 
 	@Override

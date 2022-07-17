@@ -3,6 +3,7 @@ package steelUnicorn.laplacity;
 import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,6 +47,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		shapeRenderer = new ShapeRenderer();
+		GameProcess.inputMultiplexer = new InputMultiplexer();
 		
 		camera.position.x = camera.position.y = 0;
 		

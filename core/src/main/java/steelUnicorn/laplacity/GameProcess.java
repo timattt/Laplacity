@@ -74,9 +74,7 @@ public class GameProcess {
 	public static void initLevel(Texture level) {
 		levelStage = new Stage(gameViewport);
 		gameUI = new GameInterface(guiViewport);
-		inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.addProcessor(gameUI);
-		inputMultiplexer.addProcessor(new GestureDetector(gameUI));
+		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		levelWorld = new World(Vector2.Zero, false);
 		currentGameMode = GameMode.none;
 		field = new LaplacityField();
