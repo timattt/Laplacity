@@ -2,6 +2,7 @@ package steelUnicorn.laplacity;
 
 import static steelUnicorn.laplacity.Globals.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -99,6 +100,13 @@ public class GameProcess {
 		
 		levelStage.act();
 		gameUI.draw();
+		
+		if (hitController.isHitted()) {
+			changeGameMode(GameMode.none);
+		}
+		if (hitController.isFinished()) {
+			levelFinished();
+		}
 	}
 	
 	public static void disposeLevel() {
@@ -189,6 +197,12 @@ public class GameProcess {
 		if (!particles.removeValue(part, false)) {
 			throw new RuntimeException("Not deleted!");
 		}
+	}
+	
+	public static void levelFinished() {
+		changeGameMode(GameMode.none);
+		Gdx.app.log("game process", "Level finished");
+		// TODO ELVEG
 	}
 	
 }
