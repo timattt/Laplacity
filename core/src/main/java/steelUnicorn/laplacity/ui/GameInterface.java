@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -31,6 +32,8 @@ import steelUnicorn.laplacity.particles.Proton;
  *
  */
 public class GameInterface extends Stage implements GestureListener {
+	private ReturnDialog returnDialog;
+
 	/**
 	 * Constructor create Stage and interface
 	 * @param viewport
@@ -56,6 +59,11 @@ public class GameInterface extends Stage implements GestureListener {
 	 * </ol>
 	 */
 	private void createInterface() {
+		//Dialogs initialize
+		Skin skin = Globals.assetManager.get("ui/uiskin.json");
+		returnDialog = new ReturnDialog(skin);
+
+		//interface intitialize
 		Table root = new Table();
 		root.setFillParent(true);
 		root.align(Align.right);
@@ -69,7 +77,7 @@ public class GameInterface extends Stage implements GestureListener {
 			public void changed(ChangeEvent event, Actor actor) {
 				Gdx.app.log("game ui", "return pressed");
 				//Globals.game.setScreen(Globals.mainMenuScreen);
-				Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
+				returnDialog.show(GameInterface.this);
 			}
 		});
 

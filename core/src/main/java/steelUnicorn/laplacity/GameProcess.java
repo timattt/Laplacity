@@ -109,6 +109,7 @@ public class GameProcess {
 		
 		levelStage.act();
 		gameUI.draw();
+		gameUI.act();
 		
 		DensityRenderer.render(levelStage.getBatch());
 		TrajectoryRenderer.render();
@@ -125,7 +126,7 @@ public class GameProcess {
 		DensityRenderer.cleanup();
 		levelStage.dispose();
 		field = null;
-		gameUI.dispose();
+		//gameUI.dispose();
 	}
 	//========================================================================================
 	
