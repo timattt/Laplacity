@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.WinScreen;
 
 public class Globals {
 
@@ -23,6 +24,7 @@ public class Globals {
 	// Screen names
 	public static final String nameMainMenuScreen = "mainMenu";
 	public static final String nameGameScreen = "game";
+	public static final String nameWinScreen = "winScreen";
 
 	// Tramsition names
 	public static final String nameSlideIn = "slideIn";
@@ -41,6 +43,7 @@ public class Globals {
 	// screens
 	public static GameScreen gameScreen;
 	public static MainMenuScreen mainMenuScreen;
+	public static WinScreen winScreen;
 
 	// Resource manager
 	public static AssetManager assetManager;

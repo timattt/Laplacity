@@ -27,7 +27,8 @@ import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
 
 public class GameProcess {
-
+	public static int levelNumber;
+	public static int MAX_LEVEL;
 	// OBJECTS
 	//========================================================================================
 	// Tilemap
@@ -125,6 +126,8 @@ public class GameProcess {
 	public static void disposeLevel() {
 		DensityRenderer.cleanup();
 		levelStage.dispose();
+		levelWorld.dispose();
+		debugRend.dispose();
 		field = null;
 		//gameUI.dispose();
 	}
@@ -216,7 +219,10 @@ public class GameProcess {
 	public static void levelFinished() {
 		changeGameMode(GameMode.none);
 		Gdx.app.log("game process", "Level finished");
-		// TODO ELVEG
+		
+		Globals.winScreen.clearStage();
+		Globals.winScreen.buildStage(calculateScore());
+		Globals.game.getScreenManager().pushScreen(nameWinScreen, nameSlideIn);
 	}
 	
 	public static float calculateScore() {

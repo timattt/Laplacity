@@ -84,7 +84,7 @@ public class MainMenuScreen extends ManagedScreen {
 		FileHandle[] lvlImages = Gdx.files.internal("levels/").list();
 
 		for (int i = 0; i < lvlImages.length; i++) {
-			LevelButton btn = new LevelButton(String.valueOf(i + 1), skin, lvlImages[i].path());
+			LevelButton btn = new LevelButton(String.valueOf(i + 1), skin, lvlImages[i].path(), i + 1);
 			btn.setName("level" + String.valueOf(i));
 			btn.addListener(LevelButton.listener);
 
@@ -219,7 +219,7 @@ public class MainMenuScreen extends ManagedScreen {
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-		Gdx.gl.glClearColor(0.5f, 0.5f, 0.95f, 1);
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		menuStage.draw();

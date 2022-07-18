@@ -23,6 +23,7 @@ import de.eskalon.commons.screen.transition.ScreenTransition;
 import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.GameInterface;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -47,6 +48,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		guiViewport.setUnitsPerPixel(0.5f);
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
+		winScreen = new WinScreen();
 		shapeRenderer = new ShapeRenderer();
 		gameUI = new GameInterface(guiViewport);
 		inputMultiplexer = new InputMultiplexer();
@@ -61,6 +63,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		BlendingTransition slideOut = new BlendingTransition(transitionBatch, 1f);
 		this.screenManager.addScreen(nameGameScreen, gameScreen);
 		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
+		this.screenManager.addScreen(nameWinScreen, winScreen);
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
@@ -71,6 +74,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		assetManager = new AssetManager();
 
 		FileHandle[] lvls = Gdx.files.internal("levels/").list();
+		GameProcess.MAX_LEVEL = lvls.length;
 		for (FileHandle lvl : lvls) {
 			assetManager.load(lvl.path(), Texture.class);
 		}
