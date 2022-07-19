@@ -127,9 +127,14 @@ public class GameProcess {
 	
 	public static void disposeLevel() {
 		DensityRenderer.cleanup();
-		levelStage.dispose();
-		levelWorld.dispose();
-		debugRend.dispose();
+		if (levelStage != null)
+			levelStage.dispose();
+		if (levelWorld != null)
+			levelWorld.dispose();
+		if (debugRend != null)
+			debugRend.dispose();
+		particles.clear();
+		currentGameMode = GameMode.none;
 		field = null;
 		//gameUI.dispose();
 	}

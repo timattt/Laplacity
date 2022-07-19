@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import de.eskalon.commons.screen.ManagedScreen;
+import steelUnicorn.laplacity.Globals;
 import steelUnicorn.laplacity.ui.LevelButton;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -215,6 +216,18 @@ public class MainMenuScreen extends ManagedScreen {
 			public void changed(ChangeEvent event, Actor actor) {
 				// TODO Auto-generated method stub
 				root.getCell(root.findActor("tab")).setActor(creditsTab);
+			}
+		});
+		mainMenu.add(button).width(120).space(20);
+		
+		//testads
+		mainMenu.row();
+		button = new TextButton("Test ad", skin);
+		button.setName("Test ad");
+		button.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				Globals.game.showInterstitial();
 			}
 		});
 		mainMenu.add(button).width(120).space(20);
