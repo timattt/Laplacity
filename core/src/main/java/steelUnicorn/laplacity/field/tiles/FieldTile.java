@@ -7,10 +7,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 public class FieldTile extends EmptyTile {
 	
@@ -20,6 +16,7 @@ public class FieldTile extends EmptyTile {
 	public FieldTile(int gridX, int gridY) {
 		super(gridX, gridY);
 		setColor(new Color(0.3f, 0.3f, 0.3f, 1));
+		setId(2);
 	}
 
 	@Override

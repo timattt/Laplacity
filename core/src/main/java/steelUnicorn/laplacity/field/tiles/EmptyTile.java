@@ -23,6 +23,9 @@ public class EmptyTile extends Actor {
 	// Density change
 	private boolean allowDensityChange = true;
 	
+	// id
+	private int id;
+	
 	public EmptyTile(int gridX, int gridY) {
 		super();
 		this.gridX = gridX;
@@ -35,6 +38,7 @@ public class EmptyTile extends Actor {
 		
 		setColor(0f, 0f, 0f, 0f);
 		setName("Empty");
+		setId(1);
 	}
 
 	public boolean isAllowDensityChange() {
@@ -98,6 +102,14 @@ public class EmptyTile extends Actor {
 	
 	public float getChargeDensity() {
 		return chargeDensity;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	protected void setId(int id) {
+		this.id = id;
 	}
 
 

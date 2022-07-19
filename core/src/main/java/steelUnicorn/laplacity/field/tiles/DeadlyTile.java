@@ -7,6 +7,7 @@ public class DeadlyTile extends FieldTile {
 		setColor(1f, 0f, 0f, 1f);
 		setName("Deadly");
 		setAllowDensityChange(false);
+		setId(4);
 	}
 
 }
