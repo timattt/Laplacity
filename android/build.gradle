@@ -83,6 +83,8 @@ dependencies {
 			because("CVE-2021-44228, CVE-2021-45046, CVE-2021-45105: Log4j vulnerable to remote code execution and other critical security vulnerabilities")
 		}
 	}
+	
+	implementation 'com.google.android.gms:play-services-ads:20.0.0'
 }
 
 // Called every time gradle gets executed, takes the native dependencies of
