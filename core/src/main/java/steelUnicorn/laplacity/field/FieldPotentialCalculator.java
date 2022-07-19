@@ -131,7 +131,7 @@ public class FieldPotentialCalculator {
 		int k = 0;
 		for (int i = 0; i < field_width; i++)
 			for (int j = 0; j < field_height; j++)
-				density_vector[k++] = tiles[i][j].getTotalChargeDensity();
+				density_vector[k++] = -tiles[i][j].getTotalChargeDensity();
 		gradDescend(density_vector, potential_vector, precision, field_height, field_width, GameProcess.field.getTileSize(), n_iter);
 		k = 0;
 		for (int i = 0; i < field_width; i++)
