@@ -20,12 +20,6 @@ public class FieldPotentialCalculator {
 	private static float[] potential_vector;
 	private static float[] a_conv_rk;
 
-	// Buffer for trajectory calculation
-	private static Vector2[] trajectory;
-	private static float trajLength;
-	private static final Vector2 forceBuf = new Vector2();
-	private static final Vector2 currentVelocity = new Vector2();
-
 	private static void intermediateConvolution(float[] dst, float[] u, int N, int M, float h) {
 		int n = u.length;
 		if ((M * N != n) || (dst.length != n)) {
@@ -183,43 +177,5 @@ public class FieldPotentialCalculator {
 				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
 			}
 		}
-
-	/**
-	 * Calculate trajectory of an electron using simplectic Euler method.
-	 * Calculates n trajectory points following departure point and stores them in array inside the class
-	 * The array is accessible via getTrajectory() method
-	 * @param departure Initial trajectory point
-	 * @param initVelocity Initial velocity
-	 * @param step Integration step
-	 * @param n Number of iterations
-	 */
-	public static void calculateTrajectory(Vector2 departure, Vector2 initVelocity, float mass, float charge, float step, int n) {
-		// Resize buffer if needed
-		if (trajLength != n) {
-			trajectory = new Vector2[n];
-			for (int i = 0; i < n; i++) {
-				trajectory[i] = new Vector2();
-			}
-			trajLength = n;
-		}
-		calculateForce(departure.x, departure.y, GameProcess.field.getTiles(), forceBuf);
-		currentVelocity.x = initVelocity.x;
-		currentVelocity.y = initVelocity.y;
-		trajectory[0].x = departure.x;
-		trajectory[0].y = departure.y;
-		for (int k = 1; k < n; k++) {
-			calculateForce(trajectory[k - 1].x, trajectory[k - 1].y, GameProcess.field.getTiles(), forceBuf);
-			currentVelocity.mulAdd(forceBuf,  step * charge / mass);
-			trajectory[k].x = trajectory[k - 1].x + currentVelocity.x * step;
-			trajectory[k].y = trajectory[k - 1].y + currentVelocity.y * step;
-		}
-	}
-
-	/**
-	 * Access the trajectory stored after latest calculateTrajectory() call
-	 */
-	public static Vector2[] getTrajectory() {
-		return trajectory;
-	}
 
 }

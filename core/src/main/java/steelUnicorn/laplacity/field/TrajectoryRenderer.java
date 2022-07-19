@@ -7,10 +7,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
+import steelUnicorn.laplacity.particles.ControllableElectron;
+
 public class TrajectoryRenderer {
 
 	public static void render() {
-		Vector2[] tr = FieldPotentialCalculator.getTrajectory();
+		Vector2[] tr = ControllableElectron.getTrajectory();
 		
 		if (tr == null || currentGameMode == GameMode.flight) {
 			return;
@@ -27,7 +29,7 @@ public class TrajectoryRenderer {
 	public static void updateTrajectory() {
 		TMP1.set(mainParticle.getX(), mainParticle.getY());
 		mainParticle.getDir(TMP2);
-		FieldPotentialCalculator.calculateTrajectory(TMP1, TMP2, mainParticle.getMass(), ELECTRON_CHARGE, TRAJECTORY_STEP, TRAJECTORY_POINTS);
+		mainParticle.calculateTrajectory(TMP1, TMP2, mainParticle.getMass(), ELECTRON_CHARGE, TRAJECTORY_STEP, TRAJECTORY_POINTS, STEPS_PER_POINT);
 	}
 
 }

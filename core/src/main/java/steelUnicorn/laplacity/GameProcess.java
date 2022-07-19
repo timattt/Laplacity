@@ -43,7 +43,7 @@ public class GameProcess {
 	
 	// Stage and world and ui
 	private static Stage levelStage;
-	private static World levelWorld;
+	public static World levelWorld;
 	public static GameInterface gameUI;
 	public static InputMultiplexer inputMultiplexer;
 
@@ -72,8 +72,9 @@ public class GameProcess {
 	public static final double DIRICHLET_SPRAY_TILE_PROBABILITY = 0.2;
 	
 	// TRAJECTORY
-	public static final int TRAJECTORY_POINTS = 10;
-	public static final float TRAJECTORY_STEP = 0.2f;
+	public static final int TRAJECTORY_POINTS = 50;
+	public static final float TRAJECTORY_STEP = 1f/60f;
+	public static final int STEPS_PER_POINT = 10;
 	
 	// SCORE
 	public static final float SCORE_PER_PARTICLE = 1f;
@@ -107,7 +108,7 @@ public class GameProcess {
 		//debugRend.render(levelWorld, Globals.camera.combined);
 
 		if (currentGameMode == GameMode.flight) {
-			levelWorld.step(1f/60f, 6, 2);
+			levelWorld.step(1f/60f, 1, 1);
 		}
 		
 		levelStage.act();

@@ -70,4 +70,44 @@ public class ControllableElectron extends Electron {
 	public float getMass() {
 		return body.getMass();
 	}
+	
+	// Buffer for trajectory calculation
+	private static Vector2[] trajectory;
+	private static float trajLength;
+
+	/**
+	 * Calculate trajectory of an electron using simplectic Euler method.
+	 * Calculates n trajectory points following departure point and stores them in array inside the class
+	 * The array is accessible via getTrajectory() method
+	 * @param departure Initial trajectory point
+	 * @param initVelocity Initial velocity
+	 * @param step Integration step
+	 * @param n Number of iterations
+	 */
+	public void calculateTrajectory(Vector2 departure, Vector2 initVelocity, float mass, float charge, float step, int n, int stepsPerPoint) {
+		// Resize buffer if needed
+		if (trajLength != n) {
+			trajectory = new Vector2[n];
+			for (int i = 0; i < n; i++) {
+				trajectory[i] = new Vector2();
+			}
+			trajLength = n;
+		}
+
+		startFlight();
+		for (int i = 0; i < n; i++) {
+			for (int j = 0; j < stepsPerPoint; j++) {
+				FieldPotentialCalculator.calculateForce(body.getTransform().getPosition().x, body.getTransform().getPosition().y, field.getTiles(), TMP1);
+				body.applyForceToCenter(TMP1.scl(charge), false);
+				levelWorld.step(step, 1, 1);
+			}
+			
+			trajectory[i].set(body.getTransform().getPosition());
+		}
+		reset();
+	}
+	
+	public static Vector2[] getTrajectory() {
+		return trajectory;
+	}
 }
