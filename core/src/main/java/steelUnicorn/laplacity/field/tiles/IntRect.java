@@ -51,4 +51,12 @@ public class IntRect {
         this.bottom = column.getBottom();
         this.type = column.getType();
     }
+
+    public int height() {
+        return this.top - this.bottom + 1;
+    }
+
+    public int width() {
+        return this.right - this.left + 1;
+    }
 }
