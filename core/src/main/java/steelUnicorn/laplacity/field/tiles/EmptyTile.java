@@ -58,7 +58,7 @@ public class EmptyTile extends Actor {
 	}
 	
 	protected void drawArrow() {
-		
+		/*
 		if (gridX % 1 == 0 && gridY % 1 == 0) {
 		float sz = field.getTileSize();
 		TMP1.set((gridX)*sz, (gridY)*sz);
@@ -72,6 +72,7 @@ public class EmptyTile extends Actor {
 		shapeRenderer.line(TMP1, TMP2);
 		shapeRenderer.end();
 		}
+		*/
 	}
 
 	public void setChargeDensity(float chargeDensity) {
