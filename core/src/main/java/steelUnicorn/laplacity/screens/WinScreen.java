@@ -17,6 +17,15 @@ import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.Globals;
 
+/**
+ * Class for winning screen.
+ * 
+ * This class contain and build stage for winning screen.
+ * In the stage there is a score, and 3 buttons
+ * 	1. Exit - return user to main menu
+ *  2. Replay - reload level
+ *  3. Next - load next level
+ */
 public class WinScreen extends ManagedScreen {
 	private Stage winStage;
 	private Table root;
@@ -28,6 +37,9 @@ public class WinScreen extends ManagedScreen {
 	private static final float contentHeight = 100;
 	private static final float fontScale = 2;
 	
+	/**
+	 * Constructor initialize stage and root table
+	 */
 	public WinScreen() {
 		super();
 		winStage = new Stage();
@@ -43,9 +55,17 @@ public class WinScreen extends ManagedScreen {
 		this.addInputProcessor(winStage);
 	}
 	
+	/**
+	 * buildStage function brings label and buttons together.
+	 * 
+	 * 
+	 * @note When implement, don't forget to use clearStage because this functions allocate new memory. 
+	 * 
+	 * @param score - amount of score that user earned. This score goes into label initialization.
+	 */
 	public void buildStage(float score) {		
 		Skin skin = Globals.assetManager.get("ui/uiskin.json", Skin.class);
-		
+		//label
 		Label done = new Label("Done\n"
 				+ "Score " + String.valueOf(score), skin);
 		done.setAlignment(Align.center);
@@ -84,7 +104,8 @@ public class WinScreen extends ManagedScreen {
 		});
 		buttons.add(btn).pad(padSize).size(btnWidth, btnHeight);
 		
-		if (GameProcess.levelNumber < GameProcess.MAX_LEVEL) {
+		
+		if (GameProcess.levelNumber < GameProcess.MAX_LEVEL) {	//For max level there is no need in next button
 			btn = new TextButton("Next", skin);
 			btn.setName("nextBtn");
 			btn.addListener(new ChangeListener() {
@@ -100,6 +121,9 @@ public class WinScreen extends ManagedScreen {
 		}
 	}
 	
+	/**
+	 * Clear root table from children to use buildStage.
+	 */
 	public void clearStage() {
 		if (root.hasChildren()) {
 			Table buttons = root.findActor("buttonsTable");

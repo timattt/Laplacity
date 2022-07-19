@@ -5,6 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import steelUnicorn.laplacity.Globals;
 
+/**
+ * Dialog popup to confirm return to menu.
+ *
+ * Contains warning text and 2 buttons
+ * 1. NO - just close popup
+ * 2. YES - return to main menu
+ *
+ */
 public class ReturnDialog extends Dialog {
 	private static final String title = "Warning";
 
