@@ -20,28 +20,6 @@ public class FieldTile extends EmptyTile {
 	public FieldTile(int gridX, int gridY) {
 		super(gridX, gridY);
 		setColor(new Color(0.3f, 0.3f, 0.3f, 1));
-		
-		// ВРЕМЕННО
-		BodyDef bodydef = new BodyDef();
-		bodydef.type = BodyType.StaticBody;
-		
-		field.fromGridToWorldCoords(gridX, gridY, TMP1);
-		bodydef.position.set(TMP1);
-
-		body = registerPhysicalObject(bodydef);
-
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(field.getTileSize() / 2, field.getTileSize() / 2);
-
-		FixtureDef fxt = new FixtureDef();
-		fxt.shape = shape;
-		fxt.density = 10000;
-		fxt.restitution = 1f;
-
-		body.createFixture(fxt);
-		body.setUserData(this);
- 		
-		shape.dispose();
 	}
 
 	@Override

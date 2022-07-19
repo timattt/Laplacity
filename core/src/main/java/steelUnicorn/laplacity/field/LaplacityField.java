@@ -3,16 +3,13 @@ package steelUnicorn.laplacity.field;
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.Globals.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import steelUnicorn.laplacity.field.tiles.BarrierTile;
-import steelUnicorn.laplacity.field.tiles.DeadlyTile;
-import steelUnicorn.laplacity.field.tiles.EmptyTile;
-import steelUnicorn.laplacity.field.tiles.FinishTile;
-import steelUnicorn.laplacity.field.tiles.WallTile;
+import steelUnicorn.laplacity.field.tiles.*;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 
 public class LaplacityField extends Group {
@@ -63,8 +60,8 @@ public class LaplacityField extends Group {
 			}
 		}
 		
-		TilesBodyHandler.createBoddies(tiles);
-
+		TilesBodyHandler.createBodies(tiles);
+		Gdx.app.log("field", "bodies created");
 		tileMap.getTextureData().disposePixmap();
 	}
 
