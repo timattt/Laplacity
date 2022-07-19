@@ -1,5 +1,9 @@
 package steelUnicorn.laplacity.field.tiles;
 
+/** 
+ * Lists all types of available tiles.
+ * Tiles ignored by collision detector should be marked as {@link TileType#nonPhysical}.
+ */
 public enum TileType {
     nonPhysical,
     barrier,

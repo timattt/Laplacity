@@ -19,8 +19,11 @@ public class TilesBodyHandler {
 
 	private static ArrayList<TileColumn> columns = new ArrayList<>();
 
-	// Лучше от этого метода избавиться, но пока тип тайла иначе не выяснить
-	private static TileType typeOf(EmptyTile tile) {
+	/**
+	 * Returns tile type as listed in {@link TileType}.
+	 */
+	public static TileType typeOf(EmptyTile tile) {
+		// Лучше от этого метода избавиться, но пока тип тайла иначе не выяснить
 		if (tile instanceof BarrierTile) {
 			return TileType.barrier;
 		} else if (tile instanceof DeadlyTile) {
@@ -65,6 +68,11 @@ public class TilesBodyHandler {
 		}
 	}
 
+	/**
+	 * Reads tile array and tries to create as many rectangles as possible.
+	 * The rectangles are then registered as Box2D solid bodies.
+	 * @param tiles Tile array
+	 */
 	public static void createBodies(EmptyTile[][] tiles) {
 		fillColumns(tiles);
 		int expectedIndex = 0;

@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.field;
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.Globals.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
@@ -60,7 +61,7 @@ public class LaplacityField extends Group {
 		}
 		
 		TilesBodyHandler.createBodies(tiles);
-		System.out.println("Bodies created!");
+		Gdx.app.log("field", "bodies created");
 		tileMap.getTextureData().disposePixmap();
 	}
 
