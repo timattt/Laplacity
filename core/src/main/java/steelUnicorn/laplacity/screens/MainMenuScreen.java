@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.ui.LevelButton;
@@ -74,6 +76,7 @@ public class MainMenuScreen extends ManagedScreen {
 		levelsTab.setName("tab");
 
 		Label description = new Label("Levels:", skin);
+		description.setColor(Color.BLACK);
 		levelsTab.add(description).spaceBottom(20);
 		levelsTab.row();
 
@@ -84,7 +87,7 @@ public class MainMenuScreen extends ManagedScreen {
 		FileHandle[] lvlImages = Gdx.files.internal("levels/").list();
 
 		for (int i = 0; i < lvlImages.length; i++) {
-			LevelButton btn = new LevelButton(String.valueOf(i + 1), skin, lvlImages[i].path());
+			LevelButton btn = new LevelButton(String.valueOf(i + 1), skin, lvlImages[i].path(), i + 1);
 			btn.setName("level" + String.valueOf(i));
 			btn.addListener(LevelButton.listener);
 
@@ -110,17 +113,17 @@ public class MainMenuScreen extends ManagedScreen {
 		optionsTab.setName("tab");
 
 		Label description = new Label("Options:", skin);
+		description.setColor(Color.BLACK);
 		optionsTab.add(description).spaceBottom(20);
 		optionsTab.row();
 
 		Table options = new Table();
 		optionsTab.add(options).spaceBottom(20);
-
 		//Sound and music
 		CheckBox checkBox = new CheckBox("Enable sound", skin);
 		checkBox.setName("sound_checkbox");
 		checkBox.setChecked(Settings.getSoundVolume() == Settings.VOLUME.ON.ordinal());
-
+		checkBox.getLabel().setColor(Color.BLACK);
 		checkBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -135,6 +138,7 @@ public class MainMenuScreen extends ManagedScreen {
 		checkBox = new CheckBox("Enable Music", skin);
 		checkBox.setName("music_checkbox");
 		checkBox.setChecked(Settings.getMusicVolume() == Settings.VOLUME.ON.ordinal());
+		checkBox.getLabel().setColor(Color.BLACK);
 		checkBox.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
@@ -158,6 +162,7 @@ public class MainMenuScreen extends ManagedScreen {
 		Label label = new Label("Credits:\n"
 				+ "Made by Steel Unicorn\n"
 				+ "steel-unicorn.org", skin);
+		label.setColor(Color.BLACK);
 		label.setName("credits_label");
 		creditsTab.add(label);
 	}
@@ -219,7 +224,7 @@ public class MainMenuScreen extends ManagedScreen {
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-		Gdx.gl.glClearColor(0.5f, 0.5f, 0.95f, 1);
+		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		menuStage.draw();
