@@ -10,26 +10,26 @@ public class TileColumn {
     private int horizontalIndex;
     private int bottomIndex;
     private int topIndex;
-    private TileType type;
+    private int id;
 
     /**
      * Start a new column at given point
      * @param _horizontalIndex
      * @param _verticalIndex
-     * @param _type
+     * @param _id
      */
-    public TileColumn(int _horizontalIndex, int _verticalIndex, TileType _type) {
+    public TileColumn(int _horizontalIndex, int _verticalIndex, int _id) {
         this.horizontalIndex = _horizontalIndex;
         this.bottomIndex = _verticalIndex;
         this.topIndex = _verticalIndex;
-        this.type = _type;
+        this.id = _id;
     }
 
     public TileColumn(TileColumn that) {
         this.horizontalIndex = that.horizontalIndex;
         this.bottomIndex = that.bottomIndex;
         this.topIndex = that.topIndex;
-        this.type = that.type;
+        this.id = that.id;
     }
 
     /**
@@ -37,13 +37,13 @@ public class TileColumn {
      * Identical to a constructor, but reusing the same instance.
      * @param _horizontalIndex
      * @param _verticalIndex
-     * @param _type
+     * @param _id
      */
-    public void set(int _horizontalIndex, int _verticalIndex, TileType _type) {
+    public void set(int _horizontalIndex, int _verticalIndex, int _id) {
         this.horizontalIndex = _horizontalIndex;
         this.bottomIndex = _verticalIndex;
         this.topIndex = _verticalIndex;
-        this.type = _type;
+        this.id = _id;
     }
 
     /**
@@ -55,18 +55,17 @@ public class TileColumn {
 
     /**
      * Render tile type as non-physical.
-     * Think of {@link TileType.nonPhysical} as of a zero value for tile type.
+     * All non-physical tiles are equivalent to {@link EmptyTile} for {@link TilesBodyHandler} class.
      */
     public void reset() {
-        this.type = TileType.nonPhysical;
+        this.id = 1; // empty tile id
     }
 
     /** Make column depleted so it would be ignored when merging columns into rectangles.
      * Call it after the column has been successfully added to a rectangle.
-     * Think of {@link TileType.depleted} as of null value for tile types.
     */
     public void deplete() {
-        this.type = TileType.depleted;
+        this.id = 0; // 0 is reserved for depleted columns
     }
 
     public int getHorizontalIndex() {
@@ -81,7 +80,7 @@ public class TileColumn {
         return this.topIndex;
     }
 
-    public TileType getType() {
-        return this.type;
+    public int getId() {
+        return this.id;
     }
 }
