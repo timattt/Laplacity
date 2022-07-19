@@ -12,7 +12,7 @@ public class TrajectoryRenderer {
 	public static void render() {
 		Vector2[] tr = FieldPotentialCalculator.getTrajectory();
 		
-		if (tr == null) {
+		if (tr == null || currentGameMode == GameMode.flight) {
 			return;
 		}
 		

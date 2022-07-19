@@ -98,9 +98,11 @@ public class GameProcess {
 		camera.update();
 		
 		DensityRenderer.init();
+		TrajectoryRenderer.updateTrajectory();
 	}
 	
 	public static void updateLevel(float delta) {
+		TrajectoryRenderer.render();
 		levelStage.draw();
 		//debugRend.render(levelWorld, Globals.camera.combined);
 
@@ -113,7 +115,7 @@ public class GameProcess {
 		gameUI.act();
 		
 		DensityRenderer.render(levelStage.getBatch());
-		TrajectoryRenderer.render();
+		
 
 		if (hitController.isHitted()) {
 			changeGameMode(GameMode.none);
