@@ -1,48 +1,119 @@
 package steelUnicorn.laplacity.android;
 
-import android.os.Bundle;
-
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import steelUnicorn.laplacity.Laplacity;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
+import com.badlogic.gdx.backends.android.AndroidApplication;
+import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.google.android.gms.ads.*;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.gms.ads.*;
 
 /** Launches the Android application. */
 public class AndroidLauncher extends AndroidApplication {
 	
-	 private InterstitialAd mInterstitialAd;
+	private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3940256099942544/6300978111";
+	private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712";
+	
+	
+	protected AdView adView;
+	protected View gameView;
+	private InterstitialAd interstitialAd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
-		initialize(new Laplacity(), configuration);
+		//initialize(new Laplacity(), configuration);
 
-        MobileAds.initialize(this);
+        RelativeLayout layout = new RelativeLayout(this);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+		layout.setLayoutParams(params);
+
+		AdView admobView = createAdView();
+		layout.addView(admobView);
+		View gameView = createGameView(configuration);
+		layout.addView(gameView);
+
+		setContentView(layout);
+		startAdvertising(admobView);
+
+		MobileAds.initialize(this);
 		
-      AdRequest adRequest = new AdRequest.Builder().build();
-
-      InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
-        new InterstitialAdLoadCallback() {
-      @Override
-      public void onAdLoaded(InterstitialAd interstitialAd) {
-        // The mInterstitialAd reference will be null until
-        // an ad is loaded.
-        mInterstitialAd = interstitialAd;
-       // Log.i("TestActivity", "onAdLoaded");
-      }
-
-      @Override
-      public void onAdFailedToLoad(LoadAdError loadAdError) {
-        // Handle the error
-       // Log.d("TestActivity", loadAdError.toString());
-        mInterstitialAd = null;
-      }
-    });
+		showOrLoadInterstital();
 	}
+	
+	private AdView createAdView() {
+		adView = new AdView(this);
+		adView.setAdSize(AdSize.SMART_BANNER);
+		adView.setAdUnitId(AD_UNIT_ID_BANNER);
+		//adView.setId(12345); // this is an arbitrary id, allows for relative positioning in createGameView()
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+		adView.setLayoutParams(params);
+		adView.setBackgroundColor(Color.BLACK);
+		return adView;
+	}
+
+	private View createGameView(AndroidApplicationConfiguration cfg) {
+		gameView = initializeForView(new Laplacity(), cfg);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
+		params.addRule(RelativeLayout.BELOW, adView.getId());
+		gameView.setLayoutParams(params);
+		return gameView;
+	}
+
+	private void startAdvertising(AdView adView) {
+		AdRequest adRequest = new AdRequest.Builder().build();
+		adView.loadAd(adRequest);
+	}
+
+	public void showOrLoadInterstital() {
+		try {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					if (interstitialAd != null) {
+						interstitialAd.show(AndroidLauncher.this);
+						Toast.makeText(getApplicationContext(), "Showing Interstitial", Toast.LENGTH_SHORT).show();
+					} else {
+						AdRequest interstitialRequest = new AdRequest.Builder().build();
+						InterstitialAd.load(AndroidLauncher.this, AD_UNIT_ID_INTERSTITIAL, interstitialRequest, new InterstitialAdLoadCallback() {
+							@Override
+							public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+								AndroidLauncher.this.interstitialAd = interstitialAd;
+								Toast.makeText(getApplicationContext(), "Finished Loading Interstitial", Toast.LENGTH_SHORT).show();
+								interstitialAd.show(AndroidLauncher.this);
+							}
+
+							@Override
+							public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+								Toast.makeText(getApplicationContext(), "Error Loading Interstitial " + loadAdError, Toast.LENGTH_SHORT).show();
+							}
+						});
+						Toast.makeText(getApplicationContext(), "Loading Interstitial", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+		} catch (Exception e) {
+		}
+	}
+	
 }
