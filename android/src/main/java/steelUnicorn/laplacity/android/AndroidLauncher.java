@@ -29,7 +29,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	
 	private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3299479021580908/9211056129";
-	private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3299479021580908/9211056129";
+	private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3299479021580908/5567641319";
 	
 	
 	protected AdView adView;
