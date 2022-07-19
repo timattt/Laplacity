@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 public class Proton extends ChargedParticle {
 
 	public Proton(float x, float y) {
-		super(x, y, PROTON_SIZE, PROTON_CHARGE);
+		super(x, y, PROTON_SIZE, PARTICLE_CHARGE);
 		setName("Electron");
 	}
 

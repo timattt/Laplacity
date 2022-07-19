@@ -98,7 +98,7 @@ public class ControllableElectron extends Electron {
 		for (int i = 0; i < n; i++) {
 			for (int j = 0; j < stepsPerPoint; j++) {
 				FieldPotentialCalculator.calculateForce(body.getTransform().getPosition().x, body.getTransform().getPosition().y, field.getTiles(), TMP1);
-				body.applyForceToCenter(TMP1.scl(charge), false);
+				body.applyForceToCenter(TMP1.scl(charge / mass), false);
 				levelWorld.step(step, 1, 1);
 			}
 			

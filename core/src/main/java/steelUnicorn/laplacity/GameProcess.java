@@ -57,8 +57,7 @@ public class GameProcess {
 	private static final HitController hitController = new HitController();
 	
 	// Constants
-	public static final float ELECTRON_CHARGE = -10f;
-	public static final float PROTON_CHARGE = 10f;
+	public static final float PARTICLE_CHARGE = 10f;
 	
 	public static final float ELECTRON_SIZE = 2f;
 	public static final float PROTON_SIZE = 2f;
@@ -212,13 +211,17 @@ public class GameProcess {
 	public static void addStaticParticle(ChargedParticle part) {
 		EmptyTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
 		if (tl != null && tl.isAllowDensityChange()) {
-			tl.setChargeDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
 		}
 	}
 	
 	public static void deleteStaticParticle(ChargedParticle part) {
 		part.delete();
+		EmptyTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
+		if (tl != null) {
+			tl.addInvisibleDensity(-part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+		}
 		if (!particles.removeValue(part, false)) {
 			throw new RuntimeException("Not deleted!");
 		}
@@ -238,7 +241,7 @@ public class GameProcess {
 		
 		for (int x = 0; x < field.getFieldWidth(); x++) {
 			for (int y = 0; y < field.getFieldHeight(); y++) {
-				dens += Math.abs(field.getTiles()[x][y].getChargeDensity()) * SCORE_PER_DENSITY_UNIT;
+				dens += Math.abs(field.getTiles()[x][y].getTotalChargeDensity()) * SCORE_PER_DENSITY_UNIT;
 			}
 		}
 		

@@ -131,7 +131,7 @@ public class FieldPotentialCalculator {
 		int k = 0;
 		for (int i = 0; i < field_width; i++)
 			for (int j = 0; j < field_height; j++)
-				density_vector[k++] = tiles[i][j].getChargeDensity();
+				density_vector[k++] = tiles[i][j].getTotalChargeDensity();
 		gradDescend(density_vector, potential_vector, precision, field_height, field_width, GameProcess.field.getTileSize(), n_iter);
 		k = 0;
 		for (int i = 0; i < field_width; i++)
@@ -162,19 +162,19 @@ public class FieldPotentialCalculator {
 		}
 		// Separately calculate derivatives:
 			if (i == 0) { // (x,y) is adjacent to the lower edge
-				result.x = -twoPointScheme(0.0f, tiles[i + 1][j].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
+				result.x = -twoPointScheme(0.0f, tiles[i + 1][j].getPotential(), h) * GameProcess.PARTICLE_CHARGE;
 			} else if (i == GameProcess.field.getFieldWidth() - 1) { // Upper edge
-				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), 0.0f, h) * GameProcess.ELECTRON_CHARGE;
+				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), 0.0f, h) * GameProcess.PARTICLE_CHARGE;
 			} else { // Inner point
-				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), tiles[i + 1][j].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
+				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), tiles[i + 1][j].getPotential(), h) * GameProcess.PARTICLE_CHARGE;
 			}
 			// Repeat this for y
 			if (j == 0) { //Left edge
-				result.y = -twoPointScheme(0.0f, tiles[i][j + 1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
+				result.y = -twoPointScheme(0.0f, tiles[i][j + 1].getPotential(), h) * GameProcess.PARTICLE_CHARGE;
 			} else if (j == GameProcess.field.getFieldHeight() - 1) { // Right edge
-				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h) * GameProcess.ELECTRON_CHARGE;
+				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h) * GameProcess.PARTICLE_CHARGE;
 			} else { // Inner point
-				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h) * GameProcess.ELECTRON_CHARGE;
+				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h) * GameProcess.PARTICLE_CHARGE;
 			}
 		}
 

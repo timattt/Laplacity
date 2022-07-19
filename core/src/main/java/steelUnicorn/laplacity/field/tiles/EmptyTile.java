@@ -4,9 +4,11 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.Globals.*;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import steelUnicorn.laplacity.field.DensityRenderer;
+import steelUnicorn.laplacity.field.FieldPotentialCalculator;
 
 public class EmptyTile extends Actor {
 
@@ -18,7 +20,8 @@ public class EmptyTile extends Actor {
 	protected float potential;
 	
 	// charge density
-	protected float chargeDensity;
+	protected float chargeDensity = 0;
+	protected float invisibleDensity = 0;
 	
 	// Density change
 	private boolean allowDensityChange = true;
@@ -55,22 +58,20 @@ public class EmptyTile extends Actor {
 	}
 	
 	protected void drawArrow() {
-		/*
-		if (gridX % 4 == 0 && gridY % 4 == 0) {
+		
+		if (gridX % 1 == 0 && gridY % 1 == 0) {
 		float sz = field.getTileSize();
-		int w = field.getFieldWidth();
-		int h = field.getFieldHeight();
 		TMP1.set((gridX)*sz, (gridY)*sz);
 		FieldPotentialCalculator.calculateForce(TMP1.x, TMP1.y, field.getTiles(), TMP2);
 		TMP2.scl(0.03f);
-		TMP1.sub(sz*(w/2 - 0.5f), sz*(h/2 - 0.5f));
+		TMP1.sub(sz*(- 0.5f), sz*(- 0.5f));
 		TMP2.add(TMP1);
 		
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(1f, 1f, 0, 1f);
 		shapeRenderer.line(TMP1, TMP2);
 		shapeRenderer.end();
-		}*/
+		}
 	}
 
 	public void setChargeDensity(float chargeDensity) {
@@ -100,8 +101,8 @@ public class EmptyTile extends Actor {
 		return gridY;
 	}
 	
-	public float getChargeDensity() {
-		return chargeDensity;
+	public float getTotalChargeDensity() {
+		return chargeDensity + invisibleDensity;
 	}
 
 	public int getId() {
@@ -112,5 +113,12 @@ public class EmptyTile extends Actor {
 		this.id = id;
 	}
 
+	public void setInvisibleDensity(float invisibleDensity) {
+		this.invisibleDensity = invisibleDensity;
+	}
+	
+	public void addInvisibleDensity(float delta) {
+		invisibleDensity += delta;
+	}
 
 }

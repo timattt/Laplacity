@@ -29,7 +29,7 @@ public class TrajectoryRenderer {
 	public static void updateTrajectory() {
 		TMP1.set(mainParticle.getX(), mainParticle.getY());
 		mainParticle.getDir(TMP2);
-		mainParticle.calculateTrajectory(TMP1, TMP2, mainParticle.getMass(), ELECTRON_CHARGE, TRAJECTORY_STEP, TRAJECTORY_POINTS, STEPS_PER_POINT);
+		mainParticle.calculateTrajectory(TMP1, TMP2, mainParticle.getMass(), mainParticle.getCharge(), TRAJECTORY_STEP, TRAJECTORY_POINTS, STEPS_PER_POINT);
 	}
 
 }
