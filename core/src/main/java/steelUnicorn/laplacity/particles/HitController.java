@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.field.GameMode;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
 
 public class HitController implements ContactListener {
@@ -35,7 +37,7 @@ public class HitController implements ContactListener {
 		}
 		
 		if (tileId != null && part != null) {
-			if (part instanceof ControllableElectron) {
+			if (part instanceof ControllableElectron && GameProcess.currentGameMode == GameMode.flight) {
 				if (tileId == 4) // deadly tile id
 					hitted = true;
 				if (tileId == 5) // finish tile id
