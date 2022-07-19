@@ -6,9 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
-import steelUnicorn.laplacity.field.tiles.FinishTile;
 
 public class HitController implements ContactListener {
 
@@ -20,14 +18,14 @@ public class HitController implements ContactListener {
 		Body body1 = contact.getFixtureA().getBody();
 		Body body2 = contact.getFixtureB().getBody();
 		
-		FieldTile tile = null;
+		Integer tileId = null;
 		ChargedParticle part = null;
 		
-		if (body1.getUserData() != null && body1.getUserData() instanceof FieldTile) {
-			tile = (FieldTile) body1.getUserData();
+		if (body1.getUserData() != null && body1.getUserData() instanceof Integer) {
+			tileId = (Integer) body1.getUserData();
 		}
 		if (body2.getUserData() != null && body2.getUserData() instanceof FieldTile) {
-			tile = (FieldTile) body2.getUserData();
+			tileId = (Integer) body2.getUserData();
 		}
 		if (body1.getUserData() != null && body1.getUserData() instanceof ChargedParticle) {
 			part = (ChargedParticle) body1.getUserData();
@@ -36,11 +34,11 @@ public class HitController implements ContactListener {
 			part = (ChargedParticle) body2.getUserData();
 		}
 		
-		if (tile != null && part != null) {
+		if (tileId != null && part != null) {
 			if (part instanceof ControllableElectron) {
-				if (tile instanceof DeadlyTile)
+				if (tileId == 4) // deadly tile id
 					hitted = true;
-				if (tile instanceof FinishTile)
+				if (tileId == 5) // finish tile id
 					finished = true;
 			}
 		}

@@ -11,63 +11,40 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.Globals;
-import steelUnicorn.laplacity.field.tiles.BarrierTile;
-import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
-import steelUnicorn.laplacity.field.tiles.FinishTile;
 import steelUnicorn.laplacity.field.tiles.IntRect;
 import steelUnicorn.laplacity.field.tiles.TileColumn;
-import steelUnicorn.laplacity.field.tiles.TileType;
-import steelUnicorn.laplacity.field.tiles.WallTile;
 
 public class TilesBodyHandler {
 
 	private static ArrayList<TileColumn> columns = new ArrayList<>();
 
-	/**
-	 * Returns tile type as listed in {@link TileType}.
-	 */
-	public static TileType typeOf(EmptyTile tile) {
-		// Лучше от этого метода избавиться, но пока тип тайла иначе не выяснить
-		if (tile instanceof BarrierTile) {
-			return TileType.barrier;
-		} else if (tile instanceof DeadlyTile) {
-			return TileType.deadly;
-		} else if (tile instanceof WallTile) {
-			return TileType.wall;
-		} else if (tile instanceof FinishTile) {
-			return TileType.finish;
-		} else {
-			return TileType.nonPhysical;
-		}
-	}
-
 	private static void fillColumns(EmptyTile[][] tiles) {
 		columns.clear();
-		TileColumn curColumn = new TileColumn(0, 0, TileType.nonPhysical);
+		TileColumn curColumn = new TileColumn(0, 0, 1); // 1 means empty tile
 
 		for (int i = 0; i < GameProcess.field.getFieldWidth(); i++) {
 			for (int j = 0; j < GameProcess.field.getFieldHeight(); j++) {
 				if (tiles[i][j] instanceof FieldTile) {
-					if (curColumn.getType() == TileType.nonPhysical) { // create new column
-						curColumn.set(i, j, typeOf(tiles[i][j]));
-					} else if (typeOf(tiles[i][j]) == curColumn.getType()) { // continue current column
+					if (curColumn.getId() == 1) { // create new column
+						curColumn.set(i, j, tiles[i][j].getId());
+					} else if (tiles[i][j].getId() == curColumn.getId()) { // continue current column
 						curColumn.increment();
 					} else { // from column of one type to another type
 						// push current column and start new
 						columns.add(new TileColumn(curColumn));
-						curColumn.set(i, j, typeOf(tiles[i][j]));
+						curColumn.set(i, j, tiles[i][j].getId());
 					}
 				} else {
-					if (curColumn.getType() == TileType.nonPhysical) continue; // from empty to empty
+					if (curColumn.getId() == 1) continue; // from empty to empty, 1 is an empty tile ID
 					// else: from physical tile to empty. Push current column to main array
 					columns.add(new TileColumn(curColumn));
 					curColumn.reset();
 				}
 			}
 			// push last column (if exists), do so on each iteration including the final one
-			if (curColumn.getType() != TileType.nonPhysical) {
+			if (curColumn.getId() != 1) { // 1 is an empty tile ID
 				columns.add(new TileColumn(curColumn));
 				curColumn.reset();
 			}
@@ -82,17 +59,17 @@ public class TilesBodyHandler {
 	public static void createBodies(EmptyTile[][] tiles) {
 		fillColumns(tiles);
 		int expectedIndex = 0;
-		IntRect bodyTemplate = new IntRect();
+		IntRect bodyTemplate;
 		for (int i = 0; i < columns.size(); i++) {
-			if (columns.get(i).getType() != TileType.depleted) { // if the column hasn't been merged yet
-				bodyTemplate.set(columns.get(i)); // creating new rectangle
+			if (columns.get(i).getId() != 0) { // if the column hasn't been merged yet (merged columns have type of 0)
+				bodyTemplate = new IntRect(columns.get(i)); // creating new rectangle
 				columns.get(i).deplete(); // make depleted as it's already a part of a rectangle
 				expectedIndex = columns.get(i).getHorizontalIndex() + 1;
 				if (i < columns.size() - 1) { // if it's not the last column (usually it's the right wall)
 					for (int j = i + 1; j < columns.size(); j++) {
 						if (columns.get(j).getHorizontalIndex() > expectedIndex) continue; // continue if we haven't found a mergeable column
 						// column is mergeable if following conditions are satisfied:
-						if ((columns.get(j).getType() == bodyTemplate.type) &&
+						if ((columns.get(j).getId() == bodyTemplate.id) &&
 							(columns.get(j).getTop() == bodyTemplate.top) &&
 							(columns.get(j).getBottom() == bodyTemplate.bottom)) { // then merge this column into the rectangle template
 								bodyTemplate.extend();
@@ -102,7 +79,7 @@ public class TilesBodyHandler {
 					}
 				}
 				// Здесь нужно написать создание физического тела
-				Gdx.app.log(String.valueOf(bodyTemplate.type), "(" + String.valueOf(bodyTemplate.left) + ", " + String.valueOf(bodyTemplate.bottom) + ") -- (" + String.valueOf(bodyTemplate.right) + ", " + String.valueOf(bodyTemplate.top) + ")");
+				Gdx.app.log(String.valueOf(bodyTemplate.id), "(" + String.valueOf(bodyTemplate.left) + ", " + String.valueOf(bodyTemplate.bottom) + ") -- (" + String.valueOf(bodyTemplate.right) + ", " + String.valueOf(bodyTemplate.top) + ")");
 				
 				BodyDef bodydef = new BodyDef();
 				bodydef.type = BodyType.StaticBody;
@@ -125,6 +102,7 @@ public class TilesBodyHandler {
 				fxt.density = 10000;
 				fxt.restitution = 1f;
 				body.createFixture(fxt);
+				body.setUserData((Integer) bodyTemplate.id);
 				shape.dispose();
 			}
 		}

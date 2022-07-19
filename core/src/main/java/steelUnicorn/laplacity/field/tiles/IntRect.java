@@ -8,7 +8,7 @@ public class IntRect {
     public int right;
     public int top;
     public int bottom;
-    public TileType type;
+    public int id;
 
     public IntRect() {
     }
@@ -22,7 +22,7 @@ public class IntRect {
         this.right = column.getHorizontalIndex();
         this.top = column.getTop();
         this.bottom = column.getBottom();
-        this.type = column.getType();
+        this.id = column.getId();
     }
 
     public IntRect(IntRect that) {
@@ -30,7 +30,7 @@ public class IntRect {
         this.right = that.right;
         this.top = that.top;
         this.bottom = that.bottom;
-        this.type = that.type;
+        this.id = that.id;
     }
 
     /**
@@ -49,7 +49,7 @@ public class IntRect {
         this.right = column.getHorizontalIndex();
         this.top = column.getTop();
         this.bottom = column.getBottom();
-        this.type = column.getType();
+        this.id = column.getId();
     }
 
     public int height() {
