@@ -6,4 +6,5 @@ public enum TileType {
     wall,
     deadly,
     finish,
+    depleted, // used when merging columns into rectangles to tell that this column had arleady been merged
 }

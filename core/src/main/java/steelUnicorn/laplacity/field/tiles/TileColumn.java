@@ -35,6 +35,10 @@ public class TileColumn {
         this.type = TileType.nonPhysical;
     }
 
+    public void deplete() {
+        this.type = TileType.depleted;
+    }
+
     public int getHorizontalIndex() {
         return this.horizontalIndex;
     }

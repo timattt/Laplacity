@@ -1,6 +1,6 @@
 package steelUnicorn.laplacity.field;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 
@@ -10,13 +10,14 @@ import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.FieldTile;
 import steelUnicorn.laplacity.field.tiles.FinishTile;
+import steelUnicorn.laplacity.field.tiles.IntRect;
 import steelUnicorn.laplacity.field.tiles.TileColumn;
 import steelUnicorn.laplacity.field.tiles.TileType;
 import steelUnicorn.laplacity.field.tiles.WallTile;
 
 public class TilesBodyHandler {
 
-	private static Vector<TileColumn> columns = new Vector<>();
+	private static ArrayList<TileColumn> columns = new ArrayList<>();
 
 	// Лучше от этого метода избавиться, но пока тип тайла иначе не выяснить
 	private static TileType typeOf(EmptyTile tile) {
@@ -39,7 +40,6 @@ public class TilesBodyHandler {
 
 		for (int i = 0; i < GameProcess.field.getFieldWidth(); i++) {
 			for (int j = 0; j < GameProcess.field.getFieldHeight(); j++) {
-				// do stuff
 				if (tiles[i][j] instanceof FieldTile) {
 					if (curColumn.getType() == TileType.nonPhysical) { // create new column
 						curColumn.set(i, j, typeOf(tiles[i][j]));
@@ -67,10 +67,30 @@ public class TilesBodyHandler {
 
 	public static void createBodies(EmptyTile[][] tiles) {
 		fillColumns(tiles);
-		for(TileColumn k : columns) {
-			Gdx.app.log("clm", "at [" + String.valueOf(k.getHorizontalIndex()) + "] top [" + String.valueOf(k.getTop()) + "] bottom [" + String.valueOf(k.getBottom()) + "] type " + String.valueOf(k.getType()));
+		int expectedIndex = 0;
+		IntRect bodyTemplate = new IntRect();
+		for (int i = 0; i < columns.size(); i++) {
+			if (columns.get(i).getType() != TileType.depleted) { // if the column hasn't been merged yet
+				bodyTemplate.set(columns.get(i)); // creating new rectangle
+				columns.get(i).deplete(); // make depleted as it's already a part of a rectangle
+				expectedIndex = columns.get(i).getHorizontalIndex() + 1;
+				if (i < columns.size() - 1) { // if it's not the last column (usually it's the right wall)
+					for (int j = i + 1; j < columns.size(); j++) {
+						if (columns.get(j).getHorizontalIndex() > expectedIndex) continue; // continue if we haven't found a mergeable column
+						// column is mergeable if following conditions are satisfied:
+						if ((columns.get(j).getType() == bodyTemplate.type) &&
+							(columns.get(j).getTop() == bodyTemplate.top) &&
+							(columns.get(j).getBottom() == bodyTemplate.bottom)) { // then merge this column into the rectangle template
+								bodyTemplate.extend();
+								columns.get(j).deplete(); // make depleted as it's already a part of a rectangle
+								expectedIndex++;
+							}
+					}
+				}
+				// Здесь нужно написать создание физического тела
+				Gdx.app.log(String.valueOf(bodyTemplate.type), "(" + String.valueOf(bodyTemplate.left) + ", " + String.valueOf(bodyTemplate.bottom) + ") -- (" + String.valueOf(bodyTemplate.right) + ", " + String.valueOf(bodyTemplate.top) + ")");
+			}	
 		}
-		//IntRect bodyTemplate = new IntRect();
 
 		/*
 		 Вот такие методы были для создаения коробки в каждой клетке

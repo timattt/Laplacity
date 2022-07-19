@@ -8,11 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import steelUnicorn.laplacity.field.tiles.BarrierTile;
-import steelUnicorn.laplacity.field.tiles.DeadlyTile;
-import steelUnicorn.laplacity.field.tiles.EmptyTile;
-import steelUnicorn.laplacity.field.tiles.FinishTile;
-import steelUnicorn.laplacity.field.tiles.WallTile;
+import steelUnicorn.laplacity.field.tiles.*;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 
 public class LaplacityField extends Group {

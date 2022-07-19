@@ -1,10 +1,11 @@
 package steelUnicorn.laplacity.field.tiles;
 
 public class IntRect {
-    private int left;
-    private int right;
-    private int top;
-    private int bottom;
+    public int left;
+    public int right;
+    public int top;
+    public int bottom;
+    public TileType type;
 
     public IntRect() {
     }
@@ -14,6 +15,7 @@ public class IntRect {
         this.right = column.getHorizontalIndex();
         this.top = column.getTop();
         this.bottom = column.getBottom();
+        this.type = column.getType();
     }
 
     public IntRect(IntRect that) {
@@ -21,6 +23,7 @@ public class IntRect {
         this.right = that.right;
         this.top = that.top;
         this.bottom = that.bottom;
+        this.type = that.type;
     }
 
     public void extend() {
@@ -32,5 +35,6 @@ public class IntRect {
         this.right = column.getHorizontalIndex();
         this.top = column.getTop();
         this.bottom = column.getBottom();
+        this.type = column.getType();
     }
 }
