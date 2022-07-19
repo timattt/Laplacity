@@ -31,6 +31,11 @@ import steelUnicorn.laplacity.utils.Settings;
 public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	private SpriteBatch transitionBatch;
+	private AdHandler adHandler;
+	
+	public Laplacity(AdHandler adHand) {
+		adHandler = adHand;
+	}
 
 	@Override
 	public void create() {
@@ -101,6 +106,12 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		super.dispose();
 		assetManager.dispose();
 		Settings.saveSettings();
+	}
+	
+	public void showInterstitial() {
+		if (adHandler != null) {
+			adHandler.showOrLoadInterstital();
+		}
 	}
 	
 }

@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.android;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import steelUnicorn.laplacity.Laplacity;
+import steelUnicorn.laplacity.AdHandler;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -25,7 +26,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 /** Launches the Android application. */
-public class AndroidLauncher extends AndroidApplication {
+public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	
 	private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3940256099942544/6300978111";
 	private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3940256099942544/1033173712";
@@ -72,7 +73,7 @@ public class AndroidLauncher extends AndroidApplication {
 	}
 
 	private View createGameView(AndroidApplicationConfiguration cfg) {
-		gameView = initializeForView(new Laplacity(), cfg);
+		gameView = initializeForView(new Laplacity(this), cfg);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
@@ -86,6 +87,7 @@ public class AndroidLauncher extends AndroidApplication {
 		adView.loadAd(adRequest);
 	}
 
+	@Override
 	public void showOrLoadInterstital() {
 		try {
 			runOnUiThread(new Runnable() {

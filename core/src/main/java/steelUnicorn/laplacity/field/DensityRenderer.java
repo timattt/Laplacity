@@ -52,8 +52,10 @@ public class DensityRenderer {
 	}
 	
 	public static void cleanup() {
-		densityPixmap.dispose();
-		densityTexture.dispose();
+		if ( densityPixmap != null)
+			densityPixmap.dispose();
+		if (densityTexture != null)
+			densityTexture.dispose();
 	}
 
 }
