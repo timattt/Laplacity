@@ -80,7 +80,7 @@ public class ControllableElectron extends Electron {
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
 				FieldPotentialCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
 				body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
-				body.getWorld().step(PHYSICS_TIME_STEP, 1, 1);
+				body.getWorld().step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 			}
 		}
 		resetToStartPosAndStartVelocity();

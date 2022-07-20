@@ -69,7 +69,7 @@ public class GameProcess {
 	// CONSTANTS
 	//========================================================================================
 	// PARTICLES
-	public static final float PARTICLE_CHARGE = 10f;
+	public static final float PARTICLE_CHARGE = 300f;
 	public static final float ELECTRON_SIZE = 2f;
 	public static final float PROTON_SIZE = 2f;
 	public static final float PARTICLE_MASS = 1f;
@@ -82,9 +82,8 @@ public class GameProcess {
 	
 	// TRAJECTORY
 	public static final int TRAJECTORY_POINTS = 50;
-	public static final float TRAJECTORY_STEP = 1f/60f;
 	public static final int STEPS_PER_POINT = 10;
-	public static final float TRAJECTORY_VELOCITY_MULTIPLIER = 3f;
+	public static final float TRAJECTORY_VELOCITY_MULTIPLIER = 10f;
 	
 	// SCORE
 	public static final float SCORE_PER_PARTICLE = 1f;
@@ -93,6 +92,8 @@ public class GameProcess {
 	
 	// PHYSICS
 	public static final float PHYSICS_TIME_STEP = 1f/60f;
+	public static final int VELOCITY_STEPS = 1;
+	public static final int POSITION_STEPS = 3;
 	//========================================================================================
 	
 	
@@ -136,7 +137,7 @@ public class GameProcess {
 		//debugRend.render(levelWorld, Globals.camera.combined);
 
 		if (currentGameMode == GameMode.flight) {
-			levelWorld.step(PHYSICS_TIME_STEP, 1, 1);
+			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}		
 		if (hitController.isHitted()) {
 			changeGameMode(GameMode.none);
