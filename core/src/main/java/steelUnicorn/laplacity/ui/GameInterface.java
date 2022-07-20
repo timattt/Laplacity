@@ -239,6 +239,7 @@ public class GameInterface extends Stage implements GestureListener {
 
 		if (len2 < 4 * ELECTRON_SIZE * ELECTRON_SIZE) {
 			TrajectoryRenderer.changingDir = true;
+			touchDragged(screenX, screenY, pointer);
 		} else {
 			TrajectoryRenderer.changingDir = false;
 		}

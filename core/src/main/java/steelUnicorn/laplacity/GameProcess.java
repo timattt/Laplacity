@@ -84,6 +84,7 @@ public class GameProcess {
 	public static final int TRAJECTORY_POINTS = 50;
 	public static final float TRAJECTORY_STEP = 1f/60f;
 	public static final int STEPS_PER_POINT = 10;
+	public static final float TRAJECTORY_VELOCITY_MULTIPLIER = 3f;
 	
 	// SCORE
 	public static final float SCORE_PER_PARTICLE = 1f;

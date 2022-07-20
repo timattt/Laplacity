@@ -53,7 +53,7 @@ public class ControllableElectron extends Electron {
 	}
 	
 	public void makeParticleMoveWithStartVelocity() {
-		body.setLinearVelocity(-startVelocityX, -startVelocityY);
+		body.setLinearVelocity(-startVelocityX * TRAJECTORY_VELOCITY_MULTIPLIER, -startVelocityY * TRAJECTORY_VELOCITY_MULTIPLIER);
 	}
 	
 	public void resetToStartPosAndStartVelocity() {
@@ -67,18 +67,21 @@ public class ControllableElectron extends Electron {
 		shapeRenderer.setColor(Color.YELLOW);
 		shapeRenderer.line(getX(), getY(), getX() + startVelocityX, getY() + startVelocityY);
 		shapeRenderer.end();
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(Color.RED);
+		shapeRenderer.circle(getX() + startVelocityX, getY() + startVelocityY, ELECTRON_SIZE / 3);
+		shapeRenderer.end();
 	}
 
 	public void calculateTrajectory(Vector2[] dest) {
 		makeParticleMoveWithStartVelocity();
 		for (int i = 0; i < TRAJECTORY_POINTS; i++) {
+			dest[i].set(body.getTransform().getPosition());
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
 				FieldPotentialCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
 				body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 				body.getWorld().step(PHYSICS_TIME_STEP, 1, 1);
 			}
-			
-			dest[i].set(body.getTransform().getPosition());
 		}
 		resetToStartPosAndStartVelocity();
 	}
