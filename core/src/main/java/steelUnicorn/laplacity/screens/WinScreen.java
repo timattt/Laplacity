@@ -30,13 +30,12 @@ public class WinScreen extends ManagedScreen {
 	private Stage winStage;
 	private Table root;
 	
-	private static final float padSize = 10;
-	private static final float btnWidth = 100;
-	private static final float btnHeight = 50;
-	private static final float contentWidth = 200;
-	private static final float contentHeight = 100;
-	private static final float fontScale = 2;
-	
+	private static final float spaceSize = Globals.UI_WORLD_HEIGHT * 0.03f;
+	private static final float btnWidth = Globals.UI_WORLD_WIDTH * 0.1f;
+	private static final float btnHeight = Globals.UI_WORLD_HEIGHT * 0.1f;
+	private static final float contentWidth = Globals.UI_WORLD_WIDTH * 0.2f;
+	private static final float contentHeight = Globals.UI_WORLD_HEIGHT * 0.2f;
+	private static final float fontScale = 1.5f;
 	/**
 	 * Constructor initialize stage and root table
 	 */
@@ -69,17 +68,21 @@ public class WinScreen extends ManagedScreen {
 		Label done = new Label("Done\n"
 				+ "Score " + String.valueOf(score), skin);
 		done.setAlignment(Align.center);
-		done.setFontScale(fontScale);
 		done.setName("doneLabel");
+		done.setFontScale(fontScale);
 		done.setColor(Color.BLACK);
-		root.add(done).pad(padSize).size(contentWidth, contentHeight);
+		root.add(done).space(spaceSize).size(contentWidth, contentHeight);
 		
 		root.row();
 		//buttons
 		Table buttons = new Table();
 		buttons.setName("buttonsTable");
-		root.add(buttons).pad(padSize);
-		
+		root.add(buttons).space(spaceSize);
+
+		buttons.defaults()
+				.space(spaceSize)
+				.size(btnWidth, btnHeight);
+
 		TextButton btn = new TextButton("Exit", skin);
 		btn.setName("exitBtn");
 		btn.addListener(new ChangeListener() {
@@ -88,7 +91,7 @@ public class WinScreen extends ManagedScreen {
 				Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
 			}
 		});
-		buttons.add(btn).pad(padSize).size(btnWidth, btnHeight);
+		buttons.add(btn);
 		
 		
 		btn = new TextButton("Replay", skin);
@@ -102,7 +105,7 @@ public class WinScreen extends ManagedScreen {
 				Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
 			}
 		});
-		buttons.add(btn).pad(padSize).size(btnWidth, btnHeight);
+		buttons.add(btn);
 		
 		
 		if (GameProcess.levelNumber < GameProcess.MAX_LEVEL) {	//For max level there is no need in next button
@@ -117,7 +120,7 @@ public class WinScreen extends ManagedScreen {
 					Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
 				}
 			});
-			buttons.add(btn).pad(padSize).size(btnWidth, btnHeight);
+			buttons.add(btn);
 		}
 	}
 	
