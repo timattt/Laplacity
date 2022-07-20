@@ -1,7 +1,7 @@
 package steelUnicorn.laplacity.particles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;

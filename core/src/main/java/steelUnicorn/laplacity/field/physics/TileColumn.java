@@ -1,4 +1,6 @@
-package steelUnicorn.laplacity.field.tiles;
+package steelUnicorn.laplacity.field.physics;
+
+import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
 /**
  * Represent a column of tiles in an integral-valued tile array.

@@ -1,7 +1,6 @@
-package steelUnicorn.laplacity;
+package steelUnicorn.laplacity.core;
 
-import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -24,7 +22,7 @@ import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
-import steelUnicorn.laplacity.ui.GameInterface;
+import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.Settings;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
@@ -55,9 +53,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();
 		shapeRenderer = new ShapeRenderer();
-		gameUI = new GameInterface(guiViewport);
 		inputMultiplexer = new InputMultiplexer();
-		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		
 		camera.position.x = SCREEN_WORLD_WIDTH / 2;
 		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
@@ -79,7 +75,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		assetManager = new AssetManager();
 
 		FileHandle[] lvls = Gdx.files.internal("levels/").list();
-		GameProcess.MAX_LEVEL = lvls.length;
+		TOTAL_LEVELS_AVAILABLE = lvls.length;
 		for (FileHandle lvl : lvls) {
 			assetManager.load(lvl.path(), Texture.class);
 		}
@@ -104,6 +100,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	@Override
 	public void dispose () {
 		super.dispose();
+		transitionBatch.dispose();
 		assetManager.dispose();
 		Settings.saveSettings();
 	}

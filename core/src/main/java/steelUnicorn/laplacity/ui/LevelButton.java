@@ -1,8 +1,8 @@
 package steelUnicorn.laplacity.ui;
 
 
-import steelUnicorn.laplacity.Globals;
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.Globals;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -19,10 +19,6 @@ public class LevelButton extends TextButton {
 		@Override
 		public void changed(ChangeEvent event, Actor actor) {
 			LevelButton btn = (LevelButton) actor;
-			
-			if (GameProcess.field != null) {
-				GameProcess.disposeLevel();
-			}
 			GameProcess.levelNumber = btn.levelNumber;
 			GameProcess.initLevel(Globals.assetManager.get(btn.lvlImgPath, Texture.class));
 			//Globals.game.setScreen(Globals.gameScreen);

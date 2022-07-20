@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.field.tiles;
+package steelUnicorn.laplacity.field.physics;
 
 /**
  * Represents a rectangle of tiles in an integral-valued tile grid.

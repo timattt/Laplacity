@@ -1,7 +1,7 @@
 package steelUnicorn.laplacity.field;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -9,21 +9,30 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import steelUnicorn.laplacity.field.tiles.*;
+import steelUnicorn.laplacity.field.graphics.DensityRenderer;
+import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
+import steelUnicorn.laplacity.field.tiles.BarrierTile;
+import steelUnicorn.laplacity.field.tiles.DeadlyTile;
+import steelUnicorn.laplacity.field.tiles.EmptyTile;
+import steelUnicorn.laplacity.field.tiles.FinishTile;
+import steelUnicorn.laplacity.field.tiles.WallTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 
 public class LaplacityField extends Group {
 
 	// Tiles
-	private EmptyTile[][] tiles;
+	public static EmptyTile[][] tiles;
 
 	// Sizes
-	private int fieldWidth;
-	private int fieldHeight;
+	public static int fieldWidth;
+	public static int fieldHeight;
 	
-	private float tileSize;
+	public static float tileSize;
 	
-	public void init(Texture tileMap) {
+	// Electron start pos
+	public static final Vector2 electronStartPos = new Vector2();
+	
+	public static void initField(Texture tileMap) {
 		fieldWidth = tileMap.getWidth();
 		fieldHeight = tileMap.getHeight();
 		tileSize = SCREEN_WORLD_HEIGHT / fieldHeight;
@@ -52,10 +61,15 @@ public class LaplacityField extends Group {
 				if (c == -16776961) {
 					tiles[i][j] = new DeadlyTile(i, j);
 				}
-				
+
 				// empty
 				else {
 					tiles[i][j] = new EmptyTile(i, j);
+				}
+				
+				// yellow
+				if (c == -65281) {
+					LaplacityField.fromGridToWorldCoords(i, j, electronStartPos);
 				}
 			}
 		}
@@ -65,60 +79,11 @@ public class LaplacityField extends Group {
 		tileMap.getTextureData().disposePixmap();
 	}
 
-	private void updateModeFlight() {
-		
-	}
-	
-	private void updateModeNone() {
-		
-	}
-	
-	private void updateModeDirichlet() {
-		
-	}
-	
-	private void updateModeEraser() {
-		
-	}
-
-	private void updateModeProtons() {
-		
-	}
-	
-	private void updateModeElectrons() {
-		
-	}
-
-	@Override
-	public void act(float delta) {		
-		super.act(delta);
-		switch (currentGameMode) {
-		case none:
-			updateModeNone();
-			break;
-		case flight:
-			updateModeFlight();
-			break;
-		case dirichlet:
-			updateModeDirichlet();
-			break;
-		case eraser:
-			updateModeEraser();
-			break;
-		case protons:
-			updateModeProtons();
-			break;
-		case electrons:
-			updateModeElectrons();
-			break;
-		}
-	}
-
-	public void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
+	public static void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
 		res.set((gridX + 0.5f) * tileSize, (gridY + 0.5f) * tileSize);
 	}
 	
-	public EmptyTile getTileFromWorldCoords(float x, float y) {
+	public static EmptyTile getTileFromWorldCoords(float x, float y) {
 		int i = (int) (x / tileSize);
 		int j = (int) (y / tileSize);
 		if (i >= 0 && j >= 0 && i < fieldWidth && j < fieldHeight) {
@@ -128,23 +93,7 @@ public class LaplacityField extends Group {
 		}
 	}
 
-	public int getFieldWidth() {
-		return fieldWidth;
-	}
-
-	public int getFieldHeight() {
-		return fieldHeight;
-	}
-
-	public float getTileSize() {
-		return tileSize;
-	}
-
-	public EmptyTile[][] getTiles() {
-		return tiles;
-	}
-
-	public void fillCircleWithRandomDensity(float x, float y, float r, float val) {
+	public static void fillCircleWithRandomDensity(float x, float y, float r, float val) {
 		EmptyTile center = getTileFromWorldCoords(x, y);
 
 		if (center == null) {
@@ -165,7 +114,7 @@ public class LaplacityField extends Group {
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r && Math.random() < DIRICHLET_SPRAY_TILE_PROBABILITY) {
 					EmptyTile tile = tiles[u][v];
-					tile.setChargeDensity((float) (Math.random() * val));
+					tile.addChargeDensity((float) (Math.random() * val));
 				}
 			}
 		}
@@ -173,7 +122,7 @@ public class LaplacityField extends Group {
 		DensityRenderer.updateDensity();
 	}
 	
-	public void clearCircleDensity(float x, float y, float r) {
+	public static void clearCircleDensity(float x, float y, float r) {
 		EmptyTile center = getTileFromWorldCoords(x, y);
 		
 		int i = center.getGridX();

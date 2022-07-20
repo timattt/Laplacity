@@ -1,14 +1,13 @@
 package steelUnicorn.laplacity.field.tiles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import steelUnicorn.laplacity.field.DensityRenderer;
-import steelUnicorn.laplacity.field.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 
 public class EmptyTile extends Actor {
 
@@ -36,7 +35,7 @@ public class EmptyTile extends Actor {
 
 		registerObject(this);
 		
-		field.fromGridToWorldCoords(gridX, gridY, TMP1);
+		LaplacityField.fromGridToWorldCoords(gridX, gridY, TMP1);
 		setPosition(TMP1.x, TMP1.y);
 		
 		setColor(0f, 0f, 0f, 0f);
@@ -44,25 +43,33 @@ public class EmptyTile extends Actor {
 		setId(1);
 	}
 
-	public boolean isAllowDensityChange() {
-		return allowDensityChange;
-	}
-
-	public void setAllowDensityChange(boolean allowDensityChange) {
-		this.allowDensityChange = allowDensityChange;
-	}
-
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		drawArrow();
+	public void act(float delta) {		
+	}
+
+	public void addChargeDensity(float delta) {
+		if (allowDensityChange) {
+			this.chargeDensity += delta;
+			chargeDensity = Math.min(MAX_DENSITY, chargeDensity);
+			DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
+		}
+	}
+
+	public void addInvisibleDensity(float delta) {
+		invisibleDensity += delta;
 	}
 	
-	protected void drawArrow() {
-		
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		drawIntensityArrow();
+	}
+
+	protected void drawIntensityArrow() {
+		/*
 		if (gridX % 1 == 0 && gridY % 1 == 0) {
-		float sz = field.getTileSize();
+		float sz = LaplacityField.tileSize;
 		TMP1.set((gridX)*sz, (gridY)*sz);
-		FieldPotentialCalculator.calculateForce(TMP1.x, TMP1.y, field.getTiles(), TMP2);
+		FieldPotentialCalculator.calculateFieldIntensity(TMP1.x, TMP1.y, LaplacityField.tiles, TMP2);
 		TMP2.scl(0.03f);
 		TMP1.sub(sz*(- 0.5f), sz*(- 0.5f));
 		TMP2.add(TMP1);
@@ -71,28 +78,9 @@ public class EmptyTile extends Actor {
 		shapeRenderer.setColor(1f, 1f, 0, 1f);
 		shapeRenderer.line(TMP1, TMP2);
 		shapeRenderer.end();
-		}
+		}*/
 	}
-
-	public void setChargeDensity(float chargeDensity) {
-		if (allowDensityChange) {
-			this.chargeDensity = chargeDensity;
-			DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
-		}
-	}
-
-	@Override
-	public void act(float delta) {		
-	}
-
-	public float getPotential() {
-		return potential;
-	}
-
-	public void setPotential(float potential) {
-		this.potential = potential;
-	}
-
+	
 	public int getGridX() {
 		return gridX;
 	}
@@ -100,13 +88,32 @@ public class EmptyTile extends Actor {
 	public int getGridY() {
 		return gridY;
 	}
-	
+
+	public int getId() {
+		return id;
+	}
+
+	public float getPotential() {
+		return potential;
+	}
+
 	public float getTotalChargeDensity() {
 		return chargeDensity + invisibleDensity;
 	}
 
-	public int getId() {
-		return id;
+	public boolean isAllowDensityChange() {
+		return allowDensityChange;
+	}
+	
+	protected void setAllowDensityChange(boolean allowDensityChange) {
+		this.allowDensityChange = allowDensityChange;
+	}
+
+	public void setChargeDensity(float chargeDensity) {
+		if (allowDensityChange) {
+			this.chargeDensity = chargeDensity;
+			DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
+		}
 	}
 
 	protected void setId(int id) {
@@ -117,8 +124,8 @@ public class EmptyTile extends Actor {
 		this.invisibleDensity = invisibleDensity;
 	}
 	
-	public void addInvisibleDensity(float delta) {
-		invisibleDensity += delta;
+	public void setPotential(float potential) {
+		this.potential = potential;
 	}
 
 }

@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.field;
+package steelUnicorn.laplacity;
 
 public enum GameMode {
 	none,

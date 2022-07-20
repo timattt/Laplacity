@@ -1,6 +1,6 @@
 package steelUnicorn.laplacity.screens;
 
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -16,7 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import de.eskalon.commons.screen.ManagedScreen;
-import steelUnicorn.laplacity.Globals;
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.ui.LevelButton;
 import steelUnicorn.laplacity.utils.Settings;
 
