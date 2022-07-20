@@ -46,9 +46,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		
 		game = this;
 		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
-		guiViewport = new ScreenViewport();
+		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
 		gameViewport = new ExtendViewport(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT, camera);
-		guiViewport.setUnitsPerPixel(0.5f);
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();

@@ -23,7 +23,7 @@ public class Globals {
 	// GLOBAL INSTANCES
 	public static OrthographicCamera camera;
 	public static Laplacity game;
-	public static ScreenViewport guiViewport;
+	public static ExtendViewport guiViewport;
 	public static ExtendViewport gameViewport;
 	public static ShapeRenderer shapeRenderer;
 	public static InputMultiplexer inputMultiplexer;
@@ -36,7 +36,12 @@ public class Globals {
 	// Tramsition names
 	public static final String nameSlideIn = "slideIn";
 	public static final String nameSlideOut = "slideOut";
-	
+
+	// UI Viewport. Default world parameters for 16:9 ratio
+	public static final float UI_WORLD_WIDTH = 1024;
+	public static final float UI_WORLD_HEIGHT = 576;
+
+
 	// Ingame viewport
 	/**
 	 * Сколько приходится игровых единиц на ширину экрана

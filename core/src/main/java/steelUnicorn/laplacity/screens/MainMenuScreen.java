@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
@@ -26,6 +27,11 @@ import steelUnicorn.laplacity.utils.Settings;
  */
 public class MainMenuScreen extends ManagedScreen {
 	Stage menuStage;
+	private static final float menuWidth = UI_WORLD_WIDTH * 0.2f;	// << menu button width ratio
+	private static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
+	private static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
+
+	private static final float lvlBtnSize = UI_WORLD_WIDTH * 0.04f;
 
 	private Table levelsTab;
 	private Table optionsTab;
@@ -46,7 +52,6 @@ public class MainMenuScreen extends ManagedScreen {
 		menuStage = new Stage(guiViewport);
 
 		Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
-
 		Table root = new Table();
 		root.setFillParent(true);
 		menuStage.addActor(root);
@@ -81,11 +86,14 @@ public class MainMenuScreen extends ManagedScreen {
 
 		Label description = new Label("Levels:", skin);
 		description.setColor(Color.BLACK);
-		levelsTab.add(description).spaceBottom(20);
+		levelsTab.add(description).space(menuSpaceSize);
 		levelsTab.row();
 
 		Table levels = new Table();
 		levelsTab.add(levels);
+		levels.defaults()
+				.width(lvlBtnSize).height(lvlBtnSize)
+				.space(menuSpaceSize);
 
 		final int levelsRow = 4;
 		FileHandle[] lvlImages = Gdx.files.internal("levels/").list();
@@ -95,7 +103,7 @@ public class MainMenuScreen extends ManagedScreen {
 			btn.setName("level" + String.valueOf(i));
 			btn.addListener(LevelButton.listener);
 
-			levels.add(btn).space(20);
+			levels.add(btn);
 			//new Row
 			if ((i + 1) % levelsRow == 0 && (i + 1) != lvlImages.length) {
 				levels.row();
@@ -118,11 +126,12 @@ public class MainMenuScreen extends ManagedScreen {
 
 		Label description = new Label("Options:", skin);
 		description.setColor(Color.BLACK);
-		optionsTab.add(description).spaceBottom(20);
+		optionsTab.add(description).space(menuSpaceSize);
 		optionsTab.row();
 
 		Table options = new Table();
-		optionsTab.add(options).spaceBottom(20);
+		optionsTab.add(options).spaceBottom(menuSpaceSize);
+		options.defaults().left();
 		//Sound and music
 		CheckBox checkBox = new CheckBox("Enable sound", skin);
 		checkBox.setName("sound_checkbox");
@@ -166,6 +175,7 @@ public class MainMenuScreen extends ManagedScreen {
 		Label label = new Label("Credits:\n"
 				+ "Made by Steel Unicorn\n"
 				+ "steel-unicorn.org", skin);
+		label.setAlignment(Align.center);
 		label.setColor(Color.BLACK);
 		label.setName("credits_label");
 		creditsTab.add(label);
@@ -179,13 +189,16 @@ public class MainMenuScreen extends ManagedScreen {
 	 */
 	private void createMainMenu(Table root, Skin skin) {
 		Table mainMenu = new Table();
-		mainMenu.setName("mainMenu");
-		root.add(mainMenu).expandX().left().padLeft(100);
+		root.add(mainMenu).expandX().uniform();
 
 		Table tmpTab = new Table();
 		tmpTab.setName("tab");
-		root.add(tmpTab).expandX();
+		root.add(tmpTab).expandX().uniform();
 
+		mainMenu.defaults()
+				.width(menuWidth)
+				.height(menuHeight)
+				.space(menuSpaceSize);
 		//play
 		TextButton button = new TextButton("Play", skin);
 		button.setName("playBtn");
@@ -196,7 +209,7 @@ public class MainMenuScreen extends ManagedScreen {
 				root.getCell(root.findActor("tab")).setActor(levelsTab);
 			}
 		});
-		mainMenu.add(button).width(120).space(20);
+		mainMenu.add(button);
 
 		//options
 		mainMenu.row();
@@ -209,7 +222,7 @@ public class MainMenuScreen extends ManagedScreen {
 				root.getCell(root.findActor("tab")).setActor(optionsTab);
 			}
 		});
-		mainMenu.add(button).width(120).space(20);
+		mainMenu.add(button);
 
 		//credits
 		mainMenu.row();
@@ -222,7 +235,7 @@ public class MainMenuScreen extends ManagedScreen {
 				root.getCell(root.findActor("tab")).setActor(creditsTab);
 			}
 		});
-		mainMenu.add(button).width(120).space(20);
+		mainMenu.add(button);
 		
 		//testads
 		mainMenu.row();
@@ -234,7 +247,7 @@ public class MainMenuScreen extends ManagedScreen {
 				Globals.game.showInterstitial();
 			}
 		});
-		mainMenu.add(button).width(120).space(20);
+		mainMenu.add(button);
 	}
 
 	@Override
@@ -243,6 +256,7 @@ public class MainMenuScreen extends ManagedScreen {
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		menuStage.act();
 		menuStage.draw();
 	}
 
