@@ -163,4 +163,18 @@ public class LaplacityField extends Group {
 		
 		DensityRenderer.updateDensity();
 	}
+
+	/**
+	 * Удаляет всё электростатическое поле с клеток, включая точечные заряды.
+	 * Не забудьте обновить текстуру плотности и удалить физические тела
+	 * точечных зарядов.
+	 */
+	public static void clearElectricField() {
+		for (int i = 0; i < fieldWidth; i++)
+			for (int j = 0; j < fieldHeight; j++) {
+				tiles[i][j].setChargeDensity(0.0f);
+				tiles[i][j].setInvisibleDensity(0.0f);
+				tiles[i][j].setPotential(0.0f);
+			}
+	}
 }
