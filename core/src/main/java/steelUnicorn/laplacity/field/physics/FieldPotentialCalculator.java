@@ -8,80 +8,91 @@ import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
 /**
- * TODO Igor нужны доки к классу и небольшой рефакторинг
- *
+ * Класс, содержащий функции для расчёта физических параметров
+ * электростатического поля.
  */
 public class FieldPotentialCalculator {
 
 	// Constants
 	public static final float precision = 0.001f;
-	public static final int n_iter = 1000;
+	public static final int maxIter = 1000;
 
 	// Buffers for potential calculation
-	private static int buf_length = 0;
-	private static float[] rk_buffer;
-	private static float[] density_vector;
-	private static float[] potential_vector;
-	private static float[] a_conv_rk;
+	private static int bufLength = 0;
+	private static float[] residualsBuffer;
+	private static float[] densityVector;
+	private static float[] potentialVector;
+	private static float[] tmpBuffer;
 
-	private static void intermediateConvolution(float[] dst, float[] u, int N, int M, float h) {
-		int n = u.length;
-		if ((M * N != n) || (dst.length != n)) {
+	/**
+	 * Функция, вычисляющая i-й элемент свёртки заданного вектора с блочной матрицей свойств поля.
+	 * В данной задаче матрица определяется всего тремя числами; более пордробно о задаче и
+	 * методах решения можно прочитать в документе {@link https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md}.
+	 * @param vec Вектор, с которым сворачивается матрица
+	 * @param N Параметр матрицы: размерность одного блока (Здесь она равна ширине игрового поля)
+	 * @param M Параметр матрицы: размерность матрицы в блоках (Здесь: высота игрового поля)
+	 * @param h Параметр матрицы: шаг вычислительной сетки (Здесь: размер клетки игрового поля)
+	 * @param convolved Вектор, в который записывается результат свёртки
+	 */
+	private static void intermediateConvolution(float[] vec, int N, int M, float h, float[] convolved) {
+		int n = vec.length;
+		if ((M * N != n) || (convolved.length != n)) {
 			throw new RuntimeException("Fatal error: mismatched field and/or intermediate buffer dimensions");
 		}
-		if (M == 1) { // degenerate case, this means a three-diagonal matrix
-			dst[0] = -4 * u[0] + u[1];
+		if (M == 1) { // Вырожденный случай: поле единичной высоты
+			convolved[0] = -4 * vec[0] + vec[1];
 			for (int i = 1; i < N - 1; i++)
-				dst[i] = u[i - 1] - 4 * u[i] + u[i + 1];
-			dst[N - 1] = u[N - 2] - 4 * u[N - 1];
+				convolved[i] = vec[i - 1] - 4 * vec[i] + vec[i + 1];
+			convolved[N - 1] = vec[N - 2] - 4 * vec[N - 1];
 		}
-		else if (N == 1) { // another degenerate case, this is also a three-diagonal matrix
-			dst[0] = -4 * u[0] + u[1];
+		else if (N == 1) { // Вырожденный случай: поле единичной ширины
+			convolved[0] = -4 * vec[0] + vec[1];
 			for (int j = 1; j < M - 1; j++)
-				dst[j] = u[j - 1] - 4 * u[j] + u[j + 1];
-			dst[M - 1] = u[M - 2] - 4 * u[M - 1];
-		} else { // M and N are at least two, the "normal" case
-			// Multiplying the first block (the first "row" of the grid)
-			dst[0] = -4 * u[0] + u[1] + u[N]; // the first, "degenerate" row
+				convolved[j] = vec[j - 1] - 4 * vec[j] + vec[j + 1];
+			convolved[M - 1] = vec[M - 2] - 4 * vec[M - 1];
+		} else { // Нормальный случай: поле имеет форму "матрицы", а не столбца или строки
+			// Сворачиваем первый блок матрицы (Здесь нет левой единичной матрицы, см. схему по ссылке выше)
+			convolved[0] = -4 * vec[0] + vec[1] + vec[N]; // первая, вырожденная строка блока
 			for (int i = 1; i < N - 1; i++)
-				dst[i] = u[i - 1] - 4 * u[i] + u[i + 1] + u[i + N];
-			dst[N - 1] =  u[N - 2] - 4 * u[N - 1] + u [N + N - 1]; // the last, "degenerate" row
+				convolved[i] = vec[i - 1] - 4 * vec[i] + vec[i + 1] + vec[i + N];
+			convolved[N - 1] =  vec[N - 2] - 4 * vec[N - 1] + vec [N + N - 1]; // последняя, вырожденная строка блока
 
-			// Multiplying the normal blocks in between
+			// Сворачиваем нормальные блоки между первым и последним
 			for (int j = 1; j < M - 1; j++){
-				int l = j * N; // auxilary variable, see below how it's used
-				dst[l] = u[l - N] - 4 * u[l] + u[l + 1] + u[l + N]; // the first, "degenerate" row
+				int l = j * N; // вспомогательный индекс, отвечает за выбор нужного блока
+				convolved[l] = vec[l - N] - 4 * vec[l] + vec[l + 1] + vec[l + N]; // первая, вырожденная строка блока
 				for (int i = 1; i < N - 1; i++)
-					dst[l + i] = u[l + i - N] + u[l + i - 1] - 4 * u[l + i] + u[l + i + 1] + u[l + i + N];
-				dst[l + N - 1] =  u[l - 1] + u[l + N - 2] - 4 * u[l + N - 1] + u [l + N + N - 1]; // the last, "degenerate" row
+					convolved[l + i] = vec[l + i - N] + vec[l + i - 1] - 4 * vec[l + i] + vec[l + i + 1] + vec[l + i + N];
+				convolved[l + N - 1] =  vec[l - 1] + vec[l + N - 2] - 4 * vec[l + N - 1] + vec [l + N + N - 1]; // последняя, вырожденная строка блока
 			}
-			// Multiplying the last block
+			// Сворачиваем последний блок
 			int l = (M - 1) * N;
-			dst[l] = u[l - N] - 4 * u[l] + u[l + 1]; // the first, "degenerate" row
+			convolved[l] = vec[l - N] - 4 * vec[l] + vec[l + 1]; // первая, вырожденная строка блока
 			for (int i = 1; i < N - 1; i++)
-				dst[l + i] = u[l + i - N] + u[l + i - 1] - 4 * u[l + i] + u[l + i + 1];
-			dst[l + N - 1] =  u[l - 1] + u[l + N - 2] - 4 * u[l + N - 1]; // the last, "degenerate" row
+				convolved[l + i] = vec[l + i - N] + vec[l + i - 1] - 4 * vec[l + i] + vec[l + i + 1];
+			convolved[l + N - 1] =  vec[l - 1] + vec[l + N - 2] - 4 * vec[l + N - 1]; // первая, вырожденная строка блока
 			}
+		// Нормируем вектор на величину шага сетки
 		for (int i = 0; i < n; i++)
-			dst[i] /= (h * h);
+			convolved[i] /= (h * h);
 	}
 
-	private static void gradDescend(float[] f, float[] dst, float precision, int N, int M, float h, int n_iter) {
-		int n = f.length;
+	private static void gradDescend(float[] coeffs, int N, int M, float h, float[] result) {
+		int n = coeffs.length;
 		if (M * N != n) {
 			throw new RuntimeException("Fatal error: mismatched field and intermediate buffer dimensions");
 		}
-		Arrays.fill(dst, 0.0f);
-		for (int k = 0; k < n_iter; k++) {
-			intermediateConvolution(rk_buffer, dst, N, M, h); // now "rk_buffer" is "a @ x" in Python notation
+		Arrays.fill(result, 0.0f);
+		for (int k = 0; k < maxIter; k++) {
+			intermediateConvolution(result, N, M, h, residualsBuffer); // now "rk_buffer" is "a @ x" in Python notation
 			for (int i = 0; i < n; i++)
-				rk_buffer[i] -= f[i];
-			intermediateConvolution(a_conv_rk, rk_buffer, N, M, h);
-			float tk_numerator = 0, tk_denumerator = 0;
+				residualsBuffer[i] -= coeffs[i];
+			intermediateConvolution(residualsBuffer, N, M, h, tmpBuffer);
+			float residualsDotResiduals = 0, tmpDotResiduals = 0;
 			// now let's calculate residual (element-wise) and descend step value ("tk" variable)
 			for (int i = 0; i < n; i++) {
-				tk_numerator += rk_buffer[i] * rk_buffer[i];
-				tk_denumerator += rk_buffer[i] * a_conv_rk[i];
+				residualsDotResiduals += residualsBuffer[i] * residualsBuffer[i];
+				tmpDotResiduals += tmpBuffer[i] * residualsBuffer[i];
 			}
 			/*
 			 * After this loop "rk_buffer" holds a residuals vector (rk),
@@ -89,62 +100,68 @@ public class FieldPotentialCalculator {
 			 * and tk_denumerator is dot((a @ x), rk)
 			 */
 			// Check if denumarator is zero
-			if (Math.abs(tk_denumerator) < precision) { // (= is close to zero, may cause NAN or INF)
-				if (Math.abs(tk_numerator) < precision) { // if rk is close to zero too
+			if (Math.abs(tmpDotResiduals) < precision) { // (= is close to zero, may cause NAN or INF)
+				if (Math.abs(residualsDotResiduals) < precision) { // if rk is close to zero too
 					break; // then we have already solved the problem
 				} else {
 					throw new RuntimeException("Fatal computational error: redraw your field");
 				}
 			}
-			float tk = tk_numerator / tk_denumerator;
-			float delta = 0, local_delta = 0;
+			float descendStepValue = residualsDotResiduals / tmpDotResiduals;
+			float maxDifference = 0f, difference = 0f, nextIterOfResult = 0f;
 			for (int i = 0; i < n; i++) {
-				float next_x = dst[i] - (tk * rk_buffer[i]);
-				local_delta = Math.abs(dst[i] - next_x);
-				if (local_delta > delta)
-					delta = local_delta;
-				dst[i] = next_x;
+				nextIterOfResult = result[i] - (descendStepValue * residualsBuffer[i]);
+				difference = Math.abs(result[i] - nextIterOfResult);
+				if (difference > maxDifference)
+					maxDifference = difference;
+				result[i] = nextIterOfResult;
 			}
-			if (delta < precision)
+			if (maxDifference < precision)
 				break;
-			/*
-			 * The case when it does not converge is not handled.
-			 * Well, it *must* converge with that given matrix, but still it may take more iterations that n_iter.
-			 * Maybe here we should throw an exception that would show a message like "Your field is too powerful:( , move your charges a bit!"
-			 * and switch the gamemode back from simulation to edit?
-			 * TODO: exception handling
-			 */
 		}
+		/*
+		 * The case when it does not converge is not handled.
+		 * Well, it *must* converge with that given matrix, but still it may take more iterations that n_iter.
+		 * Maybe here we should throw an exception that would show a message like "Your field is too powerful:( , move your charges a bit!"
+		 * and switch the gamemode back from simulation to edit?
+		 * TODO: exception handling
+		 */
 	}
 
-	private static void resizeBuffers(int new_length) {
-		density_vector = new float[new_length];
-		potential_vector = new float[new_length];
-		rk_buffer = new float[new_length];
-		a_conv_rk = new float[new_length];
-		buf_length = new_length;
+	private static void resizeBuffers(int newLength) {
+		densityVector = new float[newLength];
+		potentialVector = new float[newLength];
+		residualsBuffer = new float[newLength];
+		tmpBuffer = new float[newLength];
+		bufLength = newLength;
 	}
 
+	/**
+	 * Рассчитать 
+	 * Подробное описание методов и алгоритма расчёта можно найти в
+	 * {@link https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md}
+	 * @param tiles
+	 */
 	public static void calculateFieldPotential(EmptyTile[][] tiles) {
-		int field_width = LaplacityField.fieldWidth, field_height = LaplacityField.fieldHeight;
-		if ((field_width == 0) || (field_height == 0))
+		int fieldWidth = LaplacityField.fieldWidth, fieldHeight = LaplacityField.fieldHeight;
+		if ((fieldWidth == 0) || (fieldHeight == 0))
 			throw new RuntimeException("Fatal error: zero field dimensions");
-		int n = field_width * field_height;
-		if (n != buf_length)
+		int n = fieldWidth * fieldHeight;
+		if (n != bufLength)
 			resizeBuffers(n);
 		int k = 0;
-		for (int i = 0; i < field_width; i++)
-			for (int j = 0; j < field_height; j++)
-				density_vector[k++] = -tiles[i][j].getTotalChargeDensity();
-		gradDescend(density_vector, potential_vector, precision, field_height, field_width, LaplacityField.tileSize, n_iter);
+		for (int i = 0; i < fieldWidth; i++)
+			for (int j = 0; j < fieldHeight; j++)
+				densityVector[k++] = -tiles[i][j].getTotalChargeDensity();
+		gradDescend(densityVector, fieldHeight, fieldWidth, LaplacityField.tileSize, potentialVector);
 		k = 0;
-		for (int i = 0; i < field_width; i++)
-			for (int j = 0; j < field_height; j++)
-				tiles[i][j].setPotential(potential_vector[k++]);
+		for (int i = 0; i < fieldWidth; i++)
+			for (int j = 0; j < fieldHeight; j++)
+				tiles[i][j].setPotential(potentialVector[k++]);
 	}
 
-	private static float twoPointScheme(float f_minus, float f_plus, float step) {
-		return 0.5f * (f_plus - f_minus) / step;
+	private static float twoPointScheme(float fMinus, float fPlus, float step) {
+		return 0.5f * (fPlus - fMinus) / step;
 	}
 	
 	/**
