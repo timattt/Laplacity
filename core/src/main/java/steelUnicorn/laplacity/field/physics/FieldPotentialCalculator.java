@@ -13,11 +13,12 @@ import steelUnicorn.laplacity.field.tiles.EmptyTile;
  */
 public class FieldPotentialCalculator {
 
-	// Constants
+	// Вычислительные константы
+	// Можно перенести их в другое место из этого класса
 	public static final float precision = 0.001f;
 	public static final int maxIter = 1000;
 
-	// Buffers for potential calculation
+	// Буферы для промежуточных вычислений
 	private static int bufLength = 0;
 	private static float[] residualsBuffer;
 	private static float[] densityVector;
@@ -77,37 +78,52 @@ public class FieldPotentialCalculator {
 			convolved[i] /= (h * h);
 	}
 
+	/**
+	 * Реализует метод градиентного спуска для уравнения Пуассона
+	 * в прямоугольной области с нулевыми граничными условиями и
+	 * квадратной равномерной вычислительной сеткой.
+	 * @param coeffs Столбец коэффициентов
+	 * @param N Ширина области в клетках
+	 * @param M Высота области в клетках
+	 * @param h Сторона клетки
+	 * @param result Вектор, в который будет записан ответ
+	 */
 	private static void gradDescend(float[] coeffs, int N, int M, float h, float[] result) {
 		int n = coeffs.length;
 		if (M * N != n) {
 			throw new RuntimeException("Fatal error: mismatched field and intermediate buffer dimensions");
 		}
+		// Задание начального приближения
 		Arrays.fill(result, 0.0f);
+
+		// Главный цикл итерационного метода
 		for (int k = 0; k < maxIter; k++) {
-			intermediateConvolution(result, N, M, h, residualsBuffer); // now "rk_buffer" is "a @ x" in Python notation
+
+			// Вычисление вектора невязки
+			intermediateConvolution(result, N, M, h, residualsBuffer);
 			for (int i = 0; i < n; i++)
 				residualsBuffer[i] -= coeffs[i];
+
+			// Временный вектор для вычисления шага итерации
 			intermediateConvolution(residualsBuffer, N, M, h, tmpBuffer);
+
+			// Вычисление шага итерации: числитель отдельно от знаменателя
 			float residualsDotResiduals = 0, tmpDotResiduals = 0;
-			// now let's calculate residual (element-wise) and descend step value ("tk" variable)
 			for (int i = 0; i < n; i++) {
 				residualsDotResiduals += residualsBuffer[i] * residualsBuffer[i];
 				tmpDotResiduals += tmpBuffer[i] * residualsBuffer[i];
 			}
-			/*
-			 * After this loop "rk_buffer" holds a residuals vector (rk),
-			 * tk_numerator is dot(rk, rk),
-			 * and tk_denumerator is dot((a @ x), rk)
-			 */
-			// Check if denumarator is zero
-			if (Math.abs(tmpDotResiduals) < precision) { // (= is close to zero, may cause NAN or INF)
-				if (Math.abs(residualsDotResiduals) < precision) { // if rk is close to zero too
-					break; // then we have already solved the problem
-				} else {
+			// Проверим, насколько близок к нулю знаменатель
+			if (Math.abs(tmpDotResiduals) < precision) {
+				if (Math.abs(residualsDotResiduals) < precision) { // Если невязка тоже небольшая, то скорее всего мы уже решили задачу
+					break; // Эта ветвь часто достигается, когда поле изначально нулевое
+				} else { // Эта ветвь по идее достигается с очень мальенькой вероятностью, но не нулевой
 					throw new RuntimeException("Fatal computational error: redraw your field");
 				}
 			}
 			float descendStepValue = residualsDotResiduals / tmpDotResiduals;
+
+			// Записываем новую итерацию и проверяем условие нормального выхода из цикла
 			float maxDifference = 0f, difference = 0f, nextIterOfResult = 0f;
 			for (int i = 0; i < n; i++) {
 				nextIterOfResult = result[i] - (descendStepValue * residualsBuffer[i]);
@@ -120,11 +136,9 @@ public class FieldPotentialCalculator {
 				break;
 		}
 		/*
-		 * The case when it does not converge is not handled.
-		 * Well, it *must* converge with that given matrix, but still it may take more iterations that n_iter.
-		 * Maybe here we should throw an exception that would show a message like "Your field is too powerful:( , move your charges a bit!"
-		 * and switch the gamemode back from simulation to edit?
-		 * TODO: exception handling
+		 * Случай, когда метод не сходится, никак не покрыт
+		 * Опять же, задача хорошо изучена, и вероятность этого маленькая, но не ноль
+		 * TODO: исключение для этого случая
 		 */
 	}
 
@@ -137,10 +151,11 @@ public class FieldPotentialCalculator {
 	}
 
 	/**
-	 * Рассчитать 
-	 * Подробное описание методов и алгоритма расчёта можно найти в
-	 * {@link https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md}
-	 * @param tiles
+	 * Рассчитать потенциал электростатического поля для заданной плотности и нулевых граничных
+	 * условий (граница начинается за пределами игрового поля). Метод перезаписывает
+	 * поле {@linkplain EmptyTile#potential}. Подробное описание методов и алгоритма расчёта
+	 * можно найти в {@link https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md}
+	 * @param tiles Клетки игрового поля 
 	 */
 	public static void calculateFieldPotential(EmptyTile[][] tiles) {
 		int fieldWidth = LaplacityField.fieldWidth, fieldHeight = LaplacityField.fieldHeight;
@@ -165,38 +180,40 @@ public class FieldPotentialCalculator {
 	}
 	
 	/**
-	 * Считаем напряженность поля в заданной точке. И кладем ее в result.
-	 * Перед вызовом убедись, что поле -- это не палка размерности M*1 или 1*N
-	 * Потенциал для такой фигни скорее всего считается, а сила нет
-	 * Можно сделать, чтобы считалось, но это по-моему лишнее
+	 * Вычислить напряжённость электростатического поля в точке игрового поля,
+	 * заданной вещественными координатами. Внимание: поле должно быть
+	 * невырожденным, т.е. иметь высоту и ширину больше 1.
+	 * @param x Горизонтальная координата
+	 * @param y Вертикальная координата
+	 * @param tiles Клетки игрового поля
+	 * @param result Результат: напряжённость
 	 */
 	public static void calculateFieldIntensity(float x, float y, EmptyTile[][] tiles, Vector2 result) {
-		// Get integer indices of the tile the (x,y) poitn currently in\
+		// Переводим вещественные координаты в целочисленные индексы массива клеток
 		float h = LaplacityField.tileSize;
 		int i = (int)(x / h);
 		int j = (int)(y / h);
-		// Check if we aren't out of boundaries:
+		// Проверка границ:
 		if ((i < 0) || (j < 0) || (i >= LaplacityField.fieldWidth) || (j >= LaplacityField.fieldHeight)) {
 			result.setZero();
 			return;
 			//throw new RuntimeException("Attempt to calculate force outside the game field");
 		}
-		// Separately calculate derivatives:
-			if (i == 0) { // (x,y) is adjacent to the lower edge
-				result.x = -twoPointScheme(0.0f, tiles[i + 1][j].getPotential(), h);
-			} else if (i == LaplacityField.fieldWidth - 1) { // Upper edge
-				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), 0.0f, h);
-			} else { // Inner point
-				result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), tiles[i + 1][j].getPotential(), h);
-			}
-			// Repeat this for y
-			if (j == 0) { //Left edge
-				result.y = -twoPointScheme(0.0f, tiles[i][j + 1].getPotential(), h);
-			} else if (j == LaplacityField.fieldHeight - 1) { // Right edge
-				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h);
-			} else { // Inner point
-				result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h);
-			}
+		// Раздельно считаем каждую компоненту вектора (напряженность - градиент потенциала с обратным знаком)
+		if (i == 0) { // (x,y) прилегает к левой границе
+			result.x = -twoPointScheme(0.0f, tiles[i + 1][j].getPotential(), h);
+		} else if (i == LaplacityField.fieldWidth - 1) { // к правой границе
+			result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), 0.0f, h);
+		} else { // это внутрення точка
+			result.x = -twoPointScheme(tiles[i - 1][j].getPotential(), tiles[i + 1][j].getPotential(), h);
 		}
-
+		// Повторим то же для оси Y
+		if (j == 0) { // нижняя граница
+			result.y = -twoPointScheme(0.0f, tiles[i][j + 1].getPotential(), h);
+		} else if (j == LaplacityField.fieldHeight - 1) { // верхняя граница
+			result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h);
+		} else { // внутренняя точка
+			result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h);
+		}
+	}
 }
