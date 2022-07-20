@@ -18,6 +18,13 @@ import steelUnicorn.laplacity.field.tiles.FinishTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 
+/**
+ * Класс со статическими полями и функциями, связанными с tilemap. Тут есть размеры поля, массив тайлов,
+ * размер тайла. Еще тут есть функции для перехода из координат сетки в мировые координаты и наоборот.
+ * И тут еще есть функции для рисования и очистки плотности заряда.
+ * @author timat
+ *
+ */
 public class LaplacityField extends Group {
 
 	// Tiles

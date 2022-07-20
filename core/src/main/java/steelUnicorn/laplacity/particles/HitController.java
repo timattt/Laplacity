@@ -10,6 +10,13 @@ import steelUnicorn.laplacity.GameMode;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.SolidTile;
 
+/**
+ * Класс, который обрабатывает столкновения.
+ * Проверить столкновения можно через два метода.
+ * Причем, при второй проверке после удара флаг удара уже будет сброшен.
+ * @author timat
+ *
+ */
 public class HitController implements ContactListener {
 
 	private boolean hitted;

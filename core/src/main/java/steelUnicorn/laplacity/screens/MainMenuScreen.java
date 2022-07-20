@@ -20,6 +20,10 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.ui.LevelButton;
 import steelUnicorn.laplacity.utils.Settings;
 
+/**
+ * TODO Elveg документация к классу и рефакторинг
+ *
+ */
 public class MainMenuScreen extends ManagedScreen {
 	Stage menuStage;
 

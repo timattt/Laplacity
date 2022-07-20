@@ -7,6 +7,11 @@ import com.badlogic.gdx.graphics.Color;
 
 import de.eskalon.commons.screen.ManagedScreen;
 
+/**
+ * Класс экрана игры.
+ * @author timat
+ *
+ */
 public class GameScreen extends ManagedScreen {
 
 	public GameScreen() {

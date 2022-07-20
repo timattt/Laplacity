@@ -7,6 +7,10 @@ import com.badlogic.gdx.math.Vector2;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
+/**
+ * TODO Igor нужны доки к классу и небольшой рефакторинг
+ *
+ */
 public class FieldPotentialCalculator {
 
 	// Constants

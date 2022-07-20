@@ -9,6 +9,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Класс частицы. Тут есть ее физ. тело. И заряд.
+ * При изменении положения актера сразу меняется положение физ. тела.
+ * @author timat
+ *
+ */
 public class ChargedParticle extends Actor {
 
 	// Body

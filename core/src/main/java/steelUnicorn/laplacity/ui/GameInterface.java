@@ -30,7 +30,7 @@ import steelUnicorn.laplacity.particles.Proton;
  * @brief Class that creates game ui and add listeners.
  *
  * When any icon clicked, GameProcess.currentGameMode change its state
- *
+ * @author Elveg, timat
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;

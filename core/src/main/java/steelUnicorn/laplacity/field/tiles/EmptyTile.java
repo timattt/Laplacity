@@ -9,6 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 
+/**
+ * Класс пустой клетки поля. Содержит поля плотности. Видимая плотность отображается на поле. Невидимая нет.
+ * Невидимая нужна, чтобы частицы добавлять.
+ * @author timat
+ *
+ */
 public class EmptyTile extends Actor {
 
 	// grid

@@ -25,7 +25,7 @@ import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.Settings;
 
-/** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
+/** Класс запуска игры. Инициализируем поля из класса Globals. Загружаем assets. */
 public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	private SpriteBatch transitionBatch;

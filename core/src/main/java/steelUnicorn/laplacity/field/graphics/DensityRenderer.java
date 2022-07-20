@@ -10,6 +10,18 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
 
+/**
+ * Класс, который быстро умеет рисовать плотность.
+ * Кроме обычных методов для рендеринга (init, render, cleanup)
+ * тут есть два, необходимые для взаимодействия с tilemap.
+ * 
+ * updateDensity - его нужно вызвать, когда требуется перерисовать текстуру с плотностью.
+ * Нужно вызывать редко. После большого кол. вызовов следующего метода.
+ * setTileDensity - его нужно вызывать, когда меняется плотность одного тайла.
+ * 
+ * @author timat
+ *
+ */
 public class DensityRenderer {
 
 	// Rendering visible density tiles

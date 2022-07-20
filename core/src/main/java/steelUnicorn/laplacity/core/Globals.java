@@ -13,6 +13,11 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 
+/**
+ * Класс, который содержит глобальные переменные для всей программы.
+ * @author timat
+ *
+ */
 public class Globals {
 
 	// GLOBAL INSTANCES

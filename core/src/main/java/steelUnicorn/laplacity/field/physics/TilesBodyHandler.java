@@ -15,6 +15,10 @@ import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.SolidTile;
 
+/**
+ * TODO Igor нужны доки к классу и небольшой рефакторинг
+ *
+ */
 public class TilesBodyHandler {
 
 	private static ArrayList<TileColumn> columns = new ArrayList<>();

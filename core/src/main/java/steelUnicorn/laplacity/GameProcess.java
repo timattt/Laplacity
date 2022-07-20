@@ -25,6 +25,13 @@ import steelUnicorn.laplacity.particles.ControllableElectron;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
 
+/**
+ * Основной класс функциями и переменными игрового процесса.
+ * А именно: основные функции цикла игры, регистрация и удаление новых объектов,
+ * изменение игрового режима и окончание уровня.
+ * @author timat
+ *
+ */
 public class GameProcess {
 	
 	// LEVEL PROPERTIES

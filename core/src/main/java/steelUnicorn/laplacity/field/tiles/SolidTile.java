@@ -8,6 +8,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import steelUnicorn.laplacity.field.LaplacityField;
 
+/**
+ * Тайл, который есть физическое тело. Структура тел обсчитывается в классе {@link TilesBodyHandler}.
+ * Несколько одинаковых тайлов рядом будут образовывать только одно тело.
+ * @author timat
+ *
+ */
 public class SolidTile extends EmptyTile {
 
 	public SolidTile(int gridX, int gridY) {

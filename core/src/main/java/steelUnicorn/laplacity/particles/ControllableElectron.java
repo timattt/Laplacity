@@ -11,6 +11,12 @@ import steelUnicorn.laplacity.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
 
+/**
+ * Класс управляемой частицы.
+ * Тут есть поле начальной скорости. При обновлении к телу добавляется сила от поля.
+ * @author timat
+ *
+ */
 public class ControllableElectron extends Electron {
 
 	// Start velocity

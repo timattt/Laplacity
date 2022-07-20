@@ -9,6 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.GameMode;
 
+/**
+ * Класс, который рисует траекторию полета электрона.
+ * Тут есть стандартные методы (init, render, cleanup).
+ * И метод updateTrajectory - который надо вызывать, когда надо пересчитать траекторию.
+ * @author timat
+ *
+ */
 public class TrajectoryRenderer {
 
 	// Buffer for trajectory calculation
