@@ -42,7 +42,7 @@ public class WinScreen extends ManagedScreen {
 	 */
 	public WinScreen() {
 		super();
-		winStage = new Stage();
+		winStage = new Stage(Globals.guiViewport);
 
 		root = new Table();
 		root.setFillParent(true);
