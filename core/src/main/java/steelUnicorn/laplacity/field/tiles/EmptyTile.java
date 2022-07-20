@@ -78,6 +78,7 @@ public class EmptyTile extends Actor {
 		shapeRenderer.setColor(1f, 1f, 0, 1f);
 		shapeRenderer.line(TMP1, TMP2);
 		shapeRenderer.end();
+
 		}*/
 	}
 	
