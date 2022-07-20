@@ -29,6 +29,7 @@ public class GameScreen extends ManagedScreen {
 
 	@Override
 	public void hide() {
+		disposeLevel();
 	}
 
 	@Override
