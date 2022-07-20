@@ -22,7 +22,7 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.particles.Electron;
 import steelUnicorn.laplacity.particles.Proton;
 
@@ -159,11 +159,11 @@ public class GameInterface extends Stage implements GestureListener {
 	private void actBrush(float x, float y) {
 		if (currentGameMode == GameMode.dirichlet) {
 			LaplacityField.fillCircleWithRandomDensity(x, y, BRUSH_RADIUS, MAX_DENSITY);
-			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 			TrajectoryRenderer.updateTrajectory();
 		} else if (currentGameMode == GameMode.eraser) {
 			LaplacityField.clearCircleDensity(x, y, BRUSH_RADIUS);
-			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 			TrajectoryRenderer.updateTrajectory();
 		} 
 	}
@@ -171,12 +171,12 @@ public class GameInterface extends Stage implements GestureListener {
 	private void actParticlePlacer(float x, float y) {
 		if (currentGameMode == GameMode.electrons) {
 			addStaticParticle(new Electron(x, y));
-			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 			TrajectoryRenderer.updateTrajectory();
 		}
 		if (currentGameMode == GameMode.protons) {
 			addStaticParticle(new Proton(x, y));
-			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 			TrajectoryRenderer.updateTrajectory();
 		}
 	}

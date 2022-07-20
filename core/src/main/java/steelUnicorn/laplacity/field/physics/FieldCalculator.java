@@ -11,7 +11,7 @@ import steelUnicorn.laplacity.field.tiles.EmptyTile;
  * Класс, содержащий функции для расчёта физических параметров
  * электростатического поля.
  */
-public class FieldPotentialCalculator {
+public class FieldCalculator {
 
 	// Вычислительные константы
 	// Можно перенести их в другое место из этого класса
