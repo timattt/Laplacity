@@ -9,7 +9,7 @@ import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -33,6 +33,9 @@ import steelUnicorn.laplacity.particles.Proton;
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
+
+	private static final float iconSize = UI_WORLD_HEIGHT / 10;
+	private static final float iconSpace = iconSize * 0.1f;
 
 	/**
 	 * Constructor create Stage and interface
@@ -67,7 +70,12 @@ public class GameInterface extends Stage implements GestureListener {
 		Table root = new Table();
 		root.setFillParent(true);
 		root.align(Align.right);
+		root.pad(iconSpace);
 		addActor(root);
+		root.defaults()
+				.width(iconSize)
+				.height(iconSize)
+				.space(iconSpace);
 
 		TextureAtlas icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
 
@@ -88,7 +96,6 @@ public class GameInterface extends Stage implements GestureListener {
 		createModeIcon(icons, "electrons", root, GameMode.electrons);
 		createModeIcon(icons, "protons", root, GameMode.protons);
 		createModeIcon(icons, "dirichlet", root, GameMode.dirichlet);
-		
 	}
 
 	/**
@@ -100,7 +107,7 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param listener - listener that define buttons behaviour
 	 */
 	private void createIcon(TextureAtlas icons, String name, Table root, ChangeListener listener) {
-		ImageButton btn = new ImageButton(new TextureRegionDrawable(icons.findRegion(name)));
+		Button btn = new Button(new TextureRegionDrawable(icons.findRegion(name)));
 		btn.setName(name);
 		btn.addListener(listener);
 		root.add(btn);
