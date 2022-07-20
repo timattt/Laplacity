@@ -2,8 +2,8 @@ package steelUnicorn.laplacity.android;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import steelUnicorn.laplacity.Laplacity;
-import steelUnicorn.laplacity.AdHandler;
+import steelUnicorn.laplacity.core.Laplacity;
+import steelUnicorn.laplacity.utils.AdHandler;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;

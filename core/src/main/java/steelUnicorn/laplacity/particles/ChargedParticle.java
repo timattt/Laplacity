@@ -9,6 +9,12 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+/**
+ * Класс частицы. Тут есть ее физ. тело. И заряд.
+ * При изменении положения актера сразу меняется положение физ. тела.
+ * @author timat
+ *
+ */
 public class ChargedParticle extends Actor {
 
 	// Body
@@ -46,6 +52,10 @@ public class ChargedParticle extends Actor {
 	public ChargedParticle(float x, float y, float rad, float charge) {
 		this(x, y, rad, charge, true);
 	}
+	
+	public float getMass() {
+		return body.getMass();
+	}
 
 	@Override
 	public void act(float delta) {
@@ -62,8 +72,8 @@ public class ChargedParticle extends Actor {
 		return charge;
 	}
 
-	public void delete() {
-		deleteObject(this, body);
+	public Body getBody() {
+		return body;
 	}
 
 }

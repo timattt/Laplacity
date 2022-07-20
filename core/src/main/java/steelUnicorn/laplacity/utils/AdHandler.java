@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity;
+package steelUnicorn.laplacity.utils;
 
 public interface AdHandler {
 

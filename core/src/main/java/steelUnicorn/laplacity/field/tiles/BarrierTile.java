@@ -1,6 +1,6 @@
 package steelUnicorn.laplacity.field.tiles;
 
-public class BarrierTile extends FieldTile {
+public class BarrierTile extends SolidTile {
 
 	public BarrierTile(int gridX, int gridY) {
 		super(gridX, gridY);

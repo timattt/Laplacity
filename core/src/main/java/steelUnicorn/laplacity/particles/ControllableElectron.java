@@ -1,21 +1,27 @@
 package steelUnicorn.laplacity.particles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
-import steelUnicorn.laplacity.field.FieldPotentialCalculator;
-import steelUnicorn.laplacity.field.GameMode;
+import steelUnicorn.laplacity.GameMode;
+import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
 
+/**
+ * Класс управляемой частицы.
+ * Тут есть поле начальной скорости. При обновлении к телу добавляется сила от поля.
+ * @author timat
+ *
+ */
 public class ControllableElectron extends Electron {
 
 	// Start velocity
-	private float dirX;
-	private float dirY;
+	private float startVelocityX;
+	private float startVelocityY;
 	
 	// Start pos
 	private float startX;
@@ -30,84 +36,51 @@ public class ControllableElectron extends Electron {
 	@Override
 	public void act(float delta) {
 		if (currentGameMode == GameMode.flight) {
-			FieldPotentialCalculator.calculateForce(getX(), getY(), field.getTiles(), TMP1);
-			body.applyForceToCenter(TMP1.scl(charge), false);
+			FieldPotentialCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
+			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
 		super.act(delta);
 	}
-	
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		if (currentGameMode != GameMode.flight) {
-			shapeRenderer.begin(ShapeType.Filled);
-			shapeRenderer.setColor(Color.YELLOW);
-			shapeRenderer.line(getX(), getY(), getX() + dirX, getY() + dirY);
-			shapeRenderer.end();
-		}
-		super.draw(batch, parentAlpha);
-	}
 
-	public void setDir(float x, float y) {
-		dirX = x;
-		dirY = y;
+	public void setStartVelocity(float x, float y) {
+		startVelocityX = x;
+		startVelocityY = y;
 	}
 	
-	public void getDir(Vector2 dest) {
-		dest.x = dirX;
-		dest.y = dirY;
+	public void getStartVelocity(Vector2 dest) {
+		dest.x = startVelocityX;
+		dest.y = startVelocityY;
 	}
 	
-	public void startFlight() {
-		body.setLinearVelocity(dirX, dirY);
+	public void makeParticleMoveWithStartVelocity() {
+		body.setLinearVelocity(-startVelocityX, -startVelocityY);
 	}
 	
-	public void reset() {
+	public void resetToStartPosAndStartVelocity() {
 		setPosition(startX, startY);
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
 	}
-
-	public float getMass() {
-		return body.getMass();
-	}
 	
-	// Buffer for trajectory calculation
-	private static Vector2[] trajectory;
-	private static float trajLength;
+	public void drawStartVelocityArrow() {
+		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(Color.YELLOW);
+		shapeRenderer.line(getX(), getY(), getX() + startVelocityX, getY() + startVelocityY);
+		shapeRenderer.end();
+	}
 
-	/**
-	 * Calculate trajectory of an electron using simplectic Euler method.
-	 * Calculates n trajectory points following departure point and stores them in array inside the class
-	 * The array is accessible via getTrajectory() method
-	 * @param departure Initial trajectory point
-	 * @param initVelocity Initial velocity
-	 * @param step Integration step
-	 * @param n Number of iterations
-	 */
-	public void calculateTrajectory(Vector2 departure, Vector2 initVelocity, float mass, float charge, float step, int n, int stepsPerPoint) {
-		// Resize buffer if needed
-		if (trajLength != n) {
-			trajectory = new Vector2[n];
-			for (int i = 0; i < n; i++) {
-				trajectory[i] = new Vector2();
-			}
-			trajLength = n;
-		}
-
-		startFlight();
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < stepsPerPoint; j++) {
-				FieldPotentialCalculator.calculateForce(body.getTransform().getPosition().x, body.getTransform().getPosition().y, field.getTiles(), TMP1);
-				body.applyForceToCenter(TMP1.scl(charge / mass), false);
-				levelWorld.step(step, 1, 1);
+	public void calculateTrajectory(Vector2[] dest) {
+		makeParticleMoveWithStartVelocity();
+		for (int i = 0; i < TRAJECTORY_POINTS; i++) {
+			for (int j = 0; j < STEPS_PER_POINT; j++) {
+				FieldPotentialCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
+				body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
+				body.getWorld().step(PHYSICS_TIME_STEP, 1, 1);
 			}
 			
-			trajectory[i].set(body.getTransform().getPosition());
+			dest[i].set(body.getTransform().getPosition());
 		}
-		reset();
+		resetToStartPosAndStartVelocity();
 	}
-	
-	public static Vector2[] getTrajectory() {
-		return trajectory;
-	}
+
 }

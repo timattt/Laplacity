@@ -1,6 +1,4 @@
-package steelUnicorn.laplacity.field;
-
-import static steelUnicorn.laplacity.GameProcess.*;
+package steelUnicorn.laplacity.field.graphics;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,7 +8,20 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.field.LaplacityField;
 
+/**
+ * Класс, который быстро умеет рисовать плотность.
+ * Кроме обычных методов для рендеринга (init, render, cleanup)
+ * тут есть два, необходимые для взаимодействия с tilemap.
+ * 
+ * updateDensity - его нужно вызвать, когда требуется перерисовать текстуру с плотностью.
+ * Нужно вызывать редко. После большого кол. вызовов следующего метода.
+ * setTileDensity - его нужно вызывать, когда меняется плотность одного тайла.
+ * 
+ * @author timat
+ *
+ */
 public class DensityRenderer {
 
 	// Rendering visible density tiles
@@ -21,8 +32,8 @@ public class DensityRenderer {
 	private static final Color tmpColor = new Color();
 	
 	public static void init() {
-		int fieldWidth = field.getFieldWidth();
-		int fieldHeight = field.getFieldHeight();
+		int fieldWidth = LaplacityField.fieldWidth;
+		int fieldHeight = LaplacityField.fieldHeight;
 		
 		densityPixmap = new Pixmap(fieldWidth, fieldHeight, Format.RGBA8888);
 		densityPixmap.setBlending(Blending.None);
@@ -38,13 +49,13 @@ public class DensityRenderer {
 	public static void setTileDensity(int x, int y, float val) {
 		tmpColor.set(Color.VIOLET);
 		tmpColor.a = val / GameProcess.MAX_DENSITY;
-		densityPixmap.drawPixel(x, field.getFieldHeight() - y - 1, Color.rgba8888(tmpColor));
+		densityPixmap.drawPixel(x, LaplacityField.fieldHeight - y - 1, Color.rgba8888(tmpColor));
 	}
 	
 	public static void render(Batch batch) {
-		int fieldWidth = field.getFieldWidth();
-		int fieldHeight = field.getFieldHeight();
-		float tileSize = field.getTileSize();
+		int fieldWidth = LaplacityField.fieldWidth;
+		int fieldHeight = LaplacityField.fieldHeight;
+		float tileSize = LaplacityField.tileSize;
 		
 		batch.begin();
 		batch.draw(densityTexture, 0, 0, fieldWidth * tileSize, fieldHeight * tileSize);
@@ -52,10 +63,14 @@ public class DensityRenderer {
 	}
 	
 	public static void cleanup() {
-		if ( densityPixmap != null)
+		if (densityPixmap != null) {
 			densityPixmap.dispose();
-		if (densityTexture != null)
+			densityPixmap = null;
+		}
+		if (densityTexture != null) {
 			densityTexture.dispose();
+			densityTexture = null;
+		}
 	}
 
 }

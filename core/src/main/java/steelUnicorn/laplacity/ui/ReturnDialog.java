@@ -3,7 +3,7 @@ package steelUnicorn.laplacity.ui;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-import steelUnicorn.laplacity.Globals;
+import steelUnicorn.laplacity.core.Globals;
 
 /**
  * Dialog popup to confirm return to menu.

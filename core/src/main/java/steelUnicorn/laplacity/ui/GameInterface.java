@@ -1,7 +1,7 @@
 package steelUnicorn.laplacity.ui;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,11 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import steelUnicorn.laplacity.GameMode;
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.Globals;
-import steelUnicorn.laplacity.field.FieldPotentialCalculator;
-import steelUnicorn.laplacity.field.GameMode;
-import steelUnicorn.laplacity.field.TrajectoryRenderer;
+import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
+import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
 import steelUnicorn.laplacity.particles.Electron;
 import steelUnicorn.laplacity.particles.Proton;
 
@@ -29,7 +30,7 @@ import steelUnicorn.laplacity.particles.Proton;
  * @brief Class that creates game ui and add listeners.
  *
  * When any icon clicked, GameProcess.currentGameMode change its state
- *
+ * @author Elveg, timat
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
@@ -139,22 +140,16 @@ public class GameInterface extends Stage implements GestureListener {
 
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
-		if (changingDir) {
+		if (TrajectoryRenderer.changingDir) {
 			return false;
 		}
 		
 		TMP3.set(x, y, 0);
 		camera.unproject(TMP3);
-		if (currentGameMode == GameMode.electrons) {
-			addStaticParticle(new Electron(TMP3.x, TMP3.y));
-			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
-			TrajectoryRenderer.updateTrajectory();
-		}
-		if (currentGameMode == GameMode.protons) {
-			addStaticParticle(new Proton(TMP3.x, TMP3.y));
-			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
-			TrajectoryRenderer.updateTrajectory();
-		}
+		
+		actParticlePlacer(TMP3.x, TMP3.y);
+		actBrush(TMP3.x, TMP3.y);
+		
 		return true;
 	}
 
@@ -168,27 +163,62 @@ public class GameInterface extends Stage implements GestureListener {
 		return false;
 	}
 	
+	private void actBrush(float x, float y) {
+		if (currentGameMode == GameMode.dirichlet) {
+			LaplacityField.fillCircleWithRandomDensity(x, y, BRUSH_RADIUS, MAX_DENSITY);
+			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			TrajectoryRenderer.updateTrajectory();
+		} else if (currentGameMode == GameMode.eraser) {
+			LaplacityField.clearCircleDensity(x, y, BRUSH_RADIUS);
+			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			TrajectoryRenderer.updateTrajectory();
+		} 
+	}
+	
+	private void actParticlePlacer(float x, float y) {
+		if (currentGameMode == GameMode.electrons) {
+			addStaticParticle(new Electron(x, y));
+			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			TrajectoryRenderer.updateTrajectory();
+		}
+		if (currentGameMode == GameMode.protons) {
+			addStaticParticle(new Proton(x, y));
+			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			TrajectoryRenderer.updateTrajectory();
+		}
+	}
+	
+	private void actCameraOneFinger(float dx, float dy) {
+		if (currentGameMode != GameMode.dirichlet && currentGameMode != GameMode.eraser) {
+			camera.position.x -= dx * Globals.SCREEN_WORLD_WIDTH / Gdx.graphics.getWidth();
+			camera.position.x = Math.max(Globals.SCREEN_WORLD_WIDTH / 2,
+					Math.min(LaplacityField.fieldWidth * LaplacityField.tileSize - Globals.SCREEN_WORLD_WIDTH / 2,
+							camera.position.x));
+			camera.update();
+		}
+	}
+	
+	private void actCameraTwoFingers(float dx, float dy) {
+		if (currentGameMode == GameMode.dirichlet || currentGameMode == GameMode.eraser) {
+			camera.position.x -= dx * Globals.SCREEN_WORLD_WIDTH / Gdx.graphics.getWidth();
+			camera.position.x = Math.max(Globals.SCREEN_WORLD_WIDTH / 2,
+					Math.min(LaplacityField.fieldWidth * LaplacityField.tileSize - Globals.SCREEN_WORLD_WIDTH / 2,
+							camera.position.x));
+			camera.update();
+		}
+	}
+	
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
-		if (changingDir) {
+		if (TrajectoryRenderer.changingDir) {
 			return false;
 		}
 		
 		TMP3.set(x, y, 0);
 		camera.unproject(TMP3);
-		if (currentGameMode == GameMode.dirichlet) {
-			field.fillCircleWithRandomDensity(TMP3.x, TMP3.y, BRUSH_RADIUS, MAX_DENSITY);
-			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
-			TrajectoryRenderer.updateTrajectory();
-		} else if (currentGameMode == GameMode.eraser) {
-			field.clearCircleDensity(TMP3.x, TMP3.y, BRUSH_RADIUS);
-			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
-			TrajectoryRenderer.updateTrajectory();
-		} else {
-			camera.position.x -= deltaX * Globals.SCREEN_WORLD_WIDTH / Gdx.graphics.getWidth();
-			camera.position.x = Math.max(Globals.SCREEN_WORLD_WIDTH / 2, Math.min(field.getFieldWidth() * field.getTileSize() - Globals.SCREEN_WORLD_WIDTH / 2, camera.position.x));
-			camera.update();
-		}
+		
+		actBrush(TMP3.x, TMP3.y);
+		actCameraOneFinger(deltaX, deltaY);
 		
 		return true;
 	}
@@ -210,39 +240,55 @@ public class GameInterface extends Stage implements GestureListener {
 		return TMP3.len2();
 	}
 	
-	private boolean changingDir = false;
-	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		float len2 = getlen2ToMainParticle(screenX, screenY);
 
-		if (len2 < ELECTRON_SIZE * ELECTRON_SIZE) {
-			changingDir = true;
+		if (len2 < 4 * ELECTRON_SIZE * ELECTRON_SIZE) {
+			TrajectoryRenderer.changingDir = true;
 		} else {
-			changingDir = false;
+			TrajectoryRenderer.changingDir = false;
 		}
 		return super.touchDown(screenX, screenY, pointer, button);
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		changingDir = false;
+		TrajectoryRenderer.changingDir = false;
 		return super.touchUp(screenX, screenY, pointer, button);
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		if (changingDir) {
+		if (TrajectoryRenderer.changingDir) {
 			getlen2ToMainParticle(screenX, screenY);
-			mainParticle.setDir(TMP3.x, TMP3.y);
+			mainParticle.setStartVelocity(TMP3.x, TMP3.y);
 			TrajectoryRenderer.updateTrajectory();
 		}
 		
 		return super.touchDragged(screenX, screenY, pointer);
 	}
 
+	private final Vector2 prevPtr1 = new Vector2();
+	private final Vector2 prevPtr2 = new Vector2();
+	
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+		float dx1 = 0;
+		float dx2 = 0;
+		if (initialPointer1.x == pointer1.x && initialPointer1.y == pointer1.y && initialPointer2.x == pointer2.x && initialPointer2.y == pointer2.y) {
+			dx1 = 0;
+			dx2 = 0;
+		} else {
+			dx1 = pointer1.x - prevPtr1.x;
+			dx2 = pointer2.x - prevPtr2.x;
+		}
+		
+		prevPtr1.set(pointer1);
+		prevPtr2.set(pointer2);
+		
+		actCameraTwoFingers(dx1 + dx2, 0);
+		
 		return false;
 	}
 

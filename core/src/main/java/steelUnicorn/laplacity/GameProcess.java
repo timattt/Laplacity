@@ -1,11 +1,10 @@
 package steelUnicorn.laplacity;
 
-import static steelUnicorn.laplacity.Globals.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,25 +14,35 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 
-import steelUnicorn.laplacity.field.DensityRenderer;
-import steelUnicorn.laplacity.field.FieldPotentialCalculator;
-import steelUnicorn.laplacity.field.GameMode;
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.field.TrajectoryRenderer;
+import steelUnicorn.laplacity.field.graphics.DensityRenderer;
+import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
+import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.ControllableElectron;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
 
+/**
+ * Основной класс функциями и переменными игрового процесса.
+ * А именно: основные функции цикла игры, регистрация и удаление новых объектов,
+ * изменение игрового режима и окончание уровня.
+ * @author timat
+ *
+ */
 public class GameProcess {
-	public static int levelNumber;
-	public static int MAX_LEVEL;
-	// OBJECTS
-	//========================================================================================
-	// Tilemap
-	public static LaplacityField field;
 	
+	// LEVEL PROPERTIES
+	//========================================================================================
+	public static int levelNumber;
+	public static GameMode currentGameMode;
+	//========================================================================================
+	
+	
+	// OBJECTS
+	//========================================================================================	
 	// Main electron
 	public static ControllableElectron mainParticle;
 	
@@ -41,31 +50,32 @@ public class GameProcess {
 	public static final Array<ChargedParticle> particles = new Array<ChargedParticle>();
 	//========================================================================================
 	
-	// Stage and world and ui
+	
+	// INGAME STUFF
+	//========================================================================================
+	// Stage, world, ui
 	private static Stage levelStage;
-	public static World levelWorld;
-	public static GameInterface gameUI;
-	public static InputMultiplexer inputMultiplexer;
-
-	// Mode
-	public static GameMode currentGameMode;
+	private static World levelWorld;
+	private static GameInterface gameUI;
 	
 	// Debug
-	public static Box2DDebugRenderer debugRend;
+	private static Box2DDebugRenderer debugRend;
 	
 	// Hits
 	private static final HitController hitController = new HitController();
+	//========================================================================================
 	
-	// Constants
+	
+	// CONSTANTS
+	//========================================================================================
+	// PARTICLES
 	public static final float PARTICLE_CHARGE = 10f;
-	
 	public static final float ELECTRON_SIZE = 2f;
 	public static final float PROTON_SIZE = 2f;
-	
 	public static final float PARTICLE_MASS = 1f;
+	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	
 	// BRUSHES
-	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final float BRUSH_RADIUS = 5f;
 	public static final float MAX_DENSITY = 5f;
 	public static final double DIRICHLET_SPRAY_TILE_PROBABILITY = 0.2;
@@ -80,43 +90,53 @@ public class GameProcess {
 	public static final float SCORE_PER_DENSITY_UNIT = 0.01f;
 	public static final float MAX_SCORE = 100f;
 	
-	// Methods
+	// PHYSICS
+	public static final float PHYSICS_TIME_STEP = 1f/60f;
+	//========================================================================================
+	
+	
 	// GAME LOOP
 	//========================================================================================	
 	public static void initLevel(Texture level) {
+		disposeLevel();
+		
+		Gdx.app.log("gameProcess", "level init started");
 		levelStage = new Stage(gameViewport);
 		levelWorld = new World(Vector2.Zero, false);
 		currentGameMode = GameMode.none;
-		field = new LaplacityField();
 		debugRend = new Box2DDebugRenderer();
+		gameUI = new GameInterface(guiViewport);
+		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
+		
 		levelWorld.setContactListener(hitController);
 		
-		loadObjects(level);
+		LaplacityField.initField(level);
+		DensityRenderer.init();
+		TrajectoryRenderer.init();
+		
+		mainParticle = new ControllableElectron(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
 		
 		camera.position.x = SCREEN_WORLD_WIDTH / 2;
 		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
 		camera.update();
-		
-		DensityRenderer.init();
-		TrajectoryRenderer.updateTrajectory();
 	}
 	
 	public static void updateLevel(float delta) {
-		TrajectoryRenderer.render();
-		levelStage.draw();
-		//debugRend.render(levelWorld, Globals.camera.combined);
-
-		if (currentGameMode == GameMode.flight) {
-			levelWorld.step(1f/60f, 1, 1);
+		if (levelStage == null) {
+			return;
 		}
 		
+		TrajectoryRenderer.render();
+		levelStage.draw();
 		levelStage.act();
 		gameUI.draw();
 		gameUI.act();
-		
 		DensityRenderer.render(levelStage.getBatch());
-		
+		//debugRend.render(levelWorld, Globals.camera.combined);
 
+		if (currentGameMode == GameMode.flight) {
+			levelWorld.step(PHYSICS_TIME_STEP, 1, 1);
+		}		
 		if (hitController.isHitted()) {
 			changeGameMode(GameMode.none);
 		}
@@ -126,56 +146,32 @@ public class GameProcess {
 	}
 	
 	public static void disposeLevel() {
-		DensityRenderer.cleanup();
-		if (levelStage != null)
+		Gdx.app.log("gameProcess", "level cleanup started");
+		
+		if (levelStage != null) {
 			levelStage.dispose();
-		if (levelWorld != null)
+			levelStage = null;
+		}
+		if (levelWorld != null) {
 			levelWorld.dispose();
-		if (debugRend != null)
+			levelWorld = null;
+		}
+		if (debugRend != null) {
 			debugRend.dispose();
+			debugRend = null;
+		}
+		if (gameUI != null) {
+			gameUI.dispose();
+			gameUI = null;
+		}
 		particles.clear();
 		currentGameMode = GameMode.none;
-		field = null;
-		//gameUI.dispose();
+		mainParticle = null;
+		
+		TrajectoryRenderer.cleanup();
+		DensityRenderer.cleanup();
 	}
 	//========================================================================================
-	
-	public static boolean isPlaying() {
-		return field != null;
-	}
-	
-	private static void loadObjects(Texture level) {
-		levelStage.addActor(field);
-		field.init(level);
-		
-		findMainParticleStartPos(level, TMP1);
-		mainParticle = new ControllableElectron(TMP1.x, TMP1.y);
-	}
-	
-	private static void findMainParticleStartPos(Texture tileMap, Vector2 res) {
-		int fieldWidth = tileMap.getWidth();
-		int fieldHeight = tileMap.getHeight();
-		tileMap.getTextureData().prepare();
-		Pixmap pxmap = tileMap.getTextureData().consumePixmap();
-		
-		for (int i = 0; i < fieldWidth; i++) {
-			for (int k = 0; k < fieldHeight; k++) {
-				int j = fieldHeight - k - 1;
-				int c = pxmap.getPixel(i, k);
-				
-				// yellow
-				if (c == -65281) {
-					field.fromGridToWorldCoords(i, j, res);
-					tileMap.getTextureData().disposePixmap();
-					return;
-				}
-			}
-		}
-
-		tileMap.getTextureData().disposePixmap();
-		
-		throw new RuntimeException("No start position!");
-	}
 	
 	public static void changeGameMode(GameMode mode) {
 		boolean nowFlight = mode == GameMode.flight;
@@ -184,12 +180,12 @@ public class GameProcess {
 		currentGameMode = mode;
 		
 		if (nowFlight) {
-			FieldPotentialCalculator.calculateFieldPotential(GameProcess.field.getTiles());
-			mainParticle.startFlight();
+			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			mainParticle.makeParticleMoveWithStartVelocity();
 		}
 	
 		if (wasFlight) {
-			mainParticle.reset();
+			mainParticle.resetToStartPosAndStartVelocity();
 		}	
 	}
 
@@ -209,7 +205,7 @@ public class GameProcess {
 	}
 	
 	public static void addStaticParticle(ChargedParticle part) {
-		EmptyTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
+		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		if (tl != null && tl.isAllowDensityChange()) {
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
@@ -217,8 +213,8 @@ public class GameProcess {
 	}
 	
 	public static void deleteStaticParticle(ChargedParticle part) {
-		part.delete();
-		EmptyTile tl = field.getTileFromWorldCoords(part.getX(), part.getY());
+		deleteObject(part, part.getBody());
+		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		if (tl != null) {
 			tl.addInvisibleDensity(-part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 		}
@@ -239,9 +235,9 @@ public class GameProcess {
 	public static float calculateScore() {
 		float dens = 0;
 		
-		for (int x = 0; x < field.getFieldWidth(); x++) {
-			for (int y = 0; y < field.getFieldHeight(); y++) {
-				dens += Math.abs(field.getTiles()[x][y].getTotalChargeDensity()) * SCORE_PER_DENSITY_UNIT;
+		for (int x = 0; x < LaplacityField.fieldWidth; x++) {
+			for (int y = 0; y < LaplacityField.fieldHeight; y++) {
+				dens += Math.abs(LaplacityField.tiles[x][y].getTotalChargeDensity()) * SCORE_PER_DENSITY_UNIT;
 			}
 		}
 		

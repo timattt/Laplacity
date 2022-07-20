@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.field;
+package steelUnicorn.laplacity.field.physics;
 
 import java.util.ArrayList;
 
@@ -10,12 +10,15 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.Globals;
+import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
-import steelUnicorn.laplacity.field.tiles.FieldTile;
-import steelUnicorn.laplacity.field.tiles.IntRect;
-import steelUnicorn.laplacity.field.tiles.TileColumn;
+import steelUnicorn.laplacity.field.tiles.SolidTile;
 
+/**
+ * TODO Igor нужны доки к классу и небольшой рефакторинг
+ *
+ */
 public class TilesBodyHandler {
 
 	private static ArrayList<TileColumn> columns = new ArrayList<>();
@@ -24,9 +27,9 @@ public class TilesBodyHandler {
 		columns.clear();
 		TileColumn curColumn = new TileColumn(0, 0, 1); // 1 means empty tile
 
-		for (int i = 0; i < GameProcess.field.getFieldWidth(); i++) {
-			for (int j = 0; j < GameProcess.field.getFieldHeight(); j++) {
-				if (tiles[i][j] instanceof FieldTile) {
+		for (int i = 0; i < LaplacityField.fieldWidth; i++) {
+			for (int j = 0; j < LaplacityField.fieldHeight; j++) {
+				if (tiles[i][j] instanceof SolidTile) {
 					if (curColumn.getId() == 1) { // create new column
 						curColumn.set(i, j, tiles[i][j].getId());
 					} else if (tiles[i][j].getId() == curColumn.getId()) { // continue current column
@@ -84,8 +87,8 @@ public class TilesBodyHandler {
 				BodyDef bodydef = new BodyDef();
 				bodydef.type = BodyType.StaticBody;
 
-				GameProcess.field.fromGridToWorldCoords(bodyTemplate.left, bodyTemplate.bottom, Globals.TMP1);
-				GameProcess.field.fromGridToWorldCoords(bodyTemplate.right, bodyTemplate.top, Globals.TMP2);
+				LaplacityField.fromGridToWorldCoords(bodyTemplate.left, bodyTemplate.bottom, Globals.TMP1);
+				LaplacityField.fromGridToWorldCoords(bodyTemplate.right, bodyTemplate.top, Globals.TMP2);
 				Globals.TMP1.add(Globals.TMP2);
 				Globals.TMP1.x /= 2;
 				Globals.TMP1.y /= 2;
@@ -94,7 +97,7 @@ public class TilesBodyHandler {
 				Body body = GameProcess.registerPhysicalObject(bodydef);
 
 				PolygonShape shape = new PolygonShape();
-				float radius = GameProcess.field.getTileSize() / 2;
+				float radius = LaplacityField.tileSize / 2;
 				shape.setAsBox(radius* bodyTemplate.width(), radius * bodyTemplate.height());
 				
 				FixtureDef fxt = new FixtureDef();

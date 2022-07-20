@@ -1,11 +1,17 @@
 package steelUnicorn.laplacity.screens;
 
+import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.GameProcess.*;
 
 import com.badlogic.gdx.graphics.Color;
 
 import de.eskalon.commons.screen.ManagedScreen;
 
+/**
+ * Класс экрана игры.
+ * @author timat
+ *
+ */
 public class GameScreen extends ManagedScreen {
 
 	public GameScreen() {
@@ -23,6 +29,7 @@ public class GameScreen extends ManagedScreen {
 
 	@Override
 	public void hide() {
+		disposeLevel();
 	}
 
 	@Override
@@ -36,9 +43,6 @@ public class GameScreen extends ManagedScreen {
 
 	@Override
 	public void render(float delta) {
-		if (!isPlaying()) {
-			return;
-		}
 		updateLevel(delta);
 	}
 

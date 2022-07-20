@@ -6,10 +6,17 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
+import steelUnicorn.laplacity.GameMode;
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.field.GameMode;
-import steelUnicorn.laplacity.field.tiles.FieldTile;
+import steelUnicorn.laplacity.field.tiles.SolidTile;
 
+/**
+ * Класс, который обрабатывает столкновения.
+ * Проверить столкновения можно через два метода.
+ * Причем, при второй проверке после удара флаг удара уже будет сброшен.
+ * @author timat
+ *
+ */
 public class HitController implements ContactListener {
 
 	private boolean hitted;
@@ -26,7 +33,7 @@ public class HitController implements ContactListener {
 		if (body1.getUserData() != null && body1.getUserData() instanceof Integer) {
 			tileId = (Integer) body1.getUserData();
 		}
-		if (body2.getUserData() != null && body2.getUserData() instanceof FieldTile) {
+		if (body2.getUserData() != null && body2.getUserData() instanceof SolidTile) {
 			tileId = (Integer) body2.getUserData();
 		}
 		if (body1.getUserData() != null && body1.getUserData() instanceof ChargedParticle) {

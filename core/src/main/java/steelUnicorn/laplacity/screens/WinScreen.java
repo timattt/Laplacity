@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Align;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.Globals;
+import steelUnicorn.laplacity.core.Globals;
 
 /**
  * Class for winning screen.
@@ -108,7 +108,7 @@ public class WinScreen extends ManagedScreen {
 		buttons.add(btn);
 		
 		
-		if (GameProcess.levelNumber < GameProcess.MAX_LEVEL) {	//For max level there is no need in next button
+		if (GameProcess.levelNumber < Globals.TOTAL_LEVELS_AVAILABLE) {	//For max level there is no need in next button
 			btn = new TextButton("Next", skin);
 			btn.setName("nextBtn");
 			btn.addListener(new ChangeListener() {

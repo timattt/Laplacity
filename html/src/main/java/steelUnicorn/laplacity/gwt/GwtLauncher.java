@@ -3,7 +3,8 @@ package steelUnicorn.laplacity.gwt;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import steelUnicorn.laplacity.Laplacity;
+
+import steelUnicorn.laplacity.core.Laplacity;
 
 /** Launches the GWT application. */
 public class GwtLauncher extends GwtApplication {

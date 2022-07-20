@@ -1,5 +1,6 @@
-package steelUnicorn.laplacity;
+package steelUnicorn.laplacity.core;
 
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,6 +13,11 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 
+/**
+ * Класс, который содержит глобальные переменные для всей программы.
+ * @author timat
+ *
+ */
 public class Globals {
 
 	// GLOBAL INSTANCES
@@ -20,6 +26,7 @@ public class Globals {
 	public static ExtendViewport guiViewport;
 	public static ExtendViewport gameViewport;
 	public static ShapeRenderer shapeRenderer;
+	public static InputMultiplexer inputMultiplexer;
 	
 	// Screen names
 	public static final String nameMainMenuScreen = "mainMenu";
@@ -57,5 +64,8 @@ public class Globals {
 	public static final Vector2 TMP1 = new Vector2();
 	public static final Vector2 TMP2 = new Vector2();
 	public static final Vector3 TMP3 = new Vector3();
+	
+	// Total levels loaded
+	public static int TOTAL_LEVELS_AVAILABLE;
 	
 }
