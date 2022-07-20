@@ -194,14 +194,19 @@ public class GameProcess {
 		boolean wasFlight = currentGameMode == GameMode.flight;
 		
 		currentGameMode = mode;
-		
-		if (nowFlight) {
-			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
-			mainParticle.makeParticleMoveWithStartVelocity();
-		}
-	
-		if (wasFlight) {
+
+		if ((nowFlight) && (wasFlight)) {
 			mainParticle.resetToStartPosAndStartVelocity();
+			mainParticle.makeParticleMoveWithStartVelocity();
+		} else {
+			if (nowFlight) {
+				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+				mainParticle.makeParticleMoveWithStartVelocity();
+			}
+		
+			if (wasFlight) {
+				mainParticle.resetToStartPosAndStartVelocity();
+			}
 		}	
 	}
 
