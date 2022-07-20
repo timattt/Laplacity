@@ -18,7 +18,7 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.ControllableElectron;
@@ -182,7 +182,7 @@ public class GameProcess {
 		currentGameMode = mode;
 		
 		if (nowFlight) {
-			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 			mainParticle.makeParticleMoveWithStartVelocity();
 		}
 	

@@ -1,7 +1,7 @@
 package steelUnicorn.laplacity.field.physics;
 
 /**
- * Represents a rectangle of tiles in an integral-valued tile grid.
+ * Прямоугольник с целочисленными координатами и целочисленным полем данных
  */
 public class IntRect {
     public int left;
@@ -14,8 +14,8 @@ public class IntRect {
     }
 
     /**
-     * Derive a rectangle from the given column.
-     * @param column
+     * Создаёт прямоугольник из заданного столбца
+     * @param column Столбец
      */
     public IntRect(TileColumn column) {
         this.left = column.getHorizontalIndex();
@@ -34,15 +34,15 @@ public class IntRect {
     }
 
     /**
-     * Extend the rectangle to the right by one
+     * Продолжить прямоугольник вправо на 1
      */
     public void extend() {
         this.right++;
     }
 
     /**
-     * Reset the rectangle so it would be equivalent to the given column
-     * @param column
+     * Скопировать данные столбца в прямоугольник
+     * @param column Столбец
      */
     public void set(TileColumn column) {
         this.left = column.getHorizontalIndex();
@@ -52,10 +52,16 @@ public class IntRect {
         this.id = column.getId();
     }
 
+    /**
+     * @return Высота прямоугольника в клетках
+     */
     public int height() {
         return this.top - this.bottom + 1;
     }
 
+    /**
+     * @return Ширина прямоугольника в клетках
+     */
     public int width() {
         return this.right - this.left + 1;
     }

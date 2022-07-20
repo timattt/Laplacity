@@ -3,10 +3,9 @@ package steelUnicorn.laplacity.field.physics;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
 /**
- * Represent a column of tiles in an integral-valued tile array.
- * Columns can only begin at a certain point (tile) and then grow upwards.
- * This is done intentionally to limit usage of this class by
- * {@link TilesBodyHandler} only.
+ * Столбец клеток, находящийся внутри целочисленного двумерного массива клеток.
+ * Столбцы могут только создаваться на определённой клетке и расти вверх.
+ * Этот класс должен использоваться только классом {@link TilesBodyHandler}.
  */
 public class TileColumn {
     private int horizontalIndex;
@@ -15,10 +14,10 @@ public class TileColumn {
     private int id;
 
     /**
-     * Start a new column at given point
+     * Начать столбец, отсчитвая его вверх от данной клетки
      * @param _horizontalIndex
      * @param _verticalIndex
-     * @param _id
+     * @param _id ID клетки
      */
     public TileColumn(int _horizontalIndex, int _verticalIndex, int _id) {
         this.horizontalIndex = _horizontalIndex;
@@ -35,8 +34,8 @@ public class TileColumn {
     }
 
     /**
-     * Start a new column at given point.
-     * Identical to a constructor, but reusing the same instance.
+     * Начать столбец, отсчитвая его вверх от данной клетки
+     * Функционал аналогичен конструктору, только с использованием уже созданного экземпляра
      * @param _horizontalIndex
      * @param _verticalIndex
      * @param _id
@@ -49,23 +48,23 @@ public class TileColumn {
     }
 
     /**
-     * Increase height by 1 upwards.
+     * Увеличить высоту столбца на 1 вверх
      */
     public void increment() {
         this.topIndex++;
     }
 
     /**
-     * Render tile type as non-physical.
-     * All non-physical tiles are equivalent to {@link EmptyTile} for {@link TilesBodyHandler} class.
+     * Пометить тип столбца как неосязаемый.
+     * {@link TilesBodyHandler} считает неосязаемыми клетками только класс {@link EmptyTile}.
      */
     public void reset() {
         this.id = 1; // empty tile id
     }
 
-    /** Make column depleted so it would be ignored when merging columns into rectangles.
-     * Call it after the column has been successfully added to a rectangle.
-    */
+    /**
+     * Пометить столбец как удалённый. Удалённые столбцы игнорируются при объединении столбцов в прямоугольники.
+     */
     public void deplete() {
         this.id = 0; // 0 is reserved for depleted columns
     }
