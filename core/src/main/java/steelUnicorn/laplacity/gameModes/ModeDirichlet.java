@@ -4,7 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.physics.FieldCalculator;
 
 public class ModeDirichlet extends GameMode {
 
@@ -14,7 +14,7 @@ public class ModeDirichlet extends GameMode {
 
 	private void makeSpray(float x, float y) {
 		LaplacityField.fillCircleWithRandomDensity(x, y, BRUSH_RADIUS, MAX_DENSITY);
-		FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 	

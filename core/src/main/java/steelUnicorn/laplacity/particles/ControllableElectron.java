@@ -8,8 +8,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
+
 
 /**
  * Класс управляемой частицы.
@@ -35,8 +36,9 @@ public class ControllableElectron extends Electron {
 
 	@Override
 	public void act(float delta) {
+
 		if (currentGameMode == GameMode.FLIGHT) {
-			FieldPotentialCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
+			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
 		super.act(delta);
@@ -78,7 +80,7 @@ public class ControllableElectron extends Electron {
 		for (int i = 0; i < TRAJECTORY_POINTS; i++) {
 			dest[i].set(body.getTransform().getPosition());
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
-				FieldPotentialCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
+				FieldCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
 				body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 				body.getWorld().step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 			}

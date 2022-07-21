@@ -18,7 +18,7 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.particles.ChargedParticle;
@@ -175,6 +175,20 @@ public class GameProcess {
 		TrajectoryRenderer.cleanup();
 		DensityRenderer.cleanup();
 	}
+
+	public static void clearLevel() {
+		Gdx.app.log("gameProcess", "clearing level...");
+		currentGameMode = GameMode.NONE;
+		mainParticle.setStartVelocity(0.0f, 0.0f);
+		mainParticle.resetToStartPosAndStartVelocity();
+		for (ChargedParticle particle : particles)
+			deleteObject(particle, particle.getBody());
+		particles.clear();
+		LaplacityField.clearElectricField();
+		DensityRenderer.updateDensity();
+		TrajectoryRenderer.updateTrajectory();
+		Gdx.app.log("gameProcess", "level cleared!");
+	}
 	//========================================================================================
 	
 	public static void changeGameMode(GameMode mode) {
@@ -182,14 +196,19 @@ public class GameProcess {
 		boolean wasFlight = currentGameMode == GameMode.FLIGHT;
 		
 		currentGameMode = mode;
-		
-		if (nowFlight) {
-			FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
-			mainParticle.makeParticleMoveWithStartVelocity();
-		}
-	
-		if (wasFlight) {
+
+		if ((nowFlight) && (wasFlight)) {
 			mainParticle.resetToStartPosAndStartVelocity();
+			mainParticle.makeParticleMoveWithStartVelocity();
+		} else {
+			if (nowFlight) {
+				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+				mainParticle.makeParticleMoveWithStartVelocity();
+			}
+		
+			if (wasFlight) {
+				mainParticle.resetToStartPosAndStartVelocity();
+			}
 		}	
 	}
 

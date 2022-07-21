@@ -4,7 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.particles.Electron;
 
 public class ModeElectrons extends GameMode {
@@ -16,7 +16,7 @@ public class ModeElectrons extends GameMode {
 	@Override
 	public void tap(float x, float y) {
 		addStaticParticle(new Electron(x, y));
-		FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 	

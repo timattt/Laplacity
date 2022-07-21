@@ -22,6 +22,7 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
+
 /**
  * @brief Class that creates game ui and add listeners.
  *

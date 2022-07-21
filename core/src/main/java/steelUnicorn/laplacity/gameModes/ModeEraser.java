@@ -4,7 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.field.physics.FieldCalculator;
 
 public class ModeEraser extends GameMode {
 
@@ -14,7 +14,7 @@ public class ModeEraser extends GameMode {
 	
 	private void makeErase(float x, float y) {
 		LaplacityField.clearCircleDensity(x, y, BRUSH_RADIUS);
-		FieldPotentialCalculator.calculateFieldPotential(LaplacityField.tiles);
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 	
