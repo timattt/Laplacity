@@ -7,9 +7,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
-import steelUnicorn.laplacity.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
+import steelUnicorn.laplacity.gameModes.GameMode;
+
 
 /**
  * Класс управляемой частицы.
@@ -20,8 +21,8 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 public class ControllableElectron extends Electron {
 
 	// Start velocity
-	private float startVelocityX;
-	private float startVelocityY;
+	private float slingshotX;
+	private float slingshotY;
 	
 	// Start pos
 	private float startX;
@@ -35,25 +36,21 @@ public class ControllableElectron extends Electron {
 
 	@Override
 	public void act(float delta) {
-		if (currentGameMode == GameMode.flight) {
+
+		if (currentGameMode == GameMode.FLIGHT) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
 		super.act(delta);
 	}
 
-	public void setStartVelocity(float x, float y) {
-		startVelocityX = x;
-		startVelocityY = y;
-	}
-	
-	public void getStartVelocity(Vector2 dest) {
-		dest.x = startVelocityX;
-		dest.y = startVelocityY;
+	public void setSlingshot(float x, float y) {
+		slingshotX = x;
+		slingshotY = y;
 	}
 	
 	public void makeParticleMoveWithStartVelocity() {
-		body.setLinearVelocity(-startVelocityX * TRAJECTORY_VELOCITY_MULTIPLIER, -startVelocityY * TRAJECTORY_VELOCITY_MULTIPLIER);
+		body.setLinearVelocity(-slingshotX * TRAJECTORY_VELOCITY_MULTIPLIER, -slingshotY * TRAJECTORY_VELOCITY_MULTIPLIER);
 	}
 	
 	public void resetToStartPosAndStartVelocity() {
@@ -65,11 +62,11 @@ public class ControllableElectron extends Electron {
 	public void drawStartVelocityArrow() {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.YELLOW);
-		shapeRenderer.line(getX(), getY(), getX() + startVelocityX, getY() + startVelocityY);
+		shapeRenderer.line(getX(), getY(), getX() + slingshotX, getY() + slingshotY);
 		shapeRenderer.end();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(getX() + startVelocityX, getY() + startVelocityY, ELECTRON_SIZE / 3);
+		shapeRenderer.circle(getX() + slingshotX, getY() + slingshotY, ELECTRON_SIZE / 3);
 		shapeRenderer.end();
 	}
 
