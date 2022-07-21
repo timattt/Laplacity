@@ -7,7 +7,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import steelUnicorn.laplacity.ui.LevelButton;
+import steelUnicorn.laplacity.ui.mainmenu.LevelButton;
 
 /**
  * Класс LevelTab при создании создает вкладку с уровнями в главном меню.
