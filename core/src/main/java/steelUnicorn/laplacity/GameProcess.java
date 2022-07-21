@@ -248,8 +248,7 @@ public class GameProcess {
 		changeGameMode(GameMode.none);
 		Gdx.app.log("game process", "Level finished");
 		
-		Globals.winScreen.clearStage();
-		Globals.winScreen.buildStage(calculateScore());
+		Globals.winScreen.loadWinScreen(calculateScore());
 		Globals.game.getScreenManager().pushScreen(nameWinScreen, nameSlideIn);
 	}
 	
