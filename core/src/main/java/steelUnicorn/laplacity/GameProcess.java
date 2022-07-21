@@ -131,11 +131,11 @@ public class GameProcess {
 		TrajectoryRenderer.render();
 		levelStage.draw();
 		levelStage.act();
-		gameUI.draw();
-		gameUI.act();
 		DensityRenderer.render(levelStage.getBatch());
 		//debugRend.render(levelWorld, Globals.camera.combined);
-
+		gameUI.draw();
+		gameUI.act();
+		
 		if (currentGameMode == GameMode.flight) {
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}		
