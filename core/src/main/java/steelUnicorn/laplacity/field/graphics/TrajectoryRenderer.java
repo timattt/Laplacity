@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
-import steelUnicorn.laplacity.GameMode;
+import steelUnicorn.laplacity.gameModes.GameMode;
 
 /**
  * Класс, который рисует траекторию полета электрона.
@@ -31,7 +31,7 @@ public class TrajectoryRenderer {
 	}
 	
 	public static void render() {	
-		if (currentGameMode == GameMode.flight) {
+		if (currentGameMode == GameMode.FLIGHT) {
 			return;
 		}
 		

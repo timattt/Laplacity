@@ -7,9 +7,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
-import steelUnicorn.laplacity.GameMode;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
+import steelUnicorn.laplacity.gameModes.GameMode;
 
 /**
  * Класс управляемой частицы.
@@ -35,7 +35,7 @@ public class ControllableElectron extends Electron {
 
 	@Override
 	public void act(float delta) {
-		if (currentGameMode == GameMode.flight) {
+		if (currentGameMode == GameMode.FLIGHT) {
 			FieldPotentialCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}

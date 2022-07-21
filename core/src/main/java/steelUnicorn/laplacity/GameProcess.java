@@ -20,6 +20,7 @@ import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldPotentialCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
+import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.ControllableElectron;
 import steelUnicorn.laplacity.particles.HitController;
@@ -105,7 +106,7 @@ public class GameProcess {
 		Gdx.app.log("gameProcess", "level init started");
 		levelStage = new Stage(gameViewport);
 		levelWorld = new World(Vector2.Zero, false);
-		currentGameMode = GameMode.none;
+		currentGameMode = GameMode.NONE;
 		debugRend = new Box2DDebugRenderer();
 		gameUI = new GameInterface(guiViewport);
 		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
@@ -128,6 +129,7 @@ public class GameProcess {
 			return;
 		}
 		
+		currentGameMode.update();
 		TrajectoryRenderer.render();
 		levelStage.draw();
 		levelStage.act();
@@ -136,11 +138,11 @@ public class GameProcess {
 		DensityRenderer.render(levelStage.getBatch());
 		//debugRend.render(levelWorld, Globals.camera.combined);
 
-		if (currentGameMode == GameMode.flight) {
+		if (currentGameMode == GameMode.FLIGHT) {
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}		
 		if (hitController.isHitted()) {
-			changeGameMode(GameMode.none);
+			changeGameMode(GameMode.NONE);
 		}
 		if (hitController.isFinished()) {
 			levelFinished();
@@ -167,7 +169,7 @@ public class GameProcess {
 			gameUI = null;
 		}
 		particles.clear();
-		currentGameMode = GameMode.none;
+		currentGameMode = GameMode.NONE;
 		mainParticle = null;
 		
 		TrajectoryRenderer.cleanup();
@@ -176,8 +178,8 @@ public class GameProcess {
 	//========================================================================================
 	
 	public static void changeGameMode(GameMode mode) {
-		boolean nowFlight = mode == GameMode.flight;
-		boolean wasFlight = currentGameMode == GameMode.flight;
+		boolean nowFlight = mode == GameMode.FLIGHT;
+		boolean wasFlight = currentGameMode == GameMode.FLIGHT;
 		
 		currentGameMode = mode;
 		
@@ -226,7 +228,7 @@ public class GameProcess {
 	}
 	
 	public static void levelFinished() {
-		changeGameMode(GameMode.none);
+		changeGameMode(GameMode.NONE);
 		Gdx.app.log("game process", "Level finished");
 		
 		Globals.winScreen.clearStage();
