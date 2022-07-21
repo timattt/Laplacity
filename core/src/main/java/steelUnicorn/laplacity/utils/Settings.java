@@ -4,14 +4,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 /**
- * @brief Class with static settings variables.
+ * Класс с функциями для подгрузки и сохранения настроек.
+ * Сохранения и загрузка происходит на основе Preferences
  *
- * Setting can be changed in main menu "Setting" tab.
- * soundVolume and musicVolume should be used when sound.play called or as music.setVolume
+ * Функция loadSettings подгружает prefs и выставляет нужные значения статическим переменным
+ * отвечающим за значения настроек.
  *
+ * Функция saveSettings должна вызываться по завершению приложения и сохранять настройки.
+ *
+ * Для каждой переменной настройки есть геттеры и сеттеры.
  */
 public class Settings {
 	private static Preferences prefs;
+	private static final String prefsName = "game_settings";
 
 	private static float soundVolume;
 	private static float musicVolume;
@@ -21,10 +26,10 @@ public class Settings {
 	}
 
 	/**
-	 * Uploading settings using preferences
+	 * Функция загружающая настройки используя prefs
 	 */
 	public static void loadSettings() {
-		prefs = Gdx.app.getPreferences("game_settings");
+		prefs = Gdx.app.getPreferences(prefsName);
 		if (prefs.contains("soundVolume")) {
 			soundVolume = prefs.getFloat("soundVolume");
 		} else {
@@ -39,8 +44,7 @@ public class Settings {
 	}
 
 	/**
-	 * Function that saves settings
-	 * Should be called before exiting from app.
+	 * Функция сохраняющая настройки
 	 */
 	public static void saveSettings() {
 		prefs.putFloat("soundVolume", soundVolume);
