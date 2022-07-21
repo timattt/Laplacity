@@ -173,6 +173,20 @@ public class GameProcess {
 		TrajectoryRenderer.cleanup();
 		DensityRenderer.cleanup();
 	}
+
+	public static void clearLevel() {
+		Gdx.app.log("gameProcess", "clearing level...");
+		currentGameMode = GameMode.none;
+		mainParticle.setStartVelocity(0.0f, 0.0f);
+		mainParticle.resetToStartPosAndStartVelocity();
+		for (ChargedParticle particle : particles)
+			deleteObject(particle, particle.getBody());
+		particles.clear();
+		LaplacityField.clearElectricField();
+		DensityRenderer.updateDensity();
+		TrajectoryRenderer.updateTrajectory();
+		Gdx.app.log("gameProcess", "level cleared!");
+	}
 	//========================================================================================
 	
 	public static void changeGameMode(GameMode mode) {
@@ -180,14 +194,19 @@ public class GameProcess {
 		boolean wasFlight = currentGameMode == GameMode.flight;
 		
 		currentGameMode = mode;
-		
-		if (nowFlight) {
-			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
-			mainParticle.makeParticleMoveWithStartVelocity();
-		}
-	
-		if (wasFlight) {
+
+		if ((nowFlight) && (wasFlight)) {
 			mainParticle.resetToStartPosAndStartVelocity();
+			mainParticle.makeParticleMoveWithStartVelocity();
+		} else {
+			if (nowFlight) {
+				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+				mainParticle.makeParticleMoveWithStartVelocity();
+			}
+		
+			if (wasFlight) {
+				mainParticle.resetToStartPosAndStartVelocity();
+			}
 		}	
 	}
 
