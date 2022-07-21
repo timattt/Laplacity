@@ -228,7 +228,7 @@ public class GameInterface extends Stage implements GestureListener {
 		}
 		if (TrajectoryRenderer.changingDir) {
 			getlen2ToMainParticle(screenX, screenY);
-			mainParticle.setStartVelocity(TMP3.x, TMP3.y);
+			mainParticle.setSlingshot(TMP3.x, TMP3.y);
 			TrajectoryRenderer.updateTrajectory();
 			return true;
 		}

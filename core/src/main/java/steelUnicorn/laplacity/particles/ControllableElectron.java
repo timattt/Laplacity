@@ -21,8 +21,8 @@ import steelUnicorn.laplacity.gameModes.GameMode;
 public class ControllableElectron extends Electron {
 
 	// Start velocity
-	private float startVelocityX;
-	private float startVelocityY;
+	private float slingshotX;
+	private float slingshotY;
 	
 	// Start pos
 	private float startX;
@@ -44,18 +44,13 @@ public class ControllableElectron extends Electron {
 		super.act(delta);
 	}
 
-	public void setStartVelocity(float x, float y) {
-		startVelocityX = x;
-		startVelocityY = y;
-	}
-	
-	public void getStartVelocity(Vector2 dest) {
-		dest.x = startVelocityX;
-		dest.y = startVelocityY;
+	public void setSlingshot(float x, float y) {
+		slingshotX = x;
+		slingshotY = y;
 	}
 	
 	public void makeParticleMoveWithStartVelocity() {
-		body.setLinearVelocity(-startVelocityX * TRAJECTORY_VELOCITY_MULTIPLIER, -startVelocityY * TRAJECTORY_VELOCITY_MULTIPLIER);
+		body.setLinearVelocity(-slingshotX * TRAJECTORY_VELOCITY_MULTIPLIER, -slingshotY * TRAJECTORY_VELOCITY_MULTIPLIER);
 	}
 	
 	public void resetToStartPosAndStartVelocity() {
@@ -67,11 +62,11 @@ public class ControllableElectron extends Electron {
 	public void drawStartVelocityArrow() {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.YELLOW);
-		shapeRenderer.line(getX(), getY(), getX() + startVelocityX, getY() + startVelocityY);
+		shapeRenderer.line(getX(), getY(), getX() + slingshotX, getY() + slingshotY);
 		shapeRenderer.end();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(getX() + startVelocityX, getY() + startVelocityY, ELECTRON_SIZE / 3);
+		shapeRenderer.circle(getX() + slingshotX, getY() + slingshotY, ELECTRON_SIZE / 3);
 		shapeRenderer.end();
 	}
 

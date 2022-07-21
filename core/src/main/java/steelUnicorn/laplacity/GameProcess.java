@@ -179,7 +179,7 @@ public class GameProcess {
 	public static void clearLevel() {
 		Gdx.app.log("gameProcess", "clearing level...");
 		currentGameMode = GameMode.NONE;
-		mainParticle.setStartVelocity(0.0f, 0.0f);
+		mainParticle.setSlingshot(0.0f, 0.0f);
 		mainParticle.resetToStartPosAndStartVelocity();
 		for (ChargedParticle particle : particles)
 			deleteObject(particle, particle.getBody());
