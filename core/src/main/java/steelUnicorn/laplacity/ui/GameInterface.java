@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -17,6 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;
@@ -30,7 +32,8 @@ import steelUnicorn.laplacity.gameModes.GameMode;
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
-
+	private TextureAtlas icons;
+	private Image curModeImg;
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
 
@@ -69,15 +72,25 @@ public class GameInterface extends Stage implements GestureListener {
 		root.align(Align.right);
 		root.pad(iconSpace);
 		addActor(root);
-		root.defaults()
+
+		//mode img
+		curModeImg = new Image();
+		curModeImg.setVisible(false);
+		root.add(curModeImg).expand().left().top()
+				.size(iconSize, iconSize).pad(iconSpace);
+
+		//Icons Table
+		Table guiTable = new Table();
+		root.add(guiTable).right();
+		guiTable.defaults()
 				.width(iconSize)
 				.height(iconSize)
 				.space(iconSpace);
 
-		TextureAtlas icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
+		icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
 
 		//reload and return buttons
-		createIcon(icons, "return", root, new ChangeListener() {
+		createIcon("Return", guiTable, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				returnDialog.show(GameInterface.this);
@@ -85,23 +98,32 @@ public class GameInterface extends Stage implements GestureListener {
 		});
 
 		//modes
-		createModeIcon(icons, "flight", root, GameMode.FLIGHT);
-		createModeIcon(icons, "reload", root, GameMode.NONE);
-		createModeIcon(icons, "eraser", root, GameMode.ERASER);
-		createModeIcon(icons, "electrons", root, GameMode.ELECTRONS);
-		createModeIcon(icons, "protons", root, GameMode.PROTONS);
-		createModeIcon(icons, "dirichlet", root, GameMode.DIRICHLET);
+		createModeIcon("Flight", guiTable, GameMode.FLIGHT);
+		createModeIcon("Reload", guiTable, GameMode.NONE);
+		createModeIcon("Eraser", guiTable, GameMode.ERASER);
+		createModeIcon("Electrons", guiTable, GameMode.ELECTRONS);
+		createModeIcon("Protons", guiTable, GameMode.PROTONS);
+		createModeIcon("Dirichlet", guiTable, GameMode.DIRICHLET);
 	}
 
+	public void updateCurModeImg() {
+		if (currentGameMode != GameMode.NONE) {
+			curModeImg.setVisible(true);
+			curModeImg.setDrawable(
+					new TextureRegionDrawable(
+							icons.findRegion(currentGameMode.getName())));
+		} else {
+			curModeImg.setVisible(false);
+		}
+	}
 	/**
 	 * Функция для создания кнопки иконки
 	 *
-	 * @param icons - Texture Atlas с иконками
 	 * @param name - название мода
 	 * @param root - таблица хранящая кнопки
 	 * @param listener - обработчик события
 	 */
-	private void createIcon(TextureAtlas icons, String name, Table root, ChangeListener listener) {
+	private void createIcon(String name, Table root, ChangeListener listener) {
 		Button btn = new Button(new TextureRegionDrawable(icons.findRegion(name)));
 		btn.setName(name);
 		btn.addListener(listener);
@@ -112,16 +134,16 @@ public class GameInterface extends Stage implements GestureListener {
 	/**
 	 * Функция создающая иконку мода
 	 *
-	 * @param icons - Texture Atlas с иконками
 	 * @param name - название мода
 	 * @param root - таблица хранящая кнопки
 	 * @param mode - включаемый мод
 	 */
-	private void createModeIcon(TextureAtlas icons, String name, Table root, GameMode mode) {
-		createIcon(icons, name, root, new ChangeListener() {
+	private void createModeIcon(String name, Table root, GameMode mode) {
+		createIcon(name, root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				changeGameMode(mode);
+				updateCurModeImg();
 			}
 		});
 	}

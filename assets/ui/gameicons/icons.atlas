@@ -1,54 +1,68 @@
 icons.png
-size: 191, 31
+size: 900, 100
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-dirichlet
+Clear
   rotate: false
-  xy: 1, 1
-  size: 19, 29
-  orig: 30, 30
-  offset: 7, 0
+  xy: 0, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
   index: -1
-electrons
+Dirichlet
   rotate: false
-  xy: 22, 1
-  size: 28, 28
-  orig: 30, 30
-  offset: 1, 1
+  xy: 100, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
   index: -1
-eraser
+Edit
   rotate: false
-  xy: 52, 1
-  size: 28, 28
-  orig: 30, 30
-  offset: 1, 1
+  xy: 200, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
   index: -1
-protons
+Electrons
   rotate: false
-  xy: 82, 1
-  size: 28, 28
-  orig: 30, 30
-  offset: 1, 1
+  xy: 300, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
   index: -1
-reload
+Eraser
   rotate: false
-  xy: 138, 1
-  size: 26, 26
-  orig: 30, 30
-  offset: 2, 2
+  xy: 400, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
   index: -1
-return
-  rotate: true
-  xy: 112, 1
-  size: 28, 24
-  orig: 30, 30
-  offset: 1, 4
-  index: -1
-flight
+Protons
   rotate: false
-  xy: 166, 1
-  size: 24, 26
-  orig: 30, 30
-  offset: 4, 2
+  xy: 500, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+Reload
+  rotate: false
+  xy: 600, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+Return
+  rotate: false
+  xy: 700, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+Flight
+  rotate: false
+  xy: 800, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
   index: -1
