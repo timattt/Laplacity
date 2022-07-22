@@ -210,7 +210,9 @@ public class GameProcess {
 			if (wasFlight) {
 				mainParticle.resetToStartPosAndStartVelocity();
 			}
-		}	
+		}
+
+		gameUI.updateCurModeImg();
 	}
 
 	public static void registerObject(Actor act) {

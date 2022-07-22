@@ -143,7 +143,6 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				changeGameMode(mode);
-				updateCurModeImg();
 			}
 		});
 	}
