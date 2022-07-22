@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
@@ -39,6 +40,7 @@ public class SettingsTab extends MainMenuTab {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
                         CheckBox box = (CheckBox) actor;
                         Settings.setSoundVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
                     }
@@ -51,8 +53,10 @@ public class SettingsTab extends MainMenuTab {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
                         CheckBox box = (CheckBox) actor;
                         Settings.setMusicVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
+                        LaplacityAssets.music.setVolume(Settings.getMusicVolume());
                     }
                 }, "musicCheckbox");
     }
