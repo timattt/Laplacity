@@ -81,7 +81,7 @@ public class MainMenu extends Stage {
         addMenuButton(mainMenu, "Play", skin, "playBtn", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.clickSound.play();
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 root.getCell(root.findActor("tab")).setActor(levelsTab);
             }
         });
@@ -91,7 +91,7 @@ public class MainMenu extends Stage {
         addMenuButton(mainMenu, "Settings", skin, "settingsBtn", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.clickSound.play();
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 root.getCell(root.findActor("tab")).setActor(settingsTab);
             }
         });
@@ -101,7 +101,7 @@ public class MainMenu extends Stage {
         addMenuButton(mainMenu, "Credits", skin, "creditsBtn", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.clickSound.play();
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 root.getCell(root.findActor("tab")).setActor(creditsTab);
             }
         });
@@ -111,7 +111,7 @@ public class MainMenu extends Stage {
         addMenuButton(mainMenu, "Test ad", skin, "testAd", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.clickSound.play();
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 Globals.game.showInterstitial();
             }
         });

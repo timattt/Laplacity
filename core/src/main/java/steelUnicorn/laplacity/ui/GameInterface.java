@@ -81,7 +81,7 @@ public class GameInterface extends Stage implements GestureListener {
 		createIcon(icons, "return", root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.clickSound.play();
+				LaplacityAssets.playSound(LaplacityAssets.clickSound);
 				returnDialog.show(GameInterface.this);
 			}
 		});
@@ -123,7 +123,7 @@ public class GameInterface extends Stage implements GestureListener {
 		createIcon(icons, name, root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.lightClickSound.play();
+				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 				changeGameMode(mode);
 			}
 		});

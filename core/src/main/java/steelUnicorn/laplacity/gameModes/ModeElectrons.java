@@ -16,7 +16,7 @@ public class ModeElectrons extends GameMode {
 
 	@Override
 	public void tap(float x, float y) {
-		LaplacityAssets.placeSound.play();
+		LaplacityAssets.playSound(LaplacityAssets.placeSound);;
 		addStaticParticle(new Electron(x, y));
 		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();

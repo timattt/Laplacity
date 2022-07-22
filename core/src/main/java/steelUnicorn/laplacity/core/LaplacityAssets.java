@@ -56,4 +56,11 @@ public class LaplacityAssets {
         currentTrack = index;
         changeTrack("music/levels/" + levelTracks[currentTrack].name());
     }
+
+    public static void playSound(Sound sound) {
+        if (Settings.getSoundVolume() != 0) {
+            long id = sound.play(); // трюк с id может не работать на ведроиде
+            sound.setVolume(id, Settings.getSoundVolume());
+        }
+    }
 }

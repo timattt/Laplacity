@@ -47,7 +47,7 @@ public class HitController implements ContactListener {
 		if (tileId != null && part != null) {
 			if (part instanceof ControllableElectron && GameProcess.currentGameMode == GameMode.FLIGHT) {
 				if (tileId == 4) { // deadly tile id
-					LaplacityAssets.hurtSound.play();
+					LaplacityAssets.playSound(LaplacityAssets.hurtSound);;
 					hitted = true;
 				} else if (tileId == 5) {// finish tile id
 					finished = true;
