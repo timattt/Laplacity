@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 
 /**
  * Класс сцена для победного экрана.
@@ -83,6 +84,7 @@ public class WinInterface extends Stage {
         addButton(buttons, "Exit", skin, "exitBtn", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.clickSound.play();
                 Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
             }
         });
@@ -90,6 +92,7 @@ public class WinInterface extends Stage {
         addButton(buttons, "Replay", skin, "replayBtn", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.clickSound.play();
                 GameProcess.initLevel(Globals.assetManager.get("levels/level" +
                         GameProcess.levelNumber + ".png", Texture.class));
                 Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
@@ -101,6 +104,7 @@ public class WinInterface extends Stage {
             addButton(buttons, "Next", skin, "nextBtn", new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    LaplacityAssets.clickSound.play();
                     GameProcess.initLevel(Globals.assetManager.get("levels/level" +
                             (++GameProcess.levelNumber) + ".png", Texture.class));
                     Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
