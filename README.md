@@ -31,3 +31,14 @@ gradlew android:installDebug
 ```
 gradlew android:run
 ```
+
+# Редактирование уровней
+
+| tile        | r   | g   | b   | a   | Код       |
+|-------------|-----|-----|-----|-----|-----------|
+| WallTile    | 0   | 0   | 0   | 255 | 255       |
+| FinishTile  | 0   | 255 | 0   | 255 | 16711935  |
+| BarrierTile | 0   | 0   | 255 | 255 | 65535     |
+| DeadlyTile  | 255 | 0   | 0   | 255 | -16776961 |
+| StartPoint  | 255 | 255 | 0   | 255 | -65281    |
+| Empty       | 255 | 255 | 255 | 255 | -         |
