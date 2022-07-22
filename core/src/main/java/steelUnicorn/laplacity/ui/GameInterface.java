@@ -24,9 +24,9 @@ import steelUnicorn.laplacity.gameModes.GameMode;
 
 
 /**
- * @brief Class that creates game ui and add listeners.
+ * @brief Класс создающий ui и обработчик жество на экране
  *
- * When any icon clicked, GameProcess.currentGameMode change its state
+ * При нажатии на иконку мода, нужный мод устанавливается в GameProcess.currentGameMode
  * @author Elveg, timat
  */
 public class GameInterface extends Stage implements GestureListener {
@@ -36,7 +36,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private static final float iconSpace = iconSize * 0.1f;
 
 	/**
-	 * Constructor create Stage and interface
+	 * Конструктор создающий интерфейс
 	 * @param viewport
 	 */
 	public GameInterface(Viewport viewport) {
@@ -46,9 +46,9 @@ public class GameInterface extends Stage implements GestureListener {
 	}
 	
 	/**
-	 * @brief Function creates interface buttons
+	 * @brief Функция создающая иконки кнопок.
 	 *
-	 * The order is
+	 * Порядок кнопок
 	 * <ol>
 	 * 	<li>return</li>
 	 * 	<li>reload</li>
@@ -81,8 +81,6 @@ public class GameInterface extends Stage implements GestureListener {
 		createIcon(icons, "return", root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				Gdx.app.log("game ui", "return pressed");
-				//Globals.game.setScreen(Globals.mainMenuScreen);
 				returnDialog.show(GameInterface.this);
 			}
 		});
@@ -97,12 +95,12 @@ public class GameInterface extends Stage implements GestureListener {
 	}
 
 	/**
-	 * Function that creates 1 icon button of game interface
+	 * Функция для создания кнопки иконки
 	 *
-	 * @param icons - TextureAtlas with icons in it
-	 * @param name - name of TextureRegion in Atlas
-	 * @param root - table where button is placed
-	 * @param listener - listener that define buttons behaviour
+	 * @param icons - Texture Atlas с иконками
+	 * @param name - название мода
+	 * @param root - таблица хранящая кнопки
+	 * @param listener - обработчик события
 	 */
 	private void createIcon(TextureAtlas icons, String name, Table root, ChangeListener listener) {
 		Button btn = new Button(new TextureRegionDrawable(icons.findRegion(name)));
@@ -113,19 +111,18 @@ public class GameInterface extends Stage implements GestureListener {
 	}
 
 	/**
-	 * Function that creates mode button
+	 * Функция создающая иконку мода
 	 *
-	 * @param icons - Texture Atlas with icons of modes
-	 * @param name - name of mode
-	 * @param root - table where button is placed
-	 * @param mode - mode that button enables
+	 * @param icons - Texture Atlas с иконками
+	 * @param name - название мода
+	 * @param root - таблица хранящая кнопки
+	 * @param mode - включаемый мод
 	 */
 	private void createModeIcon(TextureAtlas icons, String name, Table root, GameMode mode) {
 		createIcon(icons, name, root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				changeGameMode(mode);
-				Gdx.app.log("game ui", GameProcess.currentGameMode.toString());
 			}
 		});
 	}

@@ -6,12 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import steelUnicorn.laplacity.core.Globals;
 
 /**
- * Dialog popup to confirm return to menu.
+ * Диалоговое всплывающее окно подтверждения выхода на главное меню.
  *
- * Contains warning text and 2 buttons
- * 1. NO - just close popup
- * 2. YES - return to main menu
- *
+ * Окно содержит описание и кнопки
+ * Yes No
  */
 public class ReturnDialog extends Dialog {
 	private static final String title = "Warning";
@@ -28,9 +26,9 @@ public class ReturnDialog extends Dialog {
 
 		//initialize
 		text("Return to main menu");
-		getContentTable().pad(padSize);
+		getContentTable();
 		getButtonTable().pad(padSize);
-		getButtonTable().defaults()
+		getButtonTable().pad(padSize).defaults()
 						.width(btnWidth)
 						.height(btnHeight)
 						.pad(padSize);

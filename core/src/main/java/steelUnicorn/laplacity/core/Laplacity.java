@@ -39,9 +39,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		super.create();
 		loadAssets();
 		Settings.loadSettings();
-		//logging for checking saving
-		Gdx.app.log("Settings Sound", String.valueOf(Settings.getSoundVolume()));
-		Gdx.app.log("Settings Music", String.valueOf(Settings.getMusicVolume()));
 		
 		game = this;
 		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);

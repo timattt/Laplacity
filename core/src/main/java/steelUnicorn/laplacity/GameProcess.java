@@ -133,12 +133,13 @@ public class GameProcess {
 		TrajectoryRenderer.render();
 		levelStage.draw();
 		levelStage.act();
-		gameUI.draw();
-		gameUI.act();
 		DensityRenderer.render(levelStage.getBatch());
 		//debugRend.render(levelWorld, Globals.camera.combined);
+		gameUI.draw();
+		gameUI.act();
 
 		if (currentGameMode == GameMode.FLIGHT) {
+
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}		
 		if (hitController.isHitted()) {
@@ -250,8 +251,7 @@ public class GameProcess {
 		changeGameMode(GameMode.NONE);
 		Gdx.app.log("game process", "Level finished");
 		
-		Globals.winScreen.clearStage();
-		Globals.winScreen.buildStage(calculateScore());
+		Globals.winScreen.loadWinScreen(calculateScore());
 		Globals.game.getScreenManager().pushScreen(nameWinScreen, nameSlideIn);
 	}
 	
