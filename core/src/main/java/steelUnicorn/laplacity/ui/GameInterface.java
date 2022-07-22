@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -36,6 +37,10 @@ public class GameInterface extends Stage implements GestureListener {
 	private Image curModeImg;
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
+
+	Cell flightCell;
+	Button flightBtn;
+	Button editBtn;
 
 	/**
 	 * Конструктор создающий интерфейс
@@ -90,29 +95,41 @@ public class GameInterface extends Stage implements GestureListener {
 		icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
 
 		//reload and return buttons
-		createIcon("Return", guiTable, new ChangeListener() {
+		guiTable.add(createIcon("Return", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				returnDialog.show(GameInterface.this);
 			}
-		});
+		}));
+		guiTable.row();
 
 		//modes
-		createModeIcon("Flight", guiTable, GameMode.FLIGHT);
+		flightBtn = createModeIcon("Flight", GameMode.FLIGHT);
+		editBtn = createModeIcon("Edit", GameMode.NONE);
+		flightCell = guiTable.add(flightBtn);
+		guiTable.row();
 
-		createIcon("Clear", guiTable, new ChangeListener() {
+		guiTable.add(createIcon("Clear", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				GameProcess.clearLevel();
 			}
-		});
+		}));
+		guiTable.row();
 
-		createModeIcon("Eraser", guiTable, GameMode.ERASER);
-		createModeIcon("Electrons", guiTable, GameMode.ELECTRONS);
-		createModeIcon("Protons", guiTable, GameMode.PROTONS);
-		createModeIcon("Dirichlet", guiTable, GameMode.DIRICHLET);
+		guiTable.add(createModeIcon("Eraser", GameMode.ERASER));
+		guiTable.row();
+		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS));
+		guiTable.row();
+		guiTable.add(createModeIcon("Protons", GameMode.PROTONS));
+		guiTable.row();
+		guiTable.add(createModeIcon("Dirichlet", GameMode.DIRICHLET));
 	}
 
+	/**
+	 * Функция вызывается в GameProcess.changeGameMode при изменении мода
+	 * для изменения вида gui
+	 */
 	public void updateCurModeImg() {
 		if (currentGameMode != GameMode.NONE) {
 			curModeImg.setVisible(true);
@@ -122,31 +139,34 @@ public class GameInterface extends Stage implements GestureListener {
 		} else {
 			curModeImg.setVisible(false);
 		}
+
+		if (currentGameMode == GameMode.FLIGHT) {
+			flightCell.setActor(editBtn);
+		} else {
+			flightCell.setActor(flightBtn);
+		}
 	}
 	/**
 	 * Функция для создания кнопки иконки
 	 *
 	 * @param name - название мода
-	 * @param root - таблица хранящая кнопки
 	 * @param listener - обработчик события
 	 */
-	private void createIcon(String name, Table root, ChangeListener listener) {
+	private Button createIcon(String name, ChangeListener listener) {
 		Button btn = new Button(new TextureRegionDrawable(icons.findRegion(name)));
 		btn.setName(name);
 		btn.addListener(listener);
-		root.add(btn);
-		root.row();
+		return btn;
 	}
 
 	/**
 	 * Функция создающая иконку мода
 	 *
 	 * @param name - название мода
-	 * @param root - таблица хранящая кнопки
 	 * @param mode - включаемый мод
 	 */
-	private void createModeIcon(String name, Table root, GameMode mode) {
-		createIcon(name, root, new ChangeListener() {
+	private Button createModeIcon(String name, GameMode mode) {
+		return createIcon(name, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				changeGameMode(mode);
