@@ -99,7 +99,14 @@ public class GameInterface extends Stage implements GestureListener {
 
 		//modes
 		createModeIcon("Flight", guiTable, GameMode.FLIGHT);
-		createModeIcon("Reload", guiTable, GameMode.NONE);
+
+		createIcon("Clear", guiTable, new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameProcess.clearLevel();
+			}
+		});
+
 		createModeIcon("Eraser", guiTable, GameMode.ERASER);
 		createModeIcon("Electrons", guiTable, GameMode.ELECTRONS);
 		createModeIcon("Protons", guiTable, GameMode.PROTONS);
