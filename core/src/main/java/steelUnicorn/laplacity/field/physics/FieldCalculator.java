@@ -114,12 +114,8 @@ public class FieldCalculator {
 				tmpDotResiduals += tmpBuffer[i] * residualsBuffer[i];
 			}
 			// Проверим, насколько близок к нулю знаменатель
-			if (Math.abs(tmpDotResiduals) < precision) {
-				if (Math.abs(residualsDotResiduals) < precision) { // Если невязка тоже небольшая, то скорее всего мы уже решили задачу
+			if (Math.abs(tmpDotResiduals) < precision) {// Если невязка тоже небольшая, то скорее всего мы уже решили задачу
 					break; // Эта ветвь часто достигается, когда поле изначально нулевое
-				} else { // Эта ветвь по идее достигается с очень мальенькой вероятностью, но не нулевой
-					throw new RuntimeException("Fatal computational error: redraw your field");
-				}
 			}
 			float descendStepValue = residualsDotResiduals / tmpDotResiduals;
 

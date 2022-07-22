@@ -85,6 +85,7 @@ public class WinInterface extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.clickSound.play();
+                LaplacityAssets.changeTrack("music/main_menu.mp3");
                 Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
             }
         });
@@ -107,6 +108,7 @@ public class WinInterface extends Stage {
                     LaplacityAssets.clickSound.play();
                     GameProcess.initLevel(Globals.assetManager.get("levels/level" +
                             (++GameProcess.levelNumber) + ".png", Texture.class));
+                    LaplacityAssets.setLevelTrack();
                     Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
                 }
             });

@@ -64,6 +64,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
+		LaplacityAssets.changeTrack("music/main_menu.mp3");
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
 	}
 	
@@ -81,6 +82,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		for (FileHandle snd : snds) {
 			assetManager.load(snd.path(), Sound.class);
 		}
+		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
 		assetManager.finishLoading();
 		LaplacityAssets.getAssets();
 	}

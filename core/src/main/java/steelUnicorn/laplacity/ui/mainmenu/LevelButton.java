@@ -34,6 +34,7 @@ public class LevelButton extends TextButton {
 			GameProcess.levelNumber = btn.levelNumber;
 			GameProcess.initLevel(Globals.assetManager.get(btn.lvlImgPath, Texture.class));
 
+			LaplacityAssets.setLevelTrack();;
 			Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
 		}
 	};
