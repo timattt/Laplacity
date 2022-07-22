@@ -52,7 +52,7 @@ public class HitController implements ContactListener {
 				} else if (tileId == 5) {// finish tile id
 					finished = true;
 				} else { // it was just a collision
-					LaplacityAssets.bumpSound.play();
+					LaplacityAssets.playSound(LaplacityAssets.bumpSound);;
 				}
 			}
 		}
