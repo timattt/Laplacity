@@ -2,7 +2,8 @@
 
 # Laplacity
 
-Описание и техническое задание [здесь](https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md)
+* Описание и техническое задание [здесь](https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md)
+* Дополнительные механики для новых 60 уровней смотрите [здесь](https://github.com/timattt/Steel-unicorn/blob/master/About/LaplacityMoreMechanics.md)
 
 # Build
 
