@@ -39,7 +39,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
 
-	Cell flightCell;
+	Cell<Button> flightCell;
 	Button flightBtn;
 	Button editBtn;
 
