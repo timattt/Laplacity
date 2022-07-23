@@ -4,9 +4,11 @@ import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
 
 /**
  * Тайл, который есть физическое тело. Структура тел обсчитывается в классе {@link TilesBodyHandler}.
@@ -29,6 +31,9 @@ public class SolidTile extends EmptyTile {
 		shapeRenderer.setColor(getColor());
 		shapeRenderer.rect(gridX*sz, gridY*sz, sz, sz);
 		shapeRenderer.end();
+	}
+	
+	public void constantDraw(SpriteCache sc) {
 	}
 	
 }

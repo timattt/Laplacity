@@ -5,6 +5,8 @@ import java.util.Random;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -24,12 +26,41 @@ public class LaplacityAssets {
     public static Sound placeSound; // звук размещения частицы
 	public static Sound hurtSound; // звук касания смертельной стены
 
+	public static Texture BARRIER_TEXTURE;
+	public static Texture DEADLY_TEXTURE;
+	public static TextureRegion[] BARRIER_REGIONS;
+	public static TextureRegion[][] DEADLY_REGIONS;
+	
     public static void getAssets() {
         clickSound = Globals.assetManager.get("sounds/click1.ogg");
         lightClickSound = Globals.assetManager.get("sounds/simple_signal.ogg");
         bumpSound = Globals.assetManager.get("sounds/sword_hit_b.ogg");
         placeSound = Globals.assetManager.get("sounds/bow_draw.ogg");
         hurtSound = Globals.assetManager.get("sounds/fire_burst.ogg");
+        
+        BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
+        DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
+        
+        loadTextureRegions();
+    }
+    
+    private static void loadTextureRegions() {
+    	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[4]);
+    	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
+    }
+    
+    private static void cut(Texture from, TextureRegion[] result) {
+    	for (int i = 0; i < result.length; i++) {
+    		result[i] = new TextureRegion(from, i * from.getWidth() / result.length, 0, from.getWidth() / result.length, from.getHeight());
+    	}
+    }
+    
+    private static void cut(Texture from, TextureRegion[][] result) {
+    	for (int i = 0; i < result.length; i++) {
+    		for (int j = 0; j < result[i].length; j++) {
+    			result[i][j] = new TextureRegion(from, i * from.getWidth() / result.length, j * from.getHeight() / result[i].length, from.getWidth() / result.length, from.getHeight() / result[i].length);
+    		}
+    	}
     }
 
     public static void changeTrack(String name) {

@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
+import steelUnicorn.laplacity.field.graphics.TilesRenderer;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
@@ -123,6 +124,7 @@ public class GameProcess {
 		LaplacityField.initField(level);
 		DensityRenderer.init();
 		TrajectoryRenderer.init();
+		TilesRenderer.init();
 		
 		mainParticle = new ControllableElectron(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
 		
@@ -139,6 +141,7 @@ public class GameProcess {
 		currentGameMode.update();
 		TrajectoryRenderer.render();
 		levelStage.draw();
+		TilesRenderer.render();
 		if (currentGameMode == GameMode.FLIGHT) {
 			LaplacityField.updateStructures(TimeUtils.millis() - startTime);
 		} else {
@@ -166,6 +169,7 @@ public class GameProcess {
 		LaplacityField.cleanupStructures();
 		TrajectoryRenderer.cleanup();
 		DensityRenderer.cleanup();
+		TilesRenderer.cleanup();
 		
 		if (levelStage != null) {
 			levelStage.dispose();

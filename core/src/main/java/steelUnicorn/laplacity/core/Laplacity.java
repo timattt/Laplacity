@@ -78,6 +78,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		}
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
+		assetManager.load("textures/barrier.png", Texture.class);
+		assetManager.load("textures/deadly.png", Texture.class);
 		FileHandle[] snds = Gdx.files.internal("sounds/").list();
 		for (FileHandle snd : snds) {
 			assetManager.load(snd.path(), Sound.class);
