@@ -91,7 +91,7 @@ public class WinInterface extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 GameProcess.initLevel(Globals.assetManager.get("levels/level" +
-                        GameProcess.levelNumber + ".png", Texture.class));
+                        String.format("%02d", GameProcess.levelNumber) + ".png", Texture.class));
                 Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
             }
         });
@@ -102,7 +102,7 @@ public class WinInterface extends Stage {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     GameProcess.initLevel(Globals.assetManager.get("levels/level" +
-                            (++GameProcess.levelNumber) + ".png", Texture.class));
+                            String.format("%02d",++GameProcess.levelNumber) + ".png", Texture.class));
                     Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
                 }
             });
