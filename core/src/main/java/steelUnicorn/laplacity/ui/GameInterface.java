@@ -10,6 +10,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
@@ -31,9 +34,14 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
-
+	private TextureAtlas icons;
+	private Image curModeImg;
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
+
+	Cell flightCell;
+	Button flightBtn;
+	Button editBtn;
 
 	/**
 	 * Конструктор создающий интерфейс
@@ -70,57 +78,97 @@ public class GameInterface extends Stage implements GestureListener {
 		root.align(Align.right);
 		root.pad(iconSpace);
 		addActor(root);
-		root.defaults()
+
+		//mode img
+		curModeImg = new Image();
+		curModeImg.setVisible(false);
+		root.add(curModeImg).expand().left().top()
+				.size(iconSize, iconSize).pad(iconSpace);
+
+		//Icons Table
+		Table guiTable = new Table();
+		root.add(guiTable).right();
+		guiTable.defaults()
 				.width(iconSize)
 				.height(iconSize)
 				.space(iconSpace);
 
-		TextureAtlas icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
+		icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
 
 		//reload and return buttons
-		createIcon(icons, "return", root, new ChangeListener() {
+		guiTable.add(createIcon("Return", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				LaplacityAssets.playSound(LaplacityAssets.clickSound);
 				returnDialog.show(GameInterface.this);
 			}
-		});
+		}));
+		guiTable.row();
 
 		//modes
-		createModeIcon(icons, "flight", root, GameMode.FLIGHT);
-		createModeIcon(icons, "reload", root, GameMode.NONE);
-		createModeIcon(icons, "eraser", root, GameMode.ERASER);
-		createModeIcon(icons, "electrons", root, GameMode.ELECTRONS);
-		createModeIcon(icons, "protons", root, GameMode.PROTONS);
-		createModeIcon(icons, "dirichlet", root, GameMode.DIRICHLET);
+		flightBtn = createModeIcon("Flight", GameMode.FLIGHT);
+		editBtn = createModeIcon("Edit", GameMode.NONE);
+		flightCell = guiTable.add(flightBtn);
+		guiTable.row();
+
+		guiTable.add(createIcon("Clear", new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				GameProcess.clearLevel();
+			}
+		}));
+		guiTable.row();
+
+		guiTable.add(createModeIcon("Eraser", GameMode.ERASER));
+		guiTable.row();
+		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS));
+		guiTable.row();
+		guiTable.add(createModeIcon("Protons", GameMode.PROTONS));
+		guiTable.row();
+		guiTable.add(createModeIcon("Dirichlet", GameMode.DIRICHLET));
 	}
 
 	/**
+	 * Функция вызывается в GameProcess.changeGameMode при изменении мода
+	 * для изменения вида gui
+	 */
+	public void updateCurModeImg() {
+		if (currentGameMode != GameMode.NONE) {
+			curModeImg.setVisible(true);
+			curModeImg.setDrawable(
+					new TextureRegionDrawable(
+							icons.findRegion(currentGameMode.getName())));
+		} else {
+			curModeImg.setVisible(false);
+		}
+
+		if (currentGameMode == GameMode.FLIGHT) {
+			flightCell.setActor(editBtn);
+		} else {
+			flightCell.setActor(flightBtn);
+		}
+	}
+	/**
 	 * Функция для создания кнопки иконки
 	 *
-	 * @param icons - Texture Atlas с иконками
 	 * @param name - название мода
-	 * @param root - таблица хранящая кнопки
 	 * @param listener - обработчик события
 	 */
-	private void createIcon(TextureAtlas icons, String name, Table root, ChangeListener listener) {
+	private Button createIcon(String name, ChangeListener listener) {
 		Button btn = new Button(new TextureRegionDrawable(icons.findRegion(name)));
 		btn.setName(name);
 		btn.addListener(listener);
-		root.add(btn);
-		root.row();
+		return btn;
 	}
 
 	/**
 	 * Функция создающая иконку мода
 	 *
-	 * @param icons - Texture Atlas с иконками
 	 * @param name - название мода
-	 * @param root - таблица хранящая кнопки
 	 * @param mode - включаемый мод
 	 */
-	private void createModeIcon(TextureAtlas icons, String name, Table root, GameMode mode) {
-		createIcon(icons, name, root, new ChangeListener() {
+	private Button createModeIcon(String name, GameMode mode) {
+		return createIcon(name, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);

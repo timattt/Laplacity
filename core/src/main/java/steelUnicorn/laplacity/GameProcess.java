@@ -186,7 +186,7 @@ public class GameProcess {
 
 	public static void clearLevel() {
 		Gdx.app.log("gameProcess", "clearing level...");
-		currentGameMode = GameMode.NONE;
+		changeGameMode(GameMode.NONE);
 		mainParticle.setSlingshot(0.0f, 0.0f);
 		mainParticle.resetToStartPosAndStartVelocity();
 		for (ChargedParticle particle : particles)
@@ -219,7 +219,9 @@ public class GameProcess {
 			if (wasFlight) {
 				mainParticle.resetToStartPosAndStartVelocity();
 			}
-		}	
+		}
+
+		gameUI.updateCurModeImg();
 	}
 
 	public static void registerObject(Actor act) {
