@@ -135,7 +135,7 @@ public class FieldStructure {
 		
 	}
 
-	public void update() {
+	public void update(float timeFromStart) {
 		
 	}
 	

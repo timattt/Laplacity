@@ -118,9 +118,9 @@ public class LaplacityField extends Group {
 		tileMap.getTextureData().disposePixmap();
 	}
 	
-	public static void updateStructures() {
+	public static void updateStructures(float timeFromStart) {
 		for (FieldStructure fs : structures) {
-			fs.update();
+			fs.update(timeFromStart);
 		}
 	}
 	

@@ -139,7 +139,11 @@ public class GameProcess {
 		currentGameMode.update();
 		TrajectoryRenderer.render();
 		levelStage.draw();
-		LaplacityField.updateStructures();
+		if (currentGameMode == GameMode.FLIGHT) {
+			LaplacityField.updateStructures(TimeUtils.millis() - startTime);
+		} else {
+			LaplacityField.updateStructures(0);
+		}
 		levelStage.act();
 		DensityRenderer.render(levelStage.getBatch());		
 		gameUI.draw();

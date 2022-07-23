@@ -11,12 +11,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.IntRect;
-import steelUnicorn.laplacity.gameModes.GameMode;
 
 /**
  * 
@@ -105,13 +103,8 @@ public class MovingWallStructure extends FieldStructure {
 	}
 
 	@Override
-	public void update() {
-		float time = 0;
-		if (currentGameMode == GameMode.FLIGHT) {
-			time = TimeUtils.millis() - GameProcess.startTime;
-		}
-		
-		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (time) / (double) (MOVING_WALL_CYCLE_TIME));
+	public void update(float timeFromStart) {
+		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
 		
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - width) / 2f;
