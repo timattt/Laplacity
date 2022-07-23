@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.ui.mainmenu;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,10 +29,12 @@ public class LevelButton extends TextButton {
 	public static ChangeListener listener = new ChangeListener() {
 		@Override
 		public void changed(ChangeEvent event, Actor actor) {
+			LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 			LevelButton btn = (LevelButton) actor;
 			GameProcess.levelNumber = btn.levelNumber;
 			GameProcess.initLevel(Globals.assetManager.get(btn.lvlImgPath, Texture.class));
 
+			LaplacityAssets.setLevelTrack();;
 			Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
 		}
 	};

@@ -18,8 +18,9 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.gameModes.GameMode;
+import steelUnicorn.laplacity.gameModes.GameMode;;
 
 
 /**
@@ -80,6 +81,7 @@ public class GameInterface extends Stage implements GestureListener {
 		createIcon(icons, "return", root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(LaplacityAssets.clickSound);
 				returnDialog.show(GameInterface.this);
 			}
 		});
@@ -121,6 +123,7 @@ public class GameInterface extends Stage implements GestureListener {
 		createIcon(icons, name, root, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 				changeGameMode(mode);
 			}
 		});

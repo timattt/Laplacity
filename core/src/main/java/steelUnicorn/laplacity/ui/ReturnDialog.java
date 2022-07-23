@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 
 /**
  * Диалоговое всплывающее окно подтверждения выхода на главное меню.
@@ -40,6 +41,7 @@ public class ReturnDialog extends Dialog {
 	@Override
 	protected void result(Object object) {
 		if ((Boolean) object) {
+			LaplacityAssets.changeTrack("music/main_menu.mp3");
 			Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
 		}
 	}

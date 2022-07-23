@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -63,6 +64,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
+		LaplacityAssets.changeTrack("music/main_menu.mp3");
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
 	}
 	
@@ -76,7 +78,13 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		}
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
+		FileHandle[] snds = Gdx.files.internal("sounds/").list();
+		for (FileHandle snd : snds) {
+			assetManager.load(snd.path(), Sound.class);
+		}
+		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
 		assetManager.finishLoading();
+		LaplacityAssets.getAssets();
 	}
 	
 	@Override

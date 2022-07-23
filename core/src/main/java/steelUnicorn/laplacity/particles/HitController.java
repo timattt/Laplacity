@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.tiles.SolidTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
@@ -45,10 +46,14 @@ public class HitController implements ContactListener {
 		
 		if (tileId != null && part != null) {
 			if (part instanceof ControllableElectron && GameProcess.currentGameMode == GameMode.FLIGHT) {
-				if (tileId == 4) // deadly tile id
+				if (tileId == 4) { // deadly tile id
+					LaplacityAssets.playSound(LaplacityAssets.hurtSound);;
 					hitted = true;
-				if (tileId == 5) // finish tile id
+				} else if (tileId == 5) {// finish tile id
 					finished = true;
+				} else { // it was just a collision
+					LaplacityAssets.playSound(LaplacityAssets.bumpSound);;
+				}
 			}
 		}
 	}
