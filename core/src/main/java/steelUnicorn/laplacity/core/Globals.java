@@ -40,7 +40,6 @@ public class Globals {
 	public static final float UI_WORLD_WIDTH = 1024;
 	public static final float UI_WORLD_HEIGHT = 576;
 
-
 	// Ingame viewport
 	/**
 	 * Сколько приходится игровых единиц на ширину экрана
@@ -67,5 +66,9 @@ public class Globals {
 	
 	// Total levels loaded
 	public static int TOTAL_LEVELS_AVAILABLE;
+	
+	// Total launches available
+	public static final int TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE = 10;
+	public static int totalLaunchesAvailable;
 	
 }

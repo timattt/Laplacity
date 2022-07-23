@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
@@ -64,6 +65,9 @@ public class GameProcess {
 	
 	// Hits
 	private static final HitController hitController = new HitController();
+	
+	// Time
+	public static long startTime = 0;
 	//========================================================================================
 	
 	
@@ -95,6 +99,9 @@ public class GameProcess {
 	public static final float PHYSICS_TIME_STEP = 1f/60f;
 	public static final int VELOCITY_STEPS = 1;
 	public static final int POSITION_STEPS = 3;
+	
+	// OBJECTS
+	public static final long MOVING_WALL_CYCLE_TIME = 3000;
 	//========================================================================================
 	
 	
@@ -132,14 +139,14 @@ public class GameProcess {
 		currentGameMode.update();
 		TrajectoryRenderer.render();
 		levelStage.draw();
+		LaplacityField.updateStructures();
 		levelStage.act();
-		DensityRenderer.render(levelStage.getBatch());
-		//debugRend.render(levelWorld, Globals.camera.combined);
+		DensityRenderer.render(levelStage.getBatch());		
 		gameUI.draw();
 		gameUI.act();
+		//debugRend.render(levelWorld, Globals.camera.combined);
 
 		if (currentGameMode == GameMode.FLIGHT) {
-
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}		
 		if (hitController.isHitted()) {
@@ -152,6 +159,9 @@ public class GameProcess {
 	
 	public static void disposeLevel() {
 		Gdx.app.log("gameProcess", "level cleanup started");
+		LaplacityField.cleanupStructures();
+		TrajectoryRenderer.cleanup();
+		DensityRenderer.cleanup();
 		
 		if (levelStage != null) {
 			levelStage.dispose();
@@ -172,9 +182,6 @@ public class GameProcess {
 		particles.clear();
 		currentGameMode = GameMode.NONE;
 		mainParticle = null;
-		
-		TrajectoryRenderer.cleanup();
-		DensityRenderer.cleanup();
 	}
 
 	public static void clearLevel() {
@@ -201,8 +208,10 @@ public class GameProcess {
 		if ((nowFlight) && (wasFlight)) {
 			mainParticle.resetToStartPosAndStartVelocity();
 			mainParticle.makeParticleMoveWithStartVelocity();
+			startTime = TimeUtils.millis();
 		} else {
 			if (nowFlight) {
+				startTime = TimeUtils.millis();
 				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 				mainParticle.makeParticleMoveWithStartVelocity();
 			}

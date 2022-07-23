@@ -2,7 +2,8 @@
 
 # Laplacity
 
-Описание и техническое задание [здесь](https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md)
+* Описание и техническое задание [здесь](https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md)
+* Дополнительные механики для новых 60 уровней смотрите [здесь](https://github.com/timattt/Steel-unicorn/blob/master/About/LaplacityMoreMechanics.md)
 
 # Build
 
@@ -30,3 +31,14 @@ gradlew android:installDebug
 ```
 gradlew android:run
 ```
+
+# Редактирование уровней
+
+| tile        | r   | g   | b   | a   | Код       |
+|-------------|-----|-----|-----|-----|-----------|
+| WallTile    | 0   | 0   | 0   | 255 | 255       |
+| FinishTile  | 0   | 255 | 0   | 255 | 16711935  |
+| BarrierTile | 0   | 0   | 255 | 255 | 65535     |
+| DeadlyTile  | 255 | 0   | 0   | 255 | -16776961 |
+| StartPoint  | 255 | 255 | 0   | 255 | -65281    |
+| Empty       | 255 | 255 | 255 | 255 | -         |

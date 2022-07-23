@@ -8,20 +8,24 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
+import steelUnicorn.laplacity.field.structures.FieldStructure;
+import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.FinishTile;
+import steelUnicorn.laplacity.field.tiles.StructureTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 
 /**
  * Класс со статическими полями и функциями, связанными с tilemap. Тут есть размеры поля, массив тайлов,
  * размер тайла. Еще тут есть функции для перехода из координат сетки в мировые координаты и наоборот.
- * И тут еще есть функции для рисования и очистки плотности заряда.
+ * И тут еще есть функции для рисования и очистки плотности заряда. Еще этот класс отвечает за поддержку структур. 
  * @author timat
  *
  */
@@ -29,6 +33,9 @@ public class LaplacityField extends Group {
 
 	// Tiles
 	public static EmptyTile[][] tiles;
+	
+	// Structures
+	public static final Array<FieldStructure> structures = new Array<FieldStructure>();
 
 	// Sizes
 	public static int fieldWidth;
@@ -52,6 +59,20 @@ public class LaplacityField extends Group {
 			for (int k = 0; k < fieldHeight; k++) {
 				int j = fieldHeight - k - 1;
 				int c = pxmap.getPixel(i, k);
+				
+				// to ensure that structures will be on empty tiles.
+				FieldStructure structOnTile = null;
+				for (FieldStructure fs : structures) {
+					if (fs.contains(i, j)) {
+						structOnTile = fs;		
+						break;
+					}
+				}
+				if (structOnTile != null) {
+					tiles[i][j] = new StructureTile(i, j, structOnTile);
+					continue;
+				}
+				
 				// black
 				if (c == 255) {
 					tiles[i][j] = new WallTile(i, j);
@@ -67,6 +88,12 @@ public class LaplacityField extends Group {
 				// red
 				if (c == -16776961) {
 					tiles[i][j] = new DeadlyTile(i, j);
+				} else
+				// moving wall
+				if (c == 16777215 || c == -16711681) {
+					FieldStructure str = new MovingWallStructure(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
 				}
 
 				// empty
@@ -81,11 +108,29 @@ public class LaplacityField extends Group {
 			}
 		}
 		
+		// structures
+		for (FieldStructure fs : structures) {
+			fs.register();
+		}
+		
 		TilesBodyHandler.createBodies(tiles);
 		Gdx.app.log("field", "bodies created");
 		tileMap.getTextureData().disposePixmap();
 	}
-
+	
+	public static void updateStructures() {
+		for (FieldStructure fs : structures) {
+			fs.update();
+		}
+	}
+	
+	public static void cleanupStructures() {
+		for (FieldStructure fs : structures) {
+			fs.cleanup();
+		}
+		structures.clear();
+	}
+	
 	public static void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
 		res.set((gridX + 0.5f) * tileSize, (gridY + 0.5f) * tileSize);
 	}

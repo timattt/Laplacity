@@ -51,8 +51,18 @@ public class IntRect {
         this.bottom = column.getBottom();
         this.id = column.getId();
     }
+    
+    public boolean containsPoint(int x, int y) {
+    	return x >= left && x <= right && y >= bottom && y <= top;
+    }
 
-    /**
+    @Override
+	public String toString() {
+		return "IntRect [left=" + left + ", right=" + right + ", top=" + top + ", bottom=" + bottom + ", id=" + id
+				+ "]";
+	}
+
+	/**
      * @return Высота прямоугольника в клетках
      */
     public int height() {
