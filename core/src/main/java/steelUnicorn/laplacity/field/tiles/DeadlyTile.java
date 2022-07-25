@@ -80,5 +80,7 @@ public class DeadlyTile extends SolidTile {
 			sc.add(LaplacityAssets.DEADLY_REGIONS[2][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
 			return;
 		}
+		
+		sc.add(LaplacityAssets.DEADLY_REGIONS[1][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
 	}
 }
