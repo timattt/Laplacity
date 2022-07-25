@@ -172,7 +172,11 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
-				changeGameMode(mode);
+				if (currentGameMode == mode) {
+					changeGameMode(GameMode.NONE);
+				} else {
+					changeGameMode(mode);
+				}
 			}
 		});
 	}
