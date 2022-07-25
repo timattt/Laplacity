@@ -1,10 +1,7 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
-import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
-import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
-import static steelUnicorn.laplacity.core.Globals.assetManager;
+import static steelUnicorn.laplacity.core.Globals.*;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -42,7 +39,7 @@ public class MainMenu extends Stage {
     private SettingsTab settingsTab;
     private CreditsTab creditsTab;
 
-    private Cell tabCell;
+    private Cell<MainMenuTab> tabCell;
     /**
      * Конструктор главного меню.
      * Собирает каждую вкладку и главное меню.
