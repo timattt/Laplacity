@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.screens;
 import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.GameProcess.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 
 import de.eskalon.commons.screen.ManagedScreen;

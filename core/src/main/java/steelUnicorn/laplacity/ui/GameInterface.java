@@ -78,6 +78,7 @@ public class GameInterface extends Stage implements GestureListener {
 
 		//interface intitialize
 		Table root = new Table();
+		root.setDebug(true);
 		root.setFillParent(true);
 		root.align(Align.right);
 		root.pad(iconSpace);
@@ -87,11 +88,13 @@ public class GameInterface extends Stage implements GestureListener {
 		curModeImg = new Image();
 		curModeImg.setVisible(false);
 		root.add(curModeImg).expand().left().top()
-				.size(iconSize, iconSize).pad(iconSpace);
+				.size(iconSize, iconSize).pad(iconSpace).uniform();
+
+		root.add(catFood.getInterface()).expand().top().uniform();
 
 		//Icons Table
 		Table guiTable = new Table();
-		root.add(guiTable).right();
+		root.add(guiTable).expand().right().uniform();
 		guiTable.defaults()
 				.width(iconSize)
 				.height(iconSize)
@@ -110,7 +113,21 @@ public class GameInterface extends Stage implements GestureListener {
 		guiTable.row();
 
 		//modes
-		flightBtn = createModeIcon("Flight", GameMode.FLIGHT);
+		flightBtn = createIcon("Flight", new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+				if (currentGameMode == GameMode.FLIGHT) {
+					changeGameMode(GameMode.NONE);
+				} else {
+					changeGameMode(GameMode.FLIGHT);
+				}
+				catFood.totalLaunchesAvailable--;
+				catFood.update();
+				Gdx.app.log("PlayPressed", "total lanches "
+						+ String.valueOf(catFood.totalLaunchesAvailable));
+			}
+		});
 		editBtn = createModeIcon("Edit", GameMode.NONE);
 		flightCell = guiTable.add(flightBtn);
 		guiTable.row();
