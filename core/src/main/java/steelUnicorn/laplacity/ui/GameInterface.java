@@ -72,6 +72,10 @@ public class GameInterface extends Stage implements GestureListener {
 		Skin skin = Globals.assetManager.get("ui/uiskin.json");
 		returnDialog = new ReturnDialog(skin);
 
+		//FpsCounter
+		FpsCounter fpsCounter = new FpsCounter(skin);
+		addActor(fpsCounter);
+
 		//interface intitialize
 		Table root = new Table();
 		root.setFillParent(true);
