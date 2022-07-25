@@ -6,6 +6,7 @@ import static steelUnicorn.laplacity.core.Globals.assetManager;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -35,10 +36,11 @@ public class MainMenu extends Stage {
     private static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
     private static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
 
-    private MainMenuTab levelsTab;
-    private MainMenuTab settingsTab;
+    private LevelsTab levelsTab;
+    private SettingsTab settingsTab;
     private CreditsTab creditsTab;
 
+    private Cell tabCell;
     /**
      * Конструктор главного меню.
      * Собирает каждую вкладку и главное меню.
@@ -71,40 +73,22 @@ public class MainMenu extends Stage {
         root.add(mainMenu).expandX().uniform();
 
         MainMenuTab tmpTab = new MainMenuTab();
-        root.add(tmpTab).expandX().uniform();
+        tabCell = root.add(tmpTab).growX().uniform();
 
         mainMenu.defaults()
                 .width(menuWidth)
                 .height(menuHeight)
                 .space(menuSpaceSize);
         //play
-        addMenuButton(mainMenu, "Play", skin, "playBtn", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                root.getCell(root.findActor("tab")).setActor(levelsTab);
-            }
-        });
+        addMenuButton(mainMenu, "Play", skin, "playBtn", levelsTab);
 
         //options
         mainMenu.row();
-        addMenuButton(mainMenu, "Settings", skin, "settingsBtn", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                root.getCell(root.findActor("tab")).setActor(settingsTab);
-            }
-        });
+        addMenuButton(mainMenu, "Settings", skin, "settingsBtn", settingsTab.settingsPane);
 
         //credits
         mainMenu.row();
-        addMenuButton(mainMenu, "Credits", skin, "creditsBtn", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                root.getCell(root.findActor("tab")).setActor(creditsTab);
-            }
-        });
+        addMenuButton(mainMenu, "Credits", skin, "creditsBtn", creditsTab);
 
         //testads
         mainMenu.row();
@@ -130,5 +114,15 @@ public class MainMenu extends Stage {
         btn.setName(name);
         btn.addListener(listener);
         table.add(btn);
+    }
+
+    private void addMenuButton(Table table, String text, Skin skin, String name, Actor tabActor) {
+        addMenuButton(table, text, skin, name, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                tabCell.setActor(tabActor);
+            }
+        });
     }
 }
