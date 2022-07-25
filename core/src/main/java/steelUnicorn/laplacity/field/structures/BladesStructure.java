@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -86,6 +87,7 @@ public class BladesStructure extends FieldStructure {
 		body.setTransform(x, y, (float) (2 * Math.PI * curAngle / 360f));
 		
 		shapeRenderer.begin(ShapeType.Filled);
+		shapeRenderer.setColor(Color.CORAL);
 		shapeRenderer.rect(x - size/2, y - size * BLADES_THICKNESS_FACTOR / 2, size / 2, size * BLADES_THICKNESS_FACTOR / 2, size, size * BLADES_THICKNESS_FACTOR, 1, 1, curAngle);
 		shapeRenderer.rect(x - size * BLADES_THICKNESS_FACTOR / 2, y - size/2, size * BLADES_THICKNESS_FACTOR / 2, size / 2, size * BLADES_THICKNESS_FACTOR, size, 1, 1, curAngle);
 		shapeRenderer.end();

@@ -9,6 +9,8 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import steelUnicorn.laplacity.core.Globals;
+
 /**
  * Класс частицы. Тут есть ее физ. тело. И заряд.
  * При изменении положения актера сразу меняется положение физ. тела.
@@ -74,6 +76,10 @@ public class ChargedParticle extends Actor {
 
 	public Body getBody() {
 		return body;
+	}
+	
+	public void addDissipative(float factor) {
+		body.applyForceToCenter(Globals.TMP1.set(body.getLinearVelocity()).scl(factor), false);
 	}
 
 }

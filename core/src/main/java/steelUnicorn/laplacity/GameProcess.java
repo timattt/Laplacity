@@ -105,6 +105,8 @@ public class GameProcess {
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
 	public static final long BLADES_ROTATION_TIME = 4000;
 	public static final float BLADES_THICKNESS_FACTOR = 0.1f;
+	public static final float DISSIPATIVE_ACCELERATION_FACTOR = 100f;
+	public static final float DISSIPATIVE_MODERATION_FACTOR = -30f;
 	//========================================================================================
 	
 	
@@ -140,15 +142,16 @@ public class GameProcess {
 			return;
 		}
 		
-		currentGameMode.update();
-		TrajectoryRenderer.render();
-		levelStage.draw();
-		TilesRenderer.render();
 		if (currentGameMode == GameMode.FLIGHT) {
 			LaplacityField.updateStructures(TimeUtils.millis() - startTime);
 		} else {
 			LaplacityField.updateStructures(0);
 		}
+		currentGameMode.update();
+		TrajectoryRenderer.render();
+		levelStage.draw();
+		TilesRenderer.render();
+
 		levelStage.act();
 		DensityRenderer.render(levelStage.getBatch());		
 		gameUI.draw();
