@@ -32,11 +32,11 @@ public class LaplacityAssets {
 	public static TextureRegion[][] DEADLY_REGIONS;
 	
     public static void getAssets() {
-        clickSound = Globals.assetManager.get("sounds/click1.ogg");
-        lightClickSound = Globals.assetManager.get("sounds/simple_signal.ogg");
-        bumpSound = Globals.assetManager.get("sounds/sword_hit_b.ogg");
-        placeSound = Globals.assetManager.get("sounds/bow_draw.ogg");
-        hurtSound = Globals.assetManager.get("sounds/fire_burst.ogg");
+        clickSound = Globals.assetManager.get("sounds/click.ogg");
+        lightClickSound = Globals.assetManager.get("sounds/light_click.ogg");
+        bumpSound = Globals.assetManager.get("sounds/bump_barrier.ogg");
+        placeSound = Globals.assetManager.get("sounds/place.ogg");
+        hurtSound = Globals.assetManager.get("sounds/bump_deadly.ogg");
         
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
