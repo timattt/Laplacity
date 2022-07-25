@@ -45,3 +45,5 @@ gradlew android:run
 | MovingWallSolid | 255 | 0   | 255 | 255 | -16711681  |
 | Empty           | 255 | 255 | 255 | 255 | -          |
 | Blades          | 100 | 100 | 100 | 255 | 1684301055 |
+| Accelerator     | 100 | 0   | 0   | 255 | 1677721855 |
+| Moderator       | 0   | 100 | 0   | 255 | 6553855    |
