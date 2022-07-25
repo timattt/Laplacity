@@ -150,7 +150,7 @@ public class GameProcess {
 		levelStage.act();
 		DensityRenderer.render(levelStage.getBatch());		
 		gameUI.draw();
-		gameUI.act();
+		gameUI.act(delta);
 		//debugRend.render(levelWorld, Globals.camera.combined);
 
 		if (currentGameMode == GameMode.FLIGHT) {

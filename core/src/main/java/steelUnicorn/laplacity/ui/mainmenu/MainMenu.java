@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.assetManager;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.LevelsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
@@ -49,6 +51,10 @@ public class MainMenu extends Stage {
         super(viewport);
 
         Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
+        //fpsCounter
+        FpsCounter fpsCounter = new FpsCounter(skin);
+        addActor(fpsCounter);
+        //MainMenu
         Table root = new Table();
         root.setFillParent(true);
         addActor(root);
