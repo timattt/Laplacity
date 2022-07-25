@@ -90,7 +90,7 @@ public class GameInterface extends Stage implements GestureListener {
 		root.add(curModeImg).expand().left().top()
 				.size(iconSize, iconSize).pad(iconSpace).uniform();
 
-		root.add(catFood.getInterface()).expand().top().uniform();
+		root.add(catFood.foodInterface.launchesInfo).expand().top().uniform();
 
 		//Icons Table
 		Table guiTable = new Table();
@@ -116,16 +116,18 @@ public class GameInterface extends Stage implements GestureListener {
 		flightBtn = createIcon("Flight", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
-				if (currentGameMode == GameMode.FLIGHT) {
-					changeGameMode(GameMode.NONE);
+				if (catFood.totalLaunchesAvailable > 0) {
+					LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+					changeGameMode(GameMode.FLIGHT);    //no need in NONE because of editBtn
+
+					catFood.totalLaunchesAvailable--;
+					catFood.update();
+					Gdx.app.log("PlayPressed", "total lanches "
+							+ String.valueOf(catFood.totalLaunchesAvailable));
 				} else {
-					changeGameMode(GameMode.FLIGHT);
+					Gdx.app.log("Cat Hungry", "hungry");
+					catFood.foodInterface.showHungry(GameInterface.this);
 				}
-				catFood.totalLaunchesAvailable--;
-				catFood.update();
-				Gdx.app.log("PlayPressed", "total lanches "
-						+ String.valueOf(catFood.totalLaunchesAvailable));
 			}
 		});
 		editBtn = createModeIcon("Edit", GameMode.NONE);

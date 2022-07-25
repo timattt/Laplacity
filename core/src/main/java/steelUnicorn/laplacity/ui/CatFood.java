@@ -16,7 +16,7 @@ public class CatFood {
     private Preferences foodPrefs;
 
     //CatFood UI
-    private CatFoodUI foodInterface;
+    public CatFoodUI foodInterface;
 
     public CatFood() {
         //подгрузка из prefs еды кота
@@ -41,10 +41,6 @@ public class CatFood {
         }
 
         foodInterface.update(totalLaunchesAvailable);
-    }
-
-    public final CatFoodUI getInterface() {
-        return foodInterface;
     }
 
     public void dispose() {
