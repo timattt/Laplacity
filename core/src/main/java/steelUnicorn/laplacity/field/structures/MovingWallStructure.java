@@ -23,7 +23,7 @@ import steelUnicorn.laplacity.field.physics.IntRect;
  */
 public class MovingWallStructure extends FieldStructure {
 
-	private static final int[] codes = new int[] {16777215, -16711681};
+	private static final int[] allCodes = new int[] {16777215, -16711681};
 	
 	// block
 	private IntRect blockRect;
@@ -40,10 +40,9 @@ public class MovingWallStructure extends FieldStructure {
 	private Body body;
 	
 	public MovingWallStructure(int left, int bottom, Pixmap pm) {
-		super(left, bottom, pm);
+		super(left, bottom, pm, allCodes);
 		blockRect = new IntRect();
 		
-		findRect(pm, left, bottom, codes, bounds);
 		findSubRect(pm, bounds, -16711681, blockRect);
 	
 		Gdx.app.log("new moving wall structure", "bounds: " + bounds + " wall: " + blockRect);

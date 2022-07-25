@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
+import steelUnicorn.laplacity.field.structures.BladesStructure;
 import steelUnicorn.laplacity.field.structures.FieldStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
@@ -94,8 +95,14 @@ public class LaplacityField extends Group {
 					FieldStructure str = new MovingWallStructure(i, j, pxmap);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
+				} else
+				// blades
+				if (c == 1684301055) {
+					BladesStructure str = new BladesStructure(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
 				}
-
+					
 				// empty
 				else {
 					tiles[i][j] = new EmptyTile(i, j);

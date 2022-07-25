@@ -16,10 +16,9 @@ public class FieldStructure {
 
 	protected IntRect bounds;
 	
-	public FieldStructure(int left, int bottom, Pixmap pm) {
+	public FieldStructure(int left, int bottom, Pixmap pm, int[] structureCodes) {
 		bounds = new IntRect();
-		bounds.left = left;
-		bounds.bottom = bottom;
+		findRect(pm, left, bottom, structureCodes, bounds);
 	}
 	
 	public boolean contains(int x, int y) {

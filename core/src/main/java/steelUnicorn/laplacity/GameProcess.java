@@ -103,6 +103,8 @@ public class GameProcess {
 	
 	// OBJECTS
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
+	public static final long BLADES_ROTATION_TIME = 4000;
+	public static final float BLADES_THICKNESS_FACTOR = 0.1f;
 	//========================================================================================
 	
 	
