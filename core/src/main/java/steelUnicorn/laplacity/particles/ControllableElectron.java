@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.physics.BodyData;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
@@ -35,8 +36,14 @@ public class ControllableElectron extends Electron {
 	}
 
 	@Override
-	public void act(float delta) {
+	protected Object createUserData() {
+		BodyData res = new BodyData();
+		res.setMainParticle(true);
+		return res;
+	}
 
+	@Override
+	public void act(float delta) {
 		if (currentGameMode == GameMode.FLIGHT) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);

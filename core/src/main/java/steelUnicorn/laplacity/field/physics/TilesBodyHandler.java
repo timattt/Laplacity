@@ -85,7 +85,14 @@ public class TilesBodyHandler {
 		fxt.density = 10000;
 		fxt.restitution = bodyTemplate.restitution;
 		body.createFixture(fxt);
-		body.setUserData((Integer) bodyTemplate.id);
+		BodyData dat = new BodyData(bodyTemplate.id);
+		if (bodyTemplate.id == 4) {
+			dat.setDeadly(true);
+		}
+		if (bodyTemplate.id == 5) {
+			dat.setFinish(true);
+		}
+		body.setUserData(dat);
 		shape.dispose();
 	}
 

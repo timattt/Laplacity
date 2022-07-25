@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.field.physics.BodyData;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
 /**
@@ -27,36 +28,28 @@ public class HitController implements ContactListener {
 		Body body1 = contact.getFixtureA().getBody();
 		Body body2 = contact.getFixtureB().getBody();
 		
-		Integer tileId = null;
-		ChargedParticle part = null;
-		
-		if (body1.getUserData() != null && body1.getUserData() instanceof Integer) {
-			tileId = (Integer) body1.getUserData();
-		}
-		if (body2.getUserData() != null && body2.getUserData() instanceof Integer) {
-			tileId = (Integer) body2.getUserData();
-		}
-		if (body1.getUserData() != null && body1.getUserData() instanceof ChargedParticle) {
-			part = (ChargedParticle) body1.getUserData();
-		}
-		if (body2.getUserData() != null && body2.getUserData() instanceof ChargedParticle) {
-			part = (ChargedParticle) body2.getUserData();
+		BodyData dat1 = (BodyData) body1.getUserData();
+		BodyData dat2 = (BodyData) body2.getUserData();
+
+		if (GameProcess.currentGameMode != GameMode.FLIGHT) {
+			return;
 		}
 		
-		if (tileId != null && part != null) {
-			if (part instanceof ControllableElectron && GameProcess.currentGameMode == GameMode.FLIGHT) {
-				if (tileId == 4) { // deadly tile id
-					LaplacityAssets.playSound(LaplacityAssets.hurtSound);
-					hitted = true;
-				} else if (tileId == 5) {// finish tile id
-					finished = true;
-				} else if (tileId == 10) { // moving structure
-					LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
-				} else { // it was just a collision
-					LaplacityAssets.playSound(LaplacityAssets.bumpSound);
-				}
-			}
+		if ((dat1.isMainParticle() && dat2.isDeadly()) || (dat2.isMainParticle() && dat1.isDeadly())) {
+			hitted = true;
+			//LaplacityAssets.playSound(LaplacityAssets.hurtSound);
+			return;
 		}
+		if ((dat1.isMainParticle() && dat2.isFinish()) || (dat2.isMainParticle() && dat1.isFinish())) {
+			finished = true;
+			return;
+		}
+		if ((dat1.isMainParticle() && dat2.isStructure()) || (dat2.isMainParticle() && dat1.isStructure())) {
+			//LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
+			return;
+		}
+		
+		//LaplacityAssets.playSound(LaplacityAssets.bumpSound);
 	}
 	
 	public boolean isHitted() {

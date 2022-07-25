@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.field.physics.BodyData;
 
 /**
  * Класс частицы. Тут есть ее физ. тело. И заряд.
@@ -44,11 +45,15 @@ public class ChargedParticle extends Actor {
 		fxt.restitution = 1f;
 		
 		body.createFixture(fxt);
-		body.setUserData(this);
+		body.setUserData(createUserData());
 		
 		cir.dispose();
 		
 		setPosition(x, y);
+	}
+	
+	protected Object createUserData() {
+		return new BodyData();
 	}
 	
 	public ChargedParticle(float x, float y, float rad, float charge) {

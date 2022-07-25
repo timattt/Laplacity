@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.physics.BodyData;
 import steelUnicorn.laplacity.field.physics.IntRect;
 
 public class HingeStructure extends FieldStructure {
@@ -72,7 +73,7 @@ public class HingeStructure extends FieldStructure {
 		fxt.density = 0.1f;
 		fxt.restitution = 1f;
 		box.createFixture(fxt);
-		box.setUserData((Integer) 10);
+		box.setUserData(BodyData.createForStructure());
 		shape.dispose();
 		
 		// hinge
@@ -89,7 +90,7 @@ public class HingeStructure extends FieldStructure {
 		fxt.density = 1;
 		fxt.restitution = 1f;
 		hinge.createFixture(fxt);
-		hinge.setUserData((Integer) 10);
+		hinge.setUserData(BodyData.createForStructure());
 		cir.dispose();
 		
 		RevoluteJointDef rjd = new RevoluteJointDef();
