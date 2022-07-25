@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
@@ -29,17 +29,17 @@ public class TilesBodyHandler {
 	 */
 	private static void fillColumns(EmptyTile[][] tiles) {
 		columns.clear();
-		TileColumn curColumn = new TileColumn(0, 0, 1); // 1 - id пустой клетки
+		TileColumn curColumn = new TileColumn(0, 0, 1, 0); // 1 - id пустой клетки
 		for (int i = 0; i < LaplacityField.fieldWidth; i++) {
 			for (int j = 0; j < LaplacityField.fieldHeight; j++) {
 				if (tiles[i][j] instanceof SolidTile) { // если мы попали на твёрдую клетку...
 					if (curColumn.getId() == 1) { // (1) с клетки пустого поля,
-						curColumn.set(i, j, tiles[i][j].getId()); // то мы начинаем строить новый столбец
+						curColumn.set(i, j, tiles[i][j].getId(), ((SolidTile) tiles[i][j]).getRestitution()); // то мы начинаем строить новый столбец
 					} else if (tiles[i][j].getId() == curColumn.getId()) { // (2) с клетки с тем же id
 						curColumn.increment(); // тогда продолжаем текущий столбец
 					} else { // (3) с твёрдой клетки с другим id
 						columns.add(new TileColumn(curColumn)); // тогда завершаем текущий столбец
-						curColumn.set(i, j, tiles[i][j].getId()); // и начинаем новый
+						curColumn.set(i, j, tiles[i][j].getId(), ((SolidTile) tiles[i][j]).getRestitution()); // и начинаем новый
 					}
 				} else { // если мы попали на пустую клетку
 					if (curColumn.getId() == 1) continue; // (1) с пустой - просто идём дальше
@@ -61,7 +61,7 @@ public class TilesBodyHandler {
 	 * Координаты, передаваемы в шаблоне должны быть координатами на игровой сетке.
 	 * @param bodyTemplate Шаблон; определяет координаты вершин и тип прямоугольника
 	 */
-	public static void createRectangle(IntRect bodyTemplate) {
+	public static void createRectangle(BodyIntRect bodyTemplate) {
 		Gdx.app.log(String.valueOf(bodyTemplate.id), "(" + String.valueOf(bodyTemplate.left) + ", " + String.valueOf(bodyTemplate.bottom) + ") -- (" + String.valueOf(bodyTemplate.right) + ", " + String.valueOf(bodyTemplate.top) + ")");
 				
 		BodyDef bodydef = new BodyDef();
@@ -79,11 +79,11 @@ public class TilesBodyHandler {
 		PolygonShape shape = new PolygonShape();
 		float radius = LaplacityField.tileSize / 2;
 		shape.setAsBox(radius* bodyTemplate.width(), radius * bodyTemplate.height());
-		
+
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = shape;
 		fxt.density = 10000;
-		fxt.restitution = 1f;
+		fxt.restitution = bodyTemplate.restitution;
 		body.createFixture(fxt);
 		body.setUserData((Integer) bodyTemplate.id);
 		shape.dispose();
@@ -96,7 +96,7 @@ public class TilesBodyHandler {
 	public static void createBodies(EmptyTile[][] tiles) {
 		fillColumns(tiles);
 		int expectedIndex = 0;
-		IntRect bodyTemplate = new IntRect();
+		BodyIntRect bodyTemplate = new BodyIntRect();
 		for (int i = 0; i < columns.size(); i++) {
 			if (columns.get(i).getId() != 0) { // нас интересуют столбцы, которые ещё не присоединили к прямоугольникам (у присоединённых id = 0)
 				bodyTemplate.set(columns.get(i)); // Создаём прямоугольник из каждого такого столбца

@@ -18,10 +18,14 @@ import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
  */
 public class SolidTile extends EmptyTile {
 
+	// params
+	private float restitution;
+	
 	public SolidTile(int gridX, int gridY) {
 		super(gridX, gridY);
 		setColor(new Color(0.3f, 0.3f, 0.3f, 1));
 		setId(2);
+		restitution = 1f;
 	}
 
 	@Override
@@ -34,6 +38,14 @@ public class SolidTile extends EmptyTile {
 	}
 	
 	public void constantDraw(SpriteCache sc) {
+	}
+
+	public float getRestitution() {
+		return restitution;
+	}
+
+	public void setRestitution(float restitution) {
+		this.restitution = restitution;
 	}
 	
 }

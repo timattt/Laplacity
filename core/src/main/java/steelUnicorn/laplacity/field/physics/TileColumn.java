@@ -12,6 +12,7 @@ public class TileColumn {
     private int bottomIndex;
     private int topIndex;
     private int id;
+    private float restitution;
 
     /**
      * Начать столбец, отсчитвая его вверх от данной клетки
@@ -19,11 +20,12 @@ public class TileColumn {
      * @param _verticalIndex
      * @param _id ID клетки
      */
-    public TileColumn(int _horizontalIndex, int _verticalIndex, int _id) {
+    public TileColumn(int _horizontalIndex, int _verticalIndex, int _id, float _restitution) {
         this.horizontalIndex = _horizontalIndex;
         this.bottomIndex = _verticalIndex;
         this.topIndex = _verticalIndex;
         this.id = _id;
+        this.restitution = _restitution;
     }
 
     public TileColumn(TileColumn that) {
@@ -31,6 +33,7 @@ public class TileColumn {
         this.bottomIndex = that.bottomIndex;
         this.topIndex = that.topIndex;
         this.id = that.id;
+        this.restitution = that.restitution;
     }
 
     /**
@@ -40,11 +43,12 @@ public class TileColumn {
      * @param _verticalIndex
      * @param _id
      */
-    public void set(int _horizontalIndex, int _verticalIndex, int _id) {
+    public void set(int _horizontalIndex, int _verticalIndex, int _id, float _restitution) {
         this.horizontalIndex = _horizontalIndex;
         this.bottomIndex = _verticalIndex;
         this.topIndex = _verticalIndex;
         this.id = _id;
+        this.restitution = _restitution;
     }
 
     /**
@@ -60,6 +64,7 @@ public class TileColumn {
      */
     public void reset() {
         this.id = 1; // empty tile id
+        this.restitution = 0;
     }
 
     /**
@@ -67,6 +72,7 @@ public class TileColumn {
      */
     public void deplete() {
         this.id = 0; // 0 is reserved for depleted columns
+        this.restitution = 0;
     }
 
     public int getHorizontalIndex() {
@@ -84,4 +90,8 @@ public class TileColumn {
     public int getId() {
         return this.id;
     }
+
+	public float getRestitution() {
+		return restitution;
+	}
 }

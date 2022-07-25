@@ -8,7 +8,6 @@ public class IntRect {
     public int right;
     public int top;
     public int bottom;
-    public int id;
 
     public IntRect() {
     }
@@ -22,7 +21,6 @@ public class IntRect {
         this.right = column.getHorizontalIndex();
         this.top = column.getTop();
         this.bottom = column.getBottom();
-        this.id = column.getId();
     }
 
     public IntRect(IntRect that) {
@@ -30,7 +28,6 @@ public class IntRect {
         this.right = that.right;
         this.top = that.top;
         this.bottom = that.bottom;
-        this.id = that.id;
     }
 
     /**
@@ -49,17 +46,15 @@ public class IntRect {
         this.right = column.getHorizontalIndex();
         this.top = column.getTop();
         this.bottom = column.getBottom();
-        this.id = column.getId();
     }
     
     public boolean containsPoint(int x, int y) {
     	return x >= left && x <= right && y >= bottom && y <= top;
     }
 
-    @Override
+	@Override
 	public String toString() {
-		return "IntRect [left=" + left + ", right=" + right + ", top=" + top + ", bottom=" + bottom + ", id=" + id
-				+ "]";
+		return "IntRect [left=" + left + ", right=" + right + ", top=" + top + ", bottom=" + bottom + "]";
 	}
 
 	/**

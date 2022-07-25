@@ -21,6 +21,7 @@ import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.FinishTile;
 import steelUnicorn.laplacity.field.tiles.StructureTile;
+import steelUnicorn.laplacity.field.tiles.TrampolineTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
 import steelUnicorn.laplacity.particles.ChargedParticle;
 
@@ -108,6 +109,10 @@ public class LaplacityField extends Group {
 					AcceleratorStructure str = new AcceleratorStructure(i, j, pxmap, c);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
+				} else
+				// trampoline
+				if (c == 25855) {
+					tiles[i][j] = new TrampolineTile(i, j);
 				}
 					
 				// empty
