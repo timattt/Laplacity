@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.field.tiles.SolidTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
 /**
