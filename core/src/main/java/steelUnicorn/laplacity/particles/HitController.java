@@ -34,7 +34,7 @@ public class HitController implements ContactListener {
 		if (body1.getUserData() != null && body1.getUserData() instanceof Integer) {
 			tileId = (Integer) body1.getUserData();
 		}
-		if (body2.getUserData() != null && body2.getUserData() instanceof SolidTile) {
+		if (body2.getUserData() != null && body2.getUserData() instanceof Integer) {
 			tileId = (Integer) body2.getUserData();
 		}
 		if (body1.getUserData() != null && body1.getUserData() instanceof ChargedParticle) {
@@ -47,12 +47,14 @@ public class HitController implements ContactListener {
 		if (tileId != null && part != null) {
 			if (part instanceof ControllableElectron && GameProcess.currentGameMode == GameMode.FLIGHT) {
 				if (tileId == 4) { // deadly tile id
-					LaplacityAssets.playSound(LaplacityAssets.hurtSound);;
+					LaplacityAssets.playSound(LaplacityAssets.hurtSound);
 					hitted = true;
 				} else if (tileId == 5) {// finish tile id
 					finished = true;
+				} else if (tileId == 10) { // moving structure
+					LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
 				} else { // it was just a collision
-					LaplacityAssets.playSound(LaplacityAssets.bumpSound);;
+					LaplacityAssets.playSound(LaplacityAssets.bumpSound);
 				}
 			}
 		}

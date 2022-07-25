@@ -25,6 +25,7 @@ public class LaplacityAssets {
     public static Sound bumpSound; // звук удара о стену
     public static Sound placeSound; // звук размещения частицы
 	public static Sound hurtSound; // звук касания смертельной стены
+    public static Sound bumpStructureSound; // звук удара о структуру
 
 	public static Texture BARRIER_TEXTURE;
 	public static Texture DEADLY_TEXTURE;
@@ -37,6 +38,7 @@ public class LaplacityAssets {
         bumpSound = Globals.assetManager.get("sounds/bump_barrier.ogg");
         placeSound = Globals.assetManager.get("sounds/place.ogg");
         hurtSound = Globals.assetManager.get("sounds/bump_deadly.ogg");
+        bumpStructureSound = Globals.assetManager.get("sounds/bump_structure.ogg");
         
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
@@ -90,8 +92,7 @@ public class LaplacityAssets {
 
     public static void playSound(Sound sound) {
         if (Settings.getSoundVolume() != 0) {
-            long id = sound.play(); // трюк с id может не работать на ведроиде
-            sound.setVolume(id, Settings.getSoundVolume());
+            sound.play();
         }
     }
 }

@@ -99,6 +99,7 @@ public class MovingWallStructure extends FieldStructure {
 		fxt.density = 10000;
 		fxt.restitution = 1f;
 		body.createFixture(fxt);
+		body.setUserData((Integer)10);
 		shape.dispose();
 	}
 
