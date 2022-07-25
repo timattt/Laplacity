@@ -4,6 +4,7 @@ package steelUnicorn.laplacity.ui.mainmenu.tabs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -18,12 +19,20 @@ import steelUnicorn.laplacity.utils.Settings;
  * Использует класс Settings подгружающий настройки и сохраняющий при закрытии игры.
  */
 public class SettingsTab extends MainMenuTab {
+    public ScrollPane settingsPane;
+
     public SettingsTab(Skin skin) {
         super();
 
         addDescription("Settings:", skin);
         row();
         addSettings(skin);
+
+        settingsPane = new ScrollPane(this, skin);
+        settingsPane.validate();
+        settingsPane.setName("tab");
+        settingsPane.setColor(Color.BLACK);
+        settingsPane.setFadeScrollBars(false);
     }
 
     /**

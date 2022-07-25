@@ -1,5 +1,6 @@
 package steelUnicorn.laplacity.ui;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -24,7 +25,9 @@ public class ReturnDialog extends Dialog {
 
 	public ReturnDialog(Skin skin) {
 		this(title, skin);
-
+		Color color = getColor();
+		color.a = 0;
+		setColor(color);
 		//initialize
 		text("Return to main menu");
 		getContentTable();
