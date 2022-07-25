@@ -142,4 +142,7 @@ public class FieldStructure {
 		
 	}
 	
+	public void reset() {
+		
+	}
 }

@@ -15,6 +15,7 @@ import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
 import steelUnicorn.laplacity.field.structures.AcceleratorStructure;
 import steelUnicorn.laplacity.field.structures.BladesStructure;
 import steelUnicorn.laplacity.field.structures.FieldStructure;
+import steelUnicorn.laplacity.field.structures.HingeStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
@@ -113,8 +114,14 @@ public class LaplacityField extends Group {
 				// trampoline
 				if (c == 25855) {
 					tiles[i][j] = new TrampolineTile(i, j);
+				} else
+				// hinge
+				if (c == 13107455 || c == -926365441) {
+					HingeStructure str = new HingeStructure(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
 				}
-					
+				
 				// empty
 				else {
 					tiles[i][j] = new EmptyTile(i, j);
@@ -148,6 +155,12 @@ public class LaplacityField extends Group {
 			fs.cleanup();
 		}
 		structures.clear();
+	}
+	
+	public static void resetStructures() {
+		for (FieldStructure fs : structures) {
+			fs.reset();
+		}
 	}
 	
 	public static void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {

@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -109,6 +110,7 @@ public class MovingWallStructure extends FieldStructure {
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - width) / 2f;
 			shapeRenderer.begin(ShapeType.Filled);
+			shapeRenderer.setColor(Color.GOLD);
 			shapeRenderer.rect(currentCoord - width / 2, staticCoord - height / 2, width, height);
 			shapeRenderer.end();
 
@@ -116,6 +118,7 @@ public class MovingWallStructure extends FieldStructure {
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - height) / 2f;
 			shapeRenderer.begin(ShapeType.Filled);
+			shapeRenderer.setColor(Color.GOLD);
 			shapeRenderer.rect(staticCoord - width / 2, currentCoord - height / 2, width, height);
 			shapeRenderer.end();
 			

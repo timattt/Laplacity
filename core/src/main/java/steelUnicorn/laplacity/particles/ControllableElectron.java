@@ -80,6 +80,7 @@ public class ControllableElectron extends Electron {
 				body.getWorld().step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 			}
 		}
+		LaplacityField.resetStructures();
 		resetToStartPosAndStartVelocity();
 	}
 

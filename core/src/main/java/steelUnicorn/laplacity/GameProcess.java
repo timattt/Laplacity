@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -219,6 +221,7 @@ public class GameProcess {
 		currentGameMode = mode;
 
 		if ((nowFlight) && (wasFlight)) {
+			LaplacityField.resetStructures();
 			mainParticle.resetToStartPosAndStartVelocity();
 			mainParticle.makeParticleMoveWithStartVelocity();
 			startTime = TimeUtils.millis();
@@ -231,6 +234,7 @@ public class GameProcess {
 		
 			if (wasFlight) {
 				mainParticle.resetToStartPosAndStartVelocity();
+				LaplacityField.resetStructures();
 			}
 		}
 
@@ -243,6 +247,14 @@ public class GameProcess {
 	
 	public static Body registerPhysicalObject(BodyDef bodydef) {
 		return levelWorld.createBody(bodydef);
+	}
+	
+	public static Joint registerJoint(JointDef def) {
+		return levelWorld.createJoint(def);
+	}
+	
+	public static void deleteJoint(Joint j) {
+		levelWorld.destroyJoint(j);
 	}
 	
 	public static void deleteObject(Actor act, Body body) {
