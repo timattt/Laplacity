@@ -140,4 +140,10 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		}
 	}
 	
+	public void showRewarded() {
+		if (adHandler != null) {
+			adHandler.showOrLoadRewarded();
+		}
+	}
+	
 }

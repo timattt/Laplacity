@@ -112,7 +112,7 @@ public class MainMenu extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.showInterstitial();
+                Globals.game.showRewarded();
             }
         });
     }

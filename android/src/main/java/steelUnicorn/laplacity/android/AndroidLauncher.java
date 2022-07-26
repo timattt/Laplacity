@@ -24,26 +24,30 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.google.android.gms.ads.*;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
 
 /** Launches the Android application. */
 public class AndroidLauncher extends AndroidApplication implements AdHandler {
-	
+
 	private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3299479021580908/9211056129";
 	private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3299479021580908/5567641319";
-	
-	
+	private static final String AD_UNIT_ID_REWARDED = "ca-app-pub-3299479021580908/1017784530";
+
 	protected AdView adView;
 	protected View gameView;
 	private InterstitialAd interstitialAd;
-	
+	private RewardedAd rewardedAd;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
-		//initialize(new Laplacity(), configuration);
 
-        RelativeLayout layout = new RelativeLayout(this);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+		RelativeLayout layout = new RelativeLayout(this);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+				RelativeLayout.LayoutParams.MATCH_PARENT);
 		layout.setLayoutParams(params);
 
 		AdView admobView = createAdView();
@@ -55,13 +59,15 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 		startAdvertising(admobView);
 
 		MobileAds.initialize(this);
+
 	}
-	
+
 	private AdView createAdView() {
 		adView = new AdView(this);
 		adView.setAdSize(AdSize.SMART_BANNER);
 		adView.setAdUnitId(AD_UNIT_ID_BANNER);
-		//adView.setId(12345); // this is an arbitrary id, allows for relative positioning in createGameView()
+		// adView.setId(12345); // this is an arbitrary id, allows for relative
+		// positioning in createGameView()
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
@@ -72,7 +78,8 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 	private View createGameView(AndroidApplicationConfiguration cfg) {
 		gameView = initializeForView(new Laplacity(this), cfg);
-		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
 		params.addRule(RelativeLayout.BELOW, adView.getId());
@@ -84,36 +91,68 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 		AdRequest adRequest = new AdRequest.Builder().build();
 		adView.loadAd(adRequest);
 	}
+	
+	private void message(String text) {
+		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+	}
 
 	@Override
 	public void showOrLoadInterstital() {
 		try {
 			runOnUiThread(new Runnable() {
 				public void run() {
-					if (interstitialAd != null) {
-						interstitialAd.show(AndroidLauncher.this);
-						Toast.makeText(getApplicationContext(), "Showing Interstitial", Toast.LENGTH_SHORT).show();
-					} else {
-						AdRequest interstitialRequest = new AdRequest.Builder().build();
-						InterstitialAd.load(AndroidLauncher.this, AD_UNIT_ID_INTERSTITIAL, interstitialRequest, new InterstitialAdLoadCallback() {
-							@Override
-							public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-								AndroidLauncher.this.interstitialAd = interstitialAd;
-								Toast.makeText(getApplicationContext(), "Finished Loading Interstitial", Toast.LENGTH_SHORT).show();
-								interstitialAd.show(AndroidLauncher.this);
-							}
+					AdRequest interstitialRequest = new AdRequest.Builder().build();
+					InterstitialAd.load(AndroidLauncher.this, AD_UNIT_ID_INTERSTITIAL, interstitialRequest, new InterstitialAdLoadCallback() {
+								@Override
+								public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+									message("finished loading interstitial!");
+									AndroidLauncher.this.interstitialAd = interstitialAd;
+									interstitialAd.show(AndroidLauncher.this);
+								}
 
-							@Override
-							public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-								Toast.makeText(getApplicationContext(), "Error Loading Interstitial " + loadAdError, Toast.LENGTH_SHORT).show();
-							}
-						});
-						Toast.makeText(getApplicationContext(), "Loading Interstitial", Toast.LENGTH_SHORT).show();
-					}
+								@Override
+								public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+									message("error while loading interstitial: " + loadAdError);
+								}
+					});
+					message("loading interstitial");
 				}
 			});
 		} catch (Exception e) {
 		}
 	}
-	
+
+	@Override
+	public void showOrLoadRewarded() {
+		try {
+			runOnUiThread(new Runnable() {
+				public void run() {
+					AdRequest adRequest = new AdRequest.Builder().build();
+
+					RewardedAd.load(AndroidLauncher.this, AD_UNIT_ID_REWARDED, adRequest, new RewardedAdLoadCallback() {
+								@Override
+								public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+									message("error while loading rewarded: " + loadAdError);
+									rewardedAd = null;
+								}
+
+								@Override
+								public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+									rewardedAd = rewardedAd;
+									message("finished loading rewarded!");
+									rewardedAd.show(AndroidLauncher.this, new OnUserEarnedRewardListener() {
+										@Override
+										public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+											message("user earned reward: " + rewardItem);
+										}
+									});
+								}
+							});			
+				}
+			});
+
+		} catch (Exception e) {
+		}
+	}
+
 }
