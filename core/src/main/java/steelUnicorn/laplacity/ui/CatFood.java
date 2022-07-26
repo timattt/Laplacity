@@ -53,14 +53,14 @@ public class CatFood {
 
     //Функция показа рекламы и добавления запусков в награду
     public int callBannerAd() {
-        Globals.game.showInterstitial();    //TODO call banner
+        Globals.game.showInterstitial();
         totalLaunchesAvailable += BANNER_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;
     }
 
     public int callInterstitialAd() {
-        Globals.game.showInterstitial();
+        Globals.game.showRewarded();
         totalLaunchesAvailable += INTERSTETIAL_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;
