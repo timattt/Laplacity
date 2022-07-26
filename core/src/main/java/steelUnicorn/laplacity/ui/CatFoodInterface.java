@@ -20,7 +20,7 @@ import steelUnicorn.laplacity.core.Globals;
  */
 public class CatFoodInterface extends Table {
     private Label text;
-    private TextButton btn;
+    private Label timerLabel;
 
     private float padSize = 10;
     private float tableWidth = Globals.UI_WORLD_WIDTH * 0.1f;
@@ -38,7 +38,7 @@ public class CatFoodInterface extends Table {
         text.setColor(Color.BLACK);
         add(text);
 
-        btn = new TextButton(" + 5", skin);
+        TextButton btn = new TextButton(" + 5", skin);
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -56,6 +56,9 @@ public class CatFoodInterface extends Table {
         });
         add(btn);
 
+        timerLabel = new Label("5:00", skin);
+        timerLabel.setColor(Color.BLACK);
+        add(timerLabel);
         //hungryMsg init
         if (hungryMsg == null) {
             createHungry(skin);
