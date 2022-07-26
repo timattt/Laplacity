@@ -53,7 +53,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		winScreen = new WinScreen();
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
-		
+
+
 		camera.position.x = SCREEN_WORLD_WIDTH / 2;
 		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
 		
