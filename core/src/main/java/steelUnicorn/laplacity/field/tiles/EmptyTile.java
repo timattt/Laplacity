@@ -3,9 +3,6 @@ package steelUnicorn.laplacity.field.tiles;
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 
@@ -15,7 +12,7 @@ import steelUnicorn.laplacity.field.graphics.DensityRenderer;
  * @author timat
  *
  */
-public class EmptyTile extends Actor {
+public class EmptyTile {
 
 	// grid
 	protected int gridX;
@@ -38,19 +35,9 @@ public class EmptyTile extends Actor {
 		super();
 		this.gridX = gridX;
 		this.gridY = gridY;
-
-		registerObject(this);
 		
 		LaplacityField.fromGridToWorldCoords(gridX, gridY, TMP1);
-		setPosition(TMP1.x, TMP1.y);
-		
-		setColor(0f, 0f, 0f, 0f);
-		setName("Empty");
 		setId(1);
-	}
-
-	@Override
-	public void act(float delta) {		
 	}
 
 	public void addChargeDensity(float delta) {
@@ -63,11 +50,6 @@ public class EmptyTile extends Actor {
 
 	public void addInvisibleDensity(float delta) {
 		invisibleDensity += delta;
-	}
-	
-	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		drawIntensityArrow();
 	}
 
 	protected void drawIntensityArrow() {
@@ -133,6 +115,14 @@ public class EmptyTile extends Actor {
 	
 	public void setPotential(float potential) {
 		this.potential = potential;
+	}
+	
+	public float getCenterX() {
+		return (gridX + 0.5f) * LaplacityField.tileSize;
+	}
+	
+	public float getCenterY() {
+		return (gridY + 0.5f) * LaplacityField.tileSize;
 	}
 
 }

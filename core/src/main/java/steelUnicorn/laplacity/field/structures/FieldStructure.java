@@ -135,7 +135,7 @@ public class FieldStructure implements CollisionListener {
 		
 	}
 
-	public void update(float timeFromStart) {
+	public void render(float timeFromStart) {
 		
 	}
 	

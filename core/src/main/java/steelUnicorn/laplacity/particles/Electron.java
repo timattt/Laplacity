@@ -2,9 +2,9 @@ package steelUnicorn.laplacity.particles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 
 public class Electron extends ChargedParticle {
@@ -14,7 +14,6 @@ public class Electron extends ChargedParticle {
 	
 	public Electron(float x, float y, boolean isStatic) {
 		super(x, y, ELECTRON_SIZE, -PARTICLE_CHARGE, isStatic);
-		setName("Electron");
 	}
 	
 	public Electron(float x, float y) {
@@ -22,12 +21,12 @@ public class Electron extends ChargedParticle {
 	}
 
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
+	public void draw() {
 		if (TimeUtils.millis() - lastAnimationUpdate > PARTICLE_TEXTURES_UPDATE_DELTA) {
 			lastAnimationUpdate = TimeUtils.millis();
 			currentTextureIndex = (currentTextureIndex + 1) % LaplacityAssets.PARTICLES_REGIONS.length;
 		}
-		batch.draw(LaplacityAssets.PARTICLES_REGIONS[currentTextureIndex][0], getX() - ELECTRON_SIZE, getY() - ELECTRON_SIZE, 2 * ELECTRON_SIZE, 2 * ELECTRON_SIZE);
+		GameProcess.gameBatch.draw(LaplacityAssets.PARTICLES_REGIONS[currentTextureIndex][0], getX() - ELECTRON_SIZE, getY() - ELECTRON_SIZE, 2 * ELECTRON_SIZE, 2 * ELECTRON_SIZE);
 	}
 
 }

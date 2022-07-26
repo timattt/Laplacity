@@ -70,7 +70,7 @@ public class FlimsyStructure extends FieldStructure {
 	}
 
 	@Override
-	public void update(float timeFromStart) {
+	public void render(float timeFromStart) {
 		if (justBroken) {
 			body.setTransform(100000, 100000, 0);
 			justBroken = false;
@@ -100,7 +100,7 @@ public class FlimsyStructure extends FieldStructure {
 
 	@Override
 	public void cleanup() {
-		GameProcess.deleteObject(null, body);
+		GameProcess.deletePhysicalObject(body);
 	}
 
 }

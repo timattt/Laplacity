@@ -151,9 +151,9 @@ public class LaplacityField extends Group {
 		tileMap.getTextureData().disposePixmap();
 	}
 	
-	public static void updateStructures(float timeFromStart) {
+	public static void renderStructures(float timeFromStart) {
 		for (FieldStructure fs : structures) {
-			fs.update(timeFromStart);
+			fs.render(timeFromStart);
 		}
 	}
 	
@@ -201,7 +201,7 @@ public class LaplacityField extends Group {
 				int v = q + j;
 				
 				fromGridToWorldCoords(u, v, TMP1);
-				TMP1.sub(center.getX(), center.getY());
+				TMP1.sub(center.getCenterX(), center.getCenterY());
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r && Math.random() < DIRICHLET_SPRAY_TILE_PROBABILITY) {
 					EmptyTile tile = tiles[u][v];
@@ -226,7 +226,7 @@ public class LaplacityField extends Group {
 				int v = q + j;
 				
 				fromGridToWorldCoords(u, v, TMP1);
-				TMP1.sub(center.getX(), center.getY());
+				TMP1.sub(center.getCenterX(), center.getCenterY());
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
@@ -237,7 +237,7 @@ public class LaplacityField extends Group {
 		
 		for (int k = 0; k < particles.size; k++) {
 			ChargedParticle pt = particles.get(k);
-			TMP1.set(center.getX(), center.getY());
+			TMP1.set(center.getCenterX(), center.getCenterY());
 			TMP1.sub(pt.getX(), pt.getY());
 			if (TMP1.len2() < r * r) {
 				deleteStaticParticle(pt);

@@ -84,7 +84,7 @@ public class BladesStructure extends FieldStructure {
 	}
 
 	@Override
-	public void update(float timeFromStart) {
+	public void render(float timeFromStart) {
 		float curAngle = (float) (360 * timeFromStart / (float)BLADES_ROTATION_TIME);
 		body.setTransform(x, y, (float) (2 * Math.PI * curAngle / 360f));
 		
@@ -97,7 +97,7 @@ public class BladesStructure extends FieldStructure {
 
 	@Override
 	public void cleanup() {
-		deleteObject(null, body);
+		deletePhysicalObject(body);
 	}
 
 }

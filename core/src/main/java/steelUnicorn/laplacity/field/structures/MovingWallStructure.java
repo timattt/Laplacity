@@ -104,7 +104,7 @@ public class MovingWallStructure extends FieldStructure {
 	}
 
 	@Override
-	public void update(float timeFromStart) {
+	public void render(float timeFromStart) {
 		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
 		
 		if (isHorizontal) {
@@ -128,7 +128,7 @@ public class MovingWallStructure extends FieldStructure {
 
 	@Override
 	public void cleanup() {
-		deleteObject(null, body);
+		deletePhysicalObject(body);
 	}
 
 }

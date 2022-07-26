@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.field.tiles;
 
 import static steelUnicorn.laplacity.field.LaplacityField.*;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 
 import steelUnicorn.laplacity.core.LaplacityAssets;
@@ -12,14 +11,9 @@ public class DeadlyTile extends SolidTile {
 
 	public DeadlyTile(int gridX, int gridY) {
 		super(gridX, gridY);
-		setColor(1f, 0f, 0f, 1f);
-		setName("Deadly");
 		setAllowDensityChange(false);
 		setId(4);
 	}
-
-	@Override
-	public void draw(Batch batch, float parentAlpha) {}
 
 	@Override
 	public void constantDraw(SpriteCache sc) {

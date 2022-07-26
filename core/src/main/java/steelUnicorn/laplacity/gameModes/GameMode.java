@@ -62,6 +62,7 @@ public class GameMode {
 		camera.position.x = Math.max(Globals.SCREEN_WORLD_WIDTH / 2,
 				Math.min(LaplacityField.fieldWidth * LaplacityField.tileSize - Globals.SCREEN_WORLD_WIDTH / 2,
 						x));
+		camera.update();
 	}
 
 }

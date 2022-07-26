@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.physics.CollisionListener;
@@ -18,7 +17,7 @@ import steelUnicorn.laplacity.field.physics.CollisionListener;
  * @author timat
  *
  */
-public class ChargedParticle extends Actor implements CollisionListener {
+public class ChargedParticle implements CollisionListener {
 
 	// Body
 	protected Body body;
@@ -51,6 +50,20 @@ public class ChargedParticle extends Actor implements CollisionListener {
 		setPosition(x, y);
 	}
 	
+	public void draw() {
+	}
+	
+	public void update(float delta) {
+	}
+	
+	public float getX() {
+		return body.getTransform().getPosition().x;
+	}
+	
+	public float getY() {
+		return body.getTransform().getPosition().y;
+	}
+	
 	public ChargedParticle(float x, float y, float rad, float charge) {
 		this(x, y, rad, charge, true);
 	}
@@ -59,15 +72,8 @@ public class ChargedParticle extends Actor implements CollisionListener {
 		return body.getMass();
 	}
 
-	@Override
-	public void act(float delta) {
-		setPosition(body.getPosition().x, body.getPosition().y);
-		super.act(delta);
-	}
-
 	public void setPosition(float x, float y) {
 		body.setTransform(x, y, 0);
-		super.setPosition(x, y);
 	}
 	
 	public float getCharge() {

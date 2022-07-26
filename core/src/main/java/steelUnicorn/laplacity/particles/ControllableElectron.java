@@ -33,8 +33,6 @@ public class ControllableElectron extends Electron {
 		super(x, y, false);
 		startX = x;
 		startY = y;
-		// TODO delete this bullshit
-		GameProcess.deleteObject(this, null);
 	}
 
 	@Override
@@ -43,12 +41,11 @@ public class ControllableElectron extends Electron {
 	}
 
 	@Override
-	public void act(float delta) {
+	public void update(float delta) {
 		if (currentGameMode == GameMode.FLIGHT) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
-		super.act(delta);
 	}
 
 	public void setSlingshot(float x, float y) {

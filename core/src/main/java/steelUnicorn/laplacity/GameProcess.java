@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,8 +13,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -21,6 +20,7 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.BackgroundRenderer;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
+import steelUnicorn.laplacity.field.graphics.ParticlesRenderer;
 import steelUnicorn.laplacity.field.graphics.TilesRenderer;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
@@ -60,9 +60,9 @@ public class GameProcess {
 	// INGAME STUFF
 	//========================================================================================
 	// Stage, world, ui
-	private static Stage levelStage;
 	private static World levelWorld;
 	private static GameInterface gameUI;
+	public static SpriteBatch gameBatch;
 	
 	// Debug
 	private static Box2DDebugRenderer debugRend;
@@ -125,14 +125,13 @@ public class GameProcess {
 		disposeLevel();
 		
 		Gdx.app.log("gameProcess", "level init started");
-		levelStage = new Stage(gameViewport);
 		levelWorld = new World(Vector2.Zero, false);
 		currentGameMode = GameMode.NONE;
 		debugRend = new Box2DDebugRenderer();
 		gameUI = new GameInterface(guiViewport);
+		gameBatch = new SpriteBatch();
 		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		
-		levelStage.setViewport(gameViewport);
 		levelWorld.setContactListener(hitController);
 		
 		LaplacityField.initField(level);
@@ -149,43 +148,35 @@ public class GameProcess {
 	}
 	
 	public static void updateLevel(float delta) {
-		if (levelStage == null) {
+		if (levelWorld == null) {
 			return;
 		}
 		
-		BackgroundRenderer.render(levelStage.getBatch());
+		gameBatch.setProjectionMatrix(camera.combined);
 		
-		if (currentGameMode == GameMode.FLIGHT) {
-			LaplacityField.updateStructures(TimeUtils.millis() - startTime);
-		} else {
-			LaplacityField.updateStructures(0);
-		}
-		
-		currentGameMode.update();
+		// render
+		//---------------------------------------------
+		BackgroundRenderer.render(gameBatch);
+		LaplacityField.renderStructures(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
 		TrajectoryRenderer.render();
-		levelStage.draw();
 		TilesRenderer.render();
-
-		levelStage.act();
-		DensityRenderer.render(levelStage.getBatch());		
+		ParticlesRenderer.render(delta);
+		DensityRenderer.render(gameBatch);
 		gameUI.draw();
-		gameUI.act(delta);
 		//debugRend.render(levelWorld, Globals.camera.combined);
-
-		// particles
-		// TODO fix this bullshit
-		levelStage.getBatch().begin();
-		mainParticle.act(delta);
-		mainParticle.draw(levelStage.getBatch(), 0f);
-		for (ChargedParticle cp : particles) {
-			cp.act(delta);
-			cp.draw(levelStage.getBatch(), 0f);
-		}
-		levelStage.getBatch().end();
+		//---------------------------------------------
 		
+		// update
+		//---------------------------------------------
+		currentGameMode.update();
+		gameUI.act(delta);
 		if (currentGameMode == GameMode.FLIGHT) {
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
-		}		
+		}
+		//---------------------------------------------
+		
+		// hits
+		//---------------------------------------------
 		if (justHitted) {
 			changeGameMode(GameMode.NONE);
 			justHitted = false;
@@ -194,6 +185,7 @@ public class GameProcess {
 			levelFinished();
 			justFinished = false;
 		}
+		//---------------------------------------------
 	}
 	
 	public static void disposeLevel() {
@@ -204,10 +196,6 @@ public class GameProcess {
 		DensityRenderer.cleanup();
 		TilesRenderer.cleanup();
 		
-		if (levelStage != null) {
-			levelStage.dispose();
-			levelStage = null;
-		}
 		if (levelWorld != null) {
 			levelWorld.dispose();
 			levelWorld = null;
@@ -230,8 +218,9 @@ public class GameProcess {
 		changeGameMode(GameMode.NONE);
 		mainParticle.setSlingshot(0.0f, 0.0f);
 		mainParticle.resetToStartPosAndStartVelocity();
-		for (ChargedParticle particle : particles)
-			deleteObject(particle, particle.getBody());
+		for (ChargedParticle particle : particles) {
+			deletePhysicalObject(particle.getBody());
+		}
 		particles.clear();
 		LaplacityField.clearElectricField();
 		DensityRenderer.updateDensity();
@@ -266,10 +255,6 @@ public class GameProcess {
 
 		gameUI.updateCurModeImg();
 	}
-
-	public static void registerObject(Actor act) {
-		levelStage.addActor(act);
-	}
 	
 	public static Body registerPhysicalObject(BodyDef bodydef) {
 		return levelWorld.createBody(bodydef);
@@ -283,11 +268,9 @@ public class GameProcess {
 		levelWorld.destroyJoint(j);
 	}
 	
-	public static void deleteObject(Actor act, Body body) {
+	public static void deletePhysicalObject(Body body) {
 		if (body != null)
 			levelWorld.destroyBody(body);
-		if (act != null)
-			act.remove();
 	}
 	
 	public static void addStaticParticle(ChargedParticle part) {
@@ -295,13 +278,11 @@ public class GameProcess {
 		if (tl != null && tl.isAllowDensityChange()) {
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
-		} else {
-			deleteObject(part, part.getBody());
 		}
 	}
 	
 	public static void deleteStaticParticle(ChargedParticle part) {
-		deleteObject(part, part.getBody());
+		deletePhysicalObject(part.getBody());
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		if (tl != null) {
 			tl.addInvisibleDensity(-part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
