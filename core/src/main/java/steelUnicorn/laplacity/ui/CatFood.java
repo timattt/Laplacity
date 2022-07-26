@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.utils.CatFoodTimer;
 
 /**
  * Класс для сохранения, удаления и управления количеством запусков.
@@ -25,6 +26,7 @@ public class CatFood {
     private static final int REWARDED_LAUNCHES = 10;
     private static final int INTERSTITIAL_LAUNCHES = 5;
 
+    public CatFoodTimer timer;
     //Конструктор подгружает из preferences
     public CatFood() {
         //подгрузка из prefs еды кота
@@ -36,6 +38,8 @@ public class CatFood {
             totalLaunchesAvailable = TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
         }
 
+        //TODO calculate right time
+        timer = new CatFoodTimer(CatFoodTimer.MAX_VALUE);
         checkBounds();
     }
 

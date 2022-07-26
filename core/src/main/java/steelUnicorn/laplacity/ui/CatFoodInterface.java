@@ -69,6 +69,10 @@ public class CatFoodInterface extends Table {
         text.setText("Food: " + launches);
     }
 
+    public Label getTimerLabel() {
+        return timerLabel;
+    }
+
     //hungry message logic
     private static void createHungry(Skin skin) {
         hungryMsg = new Label("Cat Hungry", skin);

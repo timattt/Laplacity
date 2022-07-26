@@ -60,6 +60,7 @@ public class MainMenu extends Stage {
         catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
         catFI.setPosition(this.getWidth() / 2, this.getHeight() - catFI.getPrefHeight() / 2);
         addActor(catFI);
+        catFood.timer.setCurrentLabel(catFI.getTimerLabel());
 
         //MainMenu
         Table root = new Table();
