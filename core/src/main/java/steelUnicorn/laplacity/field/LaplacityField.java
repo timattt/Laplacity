@@ -15,6 +15,7 @@ import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
 import steelUnicorn.laplacity.field.structures.AcceleratorStructure;
 import steelUnicorn.laplacity.field.structures.BladesStructure;
 import steelUnicorn.laplacity.field.structures.FieldStructure;
+import steelUnicorn.laplacity.field.structures.FlimsyStructure;
 import steelUnicorn.laplacity.field.structures.HingeStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
@@ -118,6 +119,12 @@ public class LaplacityField extends Group {
 				// hinge
 				if (c == 13107455 || c == -926365441) {
 					HingeStructure str = new HingeStructure(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
+				} else 
+				// flimsy
+				if (c == -1778384641) {
+					FlimsyStructure str = new FlimsyStructure(i, j, pxmap);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
 				}

@@ -114,6 +114,7 @@ public class GameProcess {
 	public static final float BLADES_THICKNESS_FACTOR = 0.1f;
 	public static final float DISSIPATIVE_ACCELERATION_FACTOR = 100f;
 	public static final float DISSIPATIVE_MODERATION_FACTOR = -30f;
+	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 1;
 	//========================================================================================
 	
 	
