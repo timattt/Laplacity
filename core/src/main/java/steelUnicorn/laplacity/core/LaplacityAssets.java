@@ -20,6 +20,7 @@ public class LaplacityAssets {
     private static Random trackRandomizer = new Random();
     private static int currentTrack = 0;
 
+    // SOUNDS
     public static Sound clickSound; // звук нажатия на кнопки
     public static Sound lightClickSound;
     public static Sound bumpSound; // звук удара о стену
@@ -27,10 +28,15 @@ public class LaplacityAssets {
 	public static Sound hurtSound; // звук касания смертельной стены
     public static Sound bumpStructureSound; // звук удара о структуру
 
+    // TILES
 	public static Texture BARRIER_TEXTURE;
 	public static Texture DEADLY_TEXTURE;
 	public static TextureRegion[] BARRIER_REGIONS;
 	public static TextureRegion[][] DEADLY_REGIONS;
+	
+	// BACKGROUNDS
+	public static Texture[] BACKGROUNDS1; 
+	public static Texture SPACE_BACKGROUND;
 	
     public static void getAssets() {
         clickSound = Globals.assetManager.get("sounds/click.ogg");
@@ -44,11 +50,22 @@ public class LaplacityAssets {
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
         
         loadTextureRegions();
+        loadBackgrounds();
     }
     
     private static void loadTextureRegions() {
     	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[4]);
     	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
+    }
+    
+    private static void loadBackgrounds() {
+    	BACKGROUNDS1 = new Texture[4];
+    	
+    	for (int i = 0; i < BACKGROUNDS1.length; i++) {
+    		BACKGROUNDS1[i] = Globals.assetManager.get("backgrounds/Level" + (i+1) + ".png");
+    	}
+    	
+    	SPACE_BACKGROUND = Globals.assetManager.get("backgrounds/SPACE_BACKGROUND.png", Texture.class);
     }
     
     private static void cut(Texture from, TextureRegion[] result) {
