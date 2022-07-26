@@ -24,11 +24,7 @@ public class CatFoodTimer {
             sec--;
 
             if (sec < 0) {
-                if (min == 0) {
-                    if (currentInterface != null) {
-                        currentInterface.update(catFood.reload());
-                    }
-
+                if (min <= 0) {
                     updateTimer();
                 } else {
                     min--;
@@ -42,54 +38,61 @@ public class CatFoodTimer {
 
     public CatFoodTimer(int seconds) {
         setTime(seconds);
-        //Каждую секунду таймер будет обновляться
-        if (catFood.getTotalLaunchesAvailable()
-                >= catFood.TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
-            start();
-        } else {
-            stop();
-        }
     }
 
     public void start() {
-        if (currentInterface != null) {
-            currentInterface.getTimerLabel().setVisible(true);
+        if (!task.isScheduled()) {
+            Timer.schedule(task, 0, 1);
         }
-
-        Timer.schedule(task, 0, 1);
+        checkLabelVisible();
     }
 
     public void stop() {
-        if (currentInterface != null) {
-            currentInterface.getTimerLabel().setVisible(false);
-        }
-
-        if (!task.isScheduled()) {
+        if (task.isScheduled()) {
             task.cancel();
         }
+        checkLabelVisible();
     }
 
     private void setTime(int seconds) {
-        if (seconds > MAX_VALUE) {
+        if (seconds > MAX_VALUE || seconds < 0) {
             seconds = MAX_VALUE;
         }
         sec = seconds % 60;
         min = seconds / 60;
     }
 
+    //Функция устанавливает, каким интерфейсом управляет таймер.
     public void setCurrentInterface(CatFoodInterface foodInterface) {
         currentInterface = foodInterface;
-        setLabelText();
+        setLabelText(); //для обновления надписи
     }
 
+    //Устанавливает текст формата mm:ss в поле timerLabel  класса CatFoodInterface
     private void setLabelText() {
         if (currentInterface != null) {
             currentInterface.getTimerLabel()
                     .setText(String.format("%02d:%02d", min, sec));
+            checkLabelVisible();
         }
     }
 
+    public void checkLabelVisible() {
+        if (currentInterface != null) {
+            if (task.isScheduled()) {
+                currentInterface.getTimerLabel().setVisible(true);
+            } else {
+                currentInterface.getTimerLabel().setVisible(false);
+            }
+        }
+    }
+    //Функция вызывается когда таймер нужно обновить
     private void updateTimer() {
         setTime(MAX_VALUE);
+        catFood.reload();
+        if (currentInterface != null) {
+            currentInterface.update(catFood.getTotalLaunchesAvailable());
+        }
+        checkLabelVisible();
     }
 }

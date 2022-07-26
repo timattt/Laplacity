@@ -58,6 +58,7 @@ public class CatFoodInterface extends Table {
 
         timerLabel = new Label("5:00", skin);
         timerLabel.setColor(Color.BLACK);
+        timerLabel.setVisible(false);
         add(timerLabel);
         //hungryMsg init
         if (hungryMsg == null) {
