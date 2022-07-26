@@ -2,6 +2,8 @@ package steelUnicorn.laplacity.field.graphics;
 
 import static steelUnicorn.laplacity.field.LaplacityField.*;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 
 import steelUnicorn.laplacity.core.Globals;
@@ -30,10 +32,15 @@ public class TilesRenderer {
 	}
 	
 	public static void render() {
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+		
 		cache.setProjectionMatrix(Globals.camera.combined);
 		cache.begin();
 		cache.draw(id);
 		cache.end();
+		
+		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 	
 	public static void cleanup() {
