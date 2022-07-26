@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.field.structures;
 import com.badlogic.gdx.graphics.Pixmap;
 
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.physics.CollisionListener;
 import steelUnicorn.laplacity.field.physics.IntRect;
 
 /**
@@ -12,7 +13,7 @@ import steelUnicorn.laplacity.field.physics.IntRect;
  * @author timat
  *
  */
-public class FieldStructure {
+public class FieldStructure implements CollisionListener {
 
 	protected IntRect bounds;
 	
@@ -144,5 +145,41 @@ public class FieldStructure {
 	
 	public void reset() {
 		
+	}
+
+	@Override
+	public boolean isDeadly() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithDeadly() {
+	}
+
+	@Override
+	public boolean isFinish() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithFinish() {
+	}
+
+	@Override
+	public boolean isMainParticle() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithMainParticle() {
+	}
+
+	@Override
+	public boolean isStructure() {
+		return true;
+	}
+
+	@Override
+	public void collidedWithStructure() {
 	}
 }

@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.field.physics.BodyData;
 import steelUnicorn.laplacity.field.physics.IntRect;
 
 /**
@@ -100,7 +99,7 @@ public class MovingWallStructure extends FieldStructure {
 		fxt.density = 10000;
 		fxt.restitution = 1f;
 		body.createFixture(fxt);
-		body.setUserData(BodyData.createForStructure());
+		body.setUserData(this);
 		shape.dispose();
 	}
 

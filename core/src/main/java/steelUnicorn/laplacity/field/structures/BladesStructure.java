@@ -9,13 +9,12 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.field.physics.BodyData;
 
 public class BladesStructure extends FieldStructure {
 
@@ -66,7 +65,7 @@ public class BladesStructure extends FieldStructure {
 		fxt.density = 1;
 		fxt.restitution = 1f;
 		body.createFixture(fxt);
-		body.setUserData(BodyData.createForStructure());
+		body.setUserData(this);
 		shape.dispose();
 		
 		// 2
@@ -79,7 +78,7 @@ public class BladesStructure extends FieldStructure {
 		fxt.density = 1;
 		fxt.restitution = 1f;
 		body.createFixture(fxt);
-		body.setUserData(BodyData.createForStructure());
+		body.setUserData(this);
 		shape.dispose();
 	
 	}

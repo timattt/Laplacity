@@ -7,8 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.field.physics.BodyData;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
@@ -36,10 +36,8 @@ public class ControllableElectron extends Electron {
 	}
 
 	@Override
-	protected Object createUserData() {
-		BodyData res = new BodyData();
-		res.setMainParticle(true);
-		return res;
+	public boolean isMainParticle() {
+		return true;
 	}
 
 	@Override
@@ -89,6 +87,16 @@ public class ControllableElectron extends Electron {
 		}
 		LaplacityField.resetStructures();
 		resetToStartPosAndStartVelocity();
+	}
+
+	@Override
+	public void collidedWithDeadly() {
+		GameProcess.justHitted = true;
+	}
+
+	@Override
+	public void collidedWithFinish() {
+		GameProcess.justFinished = true;
 	}
 
 }

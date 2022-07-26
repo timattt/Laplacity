@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.field.physics.BodyData;
+import steelUnicorn.laplacity.field.physics.CollisionListener;
 
 /**
  * Класс частицы. Тут есть ее физ. тело. И заряд.
@@ -18,7 +18,7 @@ import steelUnicorn.laplacity.field.physics.BodyData;
  * @author timat
  *
  */
-public class ChargedParticle extends Actor {
+public class ChargedParticle extends Actor implements CollisionListener {
 
 	// Body
 	protected Body body;
@@ -45,15 +45,11 @@ public class ChargedParticle extends Actor {
 		fxt.restitution = 1f;
 		
 		body.createFixture(fxt);
-		body.setUserData(createUserData());
+		body.setUserData(this);
 		
 		cir.dispose();
 		
 		setPosition(x, y);
-	}
-	
-	protected Object createUserData() {
-		return new BodyData();
 	}
 	
 	public ChargedParticle(float x, float y, float rad, float charge) {
@@ -85,6 +81,42 @@ public class ChargedParticle extends Actor {
 	
 	public void addDissipative(float factor) {
 		body.applyForceToCenter(Globals.TMP1.set(body.getLinearVelocity()).scl(factor), false);
+	}
+
+	@Override
+	public boolean isDeadly() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithDeadly() {
+	}
+
+	@Override
+	public boolean isFinish() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithFinish() {
+	}
+
+	@Override
+	public boolean isMainParticle() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithMainParticle() {
+	}
+
+	@Override
+	public boolean isStructure() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithStructure() {
 	}
 
 }

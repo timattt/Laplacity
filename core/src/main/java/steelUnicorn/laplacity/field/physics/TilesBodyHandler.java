@@ -14,6 +14,7 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.SolidTile;
+import steelUnicorn.laplacity.field.tiles.TileCollisionListener;
 
 /**
  * Класс, отвечающий за создание из одиночных клеток твёрдых тел большего размера
@@ -85,14 +86,7 @@ public class TilesBodyHandler {
 		fxt.density = 10000;
 		fxt.restitution = bodyTemplate.restitution;
 		body.createFixture(fxt);
-		BodyData dat = new BodyData(bodyTemplate.id);
-		if (bodyTemplate.id == 4) {
-			dat.setDeadly(true);
-		}
-		if (bodyTemplate.id == 5) {
-			dat.setFinish(true);
-		}
-		body.setUserData(dat);
+		body.setUserData(new TileCollisionListener(bodyTemplate.id));
 		shape.dispose();
 	}
 

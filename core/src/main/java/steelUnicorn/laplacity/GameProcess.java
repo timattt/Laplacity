@@ -72,6 +72,10 @@ public class GameProcess {
 	
 	// Time
 	public static long startTime = 0;
+	
+	// After hit
+	public static boolean justHitted;
+	public static boolean justFinished;
 	//========================================================================================
 	
 	
@@ -168,11 +172,13 @@ public class GameProcess {
 		if (currentGameMode == GameMode.FLIGHT) {
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}		
-		if (hitController.isHitted()) {
+		if (justHitted) {
 			changeGameMode(GameMode.NONE);
+			justHitted = false;
 		}
-		if (hitController.isFinished()) {
+		if (justFinished) {
 			levelFinished();
+			justFinished = false;
 		}
 	}
 	
