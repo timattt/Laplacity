@@ -22,6 +22,7 @@ import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
+import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -41,7 +42,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		
 		loadAssets();
 		Settings.loadSettings();
-		
+		catFood = new CatFood();
+
 		game = this;
 		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
 		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
@@ -129,6 +131,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		transitionBatch.dispose();
 		assetManager.dispose();
 		Settings.saveSettings();
+		catFood.dispose();
 	}
 	
 	public void showInterstitial() {

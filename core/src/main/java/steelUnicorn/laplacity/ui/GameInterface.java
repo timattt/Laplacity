@@ -36,6 +36,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private TextureAtlas icons;
 	private Image curModeImg;
+	private CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
 
@@ -79,19 +80,21 @@ public class GameInterface extends Stage implements GestureListener {
 		//interface intitialize
 		Table root = new Table();
 		root.setFillParent(true);
-		root.align(Align.right);
-		root.pad(iconSpace);
 		addActor(root);
 
 		//mode img
 		curModeImg = new Image();
 		curModeImg.setVisible(false);
 		root.add(curModeImg).expand().left().top()
-				.size(iconSize, iconSize).pad(iconSpace);
+				.size(iconSize, iconSize).pad(iconSpace).uniform();
+
+		//cat interface
+		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
+		root.add(catFI).expand().top().uniform();
 
 		//Icons Table
 		Table guiTable = new Table();
-		root.add(guiTable).right();
+		root.add(guiTable).expand().right().pad(iconSpace).uniform();
 		guiTable.defaults()
 				.width(iconSize)
 				.height(iconSize)
@@ -110,7 +113,19 @@ public class GameInterface extends Stage implements GestureListener {
 		guiTable.row();
 
 		//modes
-		flightBtn = createModeIcon("Flight", GameMode.FLIGHT);
+		flightBtn = createIcon("Flight", new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+				if (catFood.getTotalLaunchesAvailable() > 0) {
+					changeGameMode(GameMode.FLIGHT);    //no need in NONE because of editBtn
+
+					catFI.update(catFood.launch());
+				} else {
+					CatFoodInterface.showHungry(GameInterface.this);
+				}
+			}
+		});
 		editBtn = createModeIcon("Edit", GameMode.NONE);
 		flightCell = guiTable.add(flightBtn);
 		guiTable.row();

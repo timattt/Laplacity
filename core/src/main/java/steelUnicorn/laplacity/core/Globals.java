@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
+import steelUnicorn.laplacity.ui.CatFood;
 
 /**
  * Класс, который содержит глобальные переменные для всей программы.
@@ -66,9 +67,7 @@ public class Globals {
 	
 	// Total levels loaded
 	public static int TOTAL_LEVELS_AVAILABLE;
-	
-	// Total launches available
-	public static final int TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE = 10;
-	public static int totalLaunchesAvailable;
-	
+
+	//cat Food
+	public static CatFood catFood;
 }

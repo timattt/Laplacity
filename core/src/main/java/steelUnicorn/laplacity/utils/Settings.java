@@ -3,8 +3,6 @@ package steelUnicorn.laplacity.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-import steelUnicorn.laplacity.core.Globals;
-
 /**
  * Класс с функциями для подгрузки и сохранения настроек.
  * Сохранения и загрузка происходит на основе Preferences
@@ -43,12 +41,6 @@ public class Settings {
 		} else {
 			musicVolume = 1;
 		}
-		
-		if (prefs.contains("totalLaunches")) {
-			Globals.totalLaunchesAvailable = prefs.getInteger("totalLaunches");
-		} else {
-			Globals.totalLaunchesAvailable = Globals.TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
-		}
 	}
 
 	/**
@@ -57,8 +49,6 @@ public class Settings {
 	public static void saveSettings() {
 		prefs.putFloat("soundVolume", soundVolume);
 		prefs.putFloat("musicVolume", musicVolume);
-		prefs.putInteger("totalLaunches", Globals.totalLaunchesAvailable);
-		prefs.flush();
 	}
 
 	public static float getSoundVolume() {
