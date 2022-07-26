@@ -38,6 +38,10 @@ public class LaplacityAssets {
 	public static Texture[] BACKGROUNDS1; 
 	public static Texture SPACE_BACKGROUND;
 	
+	// PARTICLES
+	public static Texture PARTICLES;
+	public static TextureRegion[][] PARTICLES_REGIONS;
+	
     public static void getAssets() {
         clickSound = Globals.assetManager.get("sounds/click.ogg");
         lightClickSound = Globals.assetManager.get("sounds/light_click.ogg");
@@ -49,8 +53,12 @@ public class LaplacityAssets {
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
         
+        PARTICLES = Globals.assetManager.get("textures/particles.png");
+        
         loadTextureRegions();
         loadBackgrounds();
+        
+        cut(PARTICLES, PARTICLES_REGIONS = new TextureRegion[7][2]);
     }
     
     private static void loadTextureRegions() {

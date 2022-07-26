@@ -33,7 +33,6 @@ public class ChargedParticle extends Actor implements CollisionListener {
 		bodydef.type = isStatic ? BodyType.StaticBody : BodyType.DynamicBody;
 		bodydef.position.set(x, y);
 		
-		registerObject(this);
 		body = registerPhysicalObject(bodydef);
 		
 		CircleShape cir = new CircleShape();

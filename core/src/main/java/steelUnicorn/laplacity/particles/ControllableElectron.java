@@ -33,6 +33,8 @@ public class ControllableElectron extends Electron {
 		super(x, y, false);
 		startX = x;
 		startY = y;
+		// TODO delete this bullshit
+		GameProcess.deleteObject(this, null);
 	}
 
 	@Override

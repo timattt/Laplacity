@@ -87,6 +87,7 @@ public class GameProcess {
 	public static final float PROTON_SIZE = 2f;
 	public static final float PARTICLE_MASS = 1f;
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
+	public static final long PARTICLE_TEXTURES_UPDATE_DELTA = 80;
 	
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;
@@ -131,6 +132,7 @@ public class GameProcess {
 		gameUI = new GameInterface(guiViewport);
 		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		
+		levelStage.setViewport(gameViewport);
 		levelWorld.setContactListener(hitController);
 		
 		LaplacityField.initField(level);
@@ -170,6 +172,17 @@ public class GameProcess {
 		gameUI.act(delta);
 		//debugRend.render(levelWorld, Globals.camera.combined);
 
+		// particles
+		// TODO fix this bullshit
+		levelStage.getBatch().begin();
+		mainParticle.act(delta);
+		mainParticle.draw(levelStage.getBatch(), 0f);
+		for (ChargedParticle cp : particles) {
+			cp.act(delta);
+			cp.draw(levelStage.getBatch(), 0f);
+		}
+		levelStage.getBatch().end();
+		
 		if (currentGameMode == GameMode.FLIGHT) {
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}		

@@ -1,14 +1,17 @@
 package steelUnicorn.laplacity.particles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.core.Globals.*;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.TimeUtils;
+
+import steelUnicorn.laplacity.core.LaplacityAssets;
 
 public class Electron extends ChargedParticle {
 
+	private long lastAnimationUpdate;
+	private int currentTextureIndex = 0;
+	
 	public Electron(float x, float y, boolean isStatic) {
 		super(x, y, ELECTRON_SIZE, -PARTICLE_CHARGE, isStatic);
 		setName("Electron");
@@ -20,15 +23,11 @@ public class Electron extends ChargedParticle {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(0f, 1f, 0, 1f);
-		shapeRenderer.circle(getX(), getY(), ELECTRON_SIZE);
-		shapeRenderer.end();
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.BLACK);
-		shapeRenderer.line(getX() - ELECTRON_SIZE / 3 * 2, getY(), getX() + ELECTRON_SIZE / 3 * 2, getY());
-		shapeRenderer.end();
-		super.draw(batch, parentAlpha);
+		if (TimeUtils.millis() - lastAnimationUpdate > PARTICLE_TEXTURES_UPDATE_DELTA) {
+			lastAnimationUpdate = TimeUtils.millis();
+			currentTextureIndex = (currentTextureIndex + 1) % LaplacityAssets.PARTICLES_REGIONS.length;
+		}
+		batch.draw(LaplacityAssets.PARTICLES_REGIONS[currentTextureIndex][0], getX() - ELECTRON_SIZE, getY() - ELECTRON_SIZE, 2 * ELECTRON_SIZE, 2 * ELECTRON_SIZE);
 	}
 
 }
