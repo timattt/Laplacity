@@ -18,7 +18,7 @@ import steelUnicorn.laplacity.utils.CatFoodTimer;
 public class CatFood {
     // Total launches available
     public static final int TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE = 20;
-    private static int totalLaunchesAvailable;
+    private int totalLaunchesAvailable;
     //prefs
     private Preferences foodPrefs;
 
@@ -39,11 +39,17 @@ public class CatFood {
         }
 
         //TODO calculate right time
+        //timer initialize
         timer = new CatFoodTimer(CatFoodTimer.MAX_VALUE);
+        if (totalLaunchesAvailable < TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
+            timer.start();
+        } else {
+            timer.stop();
+        }
         checkBounds();
     }
 
-    public static int getTotalLaunchesAvailable() {
+    public int getTotalLaunchesAvailable() {
         return totalLaunchesAvailable;
     }
     //Функция проверки чтобы количество запусков не вышло а границы
@@ -56,9 +62,7 @@ public class CatFood {
                 totalLaunchesAvailable = 0;
             }
 
-            if (!timer.task.isScheduled()) {
-                timer.start();
-            }
+            timer.start();
         }
     }
 
