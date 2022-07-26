@@ -22,7 +22,8 @@ public class CatFood {
     private Preferences foodPrefs;
 
     //advertisment
-    private static final int INTERSTETIAL_LAUNCHES = 5;
+    private static final int INTERSTETIAL_LAUNCHES = 10;
+    private static final int BANNER_LAUNCHES = 5;
 
     //Конструктор подгружает из preferences
     public CatFood() {
@@ -51,7 +52,14 @@ public class CatFood {
     }
 
     //Функция показа рекламы и добавления запусков в награду
-    public int callAd() {
+    public int callBannerAd() {
+        Globals.game.showInterstitial();    //TODO call banner
+        totalLaunchesAvailable += BANNER_LAUNCHES;
+        checkBounds();
+        return totalLaunchesAvailable;
+    }
+
+    public int callInterstitialAd() {
         Globals.game.showInterstitial();
         totalLaunchesAvailable += INTERSTETIAL_LAUNCHES;
         checkBounds();
