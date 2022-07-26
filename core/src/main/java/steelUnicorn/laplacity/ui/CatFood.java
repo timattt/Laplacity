@@ -16,14 +16,14 @@ import steelUnicorn.laplacity.core.Globals;
  */
 public class CatFood {
     // Total launches available
-    private static final int TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE = 10;
+    private static final int TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE = 20;
     private int totalLaunchesAvailable;
     //prefs
     private Preferences foodPrefs;
 
     //advertisment
-    private static final int INTERSTETIAL_LAUNCHES = 10;
-    private static final int BANNER_LAUNCHES = 5;
+    private static final int REWARDED_LAUNCHES = 10;
+    private static final int INTERSTITIAL_LAUNCHES = 5;
 
     //Конструктор подгружает из preferences
     public CatFood() {
@@ -52,16 +52,16 @@ public class CatFood {
     }
 
     //Функция показа рекламы и добавления запусков в награду
-    public int callBannerAd() {
+    public int callInterstitialAd() {
         Globals.game.showInterstitial();
-        totalLaunchesAvailable += BANNER_LAUNCHES;
+        totalLaunchesAvailable += INTERSTITIAL_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;
     }
 
-    public int callInterstitialAd() {
+    public int callRewardedAd() {
         Globals.game.showRewarded();
-        totalLaunchesAvailable += INTERSTETIAL_LAUNCHES;
+        totalLaunchesAvailable += REWARDED_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;
     }

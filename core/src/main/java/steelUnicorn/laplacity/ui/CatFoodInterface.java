@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import steelUnicorn.laplacity.core.Globals;
 
 /**
- * Класс таблица хранящий верхнюю строку с количеством еды и кнопкой +5
+ * Класс таблица хранящий верхнюю строку с количеством еды и кнопкой +5 +10 таймером
  *
  * Так же в нем хранится статическая надпись CatHungry которая выводится при нажатии на запуск,
  * когда нет запусков
@@ -42,7 +42,7 @@ public class CatFoodInterface extends Table {
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                update(Globals.catFood.callBannerAd());   //showInterstetial inside callAd
+                update(Globals.catFood.callInterstitialAd());   //showInterstetial inside callAd
             }
         });
         add(btn);
@@ -51,7 +51,7 @@ public class CatFoodInterface extends Table {
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                update(Globals.catFood.callInterstitialAd());   //showInterstetial inside callAd
+                update(Globals.catFood.callRewardedAd());   //showInterstetial inside callAd
             }
         });
         add(btn);
