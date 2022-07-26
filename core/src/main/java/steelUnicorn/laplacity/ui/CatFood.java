@@ -22,8 +22,8 @@ public class CatFood {
     private Preferences foodPrefs;
 
     //advertisment
-    private static final int INTERSTETIAL_LAUNCHES = 10;
-    private static final int BANNER_LAUNCHES = 5;
+    private static final int REWARDED_LAUNCHES = 10;
+    private static final int INTERSTITIAL_LAUNCHES = 5;
 
     //Конструктор подгружает из preferences
     public CatFood() {
@@ -36,40 +36,36 @@ public class CatFood {
             totalLaunchesAvailable = TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
         }
 
-        checkBounds();
+        checkPositive();
     }
 
     public int getTotalLaunchesAvailable() {
         return totalLaunchesAvailable;
     }
     //Функция проверки чтобы количество запусков не вышло а границы
-    private void checkBounds() {
-        if (totalLaunchesAvailable > TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
-            totalLaunchesAvailable = TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
-        } else if (totalLaunchesAvailable < 0) {
+    private void checkPositive() {
+        if (totalLaunchesAvailable < 0) {
             totalLaunchesAvailable = 0;
         }
     }
 
     //Функция показа рекламы и добавления запусков в награду
-    public int callBannerAd() {
+    public int callInterstitialAd() {
         Globals.game.showInterstitial();
-        totalLaunchesAvailable += BANNER_LAUNCHES;
-        checkBounds();
+        totalLaunchesAvailable += INTERSTITIAL_LAUNCHES;
         return totalLaunchesAvailable;
     }
 
-    public int callInterstitialAd() {
+    public int callRewardedAd() {
         Globals.game.showRewarded();
-        totalLaunchesAvailable += INTERSTETIAL_LAUNCHES;
-        checkBounds();
+        totalLaunchesAvailable += REWARDED_LAUNCHES;
         return totalLaunchesAvailable;
     }
 
     //Вызывается при запуске
     public int launch() {
         totalLaunchesAvailable--;
-        checkBounds();
+        checkPositive();
         return totalLaunchesAvailable;
     }
 

@@ -42,7 +42,7 @@ public class CatFoodInterface extends Table {
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                update(Globals.catFood.callBannerAd());   //showInterstetial inside callAd
+                update(Globals.catFood.callInterstitialAd());   //showInterstetial inside callAd
             }
         });
         add(btn);
@@ -51,7 +51,7 @@ public class CatFoodInterface extends Table {
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                update(Globals.catFood.callInterstitialAd());   //showInterstetial inside callAd
+                update(Globals.catFood.callRewardedAd());   //showInterstetial inside callAd
             }
         });
         add(btn);
