@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.ui.mainmenu;
 
 import static steelUnicorn.laplacity.core.Globals.*;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;

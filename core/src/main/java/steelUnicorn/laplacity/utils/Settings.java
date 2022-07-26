@@ -3,9 +3,6 @@ package steelUnicorn.laplacity.utils;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.ui.CatFood;
-
 /**
  * Класс с функциями для подгрузки и сохранения настроек.
  * Сохранения и загрузка происходит на основе Preferences
@@ -44,8 +41,6 @@ public class Settings {
 		} else {
 			musicVolume = 1;
 		}
-		
-
 	}
 
 	/**

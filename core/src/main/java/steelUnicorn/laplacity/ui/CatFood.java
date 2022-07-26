@@ -3,8 +3,6 @@ package steelUnicorn.laplacity.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import steelUnicorn.laplacity.core.Globals;
 

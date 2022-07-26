@@ -116,13 +116,12 @@ public class GameInterface extends Stage implements GestureListener {
 		flightBtn = createIcon("Flight", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 				if (catFood.getTotalLaunchesAvailable() > 0) {
-					LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 					changeGameMode(GameMode.FLIGHT);    //no need in NONE because of editBtn
 
 					catFI.update(catFood.launch());
 				} else {
-					Gdx.app.log("Cat Hungry", "hungry");
 					CatFoodInterface.showHungry(GameInterface.this);
 				}
 			}
