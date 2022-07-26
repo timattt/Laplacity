@@ -37,6 +37,12 @@ public class MainMenuScreen extends ManagedScreen {
 	}
 
 	@Override
+	public void show() {
+		super.show();
+		menuStage.show();
+	}
+
+	@Override
 	public void hide() {}
 
 	@Override

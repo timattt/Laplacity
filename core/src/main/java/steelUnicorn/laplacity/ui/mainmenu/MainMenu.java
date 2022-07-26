@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.ui.mainmenu;
 
 import static steelUnicorn.laplacity.core.Globals.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.CatFoodInterface;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.LevelsTab;
@@ -39,6 +41,8 @@ public class MainMenu extends Stage {
     private SettingsTab settingsTab;
     private CreditsTab creditsTab;
 
+    private CatFoodInterface catFI;
+
     private Cell<MainMenuTab> tabCell;
     /**
      * Конструктор главного меню.
@@ -53,6 +57,11 @@ public class MainMenu extends Stage {
         //fpsCounter
         FpsCounter fpsCounter = new FpsCounter(skin);
         addActor(fpsCounter);
+        //CatFood
+        catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
+        catFI.setPosition(this.getWidth() / 2, this.getHeight() - catFI.getPrefHeight() / 2);
+        addActor(catFI);
+
         //MainMenu
         Table root = new Table();
         root.setFillParent(true);
@@ -63,6 +72,11 @@ public class MainMenu extends Stage {
         creditsTab = new CreditsTab(skin);
 
         createMainMenu(root, skin);
+    }
+
+    //Функция вызывается при открытии главного меню, чтобы обновить параметры!
+    public void show() {
+        catFI.update(catFood.getTotalLaunchesAvailable());
     }
 
     /**

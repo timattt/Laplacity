@@ -16,43 +16,51 @@ import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.core.Globals;
 
-public class CatFoodUI {
-    public Table launchesInfo;
-    private Label hungryMsg;
+public class CatFoodInterface extends Table {
     private Label text;
     private TextButton btn;
-
-    private float scale = 3;
 
     private float padSize = 10;
     private float tableWidth = Globals.UI_WORLD_WIDTH * 0.1f;
     private float tableHeight = Globals.UI_WORLD_HEIGHT * 0.05f;
 
+    private static float scale = 3;
+    private static Label hungryMsg;
+    private static boolean isShown = false;
 
-    public CatFoodUI(int launches, Skin skin) {
-        //launchesInfo creation
-        launchesInfo = new Table();
-        launchesInfo.defaults().pad(padSize).size(tableWidth / 2, tableHeight);
+    public CatFoodInterface(int launches, Skin skin) {
+        //Interface creation
+        defaults().pad(padSize).size(tableWidth / 2, tableHeight);
 
         text = new Label("Food: " + launches, skin);
         text.setColor(Color.BLACK);
-        launchesInfo.add(text);
+        add(text);
 
         btn = new TextButton(" + 5", skin);
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Globals.game.showInterstitial();
-                Globals.catFood.totalLaunchesAvailable += 5;
-                Globals.catFood.update();
+                update(Globals.catFood.callAd());
 
                 Gdx.app.log("Food btn", "pressed"
-                        + Globals.catFood.totalLaunchesAvailable);
+                        + Globals.catFood.getTotalLaunchesAvailable());
             }
         });
-        launchesInfo.add(btn);
+        add(btn);
 
-        //catHungry Message
+        //hungryMsg init
+        if (hungryMsg == null) {
+            createHungry(skin);
+        }
+    }
+
+    public void update(int launches) {
+        text.setText("Food: " + launches);
+    }
+
+    //hungry message logic
+    private static void createHungry(Skin skin) {
         hungryMsg = new Label("Cat Hungry", skin);
         hungryMsg.setColor(Color.RED);
         hungryMsg.setName("hungryMessage");
@@ -61,23 +69,22 @@ public class CatFoodUI {
         hungryMsg.setFontScale(scale);
     }
 
-    public void update(int launches) {
-        text.setText("Food: " + launches);
-    }
-
-
-    public void showHungry(Stage stg) {
+    public static void showHungry(Stage stg) {
         if (!stg.getActors().contains(hungryMsg, true)) {
             hungryMsg.setPosition(stg.getWidth() / 2 - hungryMsg.getWidth() / 2,
                     stg.getHeight() / 2 - hungryMsg.getHeight() / 2);
             stg.addActor(hungryMsg);
         }
-        hungryMsg.setVisible(true);
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                hungryMsg.setVisible(false);
-            }
-        }, 2.5f);
+        if (!isShown) { //Проверка на то что надпись уже показывается
+            isShown = true;
+            hungryMsg.setVisible(true);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    hungryMsg.setVisible(false);
+                    isShown = false;
+                }
+            }, 2.5f);
+        }
     }
 }

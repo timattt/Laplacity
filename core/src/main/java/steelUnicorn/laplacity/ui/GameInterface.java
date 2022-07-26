@@ -36,6 +36,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private TextureAtlas icons;
 	private Image curModeImg;
+	private CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
 
@@ -78,10 +79,7 @@ public class GameInterface extends Stage implements GestureListener {
 
 		//interface intitialize
 		Table root = new Table();
-		root.setDebug(true);
 		root.setFillParent(true);
-		root.align(Align.right);
-		root.pad(iconSpace);
 		addActor(root);
 
 		//mode img
@@ -90,11 +88,13 @@ public class GameInterface extends Stage implements GestureListener {
 		root.add(curModeImg).expand().left().top()
 				.size(iconSize, iconSize).pad(iconSpace).uniform();
 
-		root.add(catFood.foodInterface.launchesInfo).expand().top().uniform();
+		//cat interface
+		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
+		root.add(catFI).expand().top().uniform();
 
 		//Icons Table
 		Table guiTable = new Table();
-		root.add(guiTable).expand().right().uniform();
+		root.add(guiTable).expand().right().pad(iconSpace).uniform();
 		guiTable.defaults()
 				.width(iconSize)
 				.height(iconSize)
@@ -116,17 +116,14 @@ public class GameInterface extends Stage implements GestureListener {
 		flightBtn = createIcon("Flight", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				if (catFood.totalLaunchesAvailable > 0) {
+				if (catFood.getTotalLaunchesAvailable() > 0) {
 					LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 					changeGameMode(GameMode.FLIGHT);    //no need in NONE because of editBtn
 
-					catFood.totalLaunchesAvailable--;
-					catFood.update();
-					Gdx.app.log("PlayPressed", "total lanches "
-							+ String.valueOf(catFood.totalLaunchesAvailable));
+					catFI.update(catFood.launch());
 				} else {
 					Gdx.app.log("Cat Hungry", "hungry");
-					catFood.foodInterface.showHungry(GameInterface.this);
+					CatFoodInterface.showHungry(GameInterface.this);
 				}
 			}
 		});
