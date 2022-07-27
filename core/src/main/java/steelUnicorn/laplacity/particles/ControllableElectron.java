@@ -98,4 +98,14 @@ public class ControllableElectron extends Electron {
 		GameProcess.justFinished = true;
 	}
 
+	@Override
+	public void collidedWithTile() {
+		// TODO SOUNDS HERE
+	}
+
+	@Override
+	public void collidedWithStructure() {
+		// TODO SOUNDS HERE
+	}
+
 }

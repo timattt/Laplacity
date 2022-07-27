@@ -14,4 +14,7 @@ public interface CollisionListener {
 	public boolean isStructure();
 	public void collidedWithStructure();
 	
+	public boolean isTile();
+	public void collidedWithTile();
+	
 }
