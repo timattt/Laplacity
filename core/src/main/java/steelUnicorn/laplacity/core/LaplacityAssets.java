@@ -27,6 +27,10 @@ public class LaplacityAssets {
     public static Sound placeSound; // звук размещения частицы
 	public static Sound hurtSound; // звук касания смертельной стены
     public static Sound bumpStructureSound; // звук удара о структуру
+    public static Sound genStartSound;
+    public static Sound sprayStartSound;
+    public static Sound popupSound;
+    public static Sound annihilationSound;
 
     // TILES
 	public static Texture BARRIER_TEXTURE;
@@ -53,6 +57,11 @@ public class LaplacityAssets {
         placeSound = Globals.assetManager.get("sounds/place.wav");
         hurtSound = Globals.assetManager.get("sounds/bump_deadly.wav");
         bumpStructureSound = Globals.assetManager.get("sounds/bump_structure.wav");
+        genStartSound = Globals.assetManager.get("sounds/generator_start.wav");
+        sprayStartSound = Globals.assetManager.get("sounds/spray_start.wav");
+        popupSound = Globals.assetManager.get("sounds/popup.wav");
+        annihilationSound = Globals.assetManager.get("sounds/annihilation.wav");
+        
         
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
