@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
@@ -90,6 +91,7 @@ public class ControllableElectron extends Electron {
 
 	@Override
 	public void collidedWithDeadly() {
+		LaplacityAssets.playSound(LaplacityAssets.hurtSound);
 		GameProcess.justHitted = true;
 	}
 
@@ -100,12 +102,12 @@ public class ControllableElectron extends Electron {
 
 	@Override
 	public void collidedWithTile() {
-		// TODO SOUNDS HERE
+		LaplacityAssets.playSound(LaplacityAssets.bumpSound);
 	}
 
 	@Override
 	public void collidedWithStructure() {
-		// TODO SOUNDS HERE
+		LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
 	}
 
 }
