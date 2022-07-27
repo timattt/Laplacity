@@ -98,7 +98,12 @@ public class MainMenu extends Stage {
                 .height(menuHeight)
                 .space(menuSpaceSize);
         //play
-        addMenuButton(mainMenu, "Play", skin, "playBtn", levelsTab);
+        addMenuButton(mainMenu, "Play", skin, "playBtn", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                game.getScreenManager().pushScreen(nameLevelsScreen, nameSlideOut);
+            }
+        });
 
         //options
         mainMenu.row();

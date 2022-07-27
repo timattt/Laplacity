@@ -20,6 +20,7 @@ import de.eskalon.commons.screen.ManagedScreen;
 import de.eskalon.commons.screen.transition.ScreenTransition;
 import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.screens.GameScreen;
+import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
@@ -51,6 +52,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();
+		levelsScreen = new LevelsScreen();
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
 		
@@ -64,6 +66,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreen(nameGameScreen, gameScreen);
 		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
 		this.screenManager.addScreen(nameWinScreen, winScreen);
+		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
