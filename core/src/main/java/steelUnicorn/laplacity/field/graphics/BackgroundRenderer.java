@@ -30,7 +30,7 @@ public class BackgroundRenderer {
 		float sz = LaplacityField.tileSize;
 		
 
-		float x = fieldWidth * sz;
+		float x = 2 * fieldWidth * sz;
 
 		while (x > 0) {
 			Texture tex = LaplacityAssets.SPACE_BACKGROUND;

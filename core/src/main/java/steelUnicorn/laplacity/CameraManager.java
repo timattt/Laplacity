@@ -2,12 +2,12 @@ package steelUnicorn.laplacity;
 
 import static steelUnicorn.laplacity.core.Globals.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 
 public class CameraManager {
@@ -57,9 +57,14 @@ public class CameraManager {
 	}
 	
 	private static float clamp(float x) {
-		return Math.max(Globals.SCREEN_WORLD_WIDTH / 2,
-				Math.min(LaplacityField.fieldWidth * LaplacityField.tileSize - Globals.SCREEN_WORLD_WIDTH / 2,
-						x));
+		float min = LaplacityField.fieldHeight * LaplacityField.tileSize / (float) Gdx.graphics.getHeight() * (float) Gdx.graphics.getWidth();
+		float max = LaplacityField.fieldWidth * LaplacityField.tileSize - min;;
+		
+		if (min > max) {
+			return LaplacityField.fieldWidth * LaplacityField.tileSize / 2;
+		}
+		
+		return Math.max(min, Math.min(max, x));
 	}
 	
 	public static void setXPosition(float x) {
