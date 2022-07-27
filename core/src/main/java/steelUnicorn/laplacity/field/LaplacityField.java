@@ -216,6 +216,10 @@ public class LaplacityField extends Group {
 	public static void clearCircleDensity(float x, float y, float r) {
 		EmptyTile center = getTileFromWorldCoords(x, y);
 		
+		if (center == null) {
+			return;
+		}
+		
 		int i = center.getGridX();
 		int j = center.getGridY();
 		int side = (int) (r / tileSize + 1);
