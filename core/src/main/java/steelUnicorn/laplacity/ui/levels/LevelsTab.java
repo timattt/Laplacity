@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 
 
 import steelUnicorn.laplacity.core.Globals;
@@ -31,6 +32,10 @@ public class LevelsTab extends MainMenuTab {
     private LevelsNav nav;
     private int currentSection;
 
+    private Array<LevelSection> sections;
+
+    private Cell sectionCell;
+
     public LevelsTab(Skin skin) {
         super();
         currentSection = 1;
@@ -41,7 +46,7 @@ public class LevelsTab extends MainMenuTab {
         addDescription("Levels:", skin);
         //Sections
         row();
-        add(new LevelSection(currentSection, skin));
+        sectionCell = addSections(skin);
 
         row();
         nav = new LevelsNav(skin);
@@ -60,6 +65,20 @@ public class LevelsTab extends MainMenuTab {
         return add(btn).size(menuBtnWidth, MainMenu.menuHeight);
     }
 
+    private Cell addSections(Skin skin) {
+        sections = new Array<>(LevelsParser.sectionLevelsPaths.size);
+
+        for (int i = 0; i < LevelsParser.sectionLevelsPaths.size; i++) {
+            sections.add(new LevelSection(i + 1, skin));
+        }
+
+        return add(sections.get(currentSection - 1));
+    }
+
+    private void updateSection() {
+        sectionCell.setActor(sections.get(currentSection - 1));
+    }
+
     public class LevelsNav extends Table {
         private Label sectionName;
         private Button leftArrow;
@@ -73,6 +92,7 @@ public class LevelsTab extends MainMenuTab {
                 public void changed(ChangeEvent event, Actor actor) {
                     LevelsTab.this.currentSection--;
                     sectionName.setText("Section " + LevelsTab.this.currentSection);
+                    LevelsTab.this.updateSection();
                     checkVisible();
                 }
             });
@@ -88,6 +108,7 @@ public class LevelsTab extends MainMenuTab {
                 public void changed(ChangeEvent event, Actor actor) {
                     LevelsTab.this.currentSection++;
                     sectionName.setText("Section " + LevelsTab.this.currentSection);
+                    LevelsTab.this.updateSection();
                     checkVisible();
                 }
             });

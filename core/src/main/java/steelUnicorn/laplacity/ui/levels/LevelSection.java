@@ -15,7 +15,7 @@ public class LevelSection extends Table {
     private static final int levelsRow = 4;
     private static float tabSpace = UI_WORLD_HEIGHT * 0.03f;
 
-    private int sectionNumber;
+    private final int sectionNumber;  //section number greater than pathsSize by 1
     public LevelSection(int sectionNumber, Skin skin) {
         this.sectionNumber = sectionNumber;
         addLevels(skin);
@@ -29,7 +29,7 @@ public class LevelSection extends Table {
      */
     private void addLevels(Skin skin) {
         //Подтягивание массива путей по номеру секции
-        if (sectionNumber < LevelsParser.sectionLevelsPaths.size) {
+        if (sectionNumber - 1 < LevelsParser.sectionLevelsPaths.size) {
             Array<String> lvlPaths = LevelsParser.sectionLevelsPaths.get(sectionNumber);
 
             defaults().size(lvlBtnSize)
