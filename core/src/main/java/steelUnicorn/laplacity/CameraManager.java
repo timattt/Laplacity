@@ -2,7 +2,6 @@ package steelUnicorn.laplacity;
 
 import static steelUnicorn.laplacity.core.Globals.*;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -57,9 +56,8 @@ public class CameraManager {
 	}
 	
 	private static float clamp(float x) {
-		float min = LaplacityField.fieldHeight * LaplacityField.tileSize / (float) Gdx.graphics.getHeight() * (float) Gdx.graphics.getWidth();
+		float min = SCREEN_WORLD_WIDTH /2;
 		float max = LaplacityField.fieldWidth * LaplacityField.tileSize - min;;
-		
 		if (min > max) {
 			return LaplacityField.fieldWidth * LaplacityField.tileSize / 2;
 		}

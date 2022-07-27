@@ -36,8 +36,10 @@ public class LaplacityAssets {
     // TILES
 	public static Texture BARRIER_TEXTURE;
 	public static Texture DEADLY_TEXTURE;
+	public static Texture TRAMPOLINE_TEXTURE;
 	public static TextureRegion[] BARRIER_REGIONS;
 	public static TextureRegion[][] DEADLY_REGIONS;
+	public static TextureRegion TRAMPOLINE_REGION;
 	
 	// BACKGROUNDS
 	public static Texture[][] BACKGROUNDS; 
@@ -64,7 +66,7 @@ public class LaplacityAssets {
         annihilationSound = Globals.assetManager.get("sounds/annihilation.wav");
         spraySound = Globals.assetManager.get("sounds/spray.wav");
         
-        
+        TRAMPOLINE_TEXTURE = Globals.assetManager.get("textures/trampoline.png");
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
         
@@ -76,6 +78,8 @@ public class LaplacityAssets {
         
         cut(PARTICLES, PARTICLES_REGIONS = new TextureRegion[7][2]);
         cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
+        
+        TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
     }
     
     private static void loadTextureRegions() {
