@@ -35,7 +35,7 @@ public class LaplacityAssets {
 	public static TextureRegion[][] DEADLY_REGIONS;
 	
 	// BACKGROUNDS
-	public static Texture[] BACKGROUNDS1; 
+	public static Texture[][] BACKGROUNDS; 
 	public static Texture SPACE_BACKGROUND;
 	
 	// PARTICLES
@@ -67,10 +67,16 @@ public class LaplacityAssets {
     }
     
     private static void loadBackgrounds() {
-    	BACKGROUNDS1 = new Texture[4];
+    	BACKGROUNDS = new Texture[Globals.TOTAL_SECTIONS][Globals.LEVELS_PER_SECTION];
     	
-    	for (int i = 0; i < BACKGROUNDS1.length; i++) {
-    		BACKGROUNDS1[i] = Globals.assetManager.get("backgrounds/Level" + (i+1) + ".png");
+    	for (int section = 0; section < Globals.TOTAL_SECTIONS; section++) {
+    		for (int i = 0; i < Globals.LEVELS_PER_SECTION; i++) {
+    			if (i < 9) {
+    				BACKGROUNDS[section][i] = Globals.assetManager.get("backgrounds/section" + (section+1) + "/level0" + (i+1) +".png");
+    			} else {
+    				BACKGROUNDS[section][i] = Globals.assetManager.get("backgrounds/section" + (section+1) + "/level" + (i+1) +".png");
+    			}
+    		}
     	}
     	
     	SPACE_BACKGROUND = Globals.assetManager.get("backgrounds/SPACE_BACKGROUND.png", Texture.class);

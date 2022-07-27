@@ -102,10 +102,14 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
 		
 		// backgrounds
-		FileHandle[] bcks = Gdx.files.internal("backgrounds/").list();
-		for (FileHandle snd : bcks) {
-			assetManager.load(snd.path(), Texture.class);
+		FileHandle[] sections = Gdx.files.internal("backgrounds/").list();
+		for (FileHandle section : sections) {
+			FileHandle[] backs = section.list();
+			for (FileHandle back : backs) {
+				assetManager.load(back.path(), Texture.class);
+			}
 		}
+		assetManager.load("backgrounds/SPACE_BACKGROUND.png", Texture.class);
 		
 		// finish loading
 		assetManager.finishLoading();

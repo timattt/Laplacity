@@ -42,6 +42,7 @@ public class CatFood {
     public int getTotalLaunchesAvailable() {
         return totalLaunchesAvailable;
     }
+    
     //Функция проверки чтобы количество запусков не вышло а границы
     private void checkBounds() {
         if (totalLaunchesAvailable > TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {

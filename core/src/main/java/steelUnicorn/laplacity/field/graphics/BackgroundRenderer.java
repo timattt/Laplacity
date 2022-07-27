@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
@@ -47,7 +48,7 @@ public class BackgroundRenderer {
 		cache.beginCache();
 		
 		while (x > 0) {
-			Texture tex = LaplacityAssets.BACKGROUNDS1[(int) (LaplacityAssets.BACKGROUNDS1.length * Math.random())];
+			Texture tex = LaplacityAssets.BACKGROUNDS[Globals.currentSection][(GameProcess.levelNumber - 1) % Globals.LEVELS_PER_SECTION];
 			float aspect = (float) tex.getWidth() / (float) tex.getHeight();
 			float h = fieldHeight * sz;
 			float w = aspect * h;
