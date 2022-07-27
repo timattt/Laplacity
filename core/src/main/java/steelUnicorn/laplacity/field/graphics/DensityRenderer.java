@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.IntRect;
@@ -156,7 +156,7 @@ public class DensityRenderer {
 		}
 		
 		public void render() {
-			cache.setProjectionMatrix(Globals.camera.combined);
+			cache.setProjectionMatrix(CameraManager.camMat());
 			cache.begin();
 			cache.draw(id);
 			cache.end();

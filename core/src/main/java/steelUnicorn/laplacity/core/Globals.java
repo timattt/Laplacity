@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.core;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -21,7 +20,6 @@ import steelUnicorn.laplacity.ui.CatFood;
 public class Globals {
 
 	// GLOBAL INSTANCES
-	public static OrthographicCamera camera;
 	public static Laplacity game;
 	public static ExtendViewport guiViewport;
 	public static ExtendViewport gameViewport;

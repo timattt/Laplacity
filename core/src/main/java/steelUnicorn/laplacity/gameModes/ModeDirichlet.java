@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.gameModes;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
@@ -29,7 +30,7 @@ public class ModeDirichlet extends GameMode {
 
 	@Override
 	public void pinch(float dx1, float dx2) {
-		moveCamera(dx1 + dx2);
+		CameraManager.moveX(dx1 + dx2);
 	}
 
 	@Override

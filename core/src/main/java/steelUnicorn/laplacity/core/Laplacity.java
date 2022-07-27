@@ -7,7 +7,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -19,6 +18,7 @@ import de.eskalon.commons.core.ManagedGame;
 import de.eskalon.commons.screen.ManagedScreen;
 import de.eskalon.commons.screen.transition.ScreenTransition;
 import de.eskalon.commons.screen.transition.impl.BlendingTransition;
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
@@ -44,18 +44,15 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		Settings.loadSettings();
 		catFood = new CatFood();
 
+		CameraManager.init();
 		game = this;
-		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
 		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
-		gameViewport = new ExtendViewport(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT, camera);
+		gameViewport = CameraManager.createViewport();
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
-		
-		camera.position.x = SCREEN_WORLD_WIDTH / 2;
-		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
 		
 		// transition
 		this.transitionBatch = new SpriteBatch();
@@ -121,7 +118,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	@Override
 	public void render () {
-		shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(CameraManager.camMat());
 		super.render();
 	}
 

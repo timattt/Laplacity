@@ -1,6 +1,8 @@
 package steelUnicorn.laplacity.gameModes;
 
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.field.LaplacityField;
 
 public class ModeFlight extends GameMode {
 
@@ -10,7 +12,12 @@ public class ModeFlight extends GameMode {
 
 	@Override
 	public void update() {
-		setCamera(GameProcess.mainParticle.getX());
+		CameraManager.moveToX(GameProcess.mainParticle.getX());
+	}
+
+	@Override
+	public void replaced() {
+		CameraManager.moveToX(LaplacityField.electronStartPos.x);
 	}
 
 }

@@ -142,9 +142,7 @@ public class GameProcess {
 		
 		mainParticle = new ControllableElectron(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
 		
-		camera.position.x = SCREEN_WORLD_WIDTH / 2;
-		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
-		camera.update();
+		CameraManager.setToMainParticle();
 	}
 	
 	public static void updateLevel(float delta) {
@@ -152,7 +150,7 @@ public class GameProcess {
 			return;
 		}
 		
-		gameBatch.setProjectionMatrix(camera.combined);
+		gameBatch.setProjectionMatrix(CameraManager.camMat());
 		
 		// render
 		//---------------------------------------------
@@ -168,6 +166,7 @@ public class GameProcess {
 		
 		// update
 		//---------------------------------------------
+		CameraManager.update(delta);
 		currentGameMode.update();
 		gameUI.act(delta);
 		if (currentGameMode == GameMode.FLIGHT) {
@@ -233,6 +232,7 @@ public class GameProcess {
 		boolean nowFlight = mode == GameMode.FLIGHT;
 		boolean wasFlight = currentGameMode == GameMode.FLIGHT;
 		
+		currentGameMode.replaced();
 		currentGameMode = mode;
 
 		if ((nowFlight) && (wasFlight)) {

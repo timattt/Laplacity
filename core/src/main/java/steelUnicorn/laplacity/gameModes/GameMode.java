@@ -1,10 +1,5 @@
 package steelUnicorn.laplacity.gameModes;
 
-import static steelUnicorn.laplacity.core.Globals.*;
-
-import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.field.LaplacityField;
-
 public class GameMode {
 
 	// MODES
@@ -53,16 +48,9 @@ public class GameMode {
 	public String getName() {
 		return name;
 	}
-
-	protected void moveCamera(float dx) {
-		setCamera(camera.position.x + dx);
- 	}
 	
-	protected void setCamera(float x) {
-		camera.position.x = Math.max(Globals.SCREEN_WORLD_WIDTH / 2,
-				Math.min(LaplacityField.fieldWidth * LaplacityField.tileSize - Globals.SCREEN_WORLD_WIDTH / 2,
-						x));
-		camera.update();
+	public void replaced() {
+		
 	}
 
 }
