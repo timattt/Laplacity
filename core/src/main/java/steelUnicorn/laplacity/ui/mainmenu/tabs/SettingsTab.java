@@ -49,7 +49,7 @@ public class SettingsTab extends MainMenuTab {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
                         CheckBox box = (CheckBox) actor;
                         Settings.setSoundVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
                     }
@@ -62,7 +62,7 @@ public class SettingsTab extends MainMenuTab {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent event, Actor actor) {
-                        LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
                         CheckBox box = (CheckBox) actor;
                         Settings.setMusicVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
                         LaplacityAssets.music.setVolume(Settings.getMusicVolume());

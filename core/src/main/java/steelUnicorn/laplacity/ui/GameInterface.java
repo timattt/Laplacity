@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -107,7 +108,7 @@ public class GameInterface extends Stage implements GestureListener {
 		guiTable.add(createIcon("Return", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.playSound(LaplacityAssets.clickSound);
+				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				returnDialog.show(GameInterface.this);
 			}
 		}));
@@ -127,25 +128,26 @@ public class GameInterface extends Stage implements GestureListener {
 				}
 			}
 		});
-		editBtn = createModeIcon("Edit", GameMode.NONE);
+		editBtn = createModeIcon("Edit", GameMode.NONE, LaplacityAssets.lightClickSound);
 		flightCell = guiTable.add(flightBtn);
 		guiTable.row();
 
 		guiTable.add(createIcon("Clear", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
 				GameProcess.clearLevel();
 			}
 		}));
 		guiTable.row();
 
-		guiTable.add(createModeIcon("Eraser", GameMode.ERASER));
+		guiTable.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
 		guiTable.row();
-		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS));
+		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
 		guiTable.row();
-		guiTable.add(createModeIcon("Protons", GameMode.PROTONS));
+		guiTable.add(createModeIcon("Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
 		guiTable.row();
-		guiTable.add(createModeIcon("Dirichlet", GameMode.DIRICHLET));
+		guiTable.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 	}
 
 	/**
@@ -187,11 +189,11 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param name - название мода
 	 * @param mode - включаемый мод
 	 */
-	private Button createModeIcon(String name, GameMode mode) {
+	private Button createModeIcon(String name, GameMode mode, Sound sound) {
 		return createIcon(name, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+				LaplacityAssets.playSound(sound);
 				if (currentGameMode == mode) {
 					changeGameMode(GameMode.NONE);
 				} else {

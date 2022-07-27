@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
 import steelUnicorn.laplacity.field.structures.AcceleratorStructure;
@@ -244,6 +245,8 @@ public class LaplacityField extends Group {
 			TMP1.set(center.getCenterX(), center.getCenterY());
 			TMP1.sub(pt.getX(), pt.getY());
 			if (TMP1.len2() < r * r) {
+				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
+				// TODO очень не нравится вызывать звук отсюда
 				deleteStaticParticle(pt);
 				k--;
 			}
