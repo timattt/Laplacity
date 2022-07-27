@@ -11,6 +11,11 @@ import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.LevelsTab;
 
+/**
+ * Класс LevelsScreen
+ * Подгружает LevelsTab для отображения уровней
+ * 
+ */
 public class LevelsScreen extends ManagedScreen {
     private Stage levelStage;
     private LevelsTab levelsTab;
