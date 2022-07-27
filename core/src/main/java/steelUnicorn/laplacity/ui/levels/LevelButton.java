@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.ui.mainmenu;
+package steelUnicorn.laplacity.ui.levels;
 
 
 import steelUnicorn.laplacity.GameProcess;

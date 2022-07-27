@@ -25,7 +25,6 @@ public class LevelsParser {
         if (sectionLevelsPaths == null) {
             FileHandle[] sectionFolders = Gdx.files.internal("levels/").list();
 
-
             sectionLevelsPaths = new OrderedMap<>();
             //Проходимся по папкам
             int sectionNumber = 1;

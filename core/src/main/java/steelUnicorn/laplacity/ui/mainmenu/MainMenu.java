@@ -16,7 +16,7 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
-import steelUnicorn.laplacity.ui.mainmenu.tabs.LevelsTab;
+import steelUnicorn.laplacity.ui.levels.LevelsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 

@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.ui.mainmenu.tabs.LevelsTab;
+import steelUnicorn.laplacity.ui.levels.LevelsTab;
 
 /**
  * Класс LevelsScreen
