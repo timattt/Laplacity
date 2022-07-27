@@ -31,6 +31,7 @@ public class LaplacityAssets {
     public static Sound sprayStartSound;
     public static Sound popupSound;
     public static Sound annihilationSound;
+    public static Sound spraySound;
 
     // TILES
 	public static Texture BARRIER_TEXTURE;
@@ -61,6 +62,7 @@ public class LaplacityAssets {
         sprayStartSound = Globals.assetManager.get("sounds/spray_start.wav");
         popupSound = Globals.assetManager.get("sounds/popup.wav");
         annihilationSound = Globals.assetManager.get("sounds/annihilation.wav");
+        spraySound = Globals.assetManager.get("sounds/spray.wav");
         
         
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
@@ -140,5 +142,15 @@ public class LaplacityAssets {
         if (Settings.getSoundVolume() != 0) {
             sound.play();
         }
+    }
+
+    public static void loopSound(Sound sound) {
+        if (Settings.getSoundVolume() != 0) {
+            sound.loop();
+        }
+    }
+    
+    public static void stopSound(Sound sound) {
+        sound.stop();
     }
 }
