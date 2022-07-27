@@ -1,8 +1,11 @@
 package steelUnicorn.laplacity.utils;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.OrderedMap;
 
 import steelUnicorn.laplacity.core.Globals;
@@ -43,6 +46,24 @@ public class LevelsParser {
                     sectionLevelsPaths.put(sectionNumber++, paths);
                 }
             }
+        }
+    }
+
+    public static void loadAssets(AssetManager assetManager) {
+        if (sectionLevelsPaths == null) {
+            parseSections();
+        }
+
+        ObjectMap.Entries<Integer, Array<String>> entries = sectionLevelsPaths.iterator();
+
+        while (entries.hasNext()) {
+            //пара ключ значение из словаря
+            ObjectMap.Entry<Integer, Array<String>> entry = entries.next();
+            //Значение - массив путей
+            for (String path : entry.value) {
+                assetManager.load(path, Texture.class);
+            }
+
         }
     }
 }
