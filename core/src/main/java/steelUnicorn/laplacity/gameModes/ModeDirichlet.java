@@ -14,7 +14,6 @@ public class ModeDirichlet extends GameMode {
 
 	private void makeSpray(float x, float y) {
 		LaplacityField.fillCircleWithRandomDensity(x, y, BRUSH_RADIUS, MAX_DENSITY);
-		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 	
@@ -31,6 +30,11 @@ public class ModeDirichlet extends GameMode {
 	@Override
 	public void pinch(float dx1, float dx2) {
 		moveCamera(dx1 + dx2);
+	}
+
+	@Override
+	public void touchUp(float x, float y) {
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 	}
 
 }

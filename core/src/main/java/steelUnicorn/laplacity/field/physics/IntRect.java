@@ -9,7 +9,15 @@ public class IntRect {
     public int top;
     public int bottom;
 
-    public IntRect() {
+    public IntRect(int left, int bottom, int right, int top) {
+		super();
+		this.left = left;
+		this.right = right;
+		this.top = top;
+		this.bottom = bottom;
+	}
+
+	public IntRect() {
     }
 
     /**

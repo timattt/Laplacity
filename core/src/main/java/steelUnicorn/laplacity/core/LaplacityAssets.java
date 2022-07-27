@@ -42,6 +42,10 @@ public class LaplacityAssets {
 	public static Texture PARTICLES;
 	public static TextureRegion[][] PARTICLES_REGIONS;
 	
+	// DENSITY
+	public static Texture DENSITY;
+	public static TextureRegion[][] DENSITY_REGIONS;
+	
     public static void getAssets() {
         clickSound = Globals.assetManager.get("sounds/click.ogg");
         lightClickSound = Globals.assetManager.get("sounds/light_click.ogg");
@@ -54,11 +58,13 @@ public class LaplacityAssets {
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
         
         PARTICLES = Globals.assetManager.get("textures/particles.png");
+        DENSITY = Globals.assetManager.get("textures/density.png");
         
         loadTextureRegions();
         loadBackgrounds();
         
         cut(PARTICLES, PARTICLES_REGIONS = new TextureRegion[7][2]);
+        cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
     }
     
     private static void loadTextureRegions() {
@@ -122,6 +128,7 @@ public class LaplacityAssets {
     }
 
     public static void playSound(Sound sound) {
+    	
         if (Settings.getSoundVolume() != 0) {
             sound.play();
         }

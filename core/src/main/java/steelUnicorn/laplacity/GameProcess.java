@@ -160,8 +160,8 @@ public class GameProcess {
 		LaplacityField.renderStructures(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
 		TrajectoryRenderer.render();
 		TilesRenderer.render();
-		ParticlesRenderer.render(delta);
 		DensityRenderer.render(gameBatch);
+		ParticlesRenderer.render(delta);
 		gameUI.draw();
 		//debugRend.render(levelWorld, Globals.camera.combined);
 		//---------------------------------------------

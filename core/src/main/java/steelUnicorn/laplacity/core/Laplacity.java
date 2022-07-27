@@ -89,6 +89,9 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		assetManager.load("textures/barrier.png", Texture.class);
 		assetManager.load("textures/deadly.png", Texture.class);
 		
+		// density
+		assetManager.load("textures/density.png", Texture.class);
+		
 		// particles
 		assetManager.load("textures/particles.png", Texture.class);
 		
