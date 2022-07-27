@@ -128,9 +128,8 @@ public class LaplacityAssets {
     }
 
     public static void playSound(Sound sound) {
-    	
         if (Settings.getSoundVolume() != 0) {
-            sound.play();
+            //sound.play();
         }
     }
 }
