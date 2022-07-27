@@ -5,6 +5,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.utils.AdHandler;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.backends.android.AndroidAudio;
+import com.badlogic.gdx.backends.android.AsynchronousAndroidAudio;
 import com.google.android.gms.ads.*;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
@@ -153,6 +156,11 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 		} catch (Exception e) {
 		}
+	}
+
+	@Override
+	public AndroidAudio createAudio(Context context, AndroidApplicationConfiguration config) {
+		return  new AsynchronousAndroidAudio(context, config);
 	}
 
 }
