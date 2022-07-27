@@ -10,6 +10,12 @@ import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.utils.LevelsParser;
 
+/**
+ * Класс секции уровней
+ *
+ * В консрукторе по номеру секции создает таблицу с уровнями используя
+ * LevelParser.sectionLevelsPaths
+ */
 public class LevelSection extends Table {
     private static final float lvlBtnSize = UI_WORLD_WIDTH * 0.04f;
     private static final int levelsRow = 4;

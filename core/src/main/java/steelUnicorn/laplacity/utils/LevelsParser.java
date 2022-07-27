@@ -16,6 +16,8 @@ import steelUnicorn.laplacity.core.Globals;
  * Также есть функция, которая парсит папку levels/
  * Каждая подпапка в levels должна именть название sectionN где N - номер секции
  * Каждый файл в секции иметь название levelN.png где N - номер уровня формата %02d
+ *
+ * LevelsParser подгружает ассеты
  */
 public class LevelsParser {
     //Основная функция, возвращает

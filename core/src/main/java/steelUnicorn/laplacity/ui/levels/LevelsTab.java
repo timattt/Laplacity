@@ -79,6 +79,9 @@ public class LevelsTab extends MainMenuTab {
         sectionCell.setActor(sections.get(currentSection - 1));
     }
 
+    /**
+     * Класс навигации снизу под таблицей для смены секций
+     */
     public class LevelsNav extends Table {
         private Label sectionName;
         private Button leftArrow;
