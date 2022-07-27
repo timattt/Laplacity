@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.utils.CatFoodTimer;
 
 /**
  * Класс для сохранения, удаления и управления количеством запусков.
@@ -16,15 +17,16 @@ import steelUnicorn.laplacity.core.Globals;
  */
 public class CatFood {
     // Total launches available
-    private static final int TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE = 10;
+    public static final int TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE = 20;
     private int totalLaunchesAvailable;
     //prefs
     private Preferences foodPrefs;
 
     //advertisment
-    private static final int INTERSTETIAL_LAUNCHES = 10;
-    private static final int BANNER_LAUNCHES = 5;
+    private static final int REWARDED_LAUNCHES = 10;
+    private static final int INTERSTITIAL_LAUNCHES = 5;
 
+    public CatFoodTimer timer;
     //Конструктор подгружает из preferences
     public CatFood() {
         //подгрузка из prefs еды кота
@@ -36,6 +38,14 @@ public class CatFood {
             totalLaunchesAvailable = TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
         }
 
+        //TODO calculate right time
+        //timer initialize
+        timer = new CatFoodTimer(CatFoodTimer.MAX_VALUE);
+        if (totalLaunchesAvailable < TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
+            timer.start();
+        } else {
+            timer.stop();
+        }
         checkBounds();
     }
 
@@ -45,24 +55,29 @@ public class CatFood {
     
     //Функция проверки чтобы количество запусков не вышло а границы
     private void checkBounds() {
-        if (totalLaunchesAvailable > TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
+        if (totalLaunchesAvailable >= TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
             totalLaunchesAvailable = TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
-        } else if (totalLaunchesAvailable < 0) {
-            totalLaunchesAvailable = 0;
+            timer.stop();
+        } else {
+            if (totalLaunchesAvailable <= 0) {
+                totalLaunchesAvailable = 0;
+            }
+
+            timer.start();
         }
     }
 
     //Функция показа рекламы и добавления запусков в награду
-    public int callBannerAd() {
+    public int callInterstitialAd() {
         Globals.game.showInterstitial();
-        totalLaunchesAvailable += BANNER_LAUNCHES;
+        totalLaunchesAvailable += INTERSTITIAL_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;
     }
 
-    public int callInterstitialAd() {
+    public int callRewardedAd() {
         Globals.game.showRewarded();
-        totalLaunchesAvailable += INTERSTETIAL_LAUNCHES;
+        totalLaunchesAvailable += REWARDED_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;
     }
@@ -70,6 +85,12 @@ public class CatFood {
     //Вызывается при запуске
     public int launch() {
         totalLaunchesAvailable--;
+        checkBounds();
+        return totalLaunchesAvailable;
+    }
+
+    public int reload() {
+        totalLaunchesAvailable++;
         checkBounds();
         return totalLaunchesAvailable;
     }

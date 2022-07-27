@@ -60,6 +60,7 @@ public class MainMenu extends Stage {
         catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
         catFI.setPosition(this.getWidth() / 2, this.getHeight() - catFI.getPrefHeight() / 2);
         addActor(catFI);
+        catFood.timer.setCurrentInterface(catFI);
 
         //MainMenu
         Table root = new Table();
@@ -76,6 +77,7 @@ public class MainMenu extends Stage {
     //Функция вызывается при открытии главного меню, чтобы обновить параметры!
     public void show() {
         catFI.update(catFood.getTotalLaunchesAvailable());
+        catFood.timer.setCurrentInterface(catFI);
     }
 
     /**

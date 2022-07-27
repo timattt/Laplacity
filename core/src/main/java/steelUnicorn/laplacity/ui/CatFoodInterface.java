@@ -13,14 +13,14 @@ import com.badlogic.gdx.utils.Timer;
 import steelUnicorn.laplacity.core.Globals;
 
 /**
- * Класс таблица хранящий верхнюю строку с количеством еды и кнопкой +5
+ * Класс таблица хранящий верхнюю строку с количеством еды и кнопкой +5 +10 таймером
  *
  * Так же в нем хранится статическая надпись CatHungry которая выводится при нажатии на запуск,
  * когда нет запусков
  */
 public class CatFoodInterface extends Table {
     private Label text;
-    private TextButton btn;
+    private Label timerLabel;
 
     private float padSize = 10;
     private float tableWidth = Globals.UI_WORLD_WIDTH * 0.1f;
@@ -38,16 +38,7 @@ public class CatFoodInterface extends Table {
         text.setColor(Color.BLACK);
         add(text);
 
-        btn = new TextButton(" + 5", skin);
-        btn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                update(Globals.catFood.callBannerAd());   //showInterstetial inside callAd
-            }
-        });
-        add(btn);
-
-        btn = new TextButton(" + 10", skin);
+        TextButton btn = new TextButton(" + 5", skin);
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -56,6 +47,19 @@ public class CatFoodInterface extends Table {
         });
         add(btn);
 
+        btn = new TextButton(" + 10", skin);
+        btn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                update(Globals.catFood.callRewardedAd());   //showInterstetial inside callAd
+            }
+        });
+        add(btn);
+
+        timerLabel = new Label("5:00", skin);
+        timerLabel.setColor(Color.BLACK);
+        timerLabel.setVisible(false);
+        add(timerLabel);
         //hungryMsg init
         if (hungryMsg == null) {
             createHungry(skin);
@@ -64,6 +68,10 @@ public class CatFoodInterface extends Table {
 
     public void update(int launches) {
         text.setText("Food: " + launches);
+    }
+
+    public Label getTimerLabel() {
+        return timerLabel;
     }
 
     //hungry message logic
