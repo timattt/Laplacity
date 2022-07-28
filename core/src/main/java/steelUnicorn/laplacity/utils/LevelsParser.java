@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.OrderedMap;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 
 /**
@@ -28,6 +29,7 @@ public class LevelsParser {
             FileHandle[] sectionFolders = Gdx.files.internal("levels/").list();
 
             sectionLevelsPaths = new OrderedMap<>();
+            Globals.TOTAL_LEVELS_AVAILABLE = 0;
             //Проходимся по папкам
             int sectionNumber = 1;
             for (FileHandle section : sectionFolders) {
@@ -42,6 +44,7 @@ public class LevelsParser {
                                 && levelNumber <= Globals.LEVELS_PER_SECTION) {
                             paths.add(lvl.path());
                             levelNumber++;
+                            Globals.TOTAL_LEVELS_AVAILABLE++;
                         }
                     }
                     sectionLevelsPaths.put(sectionNumber++, paths);

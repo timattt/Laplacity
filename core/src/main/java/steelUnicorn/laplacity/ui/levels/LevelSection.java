@@ -42,7 +42,8 @@ public class LevelSection extends Table {
                     .space(tabSpace);
 
             for (int i = 1; i <= lvlPaths.size; i++) {
-                LevelButton btn = new LevelButton(String.valueOf(i), skin, lvlPaths.get(i - 1), i);
+                LevelButton btn = new LevelButton(String.valueOf(i), skin, lvlPaths.get(i - 1),
+                        i, sectionNumber);
                 btn.setName("level" + i);
                 btn.addListener(LevelButton.listener);
 

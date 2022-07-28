@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.utils.LevelsParser;
 
 /**
  * Класс сцена для победного экрана.
@@ -94,19 +95,34 @@ public class WinInterface extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                GameProcess.initLevel(Globals.assetManager.get("levels/level" +
-                        String.format("%02d", GameProcess.levelNumber) + ".png", Texture.class));
+                GameProcess.initLevel(Globals.assetManager.get(
+                        LevelsParser.sectionLevelsPaths.get(GameProcess.sectionNumber)
+                                .get(GameProcess.levelNumber - 1), Texture.class));
                 Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
             }
         });
 
         //Если текущий уровень максимален, кнопки max не будет
-        if (GameProcess.levelNumber < Globals.TOTAL_LEVELS_AVAILABLE) {
+        if ((GameProcess.sectionNumber - 1) * Globals.LEVELS_PER_SECTION
+                + GameProcess.levelNumber < Globals.TOTAL_LEVELS_AVAILABLE) {
             addButton(buttons, "Next", skin, "nextBtn", new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                    GameProcess.initLevel(Globals.assetManager.get("levels/level" + String.format("%02d",++GameProcess.levelNumber) + ".png", Texture.class));
+                    int nextSection;
+                    int nextLevel;
+                    if (GameProcess.sectionNumber < LevelsParser.sectionLevelsPaths.size &&
+                        GameProcess.levelNumber
+                                == LevelsParser.sectionLevelsPaths.get(GameProcess.sectionNumber).size) {
+                        nextSection = ++GameProcess.sectionNumber;
+                        nextLevel = GameProcess.levelNumber = 1;
+                    } else {
+                        nextSection = GameProcess.sectionNumber;
+                        nextLevel = ++GameProcess.levelNumber;
+                    }
+                    GameProcess.initLevel(Globals.assetManager.get(
+                            LevelsParser.sectionLevelsPaths.get(nextSection).get(nextLevel - 1),
+                            Texture.class));
                     LaplacityAssets.setLevelTrack();
                     Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
                 }

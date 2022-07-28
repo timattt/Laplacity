@@ -43,6 +43,7 @@ public class GameProcess {
 	// LEVEL PROPERTIES
 	//========================================================================================
 	public static int levelNumber;
+	public static int sectionNumber;
 	public static GameMode currentGameMode;
 	//========================================================================================
 	
@@ -124,7 +125,8 @@ public class GameProcess {
 	public static void initLevel(Texture level) {
 		disposeLevel();
 		
-		Gdx.app.log("gameProcess", "level init started");
+		Gdx.app.log("gameProcess", "level init started: " +
+				"section "+ sectionNumber + "; level " + levelNumber);
 		levelWorld = new World(Vector2.Zero, false);
 		currentGameMode = GameMode.NONE;
 		debugRend = new Box2DDebugRenderer();
