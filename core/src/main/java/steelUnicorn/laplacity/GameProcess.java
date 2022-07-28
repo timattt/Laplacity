@@ -166,7 +166,7 @@ public class GameProcess {
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		gameUI.draw();
-		debugRend.render(levelWorld, CameraManager.camMat());
+		//debugRend.render(levelWorld, CameraManager.camMat());
 		//---------------------------------------------
 		
 		// update
