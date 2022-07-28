@@ -26,7 +26,6 @@ public class LevelsScreen extends ManagedScreen {
         Table root = new Table();
         root.setFillParent(true);
         levelStage.addActor(root);
-        root.setDebug(true);
 
         levelsTab = new LevelsTab(skin);
 
