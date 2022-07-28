@@ -163,7 +163,7 @@ public class GameProcess {
 		DensityRenderer.render(gameBatch);
 		ParticlesRenderer.render(delta);
 		gameUI.draw();
-		//debugRend.render(levelWorld, Globals.camera.combined);
+		//debugRend.render(levelWorld, CameraManager.camMat());
 		//---------------------------------------------
 		
 		// update

@@ -19,6 +19,7 @@ import steelUnicorn.laplacity.field.structures.FieldStructure;
 import steelUnicorn.laplacity.field.structures.FlimsyStructure;
 import steelUnicorn.laplacity.field.structures.HingeStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
+import steelUnicorn.laplacity.field.structures.rigid.Gift;
 import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
@@ -122,16 +123,24 @@ public class LaplacityField extends Group {
 					HingeStructure str = new HingeStructure(i, j, pxmap);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
-				} else 
+				} else
 				// flimsy
 				if (c == -1778384641) {
 					FlimsyStructure str = new FlimsyStructure(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
+				} else
+				// rigid
+				if (c == 2021130495) {
+					Gift str = new Gift(i, j, pxmap);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
 				}
 				
 				// empty
 				else {
+					if (c != -1 && c != -65281)
+						Gdx.app.log("unknown tile color", c + "");
 					tiles[i][j] = new EmptyTile(i, j);
 				}
 				

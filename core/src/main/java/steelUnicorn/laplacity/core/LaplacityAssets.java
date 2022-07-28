@@ -53,6 +53,9 @@ public class LaplacityAssets {
 	public static Texture DENSITY;
 	public static TextureRegion[][] DENSITY_REGIONS;
 	
+	// OBJECTS
+	public static Texture GIFT;
+	
     public static void getAssets() {
         clickSound = Globals.assetManager.get("sounds/click.wav");
         lightClickSound = Globals.assetManager.get("sounds/light_click.wav");
@@ -72,6 +75,8 @@ public class LaplacityAssets {
         
         PARTICLES = Globals.assetManager.get("textures/particles.png");
         DENSITY = Globals.assetManager.get("textures/density.png");
+        
+        GIFT = Globals.assetManager.get("rigidObjects/gift.png");
         
         loadTextureRegions();
         loadBackgrounds();
