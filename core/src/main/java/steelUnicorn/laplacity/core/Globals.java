@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import steelUnicorn.laplacity.screens.GameScreen;
+import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
@@ -30,6 +31,7 @@ public class Globals {
 	public static final String nameMainMenuScreen = "mainMenu";
 	public static final String nameGameScreen = "game";
 	public static final String nameWinScreen = "winScreen";
+	public static final String nameLevelsScreen = "levelsScreen";
 
 	// Tramsition names
 	public static final String nameSlideIn = "slideIn";
@@ -53,6 +55,7 @@ public class Globals {
 	public static GameScreen gameScreen;
 	public static MainMenuScreen mainMenuScreen;
 	public static WinScreen winScreen;
+	public static LevelsScreen levelsScreen;
 
 	// Resource manager
 	public static AssetManager assetManager;
@@ -67,7 +70,6 @@ public class Globals {
 	public static int TOTAL_LEVELS_AVAILABLE;
 	public static final int TOTAL_SECTIONS = 1;
 	public static final int LEVELS_PER_SECTION = 10;
-	public static int currentSection = 0;
 
 	//cat Food
 	public static CatFood catFood;

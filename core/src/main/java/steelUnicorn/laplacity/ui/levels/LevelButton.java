@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.ui.mainmenu;
+package steelUnicorn.laplacity.ui.levels;
 
 
 import steelUnicorn.laplacity.GameProcess;
@@ -19,8 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  *
  */
 public class LevelButton extends TextButton {
-	private String lvlImgPath;
-	private int levelNumber;
+	private final String lvlImgPath;
+	private final int levelNumber;
+	private final int sectionNumber;
 
 	/**
 	 * Обработчик событий. Т.к. все кнопки одинаковые, разница лишь в подгружаемом уровне
@@ -32,6 +33,7 @@ public class LevelButton extends TextButton {
 			LaplacityAssets.playSound(LaplacityAssets.clickSound);
 			LevelButton btn = (LevelButton) actor;
 			GameProcess.levelNumber = btn.levelNumber;
+			GameProcess.sectionNumber = btn.sectionNumber;
 			GameProcess.initLevel(Globals.assetManager.get(btn.lvlImgPath, Texture.class));
 
 			LaplacityAssets.setLevelTrack();;
@@ -39,9 +41,11 @@ public class LevelButton extends TextButton {
 		}
 	};
 
-	public LevelButton(String text, Skin skin, String lvlImgPath, int levelNumber) {
+	public LevelButton(String text, Skin skin, String lvlImgPath,
+					   int levelNumber, int sectionNumber) {
 		super(text, skin);
 		this.lvlImgPath = lvlImgPath;
 		this.levelNumber = levelNumber;
+		this.sectionNumber = sectionNumber;
 	}
 }

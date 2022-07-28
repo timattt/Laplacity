@@ -16,7 +16,7 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
-import steelUnicorn.laplacity.ui.mainmenu.tabs.LevelsTab;
+import steelUnicorn.laplacity.ui.levels.LevelsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 
@@ -32,9 +32,9 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
  * Credits - описание команды разработчиков
  */
 public class MainMenu extends Stage {
-    private static final float menuWidth = UI_WORLD_WIDTH * 0.2f;	// << menu button width ratio
-    private static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
-    private static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
+    public static final float menuWidth = UI_WORLD_WIDTH * 0.2f;	// << menu button width ratio
+    public static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
+    public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
 
     private LevelsTab levelsTab;
     private SettingsTab settingsTab;
@@ -98,7 +98,13 @@ public class MainMenu extends Stage {
                 .height(menuHeight)
                 .space(menuSpaceSize);
         //play
-        addMenuButton(mainMenu, "Play", skin, "playBtn", levelsTab);
+        addMenuButton(mainMenu, "Play", skin, "playBtn", new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                game.getScreenManager().pushScreen(nameLevelsScreen, nameSlideOut);
+            }
+        });
 
         //options
         mainMenu.row();
