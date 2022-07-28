@@ -34,7 +34,7 @@ public class LevelsTab extends MainMenuTab {
 
     private Array<LevelSection> sections;
 
-    private Cell sectionCell;
+    private Cell<LevelSection> sectionCell;
 
     public LevelsTab(Skin skin) {
         super();
@@ -53,7 +53,7 @@ public class LevelsTab extends MainMenuTab {
         add(nav);
     }
 
-    private Cell addReturnButton(Skin skin) {
+    private Cell<TextButton> addReturnButton(Skin skin) {
         TextButton btn = new TextButton("Menu", skin);
         btn.addListener(new ChangeListener() {
             @Override
@@ -65,7 +65,7 @@ public class LevelsTab extends MainMenuTab {
         return add(btn).size(menuBtnWidth, MainMenu.menuHeight);
     }
 
-    private Cell addSections(Skin skin) {
+    private Cell<LevelSection> addSections(Skin skin) {
         sections = new Array<>(LevelsParser.sectionLevelsPaths.size);
 
         for (int i = 0; i < LevelsParser.sectionLevelsPaths.size; i++) {

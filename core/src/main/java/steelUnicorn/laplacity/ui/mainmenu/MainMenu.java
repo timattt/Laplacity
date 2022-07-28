@@ -16,7 +16,6 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
-import steelUnicorn.laplacity.ui.levels.LevelsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 
@@ -36,7 +35,6 @@ public class MainMenu extends Stage {
     public static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
     public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
 
-    private LevelsTab levelsTab;
     private SettingsTab settingsTab;
     private CreditsTab creditsTab;
 
@@ -67,7 +65,6 @@ public class MainMenu extends Stage {
         root.setFillParent(true);
         addActor(root);
 
-        levelsTab = new LevelsTab(skin);
         settingsTab = new SettingsTab(skin);
         creditsTab = new CreditsTab(skin);
 

@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.OrderedMap;
 
-import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 
 /**
