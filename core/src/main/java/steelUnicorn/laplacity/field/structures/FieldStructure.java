@@ -182,4 +182,13 @@ public class FieldStructure implements CollisionListener {
 	@Override
 	public void collidedWithStructure() {
 	}
+
+	@Override
+	public boolean isTile() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithTile() {
+	}
 }

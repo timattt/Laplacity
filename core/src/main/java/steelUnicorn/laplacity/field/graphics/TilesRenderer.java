@@ -6,9 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 
-import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.SolidTile;
+
+
 
 public class TilesRenderer {
 
@@ -35,7 +37,7 @@ public class TilesRenderer {
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
-		cache.setProjectionMatrix(Globals.camera.combined);
+		cache.setProjectionMatrix(CameraManager.camMat());
 		cache.begin();
 		cache.draw(id);
 		cache.end();

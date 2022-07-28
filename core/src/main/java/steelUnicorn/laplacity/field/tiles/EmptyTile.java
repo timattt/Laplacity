@@ -86,6 +86,10 @@ public class EmptyTile {
 		return potential;
 	}
 
+	public float getChargeDensity() {
+		return chargeDensity;
+	}
+
 	public float getTotalChargeDensity() {
 		return chargeDensity + invisibleDensity;
 	}

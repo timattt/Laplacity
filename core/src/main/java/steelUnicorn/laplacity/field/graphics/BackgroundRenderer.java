@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
@@ -29,7 +30,7 @@ public class BackgroundRenderer {
 		float sz = LaplacityField.tileSize;
 		
 
-		float x = fieldWidth * sz;
+		float x = 2 * fieldWidth * sz;
 
 		while (x > 0) {
 			Texture tex = LaplacityAssets.SPACE_BACKGROUND;
@@ -64,7 +65,7 @@ public class BackgroundRenderer {
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
-		cache.setProjectionMatrix(Globals.camera.combined);
+		cache.setProjectionMatrix(CameraManager.camMat());
 		cache.begin();
 
 		cache.draw(idSpace);

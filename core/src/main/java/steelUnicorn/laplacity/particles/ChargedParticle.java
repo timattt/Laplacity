@@ -124,4 +124,13 @@ public class ChargedParticle implements CollisionListener {
 	public void collidedWithStructure() {
 	}
 
+	@Override
+	public boolean isTile() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithTile() {
+	}
+
 }

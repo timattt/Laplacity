@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.core;
 
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -22,7 +21,6 @@ import steelUnicorn.laplacity.ui.CatFood;
 public class Globals {
 
 	// GLOBAL INSTANCES
-	public static OrthographicCamera camera;
 	public static Laplacity game;
 	public static ExtendViewport guiViewport;
 	public static ExtendViewport gameViewport;
@@ -40,8 +38,8 @@ public class Globals {
 	public static final String nameSlideOut = "slideOut";
 
 	// UI Viewport. Default world parameters for 16:9 ratio
-	public static final float UI_WORLD_WIDTH = 1024;
-	public static final float UI_WORLD_HEIGHT = 576;
+	public static final float UI_WORLD_WIDTH = 1024/10*7;
+	public static final float UI_WORLD_HEIGHT = 576/10*7;
 
 	// Ingame viewport
 	/**

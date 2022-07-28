@@ -48,4 +48,13 @@ public class TileCollisionListener implements CollisionListener {
 	public void collidedWithStructure() {
 	}
 
+	@Override
+	public boolean isTile() {
+		return !isFinish;
+	}
+
+	@Override
+	public void collidedWithTile() {
+	}
+
 }

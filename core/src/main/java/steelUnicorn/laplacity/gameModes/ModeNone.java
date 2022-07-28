@@ -1,5 +1,7 @@
 package steelUnicorn.laplacity.gameModes;
 
+import steelUnicorn.laplacity.CameraManager;
+
 public class ModeNone extends GameMode {
 
 	public ModeNone() {
@@ -8,7 +10,7 @@ public class ModeNone extends GameMode {
 
 	@Override
 	public void pan(float x, float y, float dx, float dy) {
-		moveCamera(-dx);
+		CameraManager.moveX(-dx);
 	}
 	
 }

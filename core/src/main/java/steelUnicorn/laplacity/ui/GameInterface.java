@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
@@ -106,7 +108,7 @@ public class GameInterface extends Stage implements GestureListener {
 		guiTable.add(createIcon("Return", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.playSound(LaplacityAssets.clickSound);
+				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				returnDialog.show(GameInterface.this);
 			}
 		}));
@@ -126,25 +128,26 @@ public class GameInterface extends Stage implements GestureListener {
 				}
 			}
 		});
-		editBtn = createModeIcon("Edit", GameMode.NONE);
+		editBtn = createModeIcon("Edit", GameMode.NONE, LaplacityAssets.lightClickSound);
 		flightCell = guiTable.add(flightBtn);
 		guiTable.row();
 
 		guiTable.add(createIcon("Clear", new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
 				GameProcess.clearLevel();
 			}
 		}));
 		guiTable.row();
 
-		guiTable.add(createModeIcon("Eraser", GameMode.ERASER));
+		guiTable.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
 		guiTable.row();
-		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS));
+		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
 		guiTable.row();
-		guiTable.add(createModeIcon("Protons", GameMode.PROTONS));
+		guiTable.add(createModeIcon("Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
 		guiTable.row();
-		guiTable.add(createModeIcon("Dirichlet", GameMode.DIRICHLET));
+		guiTable.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 	}
 
 	/**
@@ -186,11 +189,11 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param name - название мода
 	 * @param mode - включаемый мод
 	 */
-	private Button createModeIcon(String name, GameMode mode) {
+	private Button createModeIcon(String name, GameMode mode, Sound sound) {
 		return createIcon(name, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+				LaplacityAssets.playSound(sound);
 				if (currentGameMode == mode) {
 					changeGameMode(GameMode.NONE);
 				} else {
@@ -211,10 +214,9 @@ public class GameInterface extends Stage implements GestureListener {
 			return false;
 		}
 		
-		TMP3.set(x, y, 0);
-		camera.unproject(TMP3);
+		CameraManager.getCameraWorldPos(x, y, TMP1);
 		
-		currentGameMode.tap(TMP3.x, TMP3.y);
+		currentGameMode.tap(TMP1.x, TMP1.y);
 		
 		return true;
 	}
@@ -236,10 +238,9 @@ public class GameInterface extends Stage implements GestureListener {
 		}
 		
 		//
-		TMP3.set(x, y, 0);
-		camera.unproject(TMP3);
+		CameraManager.getCameraWorldPos(x, y, TMP1);
 		
-		currentGameMode.pan(TMP3.x, TMP3.y, deltaX / Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH, deltaY / Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH);
+		currentGameMode.pan(TMP1.x, TMP1.y, deltaX / Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH, deltaY / Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH);
 		
 		return true;
 	}
@@ -255,10 +256,9 @@ public class GameInterface extends Stage implements GestureListener {
 	}
 
 	private float getlen2ToMainParticle(float scX, float scY) {
-		TMP3.set(scX, scY, 0);
-		camera.unproject(TMP3);
-		TMP3.sub(mainParticle.getX(), mainParticle.getY(), 0);
-		return TMP3.len2();
+		CameraManager.getCameraWorldPos(scX, scY, TMP1);
+		TMP1.sub(mainParticle.getX(), mainParticle.getY());
+		return TMP1.len2();
 	}
 	
 	@Override
@@ -274,9 +274,8 @@ public class GameInterface extends Stage implements GestureListener {
 		}
 		
 		//
-		TMP3.set(screenX, screenY, 0);
-		camera.unproject(TMP3);
-		currentGameMode.touchDown(TMP3.x, TMP3.y);
+		CameraManager.getCameraWorldPos(screenX, screenY, TMP1);
+		currentGameMode.touchDown(TMP1.x, TMP1.y);
 		return super.touchDown(screenX, screenY, pointer, button);
 	}
 
@@ -285,9 +284,8 @@ public class GameInterface extends Stage implements GestureListener {
 		TrajectoryRenderer.changingDir = false;
 		
 		//
-		TMP3.set(screenX, screenY, 0);
-		camera.unproject(TMP3);
-		currentGameMode.touchUp(TMP3.x, TMP3.y);
+		CameraManager.getCameraWorldPos(screenX, screenY, TMP1);
+		currentGameMode.touchUp(TMP1.x, TMP1.y);
 		return super.touchUp(screenX, screenY, pointer, button);
 	}
 
@@ -298,15 +296,14 @@ public class GameInterface extends Stage implements GestureListener {
 		}
 		if (TrajectoryRenderer.changingDir) {
 			getlen2ToMainParticle(screenX, screenY);
-			mainParticle.setSlingshot(TMP3.x, TMP3.y);
+			mainParticle.setSlingshot(TMP1.x, TMP1.y);
 			TrajectoryRenderer.updateTrajectory();
 			return true;
 		}
 		
 		//
-		TMP3.set(screenX, screenY, 0);
-		camera.unproject(TMP3);
-		currentGameMode.touchDragged(TMP3.x, TMP3.y);		
+		CameraManager.getCameraWorldPos(screenX, screenY, TMP1);
+		currentGameMode.touchDragged(TMP1.x, TMP1.y);		
 		return super.touchDragged(screenX, screenY, pointer);
 	}
 

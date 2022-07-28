@@ -30,7 +30,7 @@ public class LevelButton extends TextButton {
 	public static ChangeListener listener = new ChangeListener() {
 		@Override
 		public void changed(ChangeEvent event, Actor actor) {
-			LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+			LaplacityAssets.playSound(LaplacityAssets.clickSound);
 			LevelButton btn = (LevelButton) actor;
 			GameProcess.levelNumber = btn.levelNumber;
 			GameProcess.sectionNumber = btn.sectionNumber;

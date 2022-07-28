@@ -27,12 +27,19 @@ public class LaplacityAssets {
     public static Sound placeSound; // звук размещения частицы
 	public static Sound hurtSound; // звук касания смертельной стены
     public static Sound bumpStructureSound; // звук удара о структуру
+    public static Sound genStartSound;
+    public static Sound sprayStartSound;
+    public static Sound popupSound;
+    public static Sound annihilationSound;
+    public static Sound spraySound;
 
     // TILES
 	public static Texture BARRIER_TEXTURE;
 	public static Texture DEADLY_TEXTURE;
+	public static Texture TRAMPOLINE_TEXTURE;
 	public static TextureRegion[] BARRIER_REGIONS;
 	public static TextureRegion[][] DEADLY_REGIONS;
+	public static TextureRegion TRAMPOLINE_REGION;
 	
 	// BACKGROUNDS
 	public static Texture[][] BACKGROUNDS; 
@@ -42,23 +49,37 @@ public class LaplacityAssets {
 	public static Texture PARTICLES;
 	public static TextureRegion[][] PARTICLES_REGIONS;
 	
+	// DENSITY
+	public static Texture DENSITY;
+	public static TextureRegion[][] DENSITY_REGIONS;
+	
     public static void getAssets() {
-        clickSound = Globals.assetManager.get("sounds/click.ogg");
-        lightClickSound = Globals.assetManager.get("sounds/light_click.ogg");
-        bumpSound = Globals.assetManager.get("sounds/bump_barrier.ogg");
-        placeSound = Globals.assetManager.get("sounds/place.ogg");
-        hurtSound = Globals.assetManager.get("sounds/bump_deadly.ogg");
-        bumpStructureSound = Globals.assetManager.get("sounds/bump_structure.ogg");
+        clickSound = Globals.assetManager.get("sounds/click.wav");
+        lightClickSound = Globals.assetManager.get("sounds/light_click.wav");
+        bumpSound = Globals.assetManager.get("sounds/bump_barrier.wav");
+        placeSound = Globals.assetManager.get("sounds/place.wav");
+        hurtSound = Globals.assetManager.get("sounds/bump_deadly.wav");
+        bumpStructureSound = Globals.assetManager.get("sounds/bump_structure.wav");
+        genStartSound = Globals.assetManager.get("sounds/generator_start.wav");
+        sprayStartSound = Globals.assetManager.get("sounds/spray_start.wav");
+        popupSound = Globals.assetManager.get("sounds/popup.wav");
+        annihilationSound = Globals.assetManager.get("sounds/annihilation.wav");
+        spraySound = Globals.assetManager.get("sounds/spray.wav");
         
+        TRAMPOLINE_TEXTURE = Globals.assetManager.get("textures/trampoline.png");
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
         
         PARTICLES = Globals.assetManager.get("textures/particles.png");
+        DENSITY = Globals.assetManager.get("textures/density.png");
         
         loadTextureRegions();
         loadBackgrounds();
         
         cut(PARTICLES, PARTICLES_REGIONS = new TextureRegion[7][2]);
+        cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
+        
+        TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
     }
     
     private static void loadTextureRegions() {
@@ -125,5 +146,15 @@ public class LaplacityAssets {
         if (Settings.getSoundVolume() != 0) {
             sound.play();
         }
+    }
+
+    public static void loopSound(Sound sound) {
+        if (Settings.getSoundVolume() != 0) {
+            sound.loop();
+        }
+    }
+    
+    public static void stopSound(Sound sound) {
+        sound.stop();
     }
 }
