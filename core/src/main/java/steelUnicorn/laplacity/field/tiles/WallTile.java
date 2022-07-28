@@ -35,15 +35,15 @@ public class WallTile extends SolidTile {
 			return;
 		}
 		if (!top && bottom && !right && left) {
-			sc.add(LaplacityAssets.BARRIER_REGIONS[0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
+			sc.add(LaplacityAssets.BARRIER_REGIONS[5], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
 			return;
 		}
 		if (top && !bottom && !right && left) {
-			sc.add(LaplacityAssets.BARRIER_REGIONS[0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -180);
+			sc.add(LaplacityAssets.BARRIER_REGIONS[0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
 			return;
 		}
 		if (top && !bottom && right && !left) {
-			sc.add(LaplacityAssets.BARRIER_REGIONS[0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -270);
+			sc.add(LaplacityAssets.BARRIER_REGIONS[5], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
 			return;
 		}
 		
@@ -57,17 +57,17 @@ public class WallTile extends SolidTile {
 			return;
 		}
 		if (top && bottom && !right && left) {
-			sc.add(LaplacityAssets.BARRIER_REGIONS[1], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
+			sc.add(LaplacityAssets.BARRIER_REGIONS[4], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
 			return;
 		}
 		if (top && bottom && right && !left) {
-			sc.add(LaplacityAssets.BARRIER_REGIONS[1], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -270);
+			sc.add(LaplacityAssets.BARRIER_REGIONS[4], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
 			return;
 		}
 		
 		// internal corners
 		if (top && bottom && right && left && !topRight && topLeft && bottomLeft && bottomRight) {
-			sc.add(LaplacityAssets.BARRIER_REGIONS[2], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
+			sc.add(LaplacityAssets.BARRIER_REGIONS[6], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
 			return;
 		}
 		if (top && bottom && right && left && topRight && !topLeft && bottomLeft && bottomRight) {
@@ -75,7 +75,7 @@ public class WallTile extends SolidTile {
 			return;
 		}
 		if (top && bottom && right && left && topRight && topLeft && !bottomLeft && bottomRight) {
-			sc.add(LaplacityAssets.BARRIER_REGIONS[2], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+			sc.add(LaplacityAssets.BARRIER_REGIONS[6], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
 			return;
 		}
 		if (top && bottom && right && left && topRight && topLeft && bottomLeft && !bottomRight) {
