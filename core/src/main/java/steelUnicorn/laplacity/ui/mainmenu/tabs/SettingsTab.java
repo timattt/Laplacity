@@ -28,10 +28,9 @@ public class SettingsTab extends MainMenuTab {
         row();
         addSettings(skin);
 
-        settingsPane = new ScrollPane(this, skin);
+        settingsPane = new ScrollPane(this);
         settingsPane.validate();
         settingsPane.setName("tab");
-        settingsPane.setColor(Color.BLACK);
         settingsPane.setFadeScrollBars(false);
     }
 
