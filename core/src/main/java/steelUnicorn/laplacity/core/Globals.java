@@ -70,7 +70,6 @@ public class Globals {
 	public static int TOTAL_LEVELS_AVAILABLE;
 	public static final int TOTAL_SECTIONS = 1;
 	public static final int LEVELS_PER_SECTION = 10;
-	public static int currentSection = 0;
 
 	//cat Food
 	public static CatFood catFood;
