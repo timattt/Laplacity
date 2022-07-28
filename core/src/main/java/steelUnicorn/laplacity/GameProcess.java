@@ -83,8 +83,9 @@ public class GameProcess {
 	// CONSTANTS
 	//========================================================================================
 	// PARTICLES
-	public static final float PARTICLE_CHARGE = 300f;
+	public static final float PARTICLE_CHARGE = 900f;
 	public static final float ELECTRON_SIZE = 2f;
+	public static final float CAT_SIZE = 4f;
 	public static final float PROTON_SIZE = 2f;
 	public static final float PARTICLE_MASS = 1f;
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
@@ -92,7 +93,7 @@ public class GameProcess {
 	
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;
-	public static final float MAX_DENSITY = 5f;
+	public static final float MAX_DENSITY = 900f;
 	public static final double DIRICHLET_SPRAY_TILE_PROBABILITY = 0.2;
 	
 	// TRAJECTORY
@@ -112,7 +113,7 @@ public class GameProcess {
 	
 	// OBJECTS
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
-	public static final long BLADES_ROTATION_TIME = 4000;
+	public static final long BLADES_ROTATION_TIME = 3000;
 	public static final float BLADES_THICKNESS_FACTOR = 0.1f;
 	public static final float DISSIPATIVE_ACCELERATION_FACTOR = 100f;
 	public static final float DISSIPATIVE_MODERATION_FACTOR = -30f;
@@ -156,14 +157,16 @@ public class GameProcess {
 		
 		// render
 		//---------------------------------------------
+		gameBatch.begin();
 		BackgroundRenderer.render(gameBatch);
 		LaplacityField.renderStructures(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
 		TrajectoryRenderer.render();
 		TilesRenderer.render();
 		DensityRenderer.render(gameBatch);
 		ParticlesRenderer.render(delta);
+		gameBatch.end();
 		gameUI.draw();
-		//debugRend.render(levelWorld, CameraManager.camMat());
+		debugRend.render(levelWorld, CameraManager.camMat());
 		//---------------------------------------------
 		
 		// update

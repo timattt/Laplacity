@@ -53,4 +53,7 @@ public class GameMode {
 		
 	}
 
+	public void panStop(float x, float y) {
+	}
+
 }

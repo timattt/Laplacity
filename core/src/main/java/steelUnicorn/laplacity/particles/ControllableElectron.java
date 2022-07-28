@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.GameProcess;
@@ -20,7 +21,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;
  * @author timat
  *
  */
-public class ControllableElectron extends Electron {
+public class ControllableElectron extends ChargedParticle {
 
 	// Start velocity
 	private float slingshotX;
@@ -31,11 +32,26 @@ public class ControllableElectron extends Electron {
 	private float startY;
 	
 	public ControllableElectron(float x, float y) {
-		super(x, y, false);
+		super(x, y, CAT_SIZE, PARTICLE_CHARGE, false);
 		startX = x;
 		startY = y;
 	}
 
+	@Override
+	public void draw() {
+		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGION,
+				getX() - CAT_SIZE,
+				getY() - CAT_SIZE,
+				CAT_SIZE,
+				CAT_SIZE,
+				2 * CAT_SIZE,
+				2 * CAT_SIZE,
+				1f,
+				1f,
+				body.getAngle() * MathUtils.radDeg
+				);
+	}
+	
 	@Override
 	public boolean isMainParticle() {
 		return true;
@@ -97,7 +113,6 @@ public class ControllableElectron extends Electron {
 
 	@Override
 	public void collidedWithFinish() {
-		GameProcess.justFinished = true;
 	}
 
 	@Override

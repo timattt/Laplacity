@@ -46,8 +46,9 @@ public class CameraManager {
 			float newX = camera.position.x + dx;
 			if (Math.abs(targetX - newX) < Math.abs(dx)) {
 				isMoving = false;
+			} else {
+				setXPosition(newX);
 			}
-			setXPosition(newX);
 		}
 	}
 	

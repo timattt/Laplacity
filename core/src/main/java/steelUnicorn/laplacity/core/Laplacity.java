@@ -82,19 +82,14 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
 		
-		// tiles
-		assetManager.load("textures/barrier.png", Texture.class);
-		assetManager.load("textures/deadly.png", Texture.class);
-		assetManager.load("textures/trampoline.png", Texture.class);
+		// textures
+		FileHandle[] texts = Gdx.files.internal("textures/").list();
+		for (FileHandle snd : texts) {
+			assetManager.load(snd.path(), Texture.class);
+		}
 		
 		// objects
 		assetManager.load("rigidObjects/gift.png", Texture.class);
-		
-		// density
-		assetManager.load("textures/density.png", Texture.class);
-		
-		// particles
-		assetManager.load("textures/particles.png", Texture.class);
 		
 		// sounds
 		FileHandle[] snds = Gdx.files.internal("sounds/").list();

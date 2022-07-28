@@ -46,6 +46,15 @@ public class ModeDirichlet extends GameMode {
 		isSoundLooping = false;
 		LaplacityAssets.stopSound(LaplacityAssets.spraySound);
 		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		TrajectoryRenderer.updateTrajectory();
+	}
+
+	@Override
+	public void panStop(float x, float y) {
+		isSoundLooping = false;
+		LaplacityAssets.stopSound(LaplacityAssets.spraySound);
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		TrajectoryRenderer.updateTrajectory();
 	}
 
 }

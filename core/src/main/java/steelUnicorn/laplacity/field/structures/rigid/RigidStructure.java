@@ -61,9 +61,7 @@ public class RigidStructure extends FieldStructure {
         sprite.setOrigin(origin.x, origin.y);
         sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
 	
-		GameProcess.gameBatch.begin();
 		sprite.draw(GameProcess.gameBatch);
-		GameProcess.gameBatch.end();
 	}
 
 	@Override

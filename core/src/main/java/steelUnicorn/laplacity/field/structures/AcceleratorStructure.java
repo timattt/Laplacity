@@ -1,12 +1,11 @@
 package steelUnicorn.laplacity.field.structures;
 
-import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.GameProcess.*;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
@@ -46,14 +45,7 @@ public class AcceleratorStructure extends FieldStructure {
 			GameProcess.mainParticle.addDissipative((accelerating ? GameProcess.DISSIPATIVE_ACCELERATION_FACTOR : GameProcess.DISSIPATIVE_MODERATION_FACTOR));
 		}
 		
-		shapeRenderer.begin(ShapeType.Filled);
-		if (accelerating) {
-			shapeRenderer.setColor(Color.TAN);
-		} else {
-			shapeRenderer.setColor(Color.ORANGE);
-		}
-		shapeRenderer.rect(x, y, width, height);
-		shapeRenderer.end();
+		gameBatch.draw(LaplacityAssets.CELERATORS_REGIONS[accelerating ? 0 : 1], x, y, width, height);
 	}
 
 }

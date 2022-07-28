@@ -37,6 +37,8 @@ public class LaplacityAssets {
 	public static Texture BARRIER_TEXTURE;
 	public static Texture DEADLY_TEXTURE;
 	public static Texture TRAMPOLINE_TEXTURE;
+	public static Texture WALL_TEXTURE;
+	public static TextureRegion[] WALL_REGIONS;
 	public static TextureRegion[] BARRIER_REGIONS;
 	public static TextureRegion[][] DEADLY_REGIONS;
 	public static TextureRegion TRAMPOLINE_REGION;
@@ -55,6 +57,16 @@ public class LaplacityAssets {
 	
 	// OBJECTS
 	public static Texture GIFT;
+	public static Texture CAT;
+	public static TextureRegion CAT_REGION;
+	
+	// STRUCTURES
+	public static Texture BLADES;
+	public static TextureRegion[] BLADES_REGIONS;
+	public static Texture CELERATORS;
+	public static TextureRegion[] CELERATORS_REGIONS;
+	public static Texture HATCH_TEXTURE;
+	public static TextureRegion[][] HATCH_REGIONS;
 	
     public static void getAssets() {
         clickSound = Globals.assetManager.get("sounds/click.wav");
@@ -72,19 +84,34 @@ public class LaplacityAssets {
         TRAMPOLINE_TEXTURE = Globals.assetManager.get("textures/trampoline.png");
         BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
         DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
+        WALL_TEXTURE = Globals.assetManager.get("textures/wall.png"); 
         
         PARTICLES = Globals.assetManager.get("textures/particles.png");
         DENSITY = Globals.assetManager.get("textures/density.png");
         
         GIFT = Globals.assetManager.get("rigidObjects/gift.png");
         
+        CAT = Globals.assetManager.get("textures/cat.png");
+        
+        BLADES = Globals.assetManager.get("textures/fan.png");
+        
+        CELERATORS = Globals.assetManager.get("textures/celerators.png");
+        
+        HATCH_TEXTURE = Globals.assetManager.get("textures/hatch.png");
+        
         loadTextureRegions();
         loadBackgrounds();
         
         cut(PARTICLES, PARTICLES_REGIONS = new TextureRegion[7][2]);
         cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
+        cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[4]);
+        cut(BLADES, BLADES_REGIONS = new TextureRegion[3]);
+        cut(CELERATORS, CELERATORS_REGIONS = new TextureRegion[3]);
+        cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
+        CAT_REGION = new TextureRegion(CAT);
+        
     }
     
     private static void loadTextureRegions() {

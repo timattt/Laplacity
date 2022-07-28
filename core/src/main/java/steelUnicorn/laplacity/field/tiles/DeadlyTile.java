@@ -19,10 +19,12 @@ public class DeadlyTile extends SolidTile {
 	public void constantDraw(SpriteCache sc) {
 		float sz = LaplacityField.tileSize;
 
+		int val = 1;
+		
 		boolean top = !(gridY < fieldHeight - 1) || tiles[gridX][gridY + 1] instanceof SolidTile;
 		boolean bottom = !(gridY > 0) || tiles[gridX][gridY - 1] instanceof SolidTile;
-		boolean right = !(gridX < fieldWidth - 1) || tiles[gridX + 1][gridY] instanceof SolidTile;
-		boolean left = !(gridX > 0) || tiles[gridX - 1][gridY] instanceof SolidTile;
+		boolean right = !(gridX < fieldWidth - 1) || tiles[gridX + 1][gridY] instanceof DeadlyTile;
+		boolean left = !(gridX > 0) || tiles[gridX - 1][gridY] instanceof DeadlyTile;
 		
 		boolean topRight = !(gridX < fieldWidth - 1) || !(gridY < fieldHeight - 1) || tiles[gridX + 1][gridY + 1] instanceof SolidTile;
 		boolean bottomRight = !(gridX < fieldWidth - 1) || !(0 < gridY) || tiles[gridX + 1][gridY - 1]  instanceof SolidTile;
@@ -31,50 +33,50 @@ public class DeadlyTile extends SolidTile {
 
 		// corners
 		if (!top && bottom && right && !left) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[0][0], gridX * sz, gridY * sz, sz, sz);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[0][val], gridX * sz, gridY * sz, sz, sz);
 			return;
 		}
 		if (!top && bottom && !right && left) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[0][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[0][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
 			return;
 		}
 		if (top && !bottom && !right && left) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[0][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -180);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[0][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -180);
 			return;
 		}
 		if (top && !bottom && right && !left) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[0][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -270);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[0][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -270);
 			return;
 		}
 		
 		// sides
 		if ((!top && bottom && right && left) || (top && !bottom && right && left)) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[1][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[1][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
 			return;
 		}
 		if ((top && bottom && !right && left) || (top && bottom && right && !left)){
-			sc.add(LaplacityAssets.DEADLY_REGIONS[1][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[1][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
 			return;
 		}
 
 		// internal corners
 		if (top && bottom && right && left && !topRight && topLeft && bottomLeft && bottomRight) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[2][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[2][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
 			return;
 		}
 		if (top && bottom && right && left && topRight && !topLeft && bottomLeft && bottomRight) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[2][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[2][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
 			return;
 		}
 		if (top && bottom && right && left && topRight && topLeft && !bottomLeft && bottomRight) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[2][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[2][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
 			return;
 		}
 		if (top && bottom && right && left && topRight && topLeft && bottomLeft && !bottomRight) {
-			sc.add(LaplacityAssets.DEADLY_REGIONS[2][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
+			sc.add(LaplacityAssets.DEADLY_REGIONS[2][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
 			return;
 		}
 		
-		sc.add(LaplacityAssets.DEADLY_REGIONS[1][0], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+		sc.add(LaplacityAssets.DEADLY_REGIONS[0][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
 	}
 }

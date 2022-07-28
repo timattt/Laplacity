@@ -247,7 +247,12 @@ public class GameInterface extends Stage implements GestureListener {
 
 	@Override
 	public boolean panStop(float x, float y, int pointer, int button) {
-		return false;
+		//
+		CameraManager.getCameraWorldPos(x, y, TMP1);
+		
+		currentGameMode.panStop(TMP1.x, TMP1.y);
+		
+		return true;
 	}
 
 	@Override

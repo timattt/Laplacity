@@ -17,6 +17,7 @@ import steelUnicorn.laplacity.field.structures.AcceleratorStructure;
 import steelUnicorn.laplacity.field.structures.BladesStructure;
 import steelUnicorn.laplacity.field.structures.FieldStructure;
 import steelUnicorn.laplacity.field.structures.FlimsyStructure;
+import steelUnicorn.laplacity.field.structures.HatchStructure;
 import steelUnicorn.laplacity.field.structures.HingeStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.structures.rigid.Gift;
@@ -135,6 +136,12 @@ public class LaplacityField extends Group {
 					Gift str = new Gift(i, j, pxmap);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
+				} else
+				// hatch
+				if (c == -2105409281) {
+					HatchStructure str = new HatchStructure(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
 				}
 				
 				// empty
@@ -146,6 +153,7 @@ public class LaplacityField extends Group {
 				
 				// yellow
 				if (c == -65281) {
+					System.out.println(i + " " + j);
 					LaplacityField.fromGridToWorldCoords(i, j, electronStartPos);
 				}
 			}
