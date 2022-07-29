@@ -23,8 +23,8 @@ public class DeadlyTile extends SolidTile {
 		
 		boolean top = !(gridY < fieldHeight - 1) || tiles[gridX][gridY + 1] instanceof SolidTile;
 		boolean bottom = !(gridY > 0) || tiles[gridX][gridY - 1] instanceof SolidTile;
-		boolean right = !(gridX < fieldWidth - 1) || tiles[gridX + 1][gridY] instanceof DeadlyTile;
-		boolean left = !(gridX > 0) || tiles[gridX - 1][gridY] instanceof DeadlyTile;
+		boolean right = !(gridX < fieldWidth - 1) || tiles[gridX + 1][gridY] instanceof SolidTile;
+		boolean left = !(gridX > 0) || tiles[gridX - 1][gridY] instanceof SolidTile;
 		
 		boolean topRight = !(gridX < fieldWidth - 1) || !(gridY < fieldHeight - 1) || tiles[gridX + 1][gridY + 1] instanceof SolidTile;
 		boolean bottomRight = !(gridX < fieldWidth - 1) || !(0 < gridY) || tiles[gridX + 1][gridY - 1]  instanceof SolidTile;
