@@ -39,7 +39,7 @@ public class ChargedParticle implements CollisionListener {
 		
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = cir;
-		fxt.density = 1;
+		fxt.density = 0.25f;
 		fxt.restitution = 1f;
 		
 		body.createFixture(fxt);

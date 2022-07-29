@@ -83,7 +83,7 @@ public class GameProcess {
 	// CONSTANTS
 	//========================================================================================
 	// PARTICLES
-	public static final float PARTICLE_CHARGE = 900f;
+	public static final float PARTICLE_CHARGE = 300f;
 	public static final float ELECTRON_SIZE = 2f;
 	public static final float CAT_SIZE = 4f;
 	public static final float PROTON_SIZE = 2f;
@@ -93,7 +93,7 @@ public class GameProcess {
 	
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;
-	public static final float MAX_DENSITY = 900f;
+	public static final float MAX_DENSITY = 5f;
 	public static final double DIRICHLET_SPRAY_TILE_PROBABILITY = 0.2;
 	
 	// TRAJECTORY

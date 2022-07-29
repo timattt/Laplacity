@@ -32,7 +32,7 @@ public class ControllableElectron extends ChargedParticle {
 	private float startY;
 	
 	public ControllableElectron(float x, float y) {
-		super(x, y, CAT_SIZE, PARTICLE_CHARGE, false);
+		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false);
 		startX = x;
 		startY = y;
 	}
