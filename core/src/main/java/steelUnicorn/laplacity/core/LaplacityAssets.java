@@ -104,7 +104,7 @@ public class LaplacityAssets {
         
         cut(PARTICLES, PARTICLES_REGIONS = new TextureRegion[7][2]);
         cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
-        cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[4]);
+        cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
         cut(BLADES, BLADES_REGIONS = new TextureRegion[3]);
         cut(CELERATORS, CELERATORS_REGIONS = new TextureRegion[3]);
         cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
@@ -115,7 +115,7 @@ public class LaplacityAssets {
     }
     
     private static void loadTextureRegions() {
-    	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[4]);
+    	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[7]);
     	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
     }
     
