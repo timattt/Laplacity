@@ -33,8 +33,8 @@ public class RigidStructure extends FieldStructure {
 	// name
 	private String name;
 	
-	public RigidStructure(int left, int bottom, Pixmap pm, int code, float scale, String path, Texture texture, String name) {
-		super(left, bottom, pm, new int[] {code});
+	public RigidStructure(int left, int bottom, Pixmap pm, int[] codes, float scale, String path, Texture texture, String name) {
+		super(left, bottom, pm, codes);
 		origin = new Vector2();
 		x = (bounds.left + bounds.right + 1) * LaplacityField.tileSize / 2;
 		y = (bounds.bottom + bounds.top + 1) * LaplacityField.tileSize / 2;
@@ -60,7 +60,9 @@ public class RigidStructure extends FieldStructure {
         sprite.setPosition(pos.x, pos.y);
         sprite.setOrigin(origin.x, origin.y);
         sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+        GameProcess.gameBatch.enableBlending();
 		sprite.draw(GameProcess.gameBatch);
+		GameProcess.gameBatch.disableBlending();
 	}
 
 	@Override

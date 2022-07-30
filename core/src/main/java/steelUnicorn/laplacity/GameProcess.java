@@ -167,8 +167,8 @@ public class GameProcess {
 		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
 		
 		gameBatch.begin();
-		ParticlesRenderer.render(delta);
 		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
+		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		
 		gameUI.draw();

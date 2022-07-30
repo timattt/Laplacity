@@ -45,7 +45,9 @@ public class AcceleratorStructure extends FieldStructure {
 			GameProcess.mainParticle.addDissipative((accelerating ? GameProcess.DISSIPATIVE_ACCELERATION_FACTOR : GameProcess.DISSIPATIVE_MODERATION_FACTOR));
 		}
 		
+		gameBatch.enableBlending();
 		gameBatch.draw(LaplacityAssets.CELERATORS_REGIONS[accelerating ? 0 : 1], x, y, width, height);
+		gameBatch.disableBlending();
 	}
 
 }
