@@ -83,9 +83,12 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
 		
 		// textures
-		FileHandle[] texts = Gdx.files.internal("textures/").list();
-		for (FileHandle snd : texts) {
-			assetManager.load(snd.path(), Texture.class);
+		FileHandle[] sections = Gdx.files.internal("textures/").list();
+		for (FileHandle section : sections) {
+			FileHandle[] backs = section.list();
+			for (FileHandle back : backs) {
+				assetManager.load(back.path(), Texture.class);
+			}
 		}
 		
 		// objects
@@ -101,7 +104,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
 		
 		// backgrounds
-		FileHandle[] sections = Gdx.files.internal("backgrounds/").list();
+		sections = Gdx.files.internal("backgrounds/").list();
 		for (FileHandle section : sections) {
 			FileHandle[] backs = section.list();
 			for (FileHandle back : backs) {

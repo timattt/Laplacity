@@ -48,7 +48,7 @@ public class LaplacityAssets {
 	public static Texture SPACE_BACKGROUND;
 	
 	// PARTICLES
-	public static Texture PARTICLES;
+	public static Texture PARTICLES_TEXTURE;
 	public static TextureRegion[][] PARTICLES_REGIONS;
 	
 	// DENSITY
@@ -56,21 +56,22 @@ public class LaplacityAssets {
 	public static TextureRegion[][] DENSITY_REGIONS;
 	
 	// OBJECTS
-	public static Texture GIFT;
-	public static Texture CAT;
+	public static Texture GIFT_TEXTURE;
+	public static Texture CAT_TEXTURE;
 	public static TextureRegion CAT_REGION;
 	
 	// STRUCTURES
-	public static Texture BLADES;
+	public static Texture BLADES_TEXTURE;
 	public static TextureRegion[] BLADES_REGIONS;
-	public static Texture CELERATORS;
+	public static Texture CELERATORS_TEXTURE;
 	public static TextureRegion[] CELERATORS_REGIONS;
 	public static Texture HATCH_TEXTURE;
 	public static TextureRegion[][] HATCH_REGIONS;
-	public static Texture MOVING_WALL_STRUCTURE;
+	public static Texture MOVING_WALL_TEXTURE;
 	public static TextureRegion[][] MOVING_WALL_STRUCTURE_REGIONS;
 	
     public static void getAssets() {
+    	// sounds
         clickSound = Globals.assetManager.get("sounds/click.wav");
         lightClickSound = Globals.assetManager.get("sounds/light_click.wav");
         bumpSound = Globals.assetManager.get("sounds/bump_barrier.wav");
@@ -83,45 +84,43 @@ public class LaplacityAssets {
         annihilationSound = Globals.assetManager.get("sounds/annihilation.wav");
         spraySound = Globals.assetManager.get("sounds/spray.wav");
         
-        TRAMPOLINE_TEXTURE = Globals.assetManager.get("textures/trampoline.png");
-        BARRIER_TEXTURE = Globals.assetManager.get("textures/barrier.png");
-        DEADLY_TEXTURE = Globals.assetManager.get("textures/deadly.png");
-        WALL_TEXTURE = Globals.assetManager.get("textures/wall.png"); 
+        // TILES
+        TRAMPOLINE_TEXTURE = Globals.assetManager.get("textures/tiles/trampoline.png");
+        BARRIER_TEXTURE = Globals.assetManager.get("textures/tiles/barrier.png");
+        DEADLY_TEXTURE = Globals.assetManager.get("textures/tiles/deadly.png");
+        WALL_TEXTURE = Globals.assetManager.get("textures/tiles/wall.png"); 
         
-        PARTICLES = Globals.assetManager.get("textures/particles.png");
-        DENSITY = Globals.assetManager.get("textures/density.png");
+        // STRUCTURES
+        BLADES_TEXTURE = Globals.assetManager.get("textures/structures/fan.png");
+        CELERATORS_TEXTURE = Globals.assetManager.get("textures/structures/celerators.png");
+        HATCH_TEXTURE = Globals.assetManager.get("textures/structures/hatch.png");
+        MOVING_WALL_TEXTURE = Globals.assetManager.get("textures/structures/structure_thin.png");
         
-        GIFT = Globals.assetManager.get("rigidObjects/gift.png");
+        // OBJECTS
+        GIFT_TEXTURE = Globals.assetManager.get("rigidObjects/gift.png");
+        CAT_TEXTURE = Globals.assetManager.get("textures/objects/cat.png");
+        PARTICLES_TEXTURE = Globals.assetManager.get("textures/objects/particles.png");
         
-        CAT = Globals.assetManager.get("textures/cat.png");
-        
-        BLADES = Globals.assetManager.get("textures/fan.png");
-        
-        CELERATORS = Globals.assetManager.get("textures/celerators.png");
-        
-        HATCH_TEXTURE = Globals.assetManager.get("textures/hatch.png");
-        
-        MOVING_WALL_STRUCTURE = Globals.assetManager.get("textures/structure_thin.png");
+        // UTILS
+        DENSITY = Globals.assetManager.get("textures/utils/density.png");
         
         loadTextureRegions();
         loadBackgrounds();
-        
-        cut(PARTICLES, PARTICLES_REGIONS = new TextureRegion[7][2]);
-        cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
-        cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
-        cut(BLADES, BLADES_REGIONS = new TextureRegion[3]);
-        cut(CELERATORS, CELERATORS_REGIONS = new TextureRegion[3]);
-        cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
-        cut(MOVING_WALL_STRUCTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
-        
-        TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
-        CAT_REGION = new TextureRegion(CAT);
-        
     }
     
     private static void loadTextureRegions() {
     	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[7]);
     	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
+    	cut(PARTICLES_TEXTURE, PARTICLES_REGIONS = new TextureRegion[7][2]);
+        cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
+        cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
+        cut(BLADES_TEXTURE, BLADES_REGIONS = new TextureRegion[3]);
+        cut(CELERATORS_TEXTURE, CELERATORS_REGIONS = new TextureRegion[3]);
+        cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
+        cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
+        
+        TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
+        CAT_REGION = new TextureRegion(CAT_TEXTURE);
     }
     
     private static void loadBackgrounds() {
