@@ -39,7 +39,7 @@ public class AcceleratorStructure extends FieldStructure {
 	}
 
 	@Override
-	public void render(float timeFromStart) {
+	public void renderBatched(float timeFromStart) {
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(GameProcess.mainParticle.getX(), GameProcess.mainParticle.getY());
 		if (tl != null && bounds.containsPoint(tl.getGridX(), tl.getGridY())) {
 			GameProcess.mainParticle.addDissipative((accelerating ? GameProcess.DISSIPATIVE_ACCELERATION_FACTOR : GameProcess.DISSIPATIVE_MODERATION_FACTOR));

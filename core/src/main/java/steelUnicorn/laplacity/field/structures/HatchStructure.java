@@ -2,6 +2,8 @@ package steelUnicorn.laplacity.field.structures;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -26,13 +28,15 @@ public class HatchStructure extends FieldStructure {
 		if (bounds.width() != bounds.height()) {
 			throw new RuntimeException("hatch may be square");
 		}
+		
+		Gdx.app.log("new hatch structure", "bounds: " + bounds);
 	}
 
 	private long finishTime;
 	private boolean mayFinish = false;
 	
 	@Override
-	public void render(float timeFromStart) {
+	public void renderBatched(float timeFromStart) {
 		if (mayFinish && TimeUtils.millis() - finishTime > 1000) {
 			GameProcess.justFinished = true;
 		}

@@ -4,9 +4,9 @@ import static steelUnicorn.laplacity.field.LaplacityField.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
 
 import steelUnicorn.laplacity.CameraManager;
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.SolidTile;
 
@@ -14,43 +14,35 @@ import steelUnicorn.laplacity.field.tiles.SolidTile;
 
 public class TilesRenderer {
 
-	private static SpriteCache cache;
 	private static int id;
 	
 	public static void init() {
-		cache = new SpriteCache();
-		
-		cache.beginCache();
+		GameProcess.gameCache.beginCache();
 		for (int i = 0; i < fieldWidth; i++) {
 			for (int j = 0; j < fieldHeight; j++) {
 				EmptyTile tl = tiles[i][j];
 				if (tl instanceof SolidTile) {
 					SolidTile stl = (SolidTile) tl;
-					stl.constantDraw(cache);
+					stl.constantDraw(GameProcess.gameCache);
 				}
 			}
 		}
-		id = cache.endCache();
+		id = GameProcess.gameCache.endCache();
 	}
 	
 	public static void render() {
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
-		cache.setProjectionMatrix(CameraManager.camMat());
-		cache.begin();
-		cache.draw(id);
-		cache.end();
+		GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
+		GameProcess.gameCache.begin();
+		GameProcess.gameCache.draw(id);
+		GameProcess.gameCache.end();
 		
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 	
 	public static void cleanup() {
-		if (cache != null) {
-			cache.dispose();
-			cache = null;
-		}
-		id = -1;
 	}
 	
 }

@@ -55,12 +55,11 @@ public class RigidStructure extends FieldStructure {
 	}
 
 	@Override
-	public void render(float timeFromStart) {
+	public void renderBatched(float timeFromStart) {
 		Vector2 pos = Globals.TMP1.set(body.getPosition()).sub(origin);
         sprite.setPosition(pos.x, pos.y);
         sprite.setOrigin(origin.x, origin.y);
         sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
-	
 		sprite.draw(GameProcess.gameBatch);
 	}
 

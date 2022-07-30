@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -64,6 +65,7 @@ public class GameProcess {
 	private static World levelWorld;
 	private static GameInterface gameUI;
 	public static SpriteBatch gameBatch;
+	public static SpriteCache gameCache;
 	
 	// Debug
 	private static Box2DDebugRenderer debugRend;
@@ -134,6 +136,7 @@ public class GameProcess {
 		gameUI = new GameInterface(guiViewport);
 		gameBatch = new SpriteBatch();
 		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
+		gameCache = new SpriteCache(8000, true);
 		
 		levelWorld.setContactListener(hitController);
 		
@@ -157,14 +160,17 @@ public class GameProcess {
 		
 		// render
 		//---------------------------------------------
-		gameBatch.begin();
-		BackgroundRenderer.render(gameBatch);
-		LaplacityField.renderStructures(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
+		BackgroundRenderer.render();
 		TrajectoryRenderer.render();
 		TilesRenderer.render();
-		DensityRenderer.render(gameBatch);
+		DensityRenderer.render();
+		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
+		
+		gameBatch.begin();
 		ParticlesRenderer.render(delta);
+		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
 		gameBatch.end();
+		
 		gameUI.draw();
 		//debugRend.render(levelWorld, CameraManager.camMat());
 		//---------------------------------------------
@@ -215,6 +221,10 @@ public class GameProcess {
 		particles.clear();
 		currentGameMode = GameMode.NONE;
 		mainParticle = null;
+		if (gameCache != null) {
+			gameCache.dispose();
+			gameCache = null;
+		}
 	}
 
 	public static void clearLevel() {

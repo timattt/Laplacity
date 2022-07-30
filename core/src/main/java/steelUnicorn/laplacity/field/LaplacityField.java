@@ -168,9 +168,15 @@ public class LaplacityField extends Group {
 		tileMap.getTextureData().disposePixmap();
 	}
 	
-	public static void renderStructures(float timeFromStart) {
+	public static void renderStructuresCached(float timeFromStart) {
 		for (FieldStructure fs : structures) {
-			fs.render(timeFromStart);
+			fs.renderCached(timeFromStart);
+		}
+	}
+	
+	public static void renderStructuresBatched(float timeFromStart) {
+		for (FieldStructure fs : structures) {
+			fs.renderBatched(timeFromStart);
 		}
 	}
 	

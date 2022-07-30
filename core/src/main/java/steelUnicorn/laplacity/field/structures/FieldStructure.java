@@ -135,10 +135,6 @@ public class FieldStructure implements CollisionListener {
 		
 	}
 
-	public void render(float timeFromStart) {
-		
-	}
-	
 	public void cleanup() {
 		
 	}
@@ -190,5 +186,11 @@ public class FieldStructure implements CollisionListener {
 
 	@Override
 	public void collidedWithTile() {
+	}
+
+	public void renderCached(float timeFromStart) {
+	}
+
+	public void renderBatched(float timeFromStart) {
 	}
 }

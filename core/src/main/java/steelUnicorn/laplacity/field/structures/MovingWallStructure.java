@@ -4,7 +4,6 @@ import static steelUnicorn.laplacity.GameProcess.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -42,7 +41,6 @@ public class MovingWallStructure extends FieldStructure {
 	private Body body;
 	
 	// graph
-	private SpriteCache cache;
 	private int cacheId;
 	private static final Matrix4 cacheMat = new Matrix4();
 	
@@ -85,36 +83,35 @@ public class MovingWallStructure extends FieldStructure {
 	}
 	
 	private void createCache() {
-		cache = new SpriteCache();
-		cache.beginCache();
+		GameProcess.gameCache.beginCache();
 		
 		float sz = LaplacityField.tileSize;
 		
 		if (isHorizontal) {
 			for (int y = 0; y < blockRect.height(); y++) {
-				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], 0, y * sz, sz, sz);
-				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], (blockRect.width() - 1) * sz, y * sz, sz, sz);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], 0, y * sz, sz, sz);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], (blockRect.width() - 1) * sz, y * sz, sz, sz);
 			}
 			for (int x = 1; x < blockRect.width() - 1; x++) {
 				for (int y = 0; y < blockRect.height(); y++) {
-					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
-					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
+					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
+					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
 				}
 			}
 		} else {
 			for (int x = 0; x < blockRect.width(); x++) {
-				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, 0, sz, sz);
-				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, (blockRect.height() - 1) * sz, sz, sz);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, 0, sz, sz);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, (blockRect.height() - 1) * sz, sz, sz);
 			}
 			for (int x = 0; x < blockRect.width(); x++) {
 				for (int y = 1; y < blockRect.height() - 1; y++) {
-					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
-					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
+					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
+					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
 				}
 			}
 		}
 		
-		cacheId = cache.endCache();
+		cacheId = GameProcess.gameCache.endCache();
 	}
 
 	@Override
@@ -145,37 +142,37 @@ public class MovingWallStructure extends FieldStructure {
 	}
 
 	@Override
-	public void render(float timeFromStart) {
+	public void renderCached(float timeFromStart) {
 		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
 		
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - width) / 2f;
 			
-			cache.setProjectionMatrix(CameraManager.camMat());
-			cache.setTransformMatrix(cacheMat.idt().translate(currentCoord - width / 2, staticCoord - height / 2, 0));
-			cache.begin();
-			cache.draw(cacheId);
-			cache.end();
+			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
+			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - width / 2, staticCoord - height / 2, 0));
+			GameProcess.gameCache.begin();
+			GameProcess.gameCache.draw(cacheId);
+			GameProcess.gameCache.end();
 
 			body.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - height) / 2f;
 			
-			cache.setProjectionMatrix(CameraManager.camMat());
-			cache.setTransformMatrix(cacheMat.idt().translate(staticCoord - width / 2, currentCoord - height / 2, 0));
-			cache.begin();
-			cache.draw(cacheId);
-			cache.end();
+			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
+			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - width / 2, currentCoord - height / 2, 0));
+			GameProcess.gameCache.begin();
+			GameProcess.gameCache.draw(cacheId);
+			GameProcess.gameCache.end();
 
-			
 			body.setTransform(staticCoord, currentCoord, 0);
 		}
+		
+		GameProcess.gameCache.setTransformMatrix(cacheMat.idt());
 	}
 
 	@Override
 	public void cleanup() {
 		deletePhysicalObject(body);
-		cache.dispose();
 	}
 
 }

@@ -1,7 +1,5 @@
 package steelUnicorn.laplacity.field.graphics;
 
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import steelUnicorn.laplacity.CameraManager;
@@ -71,7 +69,7 @@ public class DensityRenderer {
 		getBlock(x, y).repaintRequested = true;
 	}
 	
-	public static void render(Batch batch) {
+	public static void render() {
 		for (int i = 0; i < blocks.length; i++) {
 			for (int j = 0; j < blocks[i].length; j++) {
 				blocks[i][j].render();
@@ -107,28 +105,26 @@ public class DensityRenderer {
 		private IntRect bounds;
 		private boolean repaintRequested;
 		
-		private SpriteCache cache;
 		private int id;
 		
 		public DensityBlock(IntRect bounds) {
 			super();
 			this.bounds = bounds;
 			repaintRequested = true;
-			cache = new SpriteCache();
-			
+
 			float sz = LaplacityField.tileSize;
 			
-			cache.beginCache();
+			GameProcess.gameCache.beginCache();
 			for (int i = bounds.left; i <= bounds.right; i++) {
 				for (int j = bounds.bottom; j <= bounds.top; j++) {
 					if (i >= LaplacityField.fieldWidth || j >= LaplacityField.fieldHeight) {
 						continue;
 					}
 					TextureRegion reg = select(0.1f);
-					cache.add(reg, i * sz, j * sz, sz, sz);
+					GameProcess.gameCache.add(reg, i * sz, j * sz, sz, sz);
 				}
 			}
-			id = cache.endCache();
+			id = GameProcess.gameCache.endCache();
 		}
 
 		@Override
@@ -139,7 +135,7 @@ public class DensityRenderer {
 		public void repaint() {
 			float sz = LaplacityField.tileSize;
 			
-			cache.beginCache(id);
+			GameProcess.gameCache.beginCache(id);
 			for (int i = bounds.left; i <= bounds.right; i++) {
 				for (int j = bounds.bottom; j <= bounds.top; j++) {
 					if (i >= LaplacityField.fieldWidth || j >= LaplacityField.fieldHeight) {
@@ -148,22 +144,21 @@ public class DensityRenderer {
 					EmptyTile tl = LaplacityField.tiles[i][j];
 					if (tl.getChargeDensity() > 0) {
 						TextureRegion reg = select(tl.getChargeDensity() / (GameProcess.MAX_DENSITY + 0.1f));
-						cache.add(reg, i * sz, j * sz, sz, sz);
+						GameProcess.gameCache.add(reg, i * sz, j * sz, sz, sz);
 					}
 				}
 			}
-			cache.endCache();
+			GameProcess.gameCache.endCache();
 		}
 		
 		public void render() {
-			cache.setProjectionMatrix(CameraManager.camMat());
-			cache.begin();
-			cache.draw(id);
-			cache.end();
+			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
+			GameProcess.gameCache.begin();
+			GameProcess.gameCache.draw(id);
+			GameProcess.gameCache.end();
 		}
 		
 		public void dispose() {
-			cache.dispose();
 		}
 	}
 

@@ -1,10 +1,10 @@
 package steelUnicorn.laplacity.field.graphics;
 
+import static steelUnicorn.laplacity.GameProcess.*;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import steelUnicorn.laplacity.CameraManager;
@@ -16,14 +16,11 @@ import steelUnicorn.laplacity.field.LaplacityField;
 public class BackgroundRenderer {
 
 	// sprite cache
-	private static SpriteCache cache;
 	private static int id;
 	private static int idSpace;
 	
 	public static void init() {
-		cache = new SpriteCache();
-		
-		cache.beginCache();
+		gameCache.beginCache();
 		
 		int fieldWidth = LaplacityField.fieldWidth;
 		int fieldHeight = LaplacityField.fieldHeight;
@@ -38,15 +35,15 @@ public class BackgroundRenderer {
 			float h = fieldHeight * sz;
 			float w = aspect * h;
 
-			cache.add(new TextureRegion(tex), x - w, 0, w, h);
+			gameCache.add(new TextureRegion(tex), x - w, 0, w, h);
 			x -= w;
 		}
 		
-		idSpace = cache.endCache();
+		idSpace = gameCache.endCache();
 
 		x = fieldWidth * sz;
 
-		cache.beginCache();
+		gameCache.beginCache();
 		
 		while (x > 0) {
 			Texture tex = LaplacityAssets.BACKGROUNDS[(GameProcess.sectionNumber - 1) % LaplacityAssets.BACKGROUNDS.length][(GameProcess.levelNumber - 1) % Globals.LEVELS_PER_SECTION];
@@ -54,32 +51,28 @@ public class BackgroundRenderer {
 			float h = fieldHeight * sz;
 			float w = aspect * h;
 			
-			cache.add(new TextureRegion(tex), x - w, 0, w, h);
+			gameCache.add(new TextureRegion(tex), x - w, 0, w, h);
 			x -= w;
 		}
 		
-		id = cache.endCache();
+		id = gameCache.endCache();
 	}
 	
-	public static void render(Batch batch) {
+	public static void render() {
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
-		cache.setProjectionMatrix(CameraManager.camMat());
-		cache.begin();
+		gameCache.setProjectionMatrix(CameraManager.camMat());
+		gameCache.begin();
 
-		cache.draw(idSpace);
-		cache.draw(id);
-		cache.end();
+		gameCache.draw(idSpace);
+		gameCache.draw(id);
+		gameCache.end();
 		
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 	
 	public static void cleanup() {
-		if (cache != null) {
-			cache.dispose();
-			cache = null;
-		}
 	}
 
 }

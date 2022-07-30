@@ -109,7 +109,7 @@ public class HingeStructure extends FieldStructure {
 	}
 
 	@Override
-	public void render(float timeFromStart) {
+	public void renderBatched(float timeFromStart) {
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.FOREST);
 		shapeRenderer.rect(boxX - boxWidth / 2, boxY - boxHeight / 2, hingeX - boxX + boxWidth / 2, hingeY - boxY + boxHeight / 2, boxWidth, boxHeight, 1, 1, 180f * box.getAngle() / 3.1415f);

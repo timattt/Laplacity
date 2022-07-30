@@ -70,7 +70,7 @@ public class FlimsyStructure extends FieldStructure {
 	}
 
 	@Override
-	public void render(float timeFromStart) {
+	public void renderBatched(float timeFromStart) {
 		if (justBroken) {
 			body.setTransform(100000, 100000, 0);
 			justBroken = false;
