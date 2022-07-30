@@ -39,6 +39,7 @@ public class ControllableElectron extends ChargedParticle {
 
 	@Override
 	public void draw() {
+		GameProcess.gameBatch.enableBlending();
 		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGION,
 				getX() - CAT_SIZE,
 				getY() - CAT_SIZE,
@@ -50,6 +51,7 @@ public class ControllableElectron extends ChargedParticle {
 				1f,
 				body.getAngle() * MathUtils.radDeg
 				);
+		GameProcess.gameBatch.disableBlending();
 	}
 	
 	@Override

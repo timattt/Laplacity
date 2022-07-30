@@ -59,7 +59,9 @@ public class HatchStructure extends FieldStructure {
 			mainParticle.getBody().setLinearVelocity(0, 0);
 		}
 		
+		GameProcess.gameBatch.enableBlending();
 		gameBatch.draw(LaplacityAssets.HATCH_REGIONS[i % 5][i / 5], bounds.left * sz, bounds.bottom * sz, bounds.width() * sz, bounds.height() * sz);
+		GameProcess.gameBatch.disableBlending();
 	}
 
 }

@@ -26,7 +26,9 @@ public class Electron extends ChargedParticle {
 			lastAnimationUpdate = TimeUtils.millis();
 			currentTextureIndex = (currentTextureIndex + 1) % LaplacityAssets.PARTICLES_REGIONS.length;
 		}
+		GameProcess.gameBatch.enableBlending();
 		GameProcess.gameBatch.draw(LaplacityAssets.PARTICLES_REGIONS[currentTextureIndex][0], getX() - ELECTRON_SIZE, getY() - ELECTRON_SIZE, 2 * ELECTRON_SIZE, 2 * ELECTRON_SIZE);
+		GameProcess.gameBatch.disableBlending();
 	}
 
 }
