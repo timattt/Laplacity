@@ -32,7 +32,7 @@ public class ControllableElectron extends ChargedParticle {
 	private float startY;
 	
 	public ControllableElectron(float x, float y) {
-		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false);
+		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.BLUE);
 		startX = x;
 		startY = y;
 	}
@@ -65,6 +65,7 @@ public class ControllableElectron extends ChargedParticle {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
+		pointLight.setPosition(body.getPosition().x, body.getPosition().y);
 	}
 
 	public void setSlingshot(float x, float y) {

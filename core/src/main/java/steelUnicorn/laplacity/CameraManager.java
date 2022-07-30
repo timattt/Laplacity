@@ -88,4 +88,8 @@ public class CameraManager {
 		res.y = TMP3.y;
 	}
 	
+	public static OrthographicCamera getCamera() {
+		return camera;
+	}
+	
 }

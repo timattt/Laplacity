@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.particles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.GameProcess;
@@ -13,7 +14,7 @@ public class Electron extends ChargedParticle {
 	private int currentTextureIndex = 0;
 	
 	public Electron(float x, float y, boolean isStatic) {
-		super(x, y, ELECTRON_SIZE, -PARTICLE_CHARGE, isStatic);
+		super(x, y, ELECTRON_SIZE, -PARTICLE_CHARGE, isStatic, Color.RED);
 	}
 	
 	public Electron(float x, float y) {
