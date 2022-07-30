@@ -1,19 +1,20 @@
 package steelUnicorn.laplacity.field.structures;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.IntRect;
 
@@ -39,6 +40,11 @@ public class MovingWallStructure extends FieldStructure {
 	
 	// Body
 	private Body body;
+	
+	// graph
+	private SpriteCache cache;
+	private int cacheId;
+	private static final Matrix4 cacheMat = new Matrix4();
 	
 	public MovingWallStructure(int left, int bottom, Pixmap pm) {
 		super(left, bottom, pm, allCodes);
@@ -77,6 +83,39 @@ public class MovingWallStructure extends FieldStructure {
 			phaseDelta = (float) (Math.PI * (0.5f * sz * (blockRect.top + blockRect.bottom + 1) - (startCoord + endCoord) / 2f) / (0.5f * (endCoord - startCoord - height)));
 		}
 	}
+	
+	private void createCache() {
+		cache = new SpriteCache();
+		cache.beginCache();
+		
+		float sz = LaplacityField.tileSize;
+		
+		if (isHorizontal) {
+			for (int y = 0; y < blockRect.height(); y++) {
+				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], 0, y * sz, sz, sz);
+				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], (blockRect.width() - 1) * sz, y * sz, sz, sz);
+			}
+			for (int x = 1; x < blockRect.width() - 1; x++) {
+				for (int y = 0; y < blockRect.height(); y++) {
+					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
+					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
+				}
+			}
+		} else {
+			for (int x = 0; x < blockRect.width(); x++) {
+				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, 0, sz, sz);
+				cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, (blockRect.height() - 1) * sz, sz, sz);
+			}
+			for (int x = 0; x < blockRect.width(); x++) {
+				for (int y = 1; y < blockRect.height() - 1; y++) {
+					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
+					cache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
+				}
+			}
+		}
+		
+		cacheId = cache.endCache();
+	}
 
 	@Override
 	public void register() {
@@ -101,6 +140,8 @@ public class MovingWallStructure extends FieldStructure {
 		body.createFixture(fxt);
 		body.setUserData(this);
 		shape.dispose();
+		
+		createCache();
 	}
 
 	@Override
@@ -109,18 +150,23 @@ public class MovingWallStructure extends FieldStructure {
 		
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - width) / 2f;
-			shapeRenderer.begin(ShapeType.Filled);
-			shapeRenderer.setColor(Color.GOLD);
-			shapeRenderer.rect(currentCoord - width / 2, staticCoord - height / 2, width, height);
-			shapeRenderer.end();
+			
+			cache.setProjectionMatrix(CameraManager.camMat());
+			cache.setTransformMatrix(cacheMat.idt().translate(currentCoord - width / 2, staticCoord - height / 2, 0));
+			cache.begin();
+			cache.draw(cacheId);
+			cache.end();
 
 			body.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - height) / 2f;
-			shapeRenderer.begin(ShapeType.Filled);
-			shapeRenderer.setColor(Color.GOLD);
-			shapeRenderer.rect(staticCoord - width / 2, currentCoord - height / 2, width, height);
-			shapeRenderer.end();
+			
+			cache.setProjectionMatrix(CameraManager.camMat());
+			cache.setTransformMatrix(cacheMat.idt().translate(staticCoord - width / 2, currentCoord - height / 2, 0));
+			cache.begin();
+			cache.draw(cacheId);
+			cache.end();
+
 			
 			body.setTransform(staticCoord, currentCoord, 0);
 		}
@@ -129,6 +175,7 @@ public class MovingWallStructure extends FieldStructure {
 	@Override
 	public void cleanup() {
 		deletePhysicalObject(body);
+		cache.dispose();
 	}
 
 }

@@ -67,6 +67,8 @@ public class LaplacityAssets {
 	public static TextureRegion[] CELERATORS_REGIONS;
 	public static Texture HATCH_TEXTURE;
 	public static TextureRegion[][] HATCH_REGIONS;
+	public static Texture MOVING_WALL_STRUCTURE;
+	public static TextureRegion[][] MOVING_WALL_STRUCTURE_REGIONS;
 	
     public static void getAssets() {
         clickSound = Globals.assetManager.get("sounds/click.wav");
@@ -99,6 +101,8 @@ public class LaplacityAssets {
         
         HATCH_TEXTURE = Globals.assetManager.get("textures/hatch.png");
         
+        MOVING_WALL_STRUCTURE = Globals.assetManager.get("textures/structure_thin.png");
+        
         loadTextureRegions();
         loadBackgrounds();
         
@@ -108,6 +112,7 @@ public class LaplacityAssets {
         cut(BLADES, BLADES_REGIONS = new TextureRegion[3]);
         cut(CELERATORS, CELERATORS_REGIONS = new TextureRegion[3]);
         cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
+        cut(MOVING_WALL_STRUCTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
         CAT_REGION = new TextureRegion(CAT);
