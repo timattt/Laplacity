@@ -75,7 +75,7 @@ public class ControllableElectron extends ChargedParticle {
 	}
 	
 	public void resetToStartPosAndStartVelocity() {
-		setPosition(startX, startY);
+		setPosition(startX, startY, 0);
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
 	}

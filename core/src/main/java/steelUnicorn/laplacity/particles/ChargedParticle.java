@@ -76,6 +76,10 @@ public class ChargedParticle implements CollisionListener {
 		body.setTransform(x, y, body.getAngle());
 	}
 	
+	public void setPosition(float x, float y, float angle) {
+		body.setTransform(x, y, angle);
+	}
+	
 	public float getCharge() {
 		return charge;
 	}
