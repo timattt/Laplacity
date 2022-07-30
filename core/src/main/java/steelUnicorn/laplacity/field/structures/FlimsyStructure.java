@@ -1,18 +1,15 @@
 package steelUnicorn.laplacity.field.structures;
 
-import static steelUnicorn.laplacity.core.Globals.*;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 
 public class FlimsyStructure extends FieldStructure {
@@ -75,12 +72,17 @@ public class FlimsyStructure extends FieldStructure {
 			body.setTransform(100000, 100000, 0);
 			justBroken = false;
 		}
+		GameProcess.gameBatch.enableBlending();
 		if (durability > 0) {
-			shapeRenderer.begin(ShapeType.Filled);
-			shapeRenderer.setColor(Color.SALMON);
-			shapeRenderer.rect(x - width / 2, y - height / 2, width, height);
-			shapeRenderer.end();
+			int index = 3*(GameProcess.FLIMSY_STRUCTURE_START_DURABILITY - durability) / GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;
+			index = index % LaplacityAssets.GLASS_REGIONS.length;
+			if (width < height) {
+				GameProcess.gameBatch.draw(LaplacityAssets.GLASS_REGIONS[index], x - width/2, y -height/2, width, height);
+			} else {
+				GameProcess.gameBatch.draw(LaplacityAssets.GLASS_REGIONS[index], x - height/2, y -width/2, height / 2, width / 2, height, width, 1, 1, 90);
+			}
 		}
+		GameProcess.gameBatch.disableBlending();
 	}
 
 	@Override
