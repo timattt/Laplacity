@@ -153,7 +153,6 @@ public class LaplacityField extends Group {
 				
 				// yellow
 				if (c == -65281) {
-					System.out.println(i + " " + j);
 					LaplacityField.fromGridToWorldCoords(i, j, electronStartPos);
 				}
 			}
