@@ -87,13 +87,9 @@ public class BladesStructure extends FieldStructure {
 		float curAngle = (float) (360 * timeFromStart / (float)BLADES_ROTATION_TIME);
 		body.setTransform(x, y, (float) (2 * Math.PI * curAngle / 360f));
 		
-		//shapeRenderer.begin(ShapeType.Filled);
-		//shapeRenderer.setColor(Color.CORAL);
-		//shapeRenderer.rect(x - size/2, y - size * BLADES_THICKNESS_FACTOR / 2, size / 2, size * BLADES_THICKNESS_FACTOR / 2, size, size * BLADES_THICKNESS_FACTOR, 1, 1, curAngle);
-		//shapeRenderer.rect(x - size * BLADES_THICKNESS_FACTOR / 2, y - size/2, size * BLADES_THICKNESS_FACTOR / 2, size / 2, size * BLADES_THICKNESS_FACTOR, size, 1, 1, curAngle);
-		//shapeRenderer.end();
-		
 		float sz = size * BLADES_THICKNESS_FACTOR;
+		
+		gameBatch.enableBlending();
 		
 		// center
 		gameBatch.draw(LaplacityAssets.BLADES_REGIONS[2],
@@ -143,6 +139,8 @@ public class BladesStructure extends FieldStructure {
 					);
 			curAngle += 90;
 		}
+		
+		gameBatch.disableBlending();
 	}
 
 	@Override
