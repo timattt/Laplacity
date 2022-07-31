@@ -37,6 +37,9 @@ public class HatchStructure extends FieldStructure {
 	
 	@Override
 	public void renderBatched(float timeFromStart) {
+		if (mayFinish) {
+			mainParticle.getBody().setLinearVelocity(0, 0);
+		}
 		if (mayFinish && TimeUtils.millis() - finishTime > 1000) {
 			GameProcess.justFinished = true;
 		}
@@ -60,7 +63,6 @@ public class HatchStructure extends FieldStructure {
 		if (len < R * R && !mayFinish) {
 			mayFinish = true;
 			finishTime = TimeUtils.millis();
-			mainParticle.getBody().setLinearVelocity(0, 0);
 		}
 		
 		GameProcess.gameBatch.enableBlending();
