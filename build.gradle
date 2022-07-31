@@ -59,6 +59,7 @@ configure(subprojects - project(':android')) {
 project(':core') {
 	dependencies {
 		implementation "com.github.crykn:libgdx-screenmanager:0.6.8"
+		implementation "com.badlogicgames.gdx-video:gdx-video:1.3.2-SNAPSHOT"
 	}
 }
 
