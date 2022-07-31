@@ -71,6 +71,8 @@ public class LaplacityAssets {
 	public static TextureRegion[][] MOVING_WALL_STRUCTURE_REGIONS;
 	public static Texture GLASS_TEXTURE;
 	public static TextureRegion[] GLASS_REGIONS;
+	public static Texture HINGE_TEXTURE;
+	public static TextureRegion[][] HINGE_REGIONS;
 	
     public static void getAssets() {
     	// sounds
@@ -98,6 +100,7 @@ public class LaplacityAssets {
         HATCH_TEXTURE = Globals.assetManager.get("textures/structures/hatch.png");
         MOVING_WALL_TEXTURE = Globals.assetManager.get("textures/structures/structure_thin.png");
         GLASS_TEXTURE = Globals.assetManager.get("textures/structures/glass.png");
+        HINGE_TEXTURE = Globals.assetManager.get("textures/structures/hinge.png");
         
         // OBJECTS
         GIFT_TEXTURE = Globals.assetManager.get("rigidObjects/gift.png");
@@ -122,6 +125,7 @@ public class LaplacityAssets {
         cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
         cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
         cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[3]);
+        cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
         CAT_REGION = new TextureRegion(CAT_TEXTURE);
