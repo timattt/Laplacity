@@ -84,7 +84,7 @@ public class HingeStructure extends FieldStructure {
 
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = shape;
-		fxt.density = 0.1f;
+		fxt.density = 0.2f;
 		fxt.restitution = 1f;
 		box.createFixture(fxt);
 		box.setUserData(this);
