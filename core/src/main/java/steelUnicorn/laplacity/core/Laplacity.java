@@ -43,9 +43,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	public void create() {
 		super.create();
 
-		this.screenManager.addScreen("intro", new IntroScreen());
-		this.screenManager.pushScreen("intro", null);
-
 		loadAssets();
 		Settings.loadSettings();
 		catFood = new CatFood();
@@ -69,13 +66,12 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
 		this.screenManager.addScreen(nameWinScreen, winScreen);
 		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
+		this.screenManager.addScreen("intro", new IntroScreen());
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
-		LaplacityAssets.changeTrack("music/main_menu.mp3");
 		//this.screenManager.pushScreen(nameMainMenuScreen, null);
-
-		Gdx.app.log("Loading finished", "Laplacity finished loading");
+		this.screenManager.pushScreen("intro", null);
 	}
 	
 	private void loadAssets() {

@@ -13,57 +13,66 @@ import com.badlogic.gdx.video.VideoPlayerCreator;
 import java.io.FileNotFoundException;
 
 import de.eskalon.commons.screen.ManagedScreen;
+import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 
+/**
+ * Скрин подгружающий интро!
+ */
 public class IntroScreen extends ManagedScreen {
-    SpriteBatch batch;
-    OrthographicCamera camera;
-    VideoPlayer videoPlayer;
+    private SpriteBatch batch;
+    private VideoPlayer videoPlayer;
 
     @Override
     protected void create() {
-        Gdx.app.setLogLevel(Application.LOG_DEBUG);
         Gdx.app.log("IntroScreen", "start creation");
         batch = new SpriteBatch();
-        camera = new OrthographicCamera();
         videoPlayer = VideoPlayerCreator.createVideoPlayer();
         videoPlayer.setOnCompletionListener(new VideoPlayer.CompletionListener() {
             @Override
             public void onCompletionListener (FileHandle file) {
                 Gdx.app.log("VideoTest", file.name() + " fully played.");
+                LaplacityAssets.changeTrack("music/main_menu.mp3");
+                Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen,
+                        Globals.nameSlideIn);
             }
         });
-        videoPlayer.setOnVideoSizeListener(new VideoPlayer.VideoSizeListener() {
-            @Override
-            public void onVideoSize (float width, float height) {
-                Gdx.app.log("VideoTest", "The video has a size of " + width + "x" + height + ".");
-            }
-        });
+
+        try {
+            videoPlayer.play(Gdx.files.internal("ui/intro.ogv"));
+        } catch (FileNotFoundException e) {
+            Gdx.app.error("IntroScreen", e.getMessage());
+        }
 
         Gdx.app.log("IntroScreen", "Created " + videoPlayer.getClass().getName());
     }
 
     @Override
     public void render(float delta) {
-        if (Gdx.input.justTouched()) {
-            try {
-                videoPlayer.play(Gdx.files.internal("ui/intro.ogv"));
-            } catch (FileNotFoundException e) {
-                Gdx.app.error("gdx-video", "Oh no! " + e.getMessage());
-            }
-        }
-
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         videoPlayer.update();
+
         batch.begin();
         Texture frame = videoPlayer.getTexture();
         if (frame != null) {
             batch.draw(frame, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-            Gdx.app.log("frame", "frame getted");
         }
         batch.end();
     }
 
+
+    @Override
+    public void pause() {
+        super.pause();
+        videoPlayer.pause();
+    }
+
+    @Override
+    public void resume() {
+        super.resume();
+        videoPlayer.resume();
+    }
 
     @Override
     public void hide() {
