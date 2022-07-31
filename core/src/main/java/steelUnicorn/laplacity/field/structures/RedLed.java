@@ -50,12 +50,12 @@ public class RedLed extends FieldStructure {
 		
 		cir.dispose();
 		
-		light = GameProcess.registerPointLight(x, y, Color.RED, GameProcess.ELECTRON_SIZE * 10);
+		light = GameProcess.registerPointLight(x, y, Color.RED, 15f * GameProcess.ELECTRON_SIZE, true);
 	}
 
 	@Override
 	public void renderBatched(float timeFromStart) {
-		float rad = GameProcess.ELECTRON_SIZE * 2;
+		float rad = GameProcess.ELECTRON_SIZE / 2;
 		
 		GameProcess.gameBatch.enableBlending();
 		GameProcess.gameBatch.draw(LaplacityAssets.RED_RED_REGIONS[0], x - rad, y - rad, 2*rad, 2*rad);

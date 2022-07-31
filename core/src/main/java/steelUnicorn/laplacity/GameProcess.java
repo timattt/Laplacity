@@ -147,11 +147,8 @@ public class GameProcess {
 		gameBatch = new SpriteBatch();
 		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		gameCache = new SpriteCache(8000, true);
+		RayHandler.useDiffuseLight(true);
 		rayHandler = new RayHandler(levelWorld);
-		
-		//
-		rayHandler.setAmbientLight(0.5f);
-		//
 		
 		levelWorld.setContactListener(hitController);
 		
@@ -201,6 +198,7 @@ public class GameProcess {
 		if (currentGameMode == GameMode.FLIGHT) {
 			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 		}
+		
 		for (PointLight pl : lights) {
 			pl.update();
 		}
@@ -339,8 +337,15 @@ public class GameProcess {
 	
 	public static PointLight registerPointLight(float x, float y, Color col, float rad) {
 		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
-		pl.setSoft(true);
-		pl.setSoftnessLength(0.1f);
+		pl.setSoftnessLength(0.0f);
+		lights.add(pl);
+		return pl;
+	}
+	
+	public static PointLight registerPointLight(float x, float y, Color col, float rad, boolean isStatic) {
+		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
+		pl.setStaticLight(isStatic);
+		pl.setSoftnessLength(0.0f);
 		lights.add(pl);
 		return pl;
 	}

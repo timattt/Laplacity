@@ -32,9 +32,10 @@ public class ControllableElectron extends ChargedParticle {
 	private float startY;
 	
 	public ControllableElectron(float x, float y) {
-		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.BLUE);
+		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
 		startX = x;
 		startY = y;
+		pointLight.setStaticLight(false);
 	}
 
 	@Override
