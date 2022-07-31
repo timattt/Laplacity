@@ -50,7 +50,7 @@ public class RedLed extends FieldStructure {
 		
 		cir.dispose();
 		
-		light = GameProcess.registerPointLight(x, y, Color.RED, GameProcess.ELECTRON_SIZE * 2);
+		light = GameProcess.registerPointLight(x, y, Color.RED, GameProcess.ELECTRON_SIZE * 10);
 	}
 
 	@Override

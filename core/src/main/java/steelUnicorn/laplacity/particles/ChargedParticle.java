@@ -54,7 +54,7 @@ public class ChargedParticle implements CollisionListener {
 		
 		setPosition(x, y);
 		
-		pointLight = registerPointLight(x, y, lightColor, 0.5f * rad);
+		pointLight = registerPointLight(x, y, lightColor, 15f * rad);
 	}
 	
 	public void draw() {

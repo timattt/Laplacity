@@ -187,9 +187,7 @@ public class GameProcess {
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		
-		if (currentGameMode == GameMode.FLIGHT) {
-			rayHandler.updateAndRender();
-		}
+		rayHandler.updateAndRender();
 		
 		gameUI.draw();
 		//debugRend.render(levelWorld, CameraManager.camMat());
@@ -342,7 +340,7 @@ public class GameProcess {
 	public static PointLight registerPointLight(float x, float y, Color col, float rad) {
 		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
 		pl.setSoft(true);
-		pl.setSoftnessLength(rad);
+		pl.setSoftnessLength(0.1f);
 		lights.add(pl);
 		return pl;
 	}
