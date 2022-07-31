@@ -46,7 +46,7 @@ public class ReturnDialog extends Dialog {
 		LaplacityAssets.playSound(LaplacityAssets.clickSound);
 		if ((Boolean) object) {
 			LaplacityAssets.changeTrack("music/main_menu.mp3");
-			Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
+			Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, null);
 		}
 	}
 }

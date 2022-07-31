@@ -24,6 +24,8 @@ public class Settings {
 		OFF,
 		ON
 	}
+	//lighting
+	private static boolean lightingEnabled;
 
 	/**
 	 * Функция загружающая настройки используя prefs
@@ -41,6 +43,12 @@ public class Settings {
 		} else {
 			musicVolume = 1;
 		}
+
+		if (prefs.contains("lighting")) {
+			lightingEnabled = prefs.getBoolean("lighting");
+		} else {
+			lightingEnabled = true;
+		}
 	}
 
 	/**
@@ -49,6 +57,9 @@ public class Settings {
 	public static void saveSettings() {
 		prefs.putFloat("soundVolume", soundVolume);
 		prefs.putFloat("musicVolume", musicVolume);
+		prefs.putBoolean("lighting", lightingEnabled);
+
+		prefs.flush();
 	}
 
 	public static float getSoundVolume() {
@@ -63,5 +74,13 @@ public class Settings {
 	}
 	public static void setMusicVolume(float musicVolume) {
 		Settings.musicVolume = musicVolume;
+	}
+
+	public static boolean isLightingEnabled() {
+		return lightingEnabled;
+	}
+
+	public static void setLighting(boolean lighting) {
+		Settings.lightingEnabled = lighting;
 	}
 }

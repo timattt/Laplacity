@@ -362,7 +362,7 @@ public class GameProcess {
 		Gdx.app.log("game process", "Level finished");
 		
 		Globals.winScreen.loadWinScreen(calculateScore());
-		Globals.game.getScreenManager().pushScreen(nameWinScreen, nameSlideIn);
+		Globals.game.getScreenManager().pushScreen(nameWinScreen, null);
 	}
 	
 	public static float calculateScore() {

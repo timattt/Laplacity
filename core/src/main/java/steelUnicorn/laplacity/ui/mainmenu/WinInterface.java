@@ -108,7 +108,6 @@ public class WinInterface extends Stage {
                 GameProcess.initLevel(Globals.assetManager.get(
                         LevelsParser.sectionLevelsPaths.get(GameProcess.sectionNumber)
                                 .get(GameProcess.levelNumber - 1), Texture.class));
-                Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
             }
         });
 
@@ -134,7 +133,6 @@ public class WinInterface extends Stage {
                             LevelsParser.sectionLevelsPaths.get(nextSection).get(nextLevel - 1),
                             Texture.class));
                     LaplacityAssets.setLevelTrack();
-                    Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
                 }
             });
         }
