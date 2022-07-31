@@ -1,8 +1,12 @@
 package steelUnicorn.laplacity.screens;
 
+import static steelUnicorn.laplacity.core.Globals.assetManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
@@ -21,6 +25,13 @@ public class LevelsScreen extends ManagedScreen {
 
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
+        //background
+        Image background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background.setSize(background.getPrefWidth() / background.getPrefHeight() * Globals.guiViewport.getWorldHeight(),
+                Globals.guiViewport.getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);
+        levelStage.addActor(background);
+
         Skin skin = Globals.assetManager.get("ui/uiskin.json", Skin.class);
 
         Table root = new Table();

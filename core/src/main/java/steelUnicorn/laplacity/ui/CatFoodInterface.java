@@ -35,7 +35,7 @@ public class CatFoodInterface extends Table {
         defaults().pad(padSize).size(tableWidth / 2, tableHeight);
 
         text = new Label("Food: " + launches, skin);
-        text.setColor(Color.BLACK);
+        text.setColor(Color.WHITE);
         add(text);
 
         TextButton btn = new TextButton(" + 5", skin);
@@ -57,7 +57,7 @@ public class CatFoodInterface extends Table {
         add(btn);
 
         timerLabel = new Label("5:00", skin);
-        timerLabel.setColor(Color.BLACK);
+        timerLabel.setColor(Color.WHITE);
         timerLabel.setVisible(false);
         add(timerLabel);
         //hungryMsg init
