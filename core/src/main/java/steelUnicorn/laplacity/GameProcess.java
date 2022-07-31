@@ -135,6 +135,8 @@ public class GameProcess {
 	//========================================================================================	
 	public static void initLevel(Texture level) {
 		disposeLevel();
+
+		game.getScreenManager().pushScreen(nameLoadingScreen, nameSlideIn);
 		
 		Gdx.app.log("gameProcess", "level init started: " +
 				"section "+ sectionNumber + "; level " + levelNumber);
