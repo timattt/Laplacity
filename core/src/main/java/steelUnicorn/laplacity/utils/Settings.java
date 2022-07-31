@@ -49,6 +49,8 @@ public class Settings {
 	public static void saveSettings() {
 		prefs.putFloat("soundVolume", soundVolume);
 		prefs.putFloat("musicVolume", musicVolume);
+
+		prefs.flush();
 	}
 
 	public static float getSoundVolume() {
