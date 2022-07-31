@@ -20,6 +20,7 @@ import de.eskalon.commons.screen.transition.ScreenTransition;
 import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.screens.GameScreen;
+import steelUnicorn.laplacity.screens.IntroScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
@@ -41,6 +42,10 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	@Override
 	public void create() {
 		super.create();
+
+		this.screenManager.addScreen("intro", new IntroScreen());
+		this.screenManager.pushScreen("intro", null);
+
 		loadAssets();
 		Settings.loadSettings();
 		catFood = new CatFood();
@@ -68,7 +73,9 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
 		LaplacityAssets.changeTrack("music/main_menu.mp3");
-		this.screenManager.pushScreen(nameMainMenuScreen, null);
+		//this.screenManager.pushScreen(nameMainMenuScreen, null);
+
+		Gdx.app.log("Loading finished", "Laplacity finished loading");
 	}
 	
 	private void loadAssets() {

@@ -20,16 +20,9 @@ public class IntroScreen extends ManagedScreen {
     VideoPlayer videoPlayer;
 
     @Override
-    public void hide() {
-    }
-
-    @Override
-    public void resize(int width, int height) {
-
-    }
-
-    public IntroScreen() {
+    protected void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        Gdx.app.log("IntroScreen", "start creation");
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         videoPlayer = VideoPlayerCreator.createVideoPlayer();
@@ -46,19 +39,14 @@ public class IntroScreen extends ManagedScreen {
             }
         });
 
-
-    }
-
-    @Override
-    protected void create() {
-
+        Gdx.app.log("IntroScreen", "Created " + videoPlayer.getClass().getName());
     }
 
     @Override
     public void render(float delta) {
         if (Gdx.input.justTouched()) {
             try {
-                videoPlayer.play(Gdx.files.internal("ui/intro.ogg"));
+                videoPlayer.play(Gdx.files.internal("ui/intro.ogv"));
             } catch (FileNotFoundException e) {
                 Gdx.app.error("gdx-video", "Oh no! " + e.getMessage());
             }
@@ -76,8 +64,18 @@ public class IntroScreen extends ManagedScreen {
         batch.end();
     }
 
+
+    @Override
+    public void hide() {
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
     @Override
     public void dispose() {
+        batch.dispose();
         videoPlayer.dispose();
     }
 }
