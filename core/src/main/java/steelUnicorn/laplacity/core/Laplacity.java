@@ -21,6 +21,7 @@ import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
+import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
@@ -53,6 +54,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();
 		levelsScreen = new LevelsScreen();
+		loadingScreen = new LoadingScreen();
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
 		
@@ -64,6 +66,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
 		this.screenManager.addScreen(nameWinScreen, winScreen);
 		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
+		this.screenManager.addScreen(nameLoadingScreen, loadingScreen);
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
@@ -106,13 +109,16 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		// backgrounds
 		sections = Gdx.files.internal("backgrounds/").list();
 		for (FileHandle section : sections) {
-			FileHandle[] backs = section.list();
-			for (FileHandle back : backs) {
-				assetManager.load(back.path(), Texture.class);
+			if (section.isDirectory()) {
+				FileHandle[] backs = section.list();
+				for (FileHandle back : backs) {
+					assetManager.load(back.path(), Texture.class);
+				}
+			} else {
+				assetManager.load(section.path(), Texture.class);
 			}
 		}
-		assetManager.load("backgrounds/SPACE_BACKGROUND.png", Texture.class);
-		
+
 		// finish loading
 		assetManager.finishLoading();
 		LaplacityAssets.getAssets();
