@@ -11,7 +11,7 @@ public class TrampolineTile extends SolidTile {
 		super(gridX, gridY);
 		setAllowDensityChange(false);
 		setId(15);
-		setRestitution(100f);
+		setRestitution(2f);
 	}
 
 	@Override

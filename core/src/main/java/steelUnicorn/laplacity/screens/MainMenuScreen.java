@@ -25,6 +25,7 @@ public class MainMenuScreen extends ManagedScreen {
 
 	@Override
 	public void resize(int width, int height) {
+		menuStage.resizeBackground();
 	}
 
 	@Override

@@ -51,6 +51,7 @@ public class WinScreen extends ManagedScreen {
 
 	@Override
 	public void resize(int width, int height) {
+		winStage.resizeBackground();
 	}
 
 	@Override

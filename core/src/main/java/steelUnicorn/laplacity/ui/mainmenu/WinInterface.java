@@ -1,9 +1,12 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
+import static steelUnicorn.laplacity.core.Globals.assetManager;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -33,8 +36,18 @@ public class WinInterface extends Stage {
 
     private Table root; //<< Корневая таблица для позиционирования
 
+    private Image background;
+
+
     public WinInterface(Viewport viewport) {
         super(viewport);
+
+        background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
+                viewport.getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
+        addActor(background);
+
 
         root = new Table();
         root.setFillParent(true);
@@ -68,7 +81,7 @@ public class WinInterface extends Stage {
         done.setAlignment(Align.center);
         done.setName("doneLabel");
         done.setFontScale(fontScale);
-        done.setColor(Color.BLACK);
+        done.setColor(Color.WHITE);
         root.add(done).space(spaceSize).size(contentWidth, contentHeight);
 
         root.row();
@@ -98,7 +111,6 @@ public class WinInterface extends Stage {
                 GameProcess.initLevel(Globals.assetManager.get(
                         LevelsParser.sectionLevelsPaths.get(GameProcess.sectionNumber)
                                 .get(GameProcess.levelNumber - 1), Texture.class));
-                Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
             }
         });
 
@@ -124,7 +136,6 @@ public class WinInterface extends Stage {
                             LevelsParser.sectionLevelsPaths.get(nextSection).get(nextLevel - 1),
                             Texture.class));
                     LaplacityAssets.setLevelTrack();
-                    Globals.game.getScreenManager().pushScreen(Globals.nameGameScreen, Globals.nameSlideOut);
                 }
             });
         }
@@ -139,4 +150,10 @@ public class WinInterface extends Stage {
         table.add(btn);
     }
 
+    public void resizeBackground() {
+        background.setSize(background.getPrefWidth() / background.getPrefHeight()
+                        * this.getViewport().getWorldHeight(),
+                this.getViewport().getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + this.getViewport().getWorldWidth() / 2 , 0);
+    }
 }

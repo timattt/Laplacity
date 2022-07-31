@@ -2,9 +2,11 @@ package steelUnicorn.laplacity.ui.mainmenu;
 
 import static steelUnicorn.laplacity.core.Globals.*;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -31,6 +33,7 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
  * Credits - описание команды разработчиков
  */
 public class MainMenu extends Stage {
+
     public static final float menuWidth = UI_WORLD_WIDTH * 0.2f;	// << menu button width ratio
     public static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
     public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
@@ -41,6 +44,8 @@ public class MainMenu extends Stage {
     private CatFoodInterface catFI;
 
     private Cell<MainMenuTab> tabCell;
+
+    private Image background;
     /**
      * Конструктор главного меню.
      * Собирает каждую вкладку и главное меню.
@@ -49,6 +54,13 @@ public class MainMenu extends Stage {
      */
     public MainMenu(Viewport viewport) {
         super(viewport);
+
+        //background
+        background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
+                viewport.getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
+        addActor(background);
 
         Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
         //fpsCounter
@@ -145,5 +157,12 @@ public class MainMenu extends Stage {
                 tabCell.setActor(tabActor);
             }
         });
+    }
+
+    public void resizeBackground() {
+        background.setSize(background.getPrefWidth() / background.getPrefHeight()
+                        * this.getViewport().getWorldHeight(),
+                this.getViewport().getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + this.getViewport().getWorldWidth() / 2 , 0);
     }
 }

@@ -127,6 +127,8 @@ public class GameProcess {
 	//========================================================================================	
 	public static void initLevel(Texture level) {
 		disposeLevel();
+
+		game.getScreenManager().pushScreen(nameLoadingScreen, nameSlideIn);
 		
 		Gdx.app.log("gameProcess", "level init started: " +
 				"section "+ sectionNumber + "; level " + levelNumber);
@@ -312,7 +314,7 @@ public class GameProcess {
 		Gdx.app.log("game process", "Level finished");
 		
 		Globals.winScreen.loadWinScreen(calculateScore());
-		Globals.game.getScreenManager().pushScreen(nameWinScreen, nameSlideIn);
+		Globals.game.getScreenManager().pushScreen(nameWinScreen, null);
 	}
 	
 	public static float calculateScore() {

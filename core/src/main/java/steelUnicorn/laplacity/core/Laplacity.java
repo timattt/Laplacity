@@ -22,6 +22,7 @@ import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.IntroScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
+import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
@@ -55,6 +56,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();
 		levelsScreen = new LevelsScreen();
+		loadingScreen = new LoadingScreen();
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
 		
@@ -67,6 +69,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreen(nameWinScreen, winScreen);
 		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
 		this.screenManager.addScreen("intro", new IntroScreen());
+		this.screenManager.addScreen(nameLoadingScreen, loadingScreen);
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
@@ -109,13 +112,17 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		// backgrounds
 		sections = Gdx.files.internal("backgrounds/").list();
 		for (FileHandle section : sections) {
-			FileHandle[] backs = section.list();
-			for (FileHandle back : backs) {
-				assetManager.load(back.path(), Texture.class);
+			//Если дирректория с фонами секции, то парсит
+			if (section.isDirectory()) {
+				FileHandle[] backs = section.list();
+				for (FileHandle back : backs) {
+					assetManager.load(back.path(), Texture.class);
+				}
+			} else { //если просто файл - загружает
+				assetManager.load(section.path(), Texture.class);
 			}
 		}
-		assetManager.load("backgrounds/SPACE_BACKGROUND.png", Texture.class);
-		
+
 		// finish loading
 		assetManager.finishLoading();
 		LaplacityAssets.getAssets();
