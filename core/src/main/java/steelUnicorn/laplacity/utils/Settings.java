@@ -80,7 +80,7 @@ public class Settings {
 		return lightingEnabled;
 	}
 
-	public static void enableLighting(boolean lighting) {
+	public static void setLighting(boolean lighting) {
 		Settings.lightingEnabled = lighting;
 	}
 }

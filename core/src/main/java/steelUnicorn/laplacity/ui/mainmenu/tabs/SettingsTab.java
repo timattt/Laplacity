@@ -78,7 +78,7 @@ public class SettingsTab extends MainMenuTab {
                     public void changed(ChangeEvent event, Actor actor) {
                         LaplacityAssets.playSound(LaplacityAssets.clickSound);
                         CheckBox box = (CheckBox) actor;
-                        Settings.enableLighting(box.isChecked());
+                        Settings.setLighting(box.isChecked());
                     }
                 }, "lightingCheckbox");
     }
