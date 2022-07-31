@@ -21,7 +21,7 @@ public class CreditsTab extends MainMenuTab {
         Label label = new Label("Made by Steel Unicorn\n"
                 + "steel-unicorn.org", skin);
         label.setAlignment(Align.center);
-        label.setColor(Color.BLACK);
+        label.setColor(Color.WHITE);
         label.setName("credits_label");
         add(label);
     }

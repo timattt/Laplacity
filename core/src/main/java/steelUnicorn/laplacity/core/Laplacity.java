@@ -109,12 +109,13 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		// backgrounds
 		sections = Gdx.files.internal("backgrounds/").list();
 		for (FileHandle section : sections) {
+			//Если дирректория с фонами секции, то парсит
 			if (section.isDirectory()) {
 				FileHandle[] backs = section.list();
 				for (FileHandle back : backs) {
 					assetManager.load(back.path(), Texture.class);
 				}
-			} else {
+			} else { //если просто файл - загружает
 				assetManager.load(section.path(), Texture.class);
 			}
 		}
