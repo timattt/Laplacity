@@ -340,7 +340,7 @@ public class GameProcess {
 	}
 	
 	public static PointLight registerPointLight(float x, float y, Color col, float rad) {
-		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, y, x, y);
+		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
 		pl.setSoft(true);
 		pl.setSoftnessLength(rad);
 		lights.add(pl);
