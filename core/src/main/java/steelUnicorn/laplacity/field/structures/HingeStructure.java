@@ -1,10 +1,10 @@
 package steelUnicorn.laplacity.field.structures;
 
-import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.GameProcess.*;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -14,7 +14,9 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 
+import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.IntRect;
 
@@ -38,6 +40,9 @@ public class HingeStructure extends FieldStructure {
 	private Body hinge;
 	private Joint joint;
 	
+	private int cacheId;
+	private static final Matrix4 transMat = new Matrix4();
+	
 	public HingeStructure(int left, int bottom, Pixmap pm) {
 		super(left, bottom, pm, codes);
 		
@@ -54,6 +59,16 @@ public class HingeStructure extends FieldStructure {
 		
 		boxWidth = (bounds.right - bounds.left + 1) * sz;
 		boxHeight = (bounds.top - bounds.bottom + 1) * sz;
+		
+		gameCache.beginCache();
+		for (int x = bounds.left; x <= bounds.right; x++) {
+			for (int y = bounds.bottom; y <= bounds.top; y++) {
+				int i = (int) (Math.random() * 3);
+				int j = (int) (Math.random() * 2);
+				gameCache.add(LaplacityAssets.HINGE_REGIONS[i][j], (x - bounds.left) * sz, (y - bounds.bottom) * sz, sz, sz);
+			}
+		}
+		cacheId = gameCache.endCache();
 	}
 
 	@Override
@@ -109,11 +124,18 @@ public class HingeStructure extends FieldStructure {
 	}
 
 	@Override
-	public void renderBatched(float timeFromStart) {
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.FOREST);
-		shapeRenderer.rect(boxX - boxWidth / 2, boxY - boxHeight / 2, hingeX - boxX + boxWidth / 2, hingeY - boxY + boxHeight / 2, boxWidth, boxHeight, 1, 1, 180f * box.getAngle() / 3.1415f);
-		shapeRenderer.end();
+	public void renderCached(float timeFromStart) {
+		gameCache.setProjectionMatrix(CameraManager.camMat());
+		gameCache.setTransformMatrix(
+				transMat.idt().
+				translate(box.getPosition().x, box.getPosition().y, 0).
+				rotate(0, 0, 1, MathUtils.radDeg * box.getAngle()).
+				translate( - boxWidth / 2, - boxHeight/2, 0)
+				);
+		gameCache.begin();
+		gameCache.draw(cacheId);
+		gameCache.end();
+		gameCache.setTransformMatrix(transMat.idt());
 	}
 
 	@Override
