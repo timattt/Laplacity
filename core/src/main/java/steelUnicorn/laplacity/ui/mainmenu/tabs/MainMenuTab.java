@@ -19,7 +19,7 @@ public class MainMenuTab  extends Table {
     }
 
     protected void addDescription(String name, Skin skin) {
-        addDescription(name, skin, Color.BLACK);
+        addDescription(name, skin, Color.WHITE);
     }
 
     protected void addDescription(String name, Skin skin, Color color) {

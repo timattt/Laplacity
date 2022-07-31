@@ -95,6 +95,6 @@ public class SettingsTab extends MainMenuTab {
                              String name) {
         addCheckbox(table, label, skin,
                 isChecked, listener,
-                name, Color.BLACK);
+                name, Color.WHITE);
     }
 }

@@ -68,7 +68,7 @@ public class WinInterface extends Stage {
         done.setAlignment(Align.center);
         done.setName("doneLabel");
         done.setFontScale(fontScale);
-        done.setColor(Color.BLACK);
+        done.setColor(Color.WHITE);
         root.add(done).space(spaceSize).size(contentWidth, contentHeight);
 
         root.row();

@@ -102,7 +102,7 @@ public class LevelsTab extends MainMenuTab {
             add(leftArrow);
 
             sectionName = new Label("Section " + LevelsTab.this.currentSection, skin);
-            sectionName.setColor(Color.BLACK);
+            sectionName.setColor(Color.WHITE);
             add(sectionName);
 
             rightArrow = new Button(skin);
