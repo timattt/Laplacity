@@ -1,9 +1,12 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
+import static steelUnicorn.laplacity.core.Globals.assetManager;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -35,6 +38,13 @@ public class WinInterface extends Stage {
 
     public WinInterface(Viewport viewport) {
         super(viewport);
+
+        Image background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
+                viewport.getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
+        addActor(background);
+
 
         root = new Table();
         root.setFillParent(true);
