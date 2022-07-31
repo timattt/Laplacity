@@ -23,10 +23,12 @@ public class LevelsScreen extends ManagedScreen {
     private Stage levelStage;
     private LevelsTab levelsTab;
 
+    private Image background;
+
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
         //background
-        Image background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * Globals.guiViewport.getWorldHeight(),
                 Globals.guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);
@@ -61,8 +63,16 @@ public class LevelsScreen extends ManagedScreen {
     public void hide() {
     }
 
+    public void resizeBackground() {
+        background.setSize(background.getPrefWidth() / background.getPrefHeight()
+                        * levelStage.getViewport().getWorldHeight(),
+                levelStage.getViewport().getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + levelStage.getViewport().getWorldWidth() / 2 , 0);
+    }
+
     @Override
     public void resize(int width, int height) {
+        resizeBackground();
     }
 
     @Override
