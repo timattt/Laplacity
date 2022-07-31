@@ -14,7 +14,10 @@ import steelUnicorn.laplacity.utils.Settings;
 
 /**
  * Класс вкладки настроек в главном меню.
- * На данный момент есть 2 чекбокса с включенем/выключением звуком и музыкой
+ * На данный момент есть:
+ * - Включение звуков
+ * - Включение музыки
+ * - Включение освещения
  *
  * Использует класс Settings подгружающий настройки и сохраняющий при закрытии игры.
  */
@@ -67,6 +70,17 @@ public class SettingsTab extends MainMenuTab {
                         LaplacityAssets.music.setVolume(Settings.getMusicVolume());
                     }
                 }, "musicCheckbox");
+
+        settings.row();
+        addCheckbox(settings, "Enable lighting", skin, Settings.isLightingEnabled(),
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                        CheckBox box = (CheckBox) actor;
+                        Settings.enableLighting(box.isChecked());
+                    }
+                }, "lightingCheckbox");
     }
 
     /**
