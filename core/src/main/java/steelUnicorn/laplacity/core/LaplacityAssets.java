@@ -73,6 +73,8 @@ public class LaplacityAssets {
 	public static TextureRegion[] GLASS_REGIONS;
 	public static Texture RED_LED_TEXTURE;
 	public static TextureRegion[] RED_RED_REGIONS;
+	public static Texture HINGE_TEXTURE;
+	public static TextureRegion[][] HINGE_REGIONS;
 	
     public static void getAssets() {
     	// sounds
@@ -101,6 +103,7 @@ public class LaplacityAssets {
         MOVING_WALL_TEXTURE = Globals.assetManager.get("textures/structures/structure_thin.png");
         GLASS_TEXTURE = Globals.assetManager.get("textures/structures/glass.png");
         RED_LED_TEXTURE = Globals.assetManager.get("textures/structures/redLed.png");
+        HINGE_TEXTURE = Globals.assetManager.get("textures/structures/hinge.png");
         
         // OBJECTS
         GIFT_TEXTURE = Globals.assetManager.get("rigidObjects/gift.png");
@@ -126,6 +129,7 @@ public class LaplacityAssets {
         cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
         cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[3]);
         cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
+        cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
         CAT_REGION = new TextureRegion(CAT_TEXTURE);
