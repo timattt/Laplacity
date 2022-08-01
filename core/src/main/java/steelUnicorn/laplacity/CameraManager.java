@@ -40,9 +40,20 @@ public class CameraManager {
 		isMoving = false;
 	}
 	
+	private static float sgn(float x) {
+		if (x < 1f && -1f < x) {
+			return x;
+		}
+		if (x < 0) {
+			return -1f;
+		} else {
+			return 1f;
+		}
+	}
+	
 	public static void update(float dt) {
 		if (isMoving) {
-			float dx = CAMERA_VELOCITY * Math.signum(targetX - camera.position.x) * dt;
+			float dx = CAMERA_VELOCITY * sgn(targetX - camera.position.x) * dt;
 			float newX = camera.position.x + dx;
 			if (Math.abs(targetX - newX) < Math.abs(dx)) {
 				isMoving = false;
