@@ -15,7 +15,6 @@ public class ModeEraser extends GameMode {
 	
 	private void makeErase(float x, float y) {
 		LaplacityField.clearCircleDensity(x, y, BRUSH_RADIUS);
-		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 	
@@ -32,6 +31,18 @@ public class ModeEraser extends GameMode {
 	@Override
 	public void pinch(float dx1, float dx2) {
 		CameraManager.moveX(dx1+dx2);
+	}
+
+	@Override
+	public void touchUp(float x, float y) {
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		TrajectoryRenderer.updateTrajectory();
+	}
+
+	@Override
+	public void panStop(float x, float y) {
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		TrajectoryRenderer.updateTrajectory();
 	}
 
 }
