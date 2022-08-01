@@ -22,6 +22,8 @@ public class TilesRenderer {
 	public static void init() {
 		float sz = LaplacityField.tileSize;
 		
+		float d = 0.01f;
+		
 		GameProcess.gameCache.beginCache();
 		for (int i = 0; i < fieldWidth; i++) {
 			for (int j = 0; j < fieldHeight; j++) {
@@ -30,7 +32,7 @@ public class TilesRenderer {
 					SolidTile stl = (SolidTile) tl;
 					TextureRegion reg = stl.getRegion(tmp);
 					if (reg != null) {
-						GameProcess.gameCache.add(reg, stl.getGridX() * sz, stl.getGridY() * sz,  sz/2, sz/2, sz, sz, 1, 1, tmp[0]);
+						GameProcess.gameCache.add(reg, stl.getGridX() * sz - d, stl.getGridY() * sz - d,  sz/2, sz/2, sz + 2*d, sz+2*d, 1, 1, tmp[0]);
 					}
 				}
 			}
