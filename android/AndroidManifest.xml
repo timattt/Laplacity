@@ -13,15 +13,21 @@
         	tools:ignore="UnusedAttribute"
 			android:theme="@style/GdxTheme">
 		<activity
+			android:name=".android.SplashScreen"
+			android:screenOrientation="landscape">
+
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+			</activity>
+
+		<activity
 				android:name="steelUnicorn.laplacity.android.AndroidLauncher"
 				android:label="@string/app_name"
 				android:screenOrientation="landscape"
 				android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
           		android:exported="true">
-				<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
-				<category android:name="android.intent.category.LAUNCHER"/>
-			</intent-filter>
 		</activity>
        <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
