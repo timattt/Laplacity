@@ -330,7 +330,7 @@ public class GameProcess {
 		
 		float part = particles.size * SCORE_PER_PARTICLE;
 		
-		return 0.5f * MAX_SCORE / (1f + dens) + 0.5f * MAX_SCORE / (part + 1f);
+		return (int) (0.5f * MAX_SCORE / (1f + dens) + 0.5f * MAX_SCORE / (part + 1f));
 	}
 	
 }
