@@ -13,7 +13,8 @@ public class Proton extends ChargedParticle {
 	private int currentTextureIndex = 0;
 	
 	public Proton(float x, float y) {
-		super(x, y, PROTON_SIZE, PARTICLE_CHARGE);
+		super(x, y, PARTICLE_SIZE, PARTICLE_CHARGE);
+		pointLight.setDistance(PARTICLE_LIGHT_DISTANCE);
 	}
 
 	@Override
@@ -23,7 +24,7 @@ public class Proton extends ChargedParticle {
 			currentTextureIndex = (currentTextureIndex + 1) % LaplacityAssets.PARTICLES_REGIONS.length;
 		}
 		GameProcess.gameBatch.enableBlending();
-		GameProcess.gameBatch.draw(LaplacityAssets.PARTICLES_REGIONS[currentTextureIndex][1], getX() - ELECTRON_SIZE, getY() - ELECTRON_SIZE, 2 * ELECTRON_SIZE, 2 * ELECTRON_SIZE);
+		GameProcess.gameBatch.draw(LaplacityAssets.PARTICLES_REGIONS[currentTextureIndex][1], getX() - PARTICLE_SIZE, getY() - PARTICLE_SIZE, 2 * PARTICLE_SIZE, 2 * PARTICLE_SIZE);
 		GameProcess.gameBatch.disableBlending();
 	}
 

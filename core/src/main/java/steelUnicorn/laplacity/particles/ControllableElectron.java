@@ -36,6 +36,7 @@ public class ControllableElectron extends ChargedParticle {
 		startX = x;
 		startY = y;
 		pointLight.setStaticLight(false);
+		pointLight.setDistance(CAT_LIGHT_DISTANCE);
 	}
 
 	@Override
@@ -91,7 +92,7 @@ public class ControllableElectron extends ChargedParticle {
 		shapeRenderer.end();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(getX() + slingshotX, getY() + slingshotY, ELECTRON_SIZE / 3);
+		shapeRenderer.circle(getX() + slingshotX, getY() + slingshotY, PARTICLE_SIZE / 3);
 		shapeRenderer.end();
 	}
 

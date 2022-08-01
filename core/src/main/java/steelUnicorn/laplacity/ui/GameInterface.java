@@ -270,7 +270,7 @@ public class GameInterface extends Stage implements GestureListener {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		float len2 = getlen2ToMainParticle(screenX, screenY);
 
-		if (len2 < 4 * ELECTRON_SIZE * ELECTRON_SIZE) {
+		if (len2 < 4 * PARTICLE_SIZE * PARTICLE_SIZE) {
 			TrajectoryRenderer.changingDir = true;
 			touchDragged(screenX, screenY, pointer);
 			return true;

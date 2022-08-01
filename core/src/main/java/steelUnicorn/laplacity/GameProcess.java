@@ -94,9 +94,8 @@ public class GameProcess {
 	//========================================================================================
 	// PARTICLES
 	public static final float PARTICLE_CHARGE = 300f;
-	public static final float ELECTRON_SIZE = 2f;
+	public static final float PARTICLE_SIZE = 2f;
 	public static final float CAT_SIZE = 4f;
-	public static final float PROTON_SIZE = 2f;
 	public static final float PARTICLE_MASS = 1f;
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final long PARTICLE_TEXTURES_UPDATE_DELTA = 80;
@@ -129,6 +128,13 @@ public class GameProcess {
 	public static final float DISSIPATIVE_ACCELERATION_FACTOR = 100f;
 	public static final float DISSIPATIVE_MODERATION_FACTOR = -30f;
 	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 3;
+	
+	// LIGHT
+	public static final float AMBIENT_INTENSITY = 0.9f;
+	public static final float CAT_LIGHT_DISTANCE = 2*CAT_SIZE;
+	public static final float PARTICLE_LIGHT_DISTANCE = 2*PARTICLE_SIZE;
+	public static final float RED_LED_LIGHT_DISTANCE = 15f * PARTICLE_SIZE;
+	public static final float SOFTNESS_FACTOR = 0.5f;
 	//========================================================================================
 	
 	
@@ -150,8 +156,8 @@ public class GameProcess {
 		gameCache = new SpriteCache(8000, true);
 		RayHandler.useDiffuseLight(true);
 		rayHandler = new RayHandler(levelWorld);
-		rayHandler.setAmbientLight(0.9f);
-		rayHandler.setAmbientLight(0.9f, 0.9f, 0.9f, 1f);
+		rayHandler.setAmbientLight(AMBIENT_INTENSITY);
+		rayHandler.setAmbientLight(AMBIENT_INTENSITY, AMBIENT_INTENSITY, AMBIENT_INTENSITY, 1f);
 		levelWorld.setContactListener(hitController);
 		
 		LaplacityField.initField(level);
@@ -343,7 +349,7 @@ public class GameProcess {
 	
 	public static PointLight registerPointLight(float x, float y, Color col, float rad) {
 		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
-		pl.setSoftnessLength(rad/2);
+		pl.setSoftnessLength(rad*SOFTNESS_FACTOR);
 		pl.setSoft(true);
 		lights.add(pl);
 		return pl;
@@ -352,7 +358,7 @@ public class GameProcess {
 	public static PointLight registerPointLight(float x, float y, Color col, float rad, boolean isStatic) {
 		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
 		pl.setStaticLight(isStatic);
-		pl.setSoftnessLength(0.0f);
+		pl.setSoftnessLength(rad * SOFTNESS_FACTOR);
 		lights.add(pl);
 		return pl;
 	}
