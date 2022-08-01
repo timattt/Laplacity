@@ -97,6 +97,22 @@
 ![kl6gc67f-900](https://user-images.githubusercontent.com/45181367/182096077-8912ad11-76d1-4424-a45a-be1839ba90e0.jpg)
 ![герметичный-закры-юк-космического-етате-ьного-аппарата-76469650](https://user-images.githubusercontent.com/45181367/182096111-4a3086d6-3ad2-461b-9907-7c4429530d64.jpg)
 
+### Блок на шарнире и шарнир
+
+Как дверца для кошек
+
+### Хлипкая стена
+
+![image](https://user-images.githubusercontent.com/45181367/182105775-946ec95f-bf13-4ca4-aeeb-cc0bfc862775.png)
+
+
+### Убийственные стены
+
+### Поршень
+
+### Пружинные клетки
+
+
 
 # Игровой процесс
 
@@ -125,7 +141,7 @@
 ![H699c6cc2d3454f3c9fdfb945f0735ceb4](https://user-images.githubusercontent.com/45181367/182096236-0fe6874f-0ee8-468d-a1fb-d2c08b797bb4.jpg)
 ![6083254570](https://user-images.githubusercontent.com/45181367/182096296-0e0ccd23-e9d8-4708-b7ef-6c3a148460e0.jpg)
 
-
+Нужен рисунок котика или "сообщения" изо рта котика о еде когда еда закончится.
 
 ## Карта игры
 
