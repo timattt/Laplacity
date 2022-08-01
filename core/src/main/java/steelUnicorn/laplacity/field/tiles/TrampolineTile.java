@@ -1,9 +1,8 @@
 package steelUnicorn.laplacity.field.tiles;
 
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.field.LaplacityField;
 
 public class TrampolineTile extends SolidTile {
 
@@ -15,9 +14,8 @@ public class TrampolineTile extends SolidTile {
 	}
 
 	@Override
-	public void constantDraw(SpriteCache sc) {
-		float sz = LaplacityField.tileSize;
-		sc.add(LaplacityAssets.TRAMPOLINE_REGION, gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+	public TextureRegion getRegion(float[] angle) {
+		return LaplacityAssets.TRAMPOLINE_REGION;
 	}
 	
 }
