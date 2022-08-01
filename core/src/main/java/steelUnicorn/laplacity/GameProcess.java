@@ -150,7 +150,8 @@ public class GameProcess {
 		gameCache = new SpriteCache(8000, true);
 		RayHandler.useDiffuseLight(true);
 		rayHandler = new RayHandler(levelWorld);
-		
+		rayHandler.setAmbientLight(0.5f);
+		rayHandler.setAmbientLight(0.5f, 0.5f, 0.5f, 1f);
 		levelWorld.setContactListener(hitController);
 		
 		LaplacityField.initField(level);
