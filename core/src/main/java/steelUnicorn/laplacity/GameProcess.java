@@ -295,6 +295,8 @@ public class GameProcess {
 		if (tl != null && tl.isAllowDensityChange()) {
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
+		} else {
+			deletePhysicalObject(part.getBody());
 		}
 	}
 	
