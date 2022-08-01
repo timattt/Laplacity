@@ -319,7 +319,7 @@ public class GameProcess {
 		Globals.game.getScreenManager().pushScreen(nameWinScreen, null);
 	}
 	
-	public static float calculateScore() {
+	public static int calculateScore() {
 		float dens = 0;
 		
 		for (int x = 0; x < LaplacityField.fieldWidth; x++) {
