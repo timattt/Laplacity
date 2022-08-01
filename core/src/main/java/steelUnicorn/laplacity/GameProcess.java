@@ -150,8 +150,8 @@ public class GameProcess {
 		gameCache = new SpriteCache(8000, true);
 		RayHandler.useDiffuseLight(true);
 		rayHandler = new RayHandler(levelWorld);
-		rayHandler.setAmbientLight(0.5f);
-		rayHandler.setAmbientLight(0.5f, 0.5f, 0.5f, 1f);
+		rayHandler.setAmbientLight(0.9f);
+		rayHandler.setAmbientLight(0.9f, 0.9f, 0.9f, 1f);
 		levelWorld.setContactListener(hitController);
 		
 		LaplacityField.initField(level);
@@ -343,7 +343,8 @@ public class GameProcess {
 	
 	public static PointLight registerPointLight(float x, float y, Color col, float rad) {
 		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
-		pl.setSoftnessLength(0.0f);
+		pl.setSoftnessLength(rad/2);
+		pl.setSoft(true);
 		lights.add(pl);
 		return pl;
 	}
