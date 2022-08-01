@@ -34,6 +34,7 @@ import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.ControllableElectron;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
+import steelUnicorn.laplacity.utils.Settings;
 
 /**
  * Основной класс функциями и переменными игрового процесса.
@@ -184,7 +185,9 @@ public class GameProcess {
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		
-		rayHandler.updateAndRender();
+		if (Settings.isLightingEnabled()) {
+			rayHandler.updateAndRender();
+		}
 		
 		gameUI.draw();
 		//debugRend.render(levelWorld, CameraManager.camMat());
