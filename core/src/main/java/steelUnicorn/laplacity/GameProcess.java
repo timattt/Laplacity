@@ -320,6 +320,8 @@ public class GameProcess {
 		if (tl != null && tl.isAllowDensityChange()) {
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
+		} else {
+			deletePhysicalObject(part.getBody());
 		}
 	}
 	
@@ -365,7 +367,7 @@ public class GameProcess {
 		Globals.game.getScreenManager().pushScreen(nameWinScreen, null);
 	}
 	
-	public static float calculateScore() {
+	public static int calculateScore() {
 		float dens = 0;
 		
 		for (int x = 0; x < LaplacityField.fieldWidth; x++) {
@@ -376,7 +378,7 @@ public class GameProcess {
 		
 		float part = particles.size * SCORE_PER_PARTICLE;
 		
-		return 0.5f * MAX_SCORE / (1f + dens) + 0.5f * MAX_SCORE / (part + 1f);
+		return (int) (0.5f * MAX_SCORE / (1f + dens) + 0.5f * MAX_SCORE / (part + 1f));
 	}
 	
 }

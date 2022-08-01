@@ -30,12 +30,14 @@ public class LoadingScreen extends ManagedScreen {
     private float elapsedTime = 0;
     Timer.Task loadingAnimation;
 
+    private Image background;
+
     public LoadingScreen() {
         loadingStage = new Stage(guiViewport);
 
         Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
 
-        Image background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * guiViewport.getWorldHeight(),
                 guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + guiViewport.getWorldWidth() / 2 , 0);
@@ -81,9 +83,18 @@ public class LoadingScreen extends ManagedScreen {
         }
     }
 
+    public void resizeBackground() {
+        background.setSize(background.getPrefWidth() / background.getPrefHeight()
+                        * loadingStage.getViewport().getWorldHeight(),
+                loadingStage.getViewport().getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + loadingStage.getViewport().getWorldWidth() / 2 , 0);
+    }
+
     @Override
     public void resize(int width, int height) {
-
+        resizeBackground();
+        loadingLabel.setPosition(loadingStage.getWidth() / 2 - loadingLabel.getWidth() * scale / 2,
+                loadingStage.getHeight() / 2 - loadingLabel.getHeight() * scale / 2);
     }
 
     @Override

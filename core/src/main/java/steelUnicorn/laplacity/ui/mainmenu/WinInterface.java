@@ -36,10 +36,13 @@ public class WinInterface extends Stage {
 
     private Table root; //<< Корневая таблица для позиционирования
 
+    private Image background;
+
+
     public WinInterface(Viewport viewport) {
         super(viewport);
 
-        Image background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
@@ -147,4 +150,10 @@ public class WinInterface extends Stage {
         table.add(btn);
     }
 
+    public void resizeBackground() {
+        background.setSize(background.getPrefWidth() / background.getPrefHeight()
+                        * this.getViewport().getWorldHeight(),
+                this.getViewport().getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + this.getViewport().getWorldWidth() / 2 , 0);
+    }
 }

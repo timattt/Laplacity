@@ -44,6 +44,8 @@ public class MainMenu extends Stage {
     private CatFoodInterface catFI;
 
     private Cell<MainMenuTab> tabCell;
+
+    private Image background;
     /**
      * Конструктор главного меню.
      * Собирает каждую вкладку и главное меню.
@@ -54,7 +56,7 @@ public class MainMenu extends Stage {
         super(viewport);
 
         //background
-        Image background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
@@ -155,5 +157,12 @@ public class MainMenu extends Stage {
                 tabCell.setActor(tabActor);
             }
         });
+    }
+
+    public void resizeBackground() {
+        background.setSize(background.getPrefWidth() / background.getPrefHeight()
+                        * this.getViewport().getWorldHeight(),
+                this.getViewport().getWorldHeight());
+        background.setPosition(- background.getWidth() / 2 + this.getViewport().getWorldWidth() / 2 , 0);
     }
 }
