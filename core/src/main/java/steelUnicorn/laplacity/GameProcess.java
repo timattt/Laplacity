@@ -75,6 +75,7 @@ public class GameProcess {
 	
 	// Time
 	public static long startTime = 0;
+	public static float frameAccumulator = 0f;
 	
 	// After hit
 	public static boolean justHitted;
@@ -112,6 +113,7 @@ public class GameProcess {
 	public static final float PHYSICS_TIME_STEP = 1f/60f;
 	public static final int VELOCITY_STEPS = 1;
 	public static final int POSITION_STEPS = 3;
+	public static final float SIMULATION_STEP = 1f/40f;
 	
 	// OBJECTS
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
@@ -176,17 +178,7 @@ public class GameProcess {
 		gameUI.draw();
 		//debugRend.render(levelWorld, CameraManager.camMat());
 		//---------------------------------------------
-		
-		// update
-		//---------------------------------------------
-		CameraManager.update(delta);
-		currentGameMode.update();
-		gameUI.act(delta);
-		if (currentGameMode == GameMode.FLIGHT) {
-			levelWorld.step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
-		}
-		//---------------------------------------------
-		
+
 		// hits
 		//---------------------------------------------
 		if (justHitted) {
@@ -196,6 +188,25 @@ public class GameProcess {
 		if (justFinished) {
 			levelFinished();
 			justFinished = false;
+		}
+		//---------------------------------------------
+		
+		// update
+		//---------------------------------------------
+		CameraManager.update(delta);
+		currentGameMode.update();
+		gameUI.act(delta);
+		if (currentGameMode == GameMode.FLIGHT) {
+			frameAccumulator += delta;
+			while (frameAccumulator >= 0) {
+				Gdx.app.log("zalupa", "hui");
+				mainParticle.savePos();
+				levelWorld.step(SIMULATION_STEP, VELOCITY_STEPS, POSITION_STEPS);
+				frameAccumulator -= SIMULATION_STEP;
+			}
+			float alpha = 1 + (frameAccumulator / SIMULATION_STEP);
+			Gdx.app.log("alpha", String.valueOf(alpha));
+			mainParticle.setInterpCoeff(alpha);
 		}
 		//---------------------------------------------
 	}

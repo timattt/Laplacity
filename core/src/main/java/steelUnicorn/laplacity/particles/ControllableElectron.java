@@ -30,6 +30,11 @@ public class ControllableElectron extends ChargedParticle {
 	// Start pos
 	private float startX;
 	private float startY;
+
+	// Prev pos
+	private float prevX = 0f;
+	private float prevY = 0f;
+	private float interpCoeff = 1f;
 	
 	public ControllableElectron(float x, float y) {
 		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false);
@@ -41,8 +46,8 @@ public class ControllableElectron extends ChargedParticle {
 	public void draw() {
 		GameProcess.gameBatch.enableBlending();
 		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGION,
-				getX() - CAT_SIZE,
-				getY() - CAT_SIZE,
+				interpX() - CAT_SIZE,
+				interpY() - CAT_SIZE,
 				CAT_SIZE,
 				CAT_SIZE,
 				2 * CAT_SIZE,
@@ -125,6 +130,23 @@ public class ControllableElectron extends ChargedParticle {
 	@Override
 	public void collidedWithStructure() {
 		LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
+	}
+
+	public float interpX() {
+		return (1 - interpCoeff) * prevX + interpCoeff * getX();
+	}
+
+	public float interpY() {
+		return (1 - interpCoeff) * prevY + interpCoeff * getY();
+	}
+
+	public void savePos() {
+		prevX = getX();
+		prevY = getY();
+	}
+
+	public void setInterpCoeff(float coeff) {
+		interpCoeff = coeff;
 	}
 
 }
