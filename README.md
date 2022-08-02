@@ -8,3 +8,4 @@
 * [**Основное ТЗ**](https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md)
 * [**Дополнительные механики**](https://github.com/timattt/Steel-unicorn/blob/master/About/LaplacityMoreMechanics.md)
 * [**Хранилище всех ассетов**](https://drive.google.com/drive/folders/17aeSa11tge7ALK1HNtBJG-z9SehW_emO?usp=sharing)
+* [**GDD**](https://github.com/timattt/Laplacity/edit/master/about/GDD.md)
