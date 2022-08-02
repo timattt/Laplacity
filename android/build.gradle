@@ -31,7 +31,7 @@ android {
 	}
 	defaultConfig {
 		applicationId 'steelUnicorn.laplacity'
-		minSdkVersion 19
+		minSdkVersion 27
 		targetSdkVersion 30
 		versionCode 1
 		versionName "1.0"
