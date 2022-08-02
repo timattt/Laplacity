@@ -1,18 +1,21 @@
 package steelUnicorn.laplacity.ui.levels;
 
+import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -24,7 +27,7 @@ import steelUnicorn.laplacity.utils.LevelsParser;
 
 /**
  * Класс LevelTab при создании создает вкладку с уровнями в главном меню.
- * Вкладка начинается с названия, и под названием табилца с уровнями.
+ * Вкладка начинается с названия, и под названием таблица с уровнями.
  * Уровни подгружаются из папки /assets/levels/
  */
 public class LevelsTab extends MainMenuTab {
@@ -50,7 +53,7 @@ public class LevelsTab extends MainMenuTab {
 
         row();
         nav = new LevelsNav(skin);
-        add(nav);
+        add(nav).pad(nav.navPad);
     }
 
     private Cell<TextButton> addReturnButton(Skin skin) {
@@ -84,12 +87,21 @@ public class LevelsTab extends MainMenuTab {
      */
     public class LevelsNav extends Table {
         private Label sectionName;
-        private Button leftArrow;
-        private Button rightArrow;
+        private ImageButton leftArrow;
+        private ImageButton rightArrow;
+
+        private float navPad = UI_WORLD_HEIGHT * 0.08f;
+        private float arrowSize = UI_WORLD_WIDTH * 0.04f;
 
         public LevelsNav(Skin skin) {
+            TextureAtlas icons = Globals.assetManager.get("ui/gameicons/icons.atlas",
+                    TextureAtlas.class);
+
             defaults().space(LevelsTab.tabSpace);
-            leftArrow = new Button(skin);
+            ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
+                    skin.get(ImageButton.ImageButtonStyle.class));
+            style.imageUp = new TextureRegionDrawable(icons.findRegion("arrowleft"));
+            leftArrow = new ImageButton(style);
             leftArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -99,13 +111,16 @@ public class LevelsTab extends MainMenuTab {
                     checkVisible();
                 }
             });
-            add(leftArrow);
+            add(leftArrow).size(arrowSize);
 
             sectionName = new Label("Section " + LevelsTab.this.currentSection, skin);
             sectionName.setColor(Color.WHITE);
             add(sectionName);
 
-            rightArrow = new Button(skin);
+            style = new ImageButton.ImageButtonStyle(
+                    skin.get(ImageButton.ImageButtonStyle.class));
+            style.imageUp = new TextureRegionDrawable(icons.findRegion("arrowright"));
+            rightArrow = new ImageButton(style);
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -115,7 +130,7 @@ public class LevelsTab extends MainMenuTab {
                     checkVisible();
                 }
             });
-            add(rightArrow);
+            add(rightArrow).size(arrowSize);
 
             checkVisible();
         }
