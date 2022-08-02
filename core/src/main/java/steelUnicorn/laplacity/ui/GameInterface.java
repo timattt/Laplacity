@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -42,9 +44,10 @@ public class GameInterface extends Stage implements GestureListener {
 	private static final float iconSpace = iconSize * 0.1f;
 
 	Cell<Button> flightCell;
-	Button flightBtn;
-	Button editBtn;
+	ImageButton flightBtn;
+	ImageButton editBtn;
 
+	Skin skin;
 	/**
 	 * Конструктор создающий интерфейс
 	 * @param viewport
@@ -71,7 +74,7 @@ public class GameInterface extends Stage implements GestureListener {
 	 */
 	private void createInterface() {
 		//Dialogs initialize
-		Skin skin = Globals.assetManager.get("ui/uiskin.json");
+		skin = Globals.assetManager.get("ui/uiskin.json");
 		returnDialog = new ReturnDialog(skin);
 
 		//FpsCounter
@@ -93,6 +96,7 @@ public class GameInterface extends Stage implements GestureListener {
 		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
 		root.add(catFI).expand().top().uniform();
 		catFood.timer.setCurrentInterface(catFI);
+		catFI.setBackground(skin.newDrawable("white", Color.valueOf("120A39FF")));
 
 		//Icons Table
 		Table guiTable = new Table();
@@ -176,8 +180,17 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param name - название мода
 	 * @param listener - обработчик события
 	 */
-	private Button createIcon(String name, ChangeListener listener) {
-		Button btn = new Button(new TextureRegionDrawable(icons.findRegion(name)));
+	private ImageButton createIcon(String name, ChangeListener listener) {
+		ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
+				skin.newDrawable("white", Color.valueOf("837d7eff")),
+				skin.newDrawable("white", Color.valueOf("505251ff")),
+				null,
+				new TextureRegionDrawable(icons.findRegion(name)),
+				null,
+				null);
+		ImageButton btn = new ImageButton(style);
+		Gdx.app.log("GameInterface", name);
+		btn.setColor(Color.WHITE);
 		btn.setName(name);
 		btn.addListener(listener);
 		return btn;
@@ -189,7 +202,7 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param name - название мода
 	 * @param mode - включаемый мод
 	 */
-	private Button createModeIcon(String name, GameMode mode, Sound sound) {
+	private ImageButton createModeIcon(String name, GameMode mode, Sound sound) {
 		return createIcon(name, new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {

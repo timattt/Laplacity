@@ -1,67 +1,81 @@
 icons.png
-size: 900, 100
+size: 1100, 100
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-Clear
+arrowright
   rotate: false
   xy: 0, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Dirichlet
+arrowleft
   rotate: false
   xy: 100, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Edit
+Clear
   rotate: false
   xy: 200, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Electrons
+Dirichlet
   rotate: false
   xy: 300, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Eraser
+Edit
   rotate: false
   xy: 400, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Protons
+Electrons
   rotate: false
   xy: 500, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Reload
+Eraser
   rotate: false
   xy: 600, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Return
+Protons
   rotate: false
   xy: 700, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
   index: -1
-Flight
+Reload
   rotate: false
   xy: 800, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+Return
+  rotate: false
+  xy: 900, 0
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
+Flight
+  rotate: false
+  xy: 1000, 0
   size: 100, 100
   orig: 100, 100
   offset: 0, 0
