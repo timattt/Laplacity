@@ -27,6 +27,10 @@ public class Settings {
 	//lighting
 	private static boolean lightingEnabled;
 
+
+	//fps
+	private static boolean showFps;
+
 	/**
 	 * Функция загружающая настройки используя prefs
 	 */
@@ -49,6 +53,12 @@ public class Settings {
 		} else {
 			lightingEnabled = true;
 		}
+
+		if (prefs.contains("showFps")) {
+			showFps = prefs.getBoolean("showFps");
+		} else {
+			showFps = true;
+		}
 	}
 
 	/**
@@ -58,6 +68,7 @@ public class Settings {
 		prefs.putFloat("soundVolume", soundVolume);
 		prefs.putFloat("musicVolume", musicVolume);
 		prefs.putBoolean("lighting", lightingEnabled);
+		prefs.putBoolean("showFps", showFps);
 
 		prefs.flush();
 	}
@@ -79,8 +90,14 @@ public class Settings {
 	public static boolean isLightingEnabled() {
 		return lightingEnabled;
 	}
-
 	public static void setLighting(boolean lighting) {
 		Settings.lightingEnabled = lighting;
+	}
+
+	public static boolean isShowFps() {
+		return showFps;
+	}
+	public static void setShowFps(boolean showFps) {
+		Settings.showFps = showFps;
 	}
 }
