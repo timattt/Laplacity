@@ -81,6 +81,17 @@ public class SettingsTab extends MainMenuTab {
                         Settings.setLighting(box.isChecked());
                     }
                 }, "lightingCheckbox");
+
+        settings.row();
+        addCheckbox(settings, "Show fps", skin, Settings.isShowFps(),
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                        CheckBox box = (CheckBox) actor;
+                        Settings.setShowFps(box.isChecked());
+                    }
+                }, "fpsCheckbox");
     }
 
     /**

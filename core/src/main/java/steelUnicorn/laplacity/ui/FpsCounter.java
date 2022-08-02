@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import steelUnicorn.laplacity.utils.Settings;
+
 public class FpsCounter extends Label {
     public static float padSize = 10;
 
@@ -15,6 +17,7 @@ public class FpsCounter extends Label {
     }
 
     private void updateFps() {
+        setVisible(Settings.isShowFps());
         setText(String.valueOf(Gdx.graphics.getFramesPerSecond()) + " fps");
     }
 
