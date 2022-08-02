@@ -270,7 +270,7 @@ public class GameProcess {
 			}
 		}
 
-		gameUI.updateCurModeImg();
+		gameUI.updateCurMode();
 	}
 	
 	public static Body registerPhysicalObject(BodyDef bodydef) {

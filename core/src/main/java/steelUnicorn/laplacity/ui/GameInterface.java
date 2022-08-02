@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -18,7 +19,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.CameraManager;
@@ -38,7 +41,6 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private TextureAtlas icons;
-	private Image curModeImg;
 	private CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
@@ -46,7 +48,7 @@ public class GameInterface extends Stage implements GestureListener {
 	Cell<Button> flightCell;
 	ImageButton flightBtn;
 	ImageButton editBtn;
-
+	Table guiTable;
 	Skin skin;
 	/**
 	 * Конструктор создающий интерфейс
@@ -86,11 +88,8 @@ public class GameInterface extends Stage implements GestureListener {
 		root.setFillParent(true);
 		addActor(root);
 
-		//mode img
-		curModeImg = new Image();
-		curModeImg.setVisible(false);
-		root.add(curModeImg).expand().left().top()
-				.size(iconSize, iconSize).pad(iconSpace).uniform();
+		//for aligning
+		root.add().expand().uniform();
 
 		//cat interface
 		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
@@ -99,7 +98,7 @@ public class GameInterface extends Stage implements GestureListener {
 		catFI.setBackground(skin.newDrawable("white", Color.valueOf("120A39FF")));
 
 		//Icons Table
-		Table guiTable = new Table();
+		guiTable = new Table();
 		root.add(guiTable).expand().right().pad(iconSpace).uniform();
 		guiTable.defaults()
 				.width(iconSize)
@@ -109,19 +108,20 @@ public class GameInterface extends Stage implements GestureListener {
 		icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
 
 		//reload and return buttons
-		guiTable.add(createIcon("Return", new ChangeListener() {
+		guiTable.add(createIcon("Return", new ClickListener(){
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
+				updateCurMode();
 				returnDialog.show(GameInterface.this);
 			}
 		}));
 		guiTable.row();
 
 		//modes
-		flightBtn = createIcon("Flight", new ChangeListener() {
+		flightBtn = createIcon("Flight", new ClickListener(){
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 				if (catFood.getTotalLaunchesAvailable() > 0) {
 					changeGameMode(GameMode.FLIGHT);    //no need in NONE because of editBtn
@@ -136,9 +136,9 @@ public class GameInterface extends Stage implements GestureListener {
 		flightCell = guiTable.add(flightBtn);
 		guiTable.row();
 
-		guiTable.add(createIcon("Clear", new ChangeListener() {
+		guiTable.add(createIcon("Clear", new ClickListener(){
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
 				GameProcess.clearLevel();
 			}
@@ -158,14 +158,14 @@ public class GameInterface extends Stage implements GestureListener {
 	 * Функция вызывается в GameProcess.changeGameMode при изменении мода
 	 * для изменения вида gui
 	 */
-	public void updateCurModeImg() {
-		if (currentGameMode != GameMode.NONE) {
-			curModeImg.setVisible(true);
-			curModeImg.setDrawable(
-					new TextureRegionDrawable(
-							icons.findRegion(currentGameMode.getName())));
-		} else {
-			curModeImg.setVisible(false);
+	public void updateCurMode() {
+		Array<Actor> btns = guiTable.getChildren();
+		for (Actor btn : btns) {
+			ImageButton icon = (ImageButton) btn;
+			Gdx.app.log("Icons checked", currentGameMode.getName() + " " + icon.getName());
+			if (!icon.getName().equals(currentGameMode.getName())) {
+				icon.setChecked(false);
+			}
 		}
 
 		if (currentGameMode == GameMode.FLIGHT) {
@@ -173,6 +173,7 @@ public class GameInterface extends Stage implements GestureListener {
 		} else {
 			flightCell.setActor(flightBtn);
 		}
+		flightCell.getActor().setChecked(false);
 	}
 	/**
 	 * Функция для создания кнопки иконки
@@ -180,16 +181,15 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param name - название мода
 	 * @param listener - обработчик события
 	 */
-	private ImageButton createIcon(String name, ChangeListener listener) {
+	private ImageButton createIcon(String name, ClickListener listener) {
 		ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
 				skin.newDrawable("white", Color.valueOf("837d7eff")),
 				skin.newDrawable("white", Color.valueOf("505251ff")),
-				null,
+				skin.newDrawable("white", Color.GREEN),
 				new TextureRegionDrawable(icons.findRegion(name)),
 				null,
 				null);
 		ImageButton btn = new ImageButton(style);
-		Gdx.app.log("GameInterface", name);
 		btn.setColor(Color.WHITE);
 		btn.setName(name);
 		btn.addListener(listener);
@@ -203,9 +203,9 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param mode - включаемый мод
 	 */
 	private ImageButton createModeIcon(String name, GameMode mode, Sound sound) {
-		return createIcon(name, new ChangeListener() {
+		return createIcon(name, new ClickListener(){
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(sound);
 				if (currentGameMode == mode) {
 					changeGameMode(GameMode.NONE);
