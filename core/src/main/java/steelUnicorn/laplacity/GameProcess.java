@@ -200,7 +200,7 @@ public class GameProcess {
 			frameAccumulator += delta;
 			while (frameAccumulator >= 0) {
 				Gdx.app.log("zalupa", "hui");
-				mainParticle.savePos();
+				mainParticle.savePosition();
 				levelWorld.step(SIMULATION_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_STEP;
 			}

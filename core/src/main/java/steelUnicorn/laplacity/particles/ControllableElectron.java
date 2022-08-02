@@ -83,6 +83,8 @@ public class ControllableElectron extends ChargedParticle {
 	
 	public void resetToStartPosAndStartVelocity() {
 		setPosition(startX, startY, 0);
+		savePosition();
+		interpCoeff = 1f;
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
 	}
@@ -140,7 +142,7 @@ public class ControllableElectron extends ChargedParticle {
 		return (1 - interpCoeff) * prevY + interpCoeff * getY();
 	}
 
-	public void savePos() {
+	public void savePosition() {
 		prevX = getX();
 		prevY = getY();
 	}
