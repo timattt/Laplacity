@@ -78,7 +78,7 @@
 
 Забывчивые астронавты оставили вентиляторы включенными. Лопасти могут представлять опасность для котика.
 
-![image](https://user-images.githubusercontent.com/25401699/181926391-565d5d0b-4101-4a9b-b371-35648ba3355e.png)
+![image](https://user-images.githubusercontent.com/45181367/182617703-b869e120-18f6-45ef-ad7e-005d67376c68.png)
 ![Screenshot_2](https://user-images.githubusercontent.com/45181367/182095698-f0673860-a14f-4795-a1ac-ba4951e4a770.png)
 
 
