@@ -40,8 +40,8 @@ public class Globals {
 	public static final String nameSlideOut = "slideOut";
 
 	// UI Viewport. Default world parameters for 16:9 ratio
-	public static final float UI_WORLD_WIDTH = 1024/10*7;
-	public static final float UI_WORLD_HEIGHT = 576/10*7;
+	public static final float UI_WORLD_WIDTH = 1920;
+	public static final float UI_WORLD_HEIGHT = 1080;
 
 	// Ingame viewport
 	/**
