@@ -51,24 +51,6 @@ public class EmptyTile {
 	public void addInvisibleDensity(float delta) {
 		invisibleDensity += delta;
 	}
-
-	protected void drawIntensityArrow() {
-		/*
-		if (gridX % 1 == 0 && gridY % 1 == 0) {
-		float sz = LaplacityField.tileSize;
-		TMP1.set((gridX)*sz, (gridY)*sz);
-		FieldPotentialCalculator.calculateFieldIntensity(TMP1.x, TMP1.y, LaplacityField.tiles, TMP2);
-		TMP2.scl(0.03f);
-		TMP1.sub(sz*(- 0.5f), sz*(- 0.5f));
-		TMP2.add(TMP1);
-		
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(1f, 1f, 0, 1f);
-		shapeRenderer.line(TMP1, TMP2);
-		shapeRenderer.end();
-
-		}*/
-	}
 	
 	public int getGridX() {
 		return gridX;

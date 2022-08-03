@@ -51,11 +51,11 @@ public class ChargedParticle implements CollisionListener {
 		body.setUserData(this);
 		
 		cir.dispose();
-		
-		setPosition(x, y);
-		
+	
 		pointLight = registerPointLight(x, y, lightColor, rad, true);
 		pointLight.attachToBody(body);
+		
+		setPosition(x, y);
 	}
 	
 	public void draw() {
@@ -86,10 +86,12 @@ public class ChargedParticle implements CollisionListener {
 
 	public void setPosition(float x, float y) {
 		body.setTransform(x, y, body.getAngle());
+		pointLight.setPosition(x, y);
 	}
 	
 	public void setPosition(float x, float y, float angle) {
 		body.setTransform(x, y, angle);
+		pointLight.setPosition(x, y);
 	}
 	
 	public float getCharge() {
