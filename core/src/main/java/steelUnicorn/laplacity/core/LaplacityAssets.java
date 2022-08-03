@@ -166,7 +166,7 @@ public class LaplacityAssets {
     }
 
     public static void changeTrack(String name) {
-        if (currentMusic != null)
+        if (currentMusic != null && Globals.assetManager.contains(currentMusic))
             Globals.assetManager.unload(currentMusic);
         currentMusic = name;
         Globals.assetManager.load(currentMusic, Music.class);
