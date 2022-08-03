@@ -26,6 +26,10 @@ public class RigidStructure extends FieldStructure {
 	// center
 	private float x;
 	private float y;
+
+	// interpolation
+	private Vector2 prevPos = new Vector2(0f, 0f);
+	private float prevAngle = 0f;
 	
 	// sprite
 	private Sprite sprite;
@@ -56,6 +60,10 @@ public class RigidStructure extends FieldStructure {
 
 	@Override
 	public void renderBatched(float timeFromStart) {
+		/* TODO
+		 * вставить интерполяцию
+		 * как-нибудь
+		 */
 		Vector2 pos = Globals.TMP1.set(body.getPosition()).sub(origin);
         sprite.setPosition(pos.x, pos.y);
         sprite.setOrigin(origin.x, origin.y);
@@ -75,6 +83,16 @@ public class RigidStructure extends FieldStructure {
 		body.setTransform(x, y, 0);
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
+		savePosition();
+	}
+
+	public void savePosition() {
+		prevPos.set(body.getPosition()).sub(origin);
+		prevAngle = body.getAngle();
+	}
+
+	private float interpAngle() {
+		return (1 - GameProcess.interpCoeff) * prevAngle + GameProcess.interpCoeff * body.getAngle();
 	}
 
 }

@@ -75,7 +75,8 @@ public class GameProcess {
 	
 	// Time
 	public static long startTime = 0;
-	public static float frameAccumulator = 0f;
+	private static float frameAccumulator = 0f;
+	public static float interpCoeff = 1f;
 	
 	// After hit
 	public static boolean justHitted;
@@ -113,7 +114,7 @@ public class GameProcess {
 	public static final float PHYSICS_TIME_STEP = 1f/60f;
 	public static final int VELOCITY_STEPS = 1;
 	public static final int POSITION_STEPS = 3;
-	public static final float SIMULATION_STEP = 1f/40f;
+	public static final float SIMULATION_STEP = 1f/60f;
 	
 	// OBJECTS
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
@@ -199,16 +200,19 @@ public class GameProcess {
 		if (currentGameMode == GameMode.FLIGHT) {
 			frameAccumulator += delta;
 			while (frameAccumulator >= 0) {
-				Gdx.app.log("zalupa", "hui");
-				mainParticle.savePosition();
+				saveCurrentState();
 				levelWorld.step(SIMULATION_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_STEP;
 			}
 			float alpha = 1 + (frameAccumulator / SIMULATION_STEP);
-			Gdx.app.log("alpha", String.valueOf(alpha));
 			mainParticle.setInterpCoeff(alpha);
 		}
 		//---------------------------------------------
+	}
+
+	private static void saveCurrentState() {
+		mainParticle.savePosition();
+		// TODO add structure position saving
 	}
 	
 	public static void disposeLevel() {
@@ -278,6 +282,7 @@ public class GameProcess {
 			if (wasFlight) {
 				mainParticle.resetToStartPosAndStartVelocity();
 				LaplacityField.resetStructures();
+				interpCoeff = 1f;
 			}
 		}
 

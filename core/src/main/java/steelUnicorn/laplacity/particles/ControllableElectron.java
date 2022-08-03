@@ -5,7 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.MathUtils;
+//import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.GameProcess;
@@ -34,7 +34,6 @@ public class ControllableElectron extends ChargedParticle {
 	// Prev pos
 	private float prevX = 0f;
 	private float prevY = 0f;
-	private float interpCoeff = 1f;
 	
 	public ControllableElectron(float x, float y) {
 		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false);
@@ -54,7 +53,7 @@ public class ControllableElectron extends ChargedParticle {
 				2 * CAT_SIZE,
 				1f,
 				1f,
-				body.getAngle() * MathUtils.radDeg
+				0f //body.getAngle() * MathUtils.radDeg
 				);
 		GameProcess.gameBatch.disableBlending();
 	}

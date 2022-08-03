@@ -5,6 +5,8 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -39,6 +41,10 @@ public class HingeStructure extends FieldStructure {
 	private Body box;
 	private Body hinge;
 	private Joint joint;
+
+	// for interpolation
+	private float prevAngle = 0f;
+	private Vector2 prevPos = new Vector2(0f, 0f);
 	
 	private int cacheId;
 	private static final Matrix4 transMat = new Matrix4();
@@ -129,6 +135,7 @@ public class HingeStructure extends FieldStructure {
 		gameCache.setTransformMatrix(
 				transMat.idt().
 				translate(box.getPosition().x, box.getPosition().y, 0).
+				// TODO: замени box.getAngle на interpAngle
 				rotate(0, 0, 1, MathUtils.radDeg * box.getAngle()).
 				translate( - boxWidth / 2, - boxHeight/2, 0)
 				);
@@ -145,4 +152,20 @@ public class HingeStructure extends FieldStructure {
 		GameProcess.deletePhysicalObject(hinge);
 	}
 
+	public void savePosition() {
+		prevAngle = box.getAngle();
+		prevPos = box.getPosition();
+	}
+
+	private float interpAngle() {
+		return (1 - interpCoeff) * prevAngle + interpCoeff * box.getAngle();
+	}
+
+	private float interpX() {
+		return (1 - interpCoeff) * prevPos.x + interpCoeff * box.getPosition().x;
+	}
+
+	private float interpY() {
+		return (1 - interpCoeff) * prevPos.y + interpCoeff * box.getPosition().y;
+	}
 }
