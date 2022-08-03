@@ -325,10 +325,11 @@ TODO ANDREW
 
 ### Фон 2
 ![image](https://user-images.githubusercontent.com/45181367/182631121-e6523eb0-d38d-4ecb-8ecf-188682514022.png)
-![image](https://user-images.githubusercontent.com/45181367/182641502-12ea66b9-c0bc-423f-8455-ef640ce6b92e.png)
+
 
 ### Фон 3
 ![image](https://user-images.githubusercontent.com/45181367/182629921-c42ccda8-c069-4909-b02e-9329407aebf7.png)
+![image](https://user-images.githubusercontent.com/45181367/182641502-12ea66b9-c0bc-423f-8455-ef640ce6b92e.png)
 
 ### Фон 4
 Сохраняя стилистику и цвет, выпрямить стены, а проход посередине сделать круглым окном в космос.
