@@ -176,16 +176,48 @@
 ### винта
 ### блока, прикрепленного к винту
 ### хлипкой стены
-### фон для 1 локации
+
+## Фоны 
+Фоны должны быть 2д и не очень детальными, на них будут размещаться все игровые элементы. В одной стилистике должно быть нарисовано 10 фонов, они могут использовать одинаковые части друг друга, но быть разными. Высота фона всегда одна и та же и равна 1080п, минимальная ширина 1200п. 
+
+### Фон 1 
+
+![image](https://user-images.githubusercontent.com/45181367/182634250-9f45b000-f01a-4c24-a7c9-0cb7f46ebd56.png)
+
 ### Фон 2
 ![image](https://user-images.githubusercontent.com/45181367/182631121-e6523eb0-d38d-4ecb-8ecf-188682514022.png)
+![image](https://user-images.githubusercontent.com/45181367/182641502-12ea66b9-c0bc-423f-8455-ef640ce6b92e.png)
 
 ### Фон 3
 ![image](https://user-images.githubusercontent.com/45181367/182629921-c42ccda8-c069-4909-b02e-9329407aebf7.png)
 
 ### Фон 4
+Сохраняя стилистику и цвет, выпрямить стены, а проход посередине сделать круглым окном в космос.
 ![image](https://user-images.githubusercontent.com/45181367/182631988-fc882346-b83f-429e-9882-b02d63680c4c.png)
+![image](https://user-images.githubusercontent.com/45181367/182642250-806131b3-84d0-4da9-a015-04aec953e018.png)
+
 ### фон для 5 локации
+![image](https://user-images.githubusercontent.com/45181367/182636779-17230acf-4a9b-4448-a6c9-4c0233c7fb41.png)
+
+
 ### фон для 6 локации
+
+пол можно превратить в фон
+
+![image](https://user-images.githubusercontent.com/45181367/182638825-3b15acf9-f669-47b3-b2fe-e0e7175b47cb.png)
+
+
 ### фон для 7 локации
+Классное цветовое сочетание:
+
+![image](https://user-images.githubusercontent.com/45181367/182641731-d4dac385-28bb-4508-9f0f-45f9f49aae67.png)
+
+Форму можно взять отсюда:
+![image](https://user-images.githubusercontent.com/45181367/182642681-325af43e-cc46-4001-9535-e64772093c70.png)
+
+или отсюда
+
+![image](https://user-images.githubusercontent.com/45181367/182643513-e422e8c6-fdd5-489b-ad5b-1a4c0f1acdb9.png)
+
+
 
