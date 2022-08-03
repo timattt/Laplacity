@@ -124,11 +124,12 @@ public class GameInterface extends Stage implements GestureListener {
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 				if (catFood.getTotalLaunchesAvailable() > 0) {
-					changeGameMode(GameMode.FLIGHT);    //no need in NONE because of editBtn
+					changeGameMode(GameMode.FLIGHT);
 
 					catFI.update(catFood.launch());
 				} else {
 					CatFoodInterface.showHungry(GameInterface.this);
+					changeGameMode(GameMode.NONE);
 				}
 			}
 		});
