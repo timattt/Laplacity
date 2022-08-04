@@ -5,7 +5,6 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -134,9 +133,8 @@ public class HingeStructure extends FieldStructure {
 		gameCache.setProjectionMatrix(CameraManager.camMat());
 		gameCache.setTransformMatrix(
 				transMat.idt().
-				translate(box.getPosition().x, box.getPosition().y, 0).
-				// TODO: замени box.getAngle на interpAngle
-				rotate(0, 0, 1, MathUtils.radDeg * box.getAngle()).
+				translate(interpX(), interpY(), 0).
+				rotate(0, 0, 1, MathUtils.radDeg * interpAngle()).
 				translate( - boxWidth / 2, - boxHeight/2, 0)
 				);
 		gameCache.begin();
@@ -152,6 +150,7 @@ public class HingeStructure extends FieldStructure {
 		GameProcess.deletePhysicalObject(hinge);
 	}
 
+	@Override
 	public void savePosition() {
 		prevAngle = box.getAngle();
 		prevPos = box.getPosition();

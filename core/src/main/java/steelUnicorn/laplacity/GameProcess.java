@@ -153,6 +153,8 @@ public class GameProcess {
 		
 		mainParticle = new ControllableElectron(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
 		
+		interpCoeff = 1f;
+		
 		CameraManager.setToMainParticle();
 	}
 	
@@ -204,15 +206,14 @@ public class GameProcess {
 				levelWorld.step(SIMULATION_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_STEP;
 			}
-			float alpha = 1 + (frameAccumulator / SIMULATION_STEP);
-			mainParticle.setInterpCoeff(alpha);
+			interpCoeff = 1 + (frameAccumulator / SIMULATION_STEP);
 		}
 		//---------------------------------------------
 	}
 
 	private static void saveCurrentState() {
 		mainParticle.savePosition();
-		// TODO add structure position saving
+		LaplacityField.saveStructuresState();
 	}
 	
 	public static void disposeLevel() {

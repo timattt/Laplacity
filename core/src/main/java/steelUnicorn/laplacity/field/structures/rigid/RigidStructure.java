@@ -21,6 +21,7 @@ public class RigidStructure extends FieldStructure {
 	// Physics
 	private Body body;
 	private Vector2 origin;
+	private Vector2 pos;
 	private float scale;
 	
 	// center
@@ -42,6 +43,7 @@ public class RigidStructure extends FieldStructure {
 		origin = new Vector2();
 		x = (bounds.left + bounds.right + 1) * LaplacityField.tileSize / 2;
 		y = (bounds.bottom + bounds.top + 1) * LaplacityField.tileSize / 2;
+		pos = new Vector2(x, y);
 		
 		this.scale = scale;
 		this.texturePath = path;
@@ -60,14 +62,11 @@ public class RigidStructure extends FieldStructure {
 
 	@Override
 	public void renderBatched(float timeFromStart) {
-		/* TODO
-		 * вставить интерполяцию
-		 * как-нибудь
-		 */
-		Vector2 pos = Globals.TMP1.set(body.getPosition()).sub(origin);
+		pos.set(prevPos);
+		pos.lerp(Globals.TMP1.set(body.getPosition()).sub(origin), GameProcess.interpCoeff);
         sprite.setPosition(pos.x, pos.y);
         sprite.setOrigin(origin.x, origin.y);
-        sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+        sprite.setRotation(interpAngle() * MathUtils.radiansToDegrees);
         GameProcess.gameBatch.enableBlending();
 		sprite.draw(GameProcess.gameBatch);
 		GameProcess.gameBatch.disableBlending();
@@ -86,6 +85,7 @@ public class RigidStructure extends FieldStructure {
 		savePosition();
 	}
 
+	@Override
 	public void savePosition() {
 		prevPos.set(body.getPosition()).sub(origin);
 		prevAngle = body.getAngle();

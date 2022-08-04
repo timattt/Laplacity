@@ -290,4 +290,9 @@ public class LaplacityField extends Group {
 				tiles[i][j].setPotential(0.0f);
 			}
 	}
+
+	public static void saveStructuresState() {
+		for (FieldStructure fs : structures)
+			fs.savePosition();
+	}
 }
