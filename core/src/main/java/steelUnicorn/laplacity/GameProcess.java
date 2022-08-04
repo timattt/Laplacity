@@ -332,6 +332,7 @@ public class GameProcess {
 			particles.add(part);
 		} else {
 			deletePhysicalObject(part.getBody());
+			deletePointLight(part.getPointLight());
 		}
 	}
 	
@@ -345,6 +346,21 @@ public class GameProcess {
 		if (!particles.removeValue(part, false)) {
 			throw new RuntimeException("Not deleted!");
 		}
+	}
+	
+	public static boolean moveStaticParticle(ChargedParticle part, float x, float y) {
+		EmptyTile from = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
+		EmptyTile to = LaplacityField.getTileFromWorldCoords(x, y);
+		
+		if (to == null || from == null || !to.isAllowDensityChange()) {
+			return false;
+		}
+		
+		from.addInvisibleDensity(-part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+		part.setPosition(x, y);
+		to.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+			
+		return true;
 	}
 	
 	public static PointLight registerPointLight(float x, float y, Color col, float rad) {
