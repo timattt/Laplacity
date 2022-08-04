@@ -76,6 +76,12 @@ public class GameProcess {
 	// Time
 	public static long startTime = 0;
 	private static float frameAccumulator = 0f;
+	/*
+	 * Интерполяционный коэффициент показывает, насколько близко
+	 * состояние на экране к текущему физическому состоянию.
+	 * Коэффициент, равный 1 означает, что состояние на экране и
+	 * в мире (Box2D.World) совпадают
+ 	 */
 	public static float interpCoeff = 1f;
 	
 	// After hit
@@ -111,10 +117,10 @@ public class GameProcess {
 	public static final float MAX_SCORE = 100f;
 	
 	// PHYSICS
-	public static final float PHYSICS_TIME_STEP = 1f/60f;
+	public static final float TRAJECTORY_TIME_STEP = 1f/60f; // используется при расчёте траектории для подсказки
 	public static final int VELOCITY_STEPS = 1;
 	public static final int POSITION_STEPS = 3;
-	public static final float SIMULATION_STEP = 1f/60f;
+	public static final float SIMULATION_TIME_STEP = 1f/60f; // используется непосредственно в игре
 	
 	// OBJECTS
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
@@ -153,6 +159,12 @@ public class GameProcess {
 		
 		mainParticle = new ControllableElectron(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
 		
+		/*
+		 * При инициализации уровня установить коэффициент в 1f
+		 * во избежание интерференции начального положения тел в Box2D.World
+		 * с начальными значениями сохранённых координат тел,
+		 * записанных в экземплярах классов этих тел
+		 */
 		interpCoeff = 1f;
 		
 		CameraManager.setToMainParticle();
@@ -203,14 +215,20 @@ public class GameProcess {
 			frameAccumulator += delta;
 			while (frameAccumulator >= 0) {
 				saveCurrentState();
-				levelWorld.step(SIMULATION_STEP, VELOCITY_STEPS, POSITION_STEPS);
-				frameAccumulator -= SIMULATION_STEP;
+				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
+				frameAccumulator -= SIMULATION_TIME_STEP;
 			}
-			interpCoeff = 1 + (frameAccumulator / SIMULATION_STEP);
+			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
 		}
 		//---------------------------------------------
 	}
 
+	/**
+	 * Записать текущие физические координаты тел в тела,
+	 * обладающие памятью. Необходимо вызвать при каждом обновлении мира (Box2D.World).
+	 * Если положение Вашего тела подлежит расчёту средствами Box2D, убедитесь,
+	 * что в данном методе Вы вызываете его метод сохранения состояния.
+	 */
 	private static void saveCurrentState() {
 		mainParticle.savePosition();
 		LaplacityField.saveStructuresState();
@@ -283,6 +301,7 @@ public class GameProcess {
 			if (wasFlight) {
 				mainParticle.resetToStartPosAndStartVelocity();
 				LaplacityField.resetStructures();
+				// После полёта нужно вернуть интер
 				interpCoeff = 1f;
 			}
 		}

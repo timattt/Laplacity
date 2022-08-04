@@ -105,7 +105,7 @@ public class ControllableElectron extends ChargedParticle {
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
 				FieldCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
 				body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
-				body.getWorld().step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
+				body.getWorld().step(TRAJECTORY_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 			}
 		}
 		LaplacityField.resetStructures();
@@ -140,13 +140,15 @@ public class ControllableElectron extends ChargedParticle {
 		return (1 - interpCoeff) * prevY + interpCoeff * getY();
 	}
 
+	/**
+	 * Сохраняет текущее положение частицы во внутреннюю память частицы
+	 * При прорисовке будет использована интерполяция между записанным
+	 * и текущим физическим состоянием (текущее состояние опережает экранное время)
+	 * с использованием глобального коэффициента {@linkplain GameProcess#interpCoeff}.
+	 */
 	public void savePosition() {
 		prevX = getX();
 		prevY = getY();
-	}
-
-	public void setInterpCoeff(float coeff) {
-		interpCoeff = coeff;
 	}
 
 }

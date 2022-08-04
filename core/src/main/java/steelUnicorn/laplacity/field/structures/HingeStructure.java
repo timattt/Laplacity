@@ -150,6 +150,11 @@ public class HingeStructure extends FieldStructure {
 		GameProcess.deletePhysicalObject(hinge);
 	}
 
+	/**
+	 * Сохраняет текущие координаты центра и угол поворота.
+	 * Этот метод должен быть вызван перед обновлением физического
+	 * состояния при использовании интерполяции при отображении структуры на экране
+	 */
 	@Override
 	public void savePosition() {
 		prevAngle = box.getAngle();
