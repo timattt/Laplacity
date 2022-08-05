@@ -35,8 +35,8 @@ public class CameraManager {
 	}
 	
 	public static void setToMainParticle() {
-		camera.position.y = SCREEN_WORLD_HEIGHT / 2;
-		setXPosition(GameProcess.mainParticle.getX());
+		camera.zoom = MAX_ZOOM;
+		setPosition(GameProcess.mainParticle.getX(), GameProcess.mainParticle.getY());
 	}
 	
 	public static void moveTo(float x, float y) {
@@ -130,7 +130,7 @@ public class CameraManager {
 		return camera;
 	}
 
-
+	// Переменные, используемые при обработке двухпальцевых жестов
 	private static Vector2 cameraPositionWithoutZoom = new Vector2();
 	private static Vector2 zoomDirection = new Vector2();
 	private static boolean isPinching = false;
@@ -139,6 +139,14 @@ public class CameraManager {
 	private static float initialZoom = 1f;
 	private static float zoomMultiplier = 1f;
 
+	/**
+	 * Функция, обрабатывающая двухпальцевые жесты.
+	 * Поддерживается зум и перемещение камеры в двух направлениях.
+	 * @param initialFirstPointer
+	 * @param initialSecondPointer
+	 * @param firstPointer
+	 * @param secondPointer
+	 */
 	public static void processPinch(Vector2 initialFirstPointer, Vector2 initialSecondPointer, Vector2 firstPointer, Vector2 secondPointer) {
 		if (!isPinching) {
 			// Initialize pinching event since LibGDX lacks startPinching() method
