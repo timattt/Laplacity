@@ -2,11 +2,13 @@ package steelUnicorn.laplacity.core;
 
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -44,7 +46,7 @@ public class LaplacityAssets {
 	public static TextureRegion TRAMPOLINE_REGION;
 	
 	// BACKGROUNDS
-	public static Texture[][] BACKGROUNDS; 
+	public static Array<Texture> BACKGROUNDS;
 	public static Texture SPACE_BACKGROUND;
 	
 	// PARTICLES
@@ -136,18 +138,14 @@ public class LaplacityAssets {
     }
     
     private static void loadBackgrounds() {
-    	BACKGROUNDS = new Texture[Globals.TOTAL_SECTIONS][Globals.LEVELS_PER_SECTION];
-    	
-    	for (int section = 0; section < Globals.TOTAL_SECTIONS; section++) {
-    		for (int i = 0; i < Globals.LEVELS_PER_SECTION; i++) {
-    			if (i < 9) {
-    				BACKGROUNDS[section][i] = Globals.assetManager.get("backgrounds/section" + (section+1) + "/level0" + (i+1) +".png");
-    			} else {
-    				BACKGROUNDS[section][i] = Globals.assetManager.get("backgrounds/section" + (section+1) + "/level" + (i+1) +".png");
-    			}
-    		}
-    	}
-    	
+    	BACKGROUNDS = new Array<>();
+
+        FileHandle[] backs = Gdx.files.internal("backgrounds/levelbacks/").list();
+
+    	for (FileHandle back : backs) {
+            BACKGROUNDS.add(Globals.assetManager.get(back.path(), Texture.class));
+        }
+
     	SPACE_BACKGROUND = Globals.assetManager.get("backgrounds/SPACE_BACKGROUND.png", Texture.class);
     }
     

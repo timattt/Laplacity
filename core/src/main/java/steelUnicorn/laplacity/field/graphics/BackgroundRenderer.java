@@ -46,7 +46,7 @@ public class BackgroundRenderer {
 		gameCache.beginCache();
 		
 		while (x > 0) {
-			Texture tex = LaplacityAssets.BACKGROUNDS[(GameProcess.sectionNumber - 1) % LaplacityAssets.BACKGROUNDS.length][(GameProcess.levelNumber - 1) % Globals.LEVELS_PER_SECTION];
+			Texture tex = LaplacityAssets.BACKGROUNDS.get(levelBack - 1);
 			float aspect = (float) tex.getWidth() / (float) tex.getHeight();
 			float h = fieldHeight * sz;
 			float w = aspect * h;

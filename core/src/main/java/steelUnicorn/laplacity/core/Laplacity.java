@@ -107,16 +107,16 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
 		
 		// backgrounds
-		sections = Gdx.files.internal("backgrounds/").list();
-		for (FileHandle section : sections) {
-			//Если дирректория с фонами секции, то парсит
-			if (section.isDirectory()) {
-				FileHandle[] backs = section.list();
+		FileHandle[] backgrounds = Gdx.files.internal("backgrounds/").list();
+		for (FileHandle file : backgrounds) {
+			if (file.isDirectory()) {
+				//Фоны уровней
+				FileHandle[] backs = file.list();
 				for (FileHandle back : backs) {
 					assetManager.load(back.path(), Texture.class);
 				}
-			} else { //если просто файл - загружает
-				assetManager.load(section.path(), Texture.class);
+			} else { //Основные фоны
+				assetManager.load(file.path(), Texture.class);
 			}
 		}
 

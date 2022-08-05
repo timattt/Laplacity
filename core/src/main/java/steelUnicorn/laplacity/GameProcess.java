@@ -50,6 +50,8 @@ public class GameProcess {
 	public static int levelNumber;
 	public static int sectionNumber;
 	public static GameMode currentGameMode;
+
+	public static int levelBack = 1;
 	//========================================================================================
 	
 	
