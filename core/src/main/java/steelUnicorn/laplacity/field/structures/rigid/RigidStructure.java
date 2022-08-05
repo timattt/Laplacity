@@ -21,11 +21,16 @@ public class RigidStructure extends FieldStructure {
 	// Physics
 	private Body body;
 	private Vector2 origin;
+	private Vector2 pos;
 	private float scale;
 	
 	// center
 	private float x;
 	private float y;
+
+	// interpolation
+	private Vector2 prevPos = new Vector2(0f, 0f);
+	private float prevAngle = 0f;
 	
 	// sprite
 	private Sprite sprite;
@@ -38,6 +43,7 @@ public class RigidStructure extends FieldStructure {
 		origin = new Vector2();
 		x = (bounds.left + bounds.right + 1) * LaplacityField.tileSize / 2;
 		y = (bounds.bottom + bounds.top + 1) * LaplacityField.tileSize / 2;
+		pos = new Vector2(x, y);
 		
 		this.scale = scale;
 		this.texturePath = path;
@@ -56,10 +62,11 @@ public class RigidStructure extends FieldStructure {
 
 	@Override
 	public void renderBatched(float timeFromStart) {
-		Vector2 pos = Globals.TMP1.set(body.getPosition()).sub(origin);
+		pos.set(prevPos);
+		pos.lerp(Globals.TMP1.set(body.getPosition()).sub(origin), GameProcess.interpCoeff);
         sprite.setPosition(pos.x, pos.y);
         sprite.setOrigin(origin.x, origin.y);
-        sprite.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
+        sprite.setRotation(interpAngle() * MathUtils.radiansToDegrees);
         GameProcess.gameBatch.enableBlending();
 		sprite.draw(GameProcess.gameBatch);
 		GameProcess.gameBatch.disableBlending();
@@ -75,6 +82,22 @@ public class RigidStructure extends FieldStructure {
 		body.setTransform(x, y, 0);
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
+		savePosition();
+	}
+
+	/**
+	 * Сохраняет текущие координаты центра и угол поворота.
+	 * Этот метод должен быть вызван перед обновлением физического
+	 * состояния при использовании интерполяции при отображении структуры на экране
+	 */
+	@Override
+	public void savePosition() {
+		prevPos.set(body.getPosition()).sub(origin);
+		prevAngle = body.getAngle();
+	}
+
+	private float interpAngle() {
+		return (1 - GameProcess.interpCoeff) * prevAngle + GameProcess.interpCoeff * body.getAngle();
 	}
 
 }

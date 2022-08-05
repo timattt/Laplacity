@@ -297,4 +297,15 @@ public class LaplacityField extends Group {
 				tiles[i][j].setPotential(0.0f);
 			}
 	}
+
+	/**
+	 * Сохраняет физические состояния всех структур, обладающих памятью.
+	 * Этот метод будет вызван перед обновлением физического состояния в
+	 * {@linkplain com.badlogic.gdx.physics.box2d.Box2D} и должен быть
+	 * использован только для интерполяции при прорисовке структур на экране.
+	 */
+	public static void saveStructuresState() {
+		for (FieldStructure fs : structures)
+			fs.savePosition();
+	}
 }

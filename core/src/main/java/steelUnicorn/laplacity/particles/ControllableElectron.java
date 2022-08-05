@@ -5,7 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.MathUtils;
+//import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.GameProcess;
@@ -30,6 +30,10 @@ public class ControllableElectron extends ChargedParticle {
 	// Start pos
 	private float startX;
 	private float startY;
+
+	// Prev pos
+	private float prevX = 0f;
+	private float prevY = 0f;
 	
 	public ControllableElectron(float x, float y) {
 		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
@@ -43,15 +47,15 @@ public class ControllableElectron extends ChargedParticle {
 	public void draw() {
 		GameProcess.gameBatch.enableBlending();
 		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGION,
-				getX() - CAT_SIZE,
-				getY() - CAT_SIZE,
+				interpX() - CAT_SIZE,
+				interpY() - CAT_SIZE,
 				CAT_SIZE,
 				CAT_SIZE,
 				2 * CAT_SIZE,
 				2 * CAT_SIZE,
 				1f,
 				1f,
-				body.getAngle() * MathUtils.radDeg
+				0f //body.getAngle() * MathUtils.radDeg
 				);
 		GameProcess.gameBatch.disableBlending();
 	}
@@ -81,6 +85,7 @@ public class ControllableElectron extends ChargedParticle {
 	
 	public void resetToStartPosAndStartVelocity() {
 		setPosition(startX, startY, 0);
+		savePosition();
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
 	}
@@ -103,7 +108,7 @@ public class ControllableElectron extends ChargedParticle {
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
 				FieldCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
 				body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
-				body.getWorld().step(PHYSICS_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
+				body.getWorld().step(TRAJECTORY_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 			}
 		}
 		LaplacityField.resetStructures();
@@ -128,6 +133,25 @@ public class ControllableElectron extends ChargedParticle {
 	@Override
 	public void collidedWithStructure() {
 		LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
+	}
+
+	public float interpX() {
+		return (1 - interpCoeff) * prevX + interpCoeff * getX();
+	}
+
+	public float interpY() {
+		return (1 - interpCoeff) * prevY + interpCoeff * getY();
+	}
+
+	/**
+	 * Сохраняет текущее положение частицы во внутреннюю память частицы
+	 * При прорисовке будет использована интерполяция между записанным
+	 * и текущим физическим состоянием (текущее состояние опережает экранное время)
+	 * с использованием глобального коэффициента {@linkplain GameProcess#interpCoeff}.
+	 */
+	public void savePosition() {
+		prevX = getX();
+		prevY = getY();
 	}
 
 }

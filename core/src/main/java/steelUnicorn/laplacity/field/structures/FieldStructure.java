@@ -193,4 +193,7 @@ public class FieldStructure implements CollisionListener {
 
 	public void renderBatched(float timeFromStart) {
 	}
+
+	public void savePosition() {
+	}
 }
