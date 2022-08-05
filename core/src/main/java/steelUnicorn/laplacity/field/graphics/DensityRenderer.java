@@ -1,13 +1,14 @@
 package steelUnicorn.laplacity.field.graphics;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.VertexAttribute;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import steelUnicorn.laplacity.CameraManager;
-import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.IntRect;
-import steelUnicorn.laplacity.field.tiles.EmptyTile;
 
 /**
  * Класс, который быстро умеет рисовать плотность.
@@ -28,11 +29,20 @@ public class DensityRenderer {
 	
 	private static DensityBlock[][] blocks;
 	
+	private static ShaderProgram shader;
+	
 	private static int up(int a, int b) {
 		return a / b + (a % b == 0 ? 0 : 1);
 	}
 	
 	public static void init() {
+		shader = new ShaderProgram(Gdx.files.internal("shaders/Density.vert"), Gdx.files.internal("shaders/Density.frag"));
+		
+		if (!shader.isCompiled()) {
+			Gdx.app.log("shader compile", shader.getLog());
+		}
+			
+			
 		int fieldWidth = LaplacityField.fieldWidth;
 		int fieldHeight = LaplacityField.fieldHeight;
 		
@@ -77,7 +87,11 @@ public class DensityRenderer {
 		}
 	}
 	
-	public static void cleanup() {
+	public static void cleanup() {		
+		if (shader != null) {
+			shader.dispose();
+			shader = null;
+		}
 		if (blocks == null) {
 			return;
 		}
@@ -87,17 +101,7 @@ public class DensityRenderer {
 			}
 		}
 		blocks = null;
-	}
-	
-	/**
-	 * selects Texture region from LaplacityAssets.DENSITY_REGIONS.
-	 * val from 0 to 1.
-	 * @param val
-	 * @return
-	 */
-	private static TextureRegion select(float val) {
-		int i = (int) (val * 9);
-		return LaplacityAssets.DENSITY_REGIONS[i%3][i/3];
+
 	}
 	
 	private static class DensityBlock {
@@ -105,26 +109,18 @@ public class DensityRenderer {
 		private IntRect bounds;
 		private boolean repaintRequested;
 		
-		private int id;
+		private Mesh mesh;
+		private float[] verts;
+		private short[] inds;
 		
 		public DensityBlock(IntRect bounds) {
 			super();
 			this.bounds = bounds;
-			repaintRequested = true;
-
-			float sz = LaplacityField.tileSize;
+			repaintRequested = true;			
 			
-			GameProcess.gameCache.beginCache();
-			for (int i = bounds.left; i <= bounds.right; i++) {
-				for (int j = bounds.bottom; j <= bounds.top; j++) {
-					if (i >= LaplacityField.fieldWidth || j >= LaplacityField.fieldHeight) {
-						continue;
-					}
-					TextureRegion reg = select(0.1f);
-					GameProcess.gameCache.add(reg, i * sz, j * sz, sz, sz);
-				}
-			}
-			id = GameProcess.gameCache.endCache();
+			verts = new float[bounds.width() * bounds.height() * 5 * 3];
+			inds = new short[verts.length * 2];
+			repaint();
 		}
 
 		@Override
@@ -132,33 +128,101 @@ public class DensityRenderer {
 			return "DensityBlock [bounds=" + bounds + ", repaintRequested=" + repaintRequested + "]";
 		}
 		
+		private static float dens(int x, int y) {
+			if (x < LaplacityField.fieldWidth && y < LaplacityField.fieldHeight) {
+				return LaplacityField.tiles[x][y].getChargeDensity();
+			}
+			return 0;
+		}
+		
 		public void repaint() {
+			dispose();
 			float sz = LaplacityField.tileSize;
 			
-			GameProcess.gameCache.beginCache(id);
-			for (int i = bounds.left; i <= bounds.right; i++) {
-				for (int j = bounds.bottom; j <= bounds.top; j++) {
-					if (i >= LaplacityField.fieldWidth || j >= LaplacityField.fieldHeight) {
-						continue;
-					}
-					EmptyTile tl = LaplacityField.tiles[i][j];
-					if (tl.getChargeDensity() > 0) {
-						TextureRegion reg = select(tl.getChargeDensity() / (GameProcess.MAX_DENSITY + 0.1f));
-						GameProcess.gameCache.add(reg, i * sz, j * sz, sz, sz);
-					}
+			int i = 0;
+			int j = 0;
+			for (int x = bounds.left; x <= bounds.right; x++) {
+				for (int y = bounds.bottom; y <= bounds.top; y++) {
+					int beg = (short) (i / 3);
+					
+					float v1 = dens(x, y);
+					float v2 = dens(x, y + 1);
+					float v3 = dens(x + 1, y + 1);
+					float v4 = dens(x + 1, y);
+					
+					float v = (v1 + v2 + v3 + v4) / 4;
+					
+					verts[i] = x * sz;
+					i++;
+					verts[i] = y * sz;
+					i++;
+					verts[i] = v1;
+					i++;
+
+					verts[i] = x * sz;
+					i++;
+					verts[i] = (y + 1) * sz;
+					i++;
+					verts[i] = v2;
+					i++;
+
+					verts[i] = (x + 1) * sz;
+					i++;
+					verts[i] = (y + 1) * sz;
+					i++;
+					verts[i] = v3;
+					i++;
+					
+					verts[i] = (x + 1) * sz;
+					i++;
+					verts[i] = y * sz;
+					i++;
+					verts[i] = v4;
+					i++;
+					
+					verts[i] = (x + 0.5f) * sz;
+					i++;
+					verts[i] = (y + 0.5f) * sz;
+					i++;
+					verts[i] = v;
+					i++;
+				
+					inds[j] = (short) beg; j++;
+					inds[j] = (short) (beg+1); j++;
+					inds[j] = (short) (beg+4); j++;
+					
+					inds[j] = (short) (beg+1); j++;
+					inds[j] = (short) (beg+2); j++;
+					inds[j] = (short) (beg+4); j++;
+					
+					inds[j] = (short) (beg+2); j++;
+					inds[j] = (short) (beg+3); j++;
+					inds[j] = (short) (beg+4); j++;
+					
+					inds[j] = (short) (beg+3); j++;
+					inds[j] = (short) (beg); j++;
+					inds[j] = (short) (beg+4); j++;
 				}
 			}
-			GameProcess.gameCache.endCache();
+
+			mesh = new Mesh(true, verts.length / 3, inds.length,
+					VertexAttribute.Position());
+			mesh.setVertices(verts);
+			mesh.setIndices(inds);
 		}
-		
+
 		public void render() {
-			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
-			GameProcess.gameCache.begin();
-			GameProcess.gameCache.draw(id);
-			GameProcess.gameCache.end();
+			Gdx.gl.glEnable(GL20.GL_BLEND);
+			shader.bind();
+			shader.setUniformMatrix("u_projTrans", CameraManager.camMat());
+			mesh.render(shader, GL20.GL_TRIANGLES);
+			Gdx.gl.glDisable(GL20.GL_BLEND);
 		}
-		
+
 		public void dispose() {
+			if (mesh != null) {
+				mesh.dispose();
+			}
 		}
 	}
 

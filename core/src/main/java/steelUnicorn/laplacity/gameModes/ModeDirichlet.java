@@ -17,7 +17,7 @@ public class ModeDirichlet extends GameMode {
 	}
 
 	private void makeSpray(float x, float y) {
-		LaplacityField.fillCircleWithRandomDensity(x, y, BRUSH_RADIUS, MAX_DENSITY);
+		LaplacityField.fillCircleWithRandomDensity(x, y, BRUSH_RADIUS, MAX_DENSITY*0.05f);
 		TrajectoryRenderer.updateTrajectory();
 	}
 	

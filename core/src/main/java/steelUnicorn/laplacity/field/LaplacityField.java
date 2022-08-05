@@ -233,9 +233,9 @@ public class LaplacityField extends Group {
 				fromGridToWorldCoords(u, v, TMP1);
 				TMP1.sub(center.getCenterX(), center.getCenterY());
 				
-				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r && Math.random() < DIRICHLET_SPRAY_TILE_PROBABILITY) {
+				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
-					tile.addChargeDensity((float) (Math.random() * val));
+					tile.addChargeDensity((float) ((1 - TMP1.len2() / (r*r)) * val));
 				}
 			}
 		}

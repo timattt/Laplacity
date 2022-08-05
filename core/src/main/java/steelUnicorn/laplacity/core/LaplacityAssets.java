@@ -51,10 +51,6 @@ public class LaplacityAssets {
 	public static Texture PARTICLES_TEXTURE;
 	public static TextureRegion[][] PARTICLES_REGIONS;
 	
-	// DENSITY
-	public static Texture DENSITY;
-	public static TextureRegion[][] DENSITY_REGIONS;
-	
 	// OBJECTS
 	public static Texture GIFT_TEXTURE;
 	public static Texture CAT_TEXTURE;
@@ -110,9 +106,6 @@ public class LaplacityAssets {
         CAT_TEXTURE = Globals.assetManager.get("textures/objects/cat.png");
         PARTICLES_TEXTURE = Globals.assetManager.get("textures/objects/particles.png");
         
-        // UTILS
-        DENSITY = Globals.assetManager.get("textures/utils/density.png");
-        
         loadTextureRegions();
         loadBackgrounds();
     }
@@ -121,7 +114,6 @@ public class LaplacityAssets {
     	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[7]);
     	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
     	cut(PARTICLES_TEXTURE, PARTICLES_REGIONS = new TextureRegion[7][2]);
-        cut(DENSITY, DENSITY_REGIONS = new TextureRegion[3][3]);
         cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
         cut(BLADES_TEXTURE, BLADES_REGIONS = new TextureRegion[3]);
         cut(CELERATORS_TEXTURE, CELERATORS_REGIONS = new TextureRegion[3]);
