@@ -1,5 +1,7 @@
 package steelUnicorn.laplacity.gameModes;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class GameMode {
 
 	// MODES
@@ -39,6 +41,13 @@ public class GameMode {
 	
 	public void pinch(float dx1, float dx2) {
 		
+	}
+
+	public void superPinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+		
+	}
+
+	public void pinchStop() {
 	}
 	
 	public void update() {

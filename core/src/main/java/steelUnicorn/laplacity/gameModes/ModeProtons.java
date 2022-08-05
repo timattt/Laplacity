@@ -27,7 +27,7 @@ public class ModeProtons extends GameMode {
 	@Override
 	public void pan(float x, float y, float dx, float dy) {
 		if (!ParticleMover.isMoving()) {
-			CameraManager.moveX(-dx);
+			CameraManager.move(-dx, dy);
 		}
 	}
 	
