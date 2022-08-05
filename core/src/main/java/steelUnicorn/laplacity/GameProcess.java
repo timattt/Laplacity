@@ -3,6 +3,7 @@ package steelUnicorn.laplacity;
 import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.SpriteCache;
@@ -17,6 +18,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.BackgroundRenderer;
@@ -31,6 +34,7 @@ import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.ControllableElectron;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
+import steelUnicorn.laplacity.utils.Settings;
 
 /**
  * Основной класс функциями и переменными игрового процесса.
@@ -56,6 +60,9 @@ public class GameProcess {
 	
 	// Other particles
 	public static final Array<ChargedParticle> particles = new Array<ChargedParticle>();
+	
+	// lights
+	private static final Array<PointLight> lights = new Array<PointLight>();
 	//========================================================================================
 	
 	
@@ -66,6 +73,7 @@ public class GameProcess {
 	private static GameInterface gameUI;
 	public static SpriteBatch gameBatch;
 	public static SpriteCache gameCache;
+	private static RayHandler rayHandler;
 	
 	// Debug
 	private static Box2DDebugRenderer debugRend;
@@ -94,9 +102,8 @@ public class GameProcess {
 	//========================================================================================
 	// PARTICLES
 	public static final float PARTICLE_CHARGE = 300f;
-	public static final float ELECTRON_SIZE = 2f;
+	public static final float PARTICLE_SIZE = 2f;
 	public static final float CAT_SIZE = 4f;
-	public static final float PROTON_SIZE = 2f;
 	public static final float PARTICLE_MASS = 1f;
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final long PARTICLE_TEXTURES_UPDATE_DELTA = 80;
@@ -121,6 +128,7 @@ public class GameProcess {
 	public static final int VELOCITY_STEPS = 1;
 	public static final int POSITION_STEPS = 3;
 	public static final float SIMULATION_TIME_STEP = 1f/60f; // используется непосредственно в игре
+	public static final int RAYS_COUNT = 500;
 	
 	// OBJECTS
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
@@ -129,6 +137,13 @@ public class GameProcess {
 	public static final float DISSIPATIVE_ACCELERATION_FACTOR = 100f;
 	public static final float DISSIPATIVE_MODERATION_FACTOR = -30f;
 	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 3;
+	
+	// LIGHT
+	public static final float AMBIENT_INTENSITY = 0.9f;
+	public static final float CAT_LIGHT_DISTANCE = 2*CAT_SIZE;
+	public static final float PARTICLE_LIGHT_DISTANCE = 2*PARTICLE_SIZE;
+	public static final float RED_LED_LIGHT_DISTANCE = 15f * PARTICLE_SIZE;
+	public static final float SOFTNESS_FACTOR = 0.5f;
 	//========================================================================================
 	
 	
@@ -148,7 +163,10 @@ public class GameProcess {
 		gameBatch = new SpriteBatch();
 		inputMultiplexer.setProcessors(gameUI, new GestureDetector(gameUI));
 		gameCache = new SpriteCache(8000, true);
-		
+		RayHandler.useDiffuseLight(true);
+		rayHandler = new RayHandler(levelWorld);
+		rayHandler.setAmbientLight(AMBIENT_INTENSITY);
+		rayHandler.setAmbientLight(AMBIENT_INTENSITY, AMBIENT_INTENSITY, AMBIENT_INTENSITY, 1f);
 		levelWorld.setContactListener(hitController);
 		
 		LaplacityField.initField(level);
@@ -176,6 +194,7 @@ public class GameProcess {
 		}
 		
 		gameBatch.setProjectionMatrix(CameraManager.camMat());
+		rayHandler.setCombinedMatrix(CameraManager.getCamera());
 		
 		// render
 		//---------------------------------------------
@@ -189,6 +208,10 @@ public class GameProcess {
 		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
+		
+		if (Settings.isLightingEnabled()) {
+			rayHandler.updateAndRender();
+		}
 		
 		gameUI.draw();
 		//debugRend.render(levelWorld, CameraManager.camMat());
@@ -220,6 +243,9 @@ public class GameProcess {
 			}
 			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
 		}
+    for (PointLight pl : lights) {
+		  pl.update();
+		}
 		//---------------------------------------------
 	}
 
@@ -241,7 +267,10 @@ public class GameProcess {
 		TrajectoryRenderer.cleanup();
 		DensityRenderer.cleanup();
 		TilesRenderer.cleanup();
-		
+		if (rayHandler != null) {
+			rayHandler.dispose();
+			rayHandler = null;
+		}
 		if (levelWorld != null) {
 			levelWorld.dispose();
 			levelWorld = null;
@@ -261,6 +290,7 @@ public class GameProcess {
 			gameCache.dispose();
 			gameCache = null;
 		}
+		lights.clear();
 	}
 
 	public static void clearLevel() {
@@ -268,10 +298,14 @@ public class GameProcess {
 		changeGameMode(GameMode.NONE);
 		mainParticle.setSlingshot(0.0f, 0.0f);
 		mainParticle.resetToStartPosAndStartVelocity();
-		for (ChargedParticle particle : particles) {
-			deletePhysicalObject(particle.getBody());
+		
+		Array<ChargedParticle> tmp = new Array<ChargedParticle>();
+		tmp.addAll(particles);
+		for (ChargedParticle cp : tmp) {
+			deleteStaticParticle(cp);
 		}
 		particles.clear();
+		
 		LaplacityField.clearElectricField();
 		DensityRenderer.updateDensity();
 		TrajectoryRenderer.updateTrajectory();
@@ -306,7 +340,7 @@ public class GameProcess {
 			}
 		}
 
-		gameUI.updateCurModeImg();
+		gameUI.updateCurMode();
 	}
 	
 	public static Body registerPhysicalObject(BodyDef bodydef) {
@@ -333,6 +367,7 @@ public class GameProcess {
 			particles.add(part);
 		} else {
 			deletePhysicalObject(part.getBody());
+			deletePointLight(part.getPointLight());
 		}
 	}
 	
@@ -342,8 +377,47 @@ public class GameProcess {
 		if (tl != null) {
 			tl.addInvisibleDensity(-part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 		}
+		deletePointLight(part.getPointLight());
 		if (!particles.removeValue(part, false)) {
 			throw new RuntimeException("Not deleted!");
+		}
+	}
+	
+	public static boolean moveStaticParticle(ChargedParticle part, float x, float y) {
+		EmptyTile from = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
+		EmptyTile to = LaplacityField.getTileFromWorldCoords(x, y);
+		
+		if (to == null || from == null || !to.isAllowDensityChange()) {
+			return false;
+		}
+		
+		from.addInvisibleDensity(-part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+		part.setPosition(x, y);
+		to.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
+			
+		return true;
+	}
+	
+	public static PointLight registerPointLight(float x, float y, Color col, float rad) {
+		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
+		pl.setSoftnessLength(rad*SOFTNESS_FACTOR);
+		pl.setSoft(true);
+		lights.add(pl);
+		return pl;
+	}
+	
+	public static PointLight registerPointLight(float x, float y, Color col, float rad, boolean isStatic) {
+		PointLight pl = new PointLight(rayHandler, RAYS_COUNT, col, rad, x, y);
+		pl.setStaticLight(isStatic);
+		pl.setSoftnessLength(rad * SOFTNESS_FACTOR);
+		lights.add(pl);
+		return pl;
+	}
+	
+	public static void deletePointLight(PointLight pl) {
+		pl.remove();
+		if (!lights.removeValue(pl, false)) {
+			throw new RuntimeException("Light is not removed!");
 		}
 	}
 	

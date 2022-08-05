@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.levels.LevelsTab;
 
 /**
@@ -35,6 +36,10 @@ public class LevelsScreen extends ManagedScreen {
         levelStage.addActor(background);
 
         Skin skin = Globals.assetManager.get("ui/uiskin.json", Skin.class);
+
+        //fpsCounter
+        FpsCounter fpsCounter = new FpsCounter(skin);
+        levelStage.addActor(fpsCounter);
 
         Table root = new Table();
         root.setFillParent(true);

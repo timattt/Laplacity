@@ -47,6 +47,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
+		configuration.useImmersiveMode = true;
 
 		RelativeLayout layout = new RelativeLayout(this);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,

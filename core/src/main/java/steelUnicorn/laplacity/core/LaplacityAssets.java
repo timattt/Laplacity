@@ -71,6 +71,8 @@ public class LaplacityAssets {
 	public static TextureRegion[][] MOVING_WALL_STRUCTURE_REGIONS;
 	public static Texture GLASS_TEXTURE;
 	public static TextureRegion[] GLASS_REGIONS;
+	public static Texture RED_LED_TEXTURE;
+	public static TextureRegion[] RED_RED_REGIONS;
 	public static Texture HINGE_TEXTURE;
 	public static TextureRegion[][] HINGE_REGIONS;
 	
@@ -100,6 +102,7 @@ public class LaplacityAssets {
         HATCH_TEXTURE = Globals.assetManager.get("textures/structures/hatch.png");
         MOVING_WALL_TEXTURE = Globals.assetManager.get("textures/structures/structure_thin.png");
         GLASS_TEXTURE = Globals.assetManager.get("textures/structures/glass.png");
+        RED_LED_TEXTURE = Globals.assetManager.get("textures/structures/redLed.png");
         HINGE_TEXTURE = Globals.assetManager.get("textures/structures/hinge.png");
         
         // OBJECTS
@@ -125,6 +128,7 @@ public class LaplacityAssets {
         cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
         cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
         cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[3]);
+        cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
         cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
@@ -162,7 +166,7 @@ public class LaplacityAssets {
     }
 
     public static void changeTrack(String name) {
-        if (currentMusic != null)
+        if (currentMusic != null && Globals.assetManager.contains(currentMusic))
             Globals.assetManager.unload(currentMusic);
         currentMusic = name;
         Globals.assetManager.load(currentMusic, Music.class);

@@ -4,11 +4,13 @@ package steelUnicorn.laplacity.ui.mainmenu.tabs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -23,6 +25,8 @@ import steelUnicorn.laplacity.utils.Settings;
  */
 public class SettingsTab extends MainMenuTab {
     public ScrollPane settingsPane;
+    private static float cbSize = Globals.UI_WORLD_HEIGHT * 0.04f;
+    private static float cbPad = cbSize * 0.2f;
 
     public SettingsTab(Skin skin) {
         super();
@@ -81,6 +85,17 @@ public class SettingsTab extends MainMenuTab {
                         Settings.setLighting(box.isChecked());
                     }
                 }, "lightingCheckbox");
+
+        settings.row();
+        addCheckbox(settings, "Show fps", skin, Settings.isShowFps(),
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                        CheckBox box = (CheckBox) actor;
+                        Settings.setShowFps(box.isChecked());
+                    }
+                }, "fpsCheckbox");
     }
 
     /**
@@ -97,6 +112,13 @@ public class SettingsTab extends MainMenuTab {
                              boolean isChecked, ChangeListener listener,
                              String name, Color color) {
         CheckBox checkBox = new CheckBox(label, skin);
+        //tmp sizing
+        checkBox.getImageCell().size(cbSize, cbSize).pad(cbPad);
+        checkBox.getStyle().checkboxOff.setMinHeight(cbSize);
+        checkBox.getStyle().checkboxOff.setMinWidth(cbSize);
+        checkBox.getStyle().checkboxOn.setMinHeight(cbSize);
+        checkBox.getStyle().checkboxOn.setMinWidth(cbSize);
+
         checkBox.setName(name);
         checkBox.setChecked(isChecked);
         checkBox.getLabel().setColor(color);

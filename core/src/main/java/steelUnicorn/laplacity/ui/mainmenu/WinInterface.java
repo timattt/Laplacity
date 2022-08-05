@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.utils.LevelsParser;
 
 /**
@@ -47,7 +48,10 @@ public class WinInterface extends Stage {
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
         addActor(background);
-
+        //fpsCounter
+        Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
+        FpsCounter fpsCounter = new FpsCounter(skin);
+        addActor(fpsCounter);
 
         root = new Table();
         root.setFillParent(true);

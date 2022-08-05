@@ -71,15 +71,24 @@ public class MovingWallStructure extends FieldStructure {
 		
 		currentCoord = startCoord;
 		
+		float x = 0;
+		float r = 0;
+		
 		if (isHorizontal) {
 			currentCoord += width / 2;
 			staticCoord = LaplacityField.tileSize * 0.5f * (blockRect.top + blockRect.bottom + 1);
-			phaseDelta = (float) (Math.PI * (0.5f * sz * (blockRect.right + blockRect.left + 1) - (startCoord + endCoord) / 2f ) / (0.5f * (endCoord - startCoord - width)));
+			
+			x = (blockRect.left + blockRect.right + 1) * sz / 2f - (startCoord + endCoord) / 2f;
+			r = (endCoord - startCoord - width) / 2f;
 		} else {
 			currentCoord += height / 2;
 			staticCoord = LaplacityField.tileSize * 0.5f * (blockRect.right + blockRect.left + 1);
-			phaseDelta = (float) (Math.PI * (0.5f * sz * (blockRect.top + blockRect.bottom + 1) - (startCoord + endCoord) / 2f) / (0.5f * (endCoord - startCoord - height)));
+			
+			x = (blockRect.bottom + blockRect.top + 1) * sz / 2f - (startCoord + endCoord) / 2f;
+			r = (endCoord - startCoord - height) / 2f;
 		}
+		
+		phaseDelta = (float) Math.asin(Math.max(-1.0,Math.min(1.0, x / r)));
 	}
 	
 	private void createCache() {

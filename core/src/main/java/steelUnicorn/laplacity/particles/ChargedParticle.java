@@ -2,12 +2,14 @@ package steelUnicorn.laplacity.particles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
+import box2dLight.PointLight;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.physics.CollisionListener;
 
@@ -25,7 +27,10 @@ public class ChargedParticle implements CollisionListener {
 	// Charge
 	protected float charge;
 	
-	public ChargedParticle(float x, float y, float rad, float charge, boolean isStatic) {
+	// light
+	protected PointLight pointLight;
+	
+	public ChargedParticle(float x, float y, float rad, float charge, boolean isStatic, Color lightColor) {
 		this.charge = charge;
 		
 		BodyDef bodydef = new BodyDef();
@@ -46,6 +51,9 @@ public class ChargedParticle implements CollisionListener {
 		body.setUserData(this);
 		
 		cir.dispose();
+	
+		pointLight = registerPointLight(x, y, lightColor, rad, true);
+		pointLight.attachToBody(body);
 		
 		setPosition(x, y);
 	}
@@ -56,6 +64,10 @@ public class ChargedParticle implements CollisionListener {
 	public void update(float delta) {
 	}
 	
+	public PointLight getPointLight() {
+		return pointLight;
+	}
+
 	public float getX() {
 		return body.getTransform().getPosition().x;
 	}
@@ -65,7 +77,7 @@ public class ChargedParticle implements CollisionListener {
 	}
 	
 	public ChargedParticle(float x, float y, float rad, float charge) {
-		this(x, y, rad, charge, true);
+		this(x, y, rad, charge, true, Color.GREEN);
 	}
 	
 	public float getMass() {
@@ -74,10 +86,12 @@ public class ChargedParticle implements CollisionListener {
 
 	public void setPosition(float x, float y) {
 		body.setTransform(x, y, body.getAngle());
+		pointLight.setPosition(x, y);
 	}
 	
 	public void setPosition(float x, float y, float angle) {
 		body.setTransform(x, y, angle);
+		pointLight.setPosition(x, y);
 	}
 	
 	public float getCharge() {

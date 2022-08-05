@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
 
 import de.eskalon.commons.screen.ManagedScreen;
+import steelUnicorn.laplacity.ui.FpsCounter;
 
 public class LoadingScreen extends ManagedScreen {
     private Stage loadingStage;
@@ -42,6 +43,10 @@ public class LoadingScreen extends ManagedScreen {
                 guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + guiViewport.getWorldWidth() / 2 , 0);
         loadingStage.addActor(background);
+
+        //fpsCounter
+        FpsCounter fpsCounter = new FpsCounter(skin);
+        loadingStage.addActor(fpsCounter);
 
         loadingLabel = new Label("Loading", skin);
         loadingLabel.setScale(scale);

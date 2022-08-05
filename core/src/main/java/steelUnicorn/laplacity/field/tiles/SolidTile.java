@@ -1,6 +1,6 @@
 package steelUnicorn.laplacity.field.tiles;
 
-import com.badlogic.gdx.graphics.g2d.SpriteCache;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
 
@@ -21,7 +21,8 @@ public class SolidTile extends EmptyTile {
 		restitution = 1f;
 	}
 	
-	public void constantDraw(SpriteCache sc) {
+	public TextureRegion getRegion(float[] angleDest) {
+		return null;
 	}
 
 	public float getRestitution() {

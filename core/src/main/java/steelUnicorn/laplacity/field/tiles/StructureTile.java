@@ -10,7 +10,7 @@ public class StructureTile extends EmptyTile {
 	public StructureTile(int gridX, int gridY, FieldStructure parent) {
 		super(gridX, gridY);
 		this.parent = parent;
-		setAllowDensityChange(false);
+		setAllowDensityChange(true);
 		setId(10);
 	}
 
