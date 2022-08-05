@@ -80,7 +80,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		// levels
 		//Создаем мапу где ключи - номер секции, а значения - пути до уровней
 		LevelsParser.loadAssets(assetManager);
-
 		// ui
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);

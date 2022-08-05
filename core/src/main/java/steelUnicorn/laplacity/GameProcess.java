@@ -34,6 +34,8 @@ import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.ControllableElectron;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
+import steelUnicorn.laplacity.utils.LevelsParser;
+import steelUnicorn.laplacity.utils.LevelsParser.LevelParams;
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
@@ -51,7 +53,7 @@ public class GameProcess {
 	public static int sectionNumber;
 	public static GameMode currentGameMode;
 
-	public static int levelBack = 1;
+	public static LevelParams levelParams;
 	//========================================================================================
 	
 	
