@@ -12,12 +12,12 @@ public class ModeFlight extends GameMode {
 
 	@Override
 	public void update() {
-		CameraManager.moveToX(GameProcess.mainParticle.getX());
+		CameraManager.moveTo(GameProcess.mainParticle.getX(),GameProcess.mainParticle.getY());
 	}
 
 	@Override
 	public void replaced() {
-		CameraManager.moveToX(LaplacityField.electronStartPos.x);
+		CameraManager.moveTo(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
 	}
 
 }

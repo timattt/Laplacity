@@ -324,34 +324,9 @@ public class GameInterface extends Stage implements GestureListener {
 		return super.touchDragged(screenX, screenY, pointer);
 	}
 
-	/*
-	private final Vector2 prevPtr1 = new Vector2();
-	private final Vector2 prevPtr2 = new Vector2();
-	
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-		float dx1 = 0;
-		float dx2 = 0;
-		if (initialPointer1.x == pointer1.x && initialPointer1.y == pointer1.y && initialPointer2.x == pointer2.x && initialPointer2.y == pointer2.y) {
-			dx1 = 0;
-			dx2 = 0;
-		} else {
-			dx1 = pointer1.x - prevPtr1.x;
-			dx2 = pointer2.x - prevPtr2.x;
-		}
-		
-		prevPtr1.set(pointer1);
-		prevPtr2.set(pointer2);
-		
-		currentGameMode.pinch(dx1, dx2);
-		
-		return false;
-	}
-	*/
-
-	@Override
-	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-		currentGameMode.superPinch(initialPointer1, initialPointer2, pointer1, pointer2);
+		currentGameMode.pinch(initialPointer1, initialPointer2, pointer1, pointer2);
 		return false;
 	}
 

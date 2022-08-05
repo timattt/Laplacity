@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.LaplacityField;
 
 public class CameraManager {
@@ -38,20 +39,10 @@ public class CameraManager {
 		setXPosition(GameProcess.mainParticle.getX());
 	}
 	
-	public static void moveToX(float x) {
-		targetX = clampX(x);
-		isMoving = true;
-	}
-
 	public static void moveTo(float x, float y) {
 		targetX = clampX(x);
 		targetY = clampY(y);
 		isMoving = true;
-	}
-	
-	public static void moveX(float dx) {
-		setXPosition(camera.position.x + dx);
-		isMoving = false;
 	}
 
 	public static void move(float dx, float dy) {
@@ -73,11 +64,13 @@ public class CameraManager {
 	public static void update(float dt) {
 		if (isMoving) {
 			float dx = CAMERA_VELOCITY * sgn(targetX - camera.position.x) * dt;
+			float dy = CAMERA_VELOCITY * sgn(targetY - camera.position.y) * dt;
 			float newX = camera.position.x + dx;
-			if (Math.abs(targetX - newX) < Math.abs(dx)) {
+			float newY = camera.position.y + dy;
+			if ((Math.abs(targetX - newX) < Math.abs(dx)) && (Math.abs(targetY - newY) < Math.abs(dy))) {
 				isMoving = false;
 			} else {
-				setXPosition(newX);
+				setPosition(newX, newY);
 			}
 		}
 	}
@@ -138,30 +131,38 @@ public class CameraManager {
 	}
 
 
-	private static Vector2 oldCameraPosition = new Vector2();
-	private static Vector2 zoomTarget = new Vector2();
+	private static Vector2 cameraPositionWithoutZoom = new Vector2();
+	private static Vector2 zoomDirection = new Vector2();
 	private static boolean isPinching = false;
 	private static float initialDistance = 0f;
-	private static float initialZoomCoeff = 1f;
+	private static float currentDistance = 0f;
+	private static float initialZoom = 1f;
+	private static float zoomMultiplier = 1f;
 
 	public static void processPinch(Vector2 initialFirstPointer, Vector2 initialSecondPointer, Vector2 firstPointer, Vector2 secondPointer) {
 		if (!isPinching) {
-			oldCameraPosition.set(camera.position.x, camera.position.y);
-			getCameraWorldPos(0.5f * (initialFirstPointer.x + initialSecondPointer.x), 0.5f * (initialFirstPointer.y + initialSecondPointer.y), zoomTarget);
-			zoomTarget.sub(oldCameraPosition);
+			// Initialize pinching event since LibGDX lacks startPinching() method
+			cameraPositionWithoutZoom.set(camera.position.x, camera.position.y);
+			getCameraWorldPos(0.5f * (initialFirstPointer.x + initialSecondPointer.x), 0.5f * (initialFirstPointer.y + initialSecondPointer.y), zoomDirection);
+			zoomDirection.sub(cameraPositionWithoutZoom);
 			float interpCoeff = (MAX_ZOOM - camera.zoom) / (MAX_ZOOM - MIN_ZOOM);
-			oldCameraPosition.x -= interpCoeff * zoomTarget.x;
-			oldCameraPosition.y -= interpCoeff * zoomTarget.y;
+			cameraPositionWithoutZoom.x -= interpCoeff * zoomDirection.x;
+			cameraPositionWithoutZoom.y -= interpCoeff * zoomDirection.y;
 			initialDistance = Math.abs(initialFirstPointer.x - initialSecondPointer.x) + Math.abs(initialFirstPointer.y - initialSecondPointer.y);
-			initialZoomCoeff = camera.zoom;
+			initialZoom = camera.zoom;
 			isPinching = true;
 		}
 		float centerDx = camera.zoom * (initialFirstPointer.x + initialSecondPointer.x - firstPointer.x - secondPointer.x) / (2f * Gdx.graphics.getWidth()) * SCREEN_WORLD_WIDTH;
 		float centerDy = -camera.zoom * (initialFirstPointer.y + initialSecondPointer.y - firstPointer.y - secondPointer.y) / (2f * Gdx.graphics.getHeight()) * SCREEN_WORLD_HEIGHT;
-		float zoomCoeff = initialDistance / (Math.abs(firstPointer.x - secondPointer.x) + Math.abs(firstPointer.y - secondPointer.y));
-		camera.zoom = MathUtils.clamp(zoomCoeff * initialZoomCoeff, MIN_ZOOM, MAX_ZOOM);
+		currentDistance = Math.abs(firstPointer.x - secondPointer.x) + Math.abs(firstPointer.y - secondPointer.y);
+		if (currentDistance < Globals.EPSILON_PRECISION) {
+			zoomMultiplier = MAX_ZOOM;
+		} else {
+			zoomMultiplier = initialDistance / currentDistance;
+		}
+		camera.zoom = MathUtils.clamp(zoomMultiplier * initialZoom, MIN_ZOOM, MAX_ZOOM);
 		float interpCoeff = (MAX_ZOOM - camera.zoom) / (MAX_ZOOM - MIN_ZOOM);
-		setPosition(centerDx + oldCameraPosition.x + interpCoeff * zoomTarget.x, centerDy + oldCameraPosition.y + interpCoeff * zoomTarget.y);
+		setPosition(centerDx + cameraPositionWithoutZoom.x + interpCoeff * zoomDirection.x, centerDy + cameraPositionWithoutZoom.y + interpCoeff * zoomDirection.y);
 	}
 
 	public static void stopPinching() {

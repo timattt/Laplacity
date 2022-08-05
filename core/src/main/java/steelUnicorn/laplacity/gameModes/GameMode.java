@@ -38,12 +38,8 @@ public class GameMode {
 	public void touchDragged(float x, float y) {
 		
 	}
-	
-	public void pinch(float dx1, float dx2) {
-		
-	}
 
-	public void superPinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+	public void pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
 		
 	}
 
