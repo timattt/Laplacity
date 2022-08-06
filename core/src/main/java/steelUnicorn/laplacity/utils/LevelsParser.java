@@ -72,7 +72,6 @@ public class LevelsParser {
             for (String path : entry.value) {
                 assetManager.load(path, Texture.class);
             }
-
         }
     }
 
@@ -94,6 +93,8 @@ public class LevelsParser {
                 }
             }
         }
+
+        Gdx.app.log("Parse Params", levelParams.toString());
     }
 
     public static LevelParams getParams(int section, int level) {
@@ -109,27 +110,27 @@ public class LevelsParser {
     }
 
     public static class LevelParams {
-        private int backId;
+        private Array<Integer> backId; //массив фонов
 
         public LevelParams() {
         }
 
-        public LevelParams(int backId) {
+        public LevelParams(Array<Integer> backId) {
             this.backId = backId;
         }
 
-        public int getBackId() {
+        public Array<Integer> getBackId() {
             return backId;
         }
 
-        public void setBackId(int backId) {
+        public void setBackId(Array<Integer> backId) {
             this.backId = backId;
         }
 
         @Override
         public String toString() {
             return "LevelParams{" +
-                    "backId=" + backId +
+                    "backId=" + backId.toString() +
                     '}';
         }
     }
