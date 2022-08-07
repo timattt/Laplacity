@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import box2dLight.PointLight;
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.field.physics.CollisionListener;
 
 /**
@@ -97,10 +96,6 @@ public class ChargedParticle implements CollisionListener {
 
 	public Body getBody() {
 		return body;
-	}
-	
-	public void addDissipative(float factor) {
-		body.applyForceToCenter(Globals.TMP1.set(body.getLinearVelocity()).scl(factor), false);
 	}
 
 	@Override

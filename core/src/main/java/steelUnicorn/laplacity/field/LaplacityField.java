@@ -111,7 +111,7 @@ public class LaplacityField extends Group {
 					tiles[i][j] = new StructureTile(i, j, str);
 				} else
 				// accelerator and moderator
-				if (c == 1677721855 || c == 6553855) {
+				if (c == 1677721855 || c == 51455) {
 					AcceleratorStructure str = new AcceleratorStructure(i, j, pxmap, c);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
