@@ -151,7 +151,7 @@ public class GameProcess {
 	public static final long MOVING_WALL_CYCLE_TIME = 3000;
 	public static final long BLADES_ROTATION_TIME = 3000;
 	public static final float BLADES_THICKNESS_FACTOR = 0.1f;
-	public static final float DISSIPATIVE_ACCELERATION_FACTOR = 100f;
+	public static final float CELERATION_FACTOR = 5000f;
 	public static final float DISSIPATIVE_MODERATION_FACTOR = -30f;
 	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 3;
 	
@@ -257,7 +257,8 @@ public class GameProcess {
 			frameAccumulator += frameTime;
 			while (frameAccumulator >= 0) {
 				saveCurrentState();
-				mainParticle.updatePhysics(frameTime);
+				mainParticle.updatePhysics(delta);
+				LaplacityField.updateStructuresPhysics(delta);
 				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_TIME_STEP;
 			}

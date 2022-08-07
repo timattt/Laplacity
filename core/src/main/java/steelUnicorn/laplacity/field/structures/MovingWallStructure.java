@@ -151,6 +151,19 @@ public class MovingWallStructure extends FieldStructure {
 	}
 
 	@Override
+	public void updatePhysics(float timeFromStart) {
+		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
+		
+		if (isHorizontal) {
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - width) / 2f;
+			body.setTransform(currentCoord, staticCoord, 0);
+		} else {
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - height) / 2f;
+			body.setTransform(staticCoord, currentCoord, 0);
+		}
+	}
+
+	@Override
 	public void renderCached(float timeFromStart) {
 		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
 		
