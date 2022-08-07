@@ -258,7 +258,7 @@ public class GameProcess {
 			while (frameAccumulator >= 0) {
 				saveCurrentState();
 				mainParticle.updatePhysics(delta);
-				LaplacityField.updateStructuresPhysics(delta);
+				LaplacityField.updateStructuresPhysics(currentTime - startTime);
 				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_TIME_STEP;
 			}
