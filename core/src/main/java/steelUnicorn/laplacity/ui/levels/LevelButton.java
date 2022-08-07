@@ -4,6 +4,7 @@ package steelUnicorn.laplacity.ui.levels;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.utils.LevelsParser;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -34,6 +35,7 @@ public class LevelButton extends TextButton {
 			LevelButton btn = (LevelButton) actor;
 			GameProcess.levelNumber = btn.levelNumber;
 			GameProcess.sectionNumber = btn.sectionNumber;
+			GameProcess.levelParams = LevelsParser.getParams(btn.sectionNumber, btn.levelNumber);
 			GameProcess.initLevel(Globals.assetManager.get(btn.lvlImgPath, Texture.class));
 
 			LaplacityAssets.setLevelTrack();;

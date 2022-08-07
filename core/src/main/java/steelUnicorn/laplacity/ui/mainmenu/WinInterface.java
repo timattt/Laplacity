@@ -136,6 +136,7 @@ public class WinInterface extends Stage {
                         nextSection = GameProcess.sectionNumber;
                         nextLevel = ++GameProcess.levelNumber;
                     }
+                    GameProcess.levelParams = LevelsParser.getParams(nextSection, nextLevel);
                     GameProcess.initLevel(Globals.assetManager.get(
                             LevelsParser.sectionLevelsPaths.get(nextSection).get(nextLevel - 1),
                             Texture.class));
