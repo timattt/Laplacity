@@ -94,7 +94,7 @@ public class GameProcess {
 	 * Далее currentTime обновляется каждый фрейм внутри физической
 	 * части цикла рендеринга (под ифом)
 	 * newTime используется как промежуточная переменная для
-	 * вычисления frameTime
+	 * вычисления frameTime (см метод update)
 	 * frameTime - переменная, аналогичная delta,
 	 * но для физических расчётов, а не для графики.
 	 * Нужна для того, чтобы отсеять все возможные фризы перед запуском
@@ -102,7 +102,6 @@ public class GameProcess {
 	 */
 	private static long newTime = 0;
 	private static long currentTime = 0;
-	private static float frameTime = 0f; // new delta
 	/*
 	 * Интерполяционный коэффициент показывает, насколько близко
 	 * состояние на экране к текущему физическому состоянию.
@@ -250,12 +249,11 @@ public class GameProcess {
 		
 		// update
 		//---------------------------------------------
-		CameraManager.update(frameTime);
 		currentGameMode.update();
 		gameUI.act(delta);
 		if (currentGameMode == GameMode.FLIGHT) {
 			newTime = TimeUtils.millis();
-			frameTime = ((float) (newTime - currentTime)) / 1000f;
+			float frameTime = ((float) (newTime - currentTime)) / 1000f;
 			currentTime = newTime;
 			frameAccumulator += frameTime;
 			while (frameAccumulator >= 0) {
@@ -265,6 +263,9 @@ public class GameProcess {
 				frameAccumulator -= SIMULATION_TIME_STEP;
 			}
 			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
+			CameraManager.update(frameTime);
+		} else {
+			CameraManager.update(delta);
 		}
 		for (PointLight pl : lights) {
 			pl.update();
