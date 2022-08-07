@@ -8,8 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import steelUnicorn.laplacity.CameraManager;
-import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 
@@ -41,18 +39,19 @@ public class BackgroundRenderer {
 		
 		idSpace = gameCache.endCache();
 
-		x = fieldWidth * sz;
+		x = 0;
 
 		gameCache.beginCache();
 		
-		while (x > 0) {
-			Texture tex = LaplacityAssets.BACKGROUNDS.get(levelParams.getBackId().get(0));
+		for (int i = 0; i < levelParams.getBackId().size; i++) {
+			Texture tex = LaplacityAssets.BACKGROUNDS.get(levelParams.getBackId().get(i));
 			float aspect = (float) tex.getWidth() / (float) tex.getHeight();
 			float h = fieldHeight * sz;
 			float w = aspect * h;
 			
-			gameCache.add(new TextureRegion(tex), x - w, 0, w, h);
-			x -= w;
+			gameCache.add(new TextureRegion(tex), x, 0, w, h);
+			x += w;
+			i++;
 		}
 		
 		id = gameCache.endCache();
