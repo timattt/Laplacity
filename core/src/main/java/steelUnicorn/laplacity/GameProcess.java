@@ -241,13 +241,14 @@ public class GameProcess {
 			frameAccumulator += delta;
 			while (frameAccumulator >= 0) {
 				saveCurrentState();
+				mainParticle.updatePhysics(delta);
 				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_TIME_STEP;
 			}
 			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
 		}
-    for (PointLight pl : lights) {
-		  pl.update();
+		for (PointLight pl : lights) {
+			pl.update();
 		}
 		//---------------------------------------------
 	}

@@ -65,13 +65,12 @@ public class ControllableElectron extends ChargedParticle {
 		return true;
 	}
 
-	@Override
-	public void update(float delta) {
+	public void updatePhysics(float delta) {
 		if (currentGameMode == GameMode.FLIGHT) {
-			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
+			FieldCalculator.calculateFieldIntensity(interpX(), interpY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
-		pointLight.setPosition(body.getPosition().x, body.getPosition().y);
+		pointLight.setPosition(interpX(), interpY());
 	}
 
 	public void setSlingshot(float x, float y) {

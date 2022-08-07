@@ -93,6 +93,7 @@ public class FieldCalculator {
 		if (M * N != n) {
 			throw new RuntimeException("Fatal error: mismatched field and intermediate buffer dimensions");
 		}
+
 		// Задание начального приближения
 		Arrays.fill(result, 0.0f);
 

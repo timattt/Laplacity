@@ -61,9 +61,6 @@ public class ChargedParticle implements CollisionListener {
 	public void draw() {
 	}
 	
-	public void update(float delta) {
-	}
-	
 	public PointLight getPointLight() {
 		return pointLight;
 	}
