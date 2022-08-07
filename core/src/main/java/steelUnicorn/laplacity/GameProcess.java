@@ -321,9 +321,6 @@ public class GameProcess {
 		boolean nowFlight = mode == GameMode.FLIGHT;
 		boolean wasFlight = currentGameMode == GameMode.FLIGHT;
 		
-		currentGameMode.replaced();
-		currentGameMode = mode;
-
 		if ((nowFlight) && (wasFlight)) {
 			LaplacityField.resetStructures();
 			mainParticle.resetToStartPosAndStartVelocity();
@@ -331,8 +328,8 @@ public class GameProcess {
 			startTime = TimeUtils.millis();
 		} else {
 			if (nowFlight) {
-				startTime = TimeUtils.millis();
 				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+				startTime = TimeUtils.millis();
 				mainParticle.makeParticleMoveWithStartVelocity();
 			}
 		
@@ -344,6 +341,8 @@ public class GameProcess {
 			}
 		}
 
+		currentGameMode.replaced();
+		currentGameMode = mode;
 		gameUI.updateCurMode();
 	}
 	
