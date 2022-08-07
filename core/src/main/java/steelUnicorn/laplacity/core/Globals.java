@@ -53,6 +53,9 @@ public class Globals {
 	 */
 	public static final float SCREEN_WORLD_HEIGHT = 90;
 	
+	// epsilon
+	public static final float EPSILON_PRECISION = 0.0001f;
+	
 	// screens
 	public static GameScreen gameScreen;
 	public static MainMenuScreen mainMenuScreen;
