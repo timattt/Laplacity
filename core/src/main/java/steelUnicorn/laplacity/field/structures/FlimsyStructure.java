@@ -67,11 +67,15 @@ public class FlimsyStructure extends FieldStructure {
 	}
 
 	@Override
-	public void renderBatched(float timeFromStart) {
+	public void updatePhysics(float timeFromStart) {
 		if (justBroken) {
 			body.setTransform(100000, 100000, 0);
 			justBroken = false;
 		}
+	}
+
+	@Override
+	public void renderBatched(float timeFromStart) {
 		GameProcess.gameBatch.enableBlending();
 		if (durability > 0) {
 			int index = 3*(GameProcess.FLIMSY_STRUCTURE_START_DURABILITY - durability) / GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;

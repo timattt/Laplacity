@@ -54,12 +54,15 @@ public class AcceleratorStructure extends FieldStructure {
 	}
 
 	@Override
-	public void renderBatched(float timeFromStart) {
+	public void updatePhysics(float timeFromStart) {
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(GameProcess.mainParticle.interpX(), GameProcess.mainParticle.interpY());
 		if (tl != null && bounds.containsPoint(tl.getGridX(), tl.getGridY())) {
 			GameProcess.mainParticle.getBody().applyForceToCenter(dirX * GameProcess.CELERATION_FACTOR, dirY * GameProcess.CELERATION_FACTOR, true);
 		}
-		
+	}
+
+	@Override
+	public void renderBatched(float timeFromStart) {		
 		gameBatch.enableBlending();
 		gameBatch.draw(LaplacityAssets.CELERATORS_REGIONS[0], x, y, width, height);
 		gameBatch.disableBlending();

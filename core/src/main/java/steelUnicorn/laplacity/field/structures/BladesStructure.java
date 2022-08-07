@@ -83,10 +83,14 @@ public class BladesStructure extends FieldStructure {
 	}
 
 	@Override
-	public void renderBatched(float timeFromStart) {
+	public void updatePhysics(float timeFromStart) {
 		float curAngle = (float) (360 * timeFromStart / (float)BLADES_ROTATION_TIME);
 		body.setTransform(x, y, (float) (2 * Math.PI * curAngle / 360f));
-		
+	}
+
+	@Override
+	public void renderBatched(float timeFromStart) {
+		float curAngle = (float) (360 * timeFromStart / (float)BLADES_ROTATION_TIME);
 		float sz = size * BLADES_THICKNESS_FACTOR;
 		
 		gameBatch.enableBlending();

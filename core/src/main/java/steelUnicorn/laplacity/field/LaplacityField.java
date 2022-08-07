@@ -181,6 +181,12 @@ public class LaplacityField extends Group {
 		}
 	}
 	
+	public static void updateStructuresPhysics(float timeFromStart) {
+		for (FieldStructure fs : structures) {
+			fs.updatePhysics(timeFromStart);
+		}
+	}
+	
 	public static void renderStructuresBatched(float timeFromStart) {
 		for (FieldStructure fs : structures) {
 			fs.renderBatched(timeFromStart);
