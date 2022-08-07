@@ -67,7 +67,7 @@ public class ControllableElectron extends ChargedParticle {
 
 	public void updatePhysics(float delta) {
 		if (currentGameMode == GameMode.FLIGHT) {
-			FieldCalculator.calculateFieldIntensity(interpX(), interpY(), LaplacityField.tiles, TMP1);
+			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
 		pointLight.setPosition(interpX(), interpY());
