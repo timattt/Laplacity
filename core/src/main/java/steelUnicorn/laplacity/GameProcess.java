@@ -100,7 +100,6 @@ public class GameProcess {
 	 * Нужна для того, чтобы отсеять все возможные фризы перед запуском
 	 * физики.
 	 */
-	private static long newTime = 0;
 	private static long currentTime = 0;
 	/*
 	 * Интерполяционный коэффициент показывает, насколько близко
@@ -252,7 +251,7 @@ public class GameProcess {
 		currentGameMode.update();
 		gameUI.act(delta);
 		if (currentGameMode == GameMode.FLIGHT) {
-			newTime = TimeUtils.millis();
+			long newTime = TimeUtils.millis();
 			float frameTime = ((float) (newTime - currentTime)) / 1000f;
 			currentTime = newTime;
 			frameAccumulator += frameTime;
