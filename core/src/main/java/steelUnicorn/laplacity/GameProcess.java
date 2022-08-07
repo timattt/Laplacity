@@ -88,6 +88,22 @@ public class GameProcess {
 	public static long startTime = 0;
 	private static float frameAccumulator = 0f;
 	/*
+	 * Время, используемое для физических расчётов
+	 * При запуске полёта, который происходит в 
+	 * changeGameMode currentTime и startTime равны
+	 * Далее currentTime обновляется каждый фрейм внутри физической
+	 * части цикла рендеринга (под ифом)
+	 * newTime используется как промежуточная переменная для
+	 * вычисления frameTime
+	 * frameTime - переменная, аналогичная delta,
+	 * но для физических расчётов, а не для графики.
+	 * Нужна для того, чтобы отсеять все возможные фризы перед запуском
+	 * физики.
+	 */
+	private static long newTime = 0;
+	private static long currentTime = 0;
+	private static float frameTime = 0f; // new delta
+	/*
 	 * Интерполяционный коэффициент показывает, насколько близко
 	 * состояние на экране к текущему физическому состоянию.
 	 * Коэффициент, равный 1 означает, что состояние на экране и
@@ -205,10 +221,10 @@ public class GameProcess {
 		TrajectoryRenderer.render();
 		TilesRenderer.render();
 		DensityRenderer.render();
-		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
+		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
 		
 		gameBatch.begin();
-		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? TimeUtils.millis() - startTime : 0);
+		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		
@@ -234,14 +250,17 @@ public class GameProcess {
 		
 		// update
 		//---------------------------------------------
-		CameraManager.update(delta);
+		CameraManager.update(frameTime);
 		currentGameMode.update();
 		gameUI.act(delta);
 		if (currentGameMode == GameMode.FLIGHT) {
-			frameAccumulator += delta;
+			newTime = TimeUtils.millis();
+			frameTime = ((float) (newTime - currentTime)) / 1000f;
+			currentTime = newTime;
+			frameAccumulator += frameTime;
 			while (frameAccumulator >= 0) {
 				saveCurrentState();
-				mainParticle.updatePhysics(delta);
+				mainParticle.updatePhysics(frameTime);
 				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_TIME_STEP;
 			}
@@ -330,6 +349,7 @@ public class GameProcess {
 			if (nowFlight) {
 				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 				startTime = TimeUtils.millis();
+				currentTime = startTime;
 				mainParticle.makeParticleMoveWithStartVelocity();
 			}
 		
