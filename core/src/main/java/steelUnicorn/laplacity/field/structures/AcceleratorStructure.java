@@ -55,7 +55,7 @@ public class AcceleratorStructure extends FieldStructure {
 
 	@Override
 	public void updatePhysics(float timeFromStart) {
-		EmptyTile tl = LaplacityField.getTileFromWorldCoords(GameProcess.mainParticle.interpX(), GameProcess.mainParticle.interpY());
+		EmptyTile tl = LaplacityField.getTileFromWorldCoords(GameProcess.mainParticle.getX(), GameProcess.mainParticle.getY());
 		if (tl != null && bounds.containsPoint(tl.getGridX(), tl.getGridY())) {
 			GameProcess.mainParticle.getBody().applyForceToCenter(dirX * GameProcess.CELERATION_FACTOR, dirY * GameProcess.CELERATION_FACTOR, true);
 		}
