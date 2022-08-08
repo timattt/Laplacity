@@ -1,7 +1,19 @@
 {
-	backId: [
+	backIds: [
 		{value: 1},
 		{value: 2},
 		{value: 3},
+	],
+	levelHints: [
+		{
+			x: 1,
+			y: 2,
+			hintId: 3
+		},
+		{
+			x: 1,
+			y: 2,
+			hintId: 3
+		}
 	]
 }
