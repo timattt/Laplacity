@@ -52,7 +52,10 @@ public class LaplacityAssets {
 	// BACKGROUNDS
 	public static Array<Texture> BACKGROUNDS;
 	public static Texture SPACE_BACKGROUND;
-	
+
+    //HINTS
+    public static Array<Texture> HINTS;
+
 	// PARTICLES
 	public static Texture ELECTRON_TEXTURE;
 	public static Texture PROTON_TEXTURE;
@@ -117,6 +120,7 @@ public class LaplacityAssets {
         
         loadTextureRegions();
         loadBackgrounds();
+        loadHints();
     }
     
     private static void loadTextureRegions() {
@@ -147,6 +151,18 @@ public class LaplacityAssets {
         }
 
     	SPACE_BACKGROUND = Globals.assetManager.get("textures/backgrounds/SPACE_BACKGROUND.png", Texture.class);
+    }
+
+    private static void loadHints() {
+        HINTS = new Array<>();
+
+        FileHandle[] hints = Gdx.files.internal("textures/hints/").list();
+
+        for (FileHandle hint : hints) {
+            HINTS.add(Globals.assetManager.get(hint.path(), Texture.class));
+        }
+
+        Gdx.app.log("Hints loaded", HINTS.toString());
     }
     
     private static void cut(Texture from, TextureRegion[] result) {
