@@ -137,8 +137,8 @@ public class GameProcess {
 	
 	// PHYSICS
 	public static final float TRAJECTORY_TIME_STEP = 1f/60f; // используется при расчёте траектории для подсказки
-	public static final int VELOCITY_STEPS = 1;
-	public static final int POSITION_STEPS = 3;
+	public static final int VELOCITY_STEPS = 4;
+	public static final int POSITION_STEPS = 2;
 	public static final float SIMULATION_TIME_STEP = 1f/60f; // используется непосредственно в игре
 	public static final int RAYS_COUNT = 500;
 	
