@@ -87,6 +87,7 @@ public class MainMenu extends Stage {
     public void show() {
         catFI.update(catFood.getTotalLaunchesAvailable());
         catFood.timer.setCurrentInterface(catFI);
+        tabCell.setActor(null);
     }
 
     /**
@@ -99,8 +100,7 @@ public class MainMenu extends Stage {
         Table mainMenu = new Table();
         root.add(mainMenu).expandX().uniform();
 
-        MainMenuTab tmpTab = new MainMenuTab();
-        tabCell = root.add(tmpTab).growX().uniform();
+        tabCell = root.add().growX().uniform();
 
         mainMenu.defaults()
                 .width(menuWidth)
