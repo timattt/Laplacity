@@ -56,7 +56,7 @@ public class LaplacityAssets {
 	// OBJECTS
 	public static Texture GIFT_TEXTURE;
 	public static Texture CAT_TEXTURE;
-	public static TextureRegion CAT_REGION;
+	public static TextureRegion[][] CAT_REGIONS;
 	
 	// STRUCTURES
 	public static Texture BLADES_TEXTURE;
@@ -124,9 +124,9 @@ public class LaplacityAssets {
         cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[3]);
         cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
         cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
+        cut(CAT_TEXTURE, CAT_REGIONS = new TextureRegion[5][2]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
-        CAT_REGION = new TextureRegion(CAT_TEXTURE);
     }
     
     private static void loadBackgrounds() {
