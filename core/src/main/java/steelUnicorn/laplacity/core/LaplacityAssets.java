@@ -181,6 +181,8 @@ public class LaplacityAssets {
     public static void changeTrack(String name) {
         if (currentMusic != null && Globals.assetManager.contains(currentMusic))
             Globals.assetManager.unload(currentMusic);
+        if (currentIntro != null && Globals.assetManager.contains(currentIntro))
+            Globals.assetManager.unload(currentIntro);
         currentMusic = name;
         Globals.assetManager.load(currentMusic, Music.class);
         Globals.assetManager.finishLoadingAsset(currentMusic);
@@ -201,7 +203,7 @@ public class LaplacityAssets {
             index = trackRandomizer.nextInt(levelTracks.length);
         currentTrack = index;
         changeTrack("music/levels/" + levelTracks[currentTrack].name());
-        //loopTrackWithIntro(levelTracks[currentTrack].name());
+        loopTrackWithIntro(levelTracks[currentTrack].name());
     }
 
     // передавать просто name без префикса
