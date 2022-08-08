@@ -15,6 +15,8 @@ import steelUnicorn.laplacity.utils.LevelsParser;
  *
  * В консрукторе по номеру секции создает таблицу с уровнями используя
  * LevelParser.sectionLevelsPaths
+ *
+ * Используется в классе LevelsTab для отображения уровней для выбора
  */
 public class LevelSection extends Table {
     private static final float lvlBtnSize = UI_WORLD_WIDTH * 0.04f;
