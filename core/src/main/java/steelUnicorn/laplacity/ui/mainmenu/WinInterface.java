@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
-import static steelUnicorn.laplacity.core.Globals.assetManager;
 import static steelUnicorn.laplacity.core.LaplacityAssets.EARTH_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
