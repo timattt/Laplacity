@@ -45,7 +45,7 @@ public class ReturnDialog extends Dialog {
 	protected void result(Object object) {
 		LaplacityAssets.playSound(LaplacityAssets.clickSound);
 		if ((Boolean) object) {
-			LaplacityAssets.changeTrack("music/main_menu.mp3");
+			LaplacityAssets.changeTrack("music/main theme_drop.ogg");
 			Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, null);
 		}
 	}
