@@ -121,7 +121,7 @@ public class LaplacityAssets {
         cut(CELERATORS_TEXTURE, CELERATORS_REGIONS = new TextureRegion[3]);
         cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
         cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
-        cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[3]);
+        cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[5]);
         cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
         cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
         cut(CAT_TEXTURE, CAT_REGIONS = new TextureRegion[5][2]);
