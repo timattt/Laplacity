@@ -45,6 +45,7 @@ public class ChargedParticle implements CollisionListener {
 		fxt.shape = cir;
 		fxt.density = 0.25f;
 		fxt.restitution = 1f;
+		fxt.friction = 0f;
 		
 		body.createFixture(fxt);
 		body.setUserData(this);
