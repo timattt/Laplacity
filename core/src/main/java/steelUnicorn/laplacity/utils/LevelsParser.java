@@ -19,6 +19,11 @@ import steelUnicorn.laplacity.core.Globals;
  * Каждый файл в секции иметь название levelN.png где N - номер уровня формата %02d
  *
  * LevelsParser подгружает ассеты
+ *
+ * Так же класс содержит массив массивов параметров уровня. Первый индекс это порядок секции,
+ * второй - номер уровня, а значение - его параметры, которые подгружаются из json файлов в папке
+ * levelparams/sectionN для каждой секции
+ *
  */
 public class LevelsParser {
     //Основная функция, возвращает
@@ -109,6 +114,9 @@ public class LevelsParser {
         return levelParams.get(section - 1).get(level - 1);
     }
 
+    /**
+     * Вспомогательный класс для хранения параметров уровня. Создается из json файлов
+     */
     public static class LevelParams {
         private Array<Integer> backId; //массив фонов
 

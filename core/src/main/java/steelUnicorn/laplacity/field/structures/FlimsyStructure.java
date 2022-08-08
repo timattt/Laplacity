@@ -78,7 +78,7 @@ public class FlimsyStructure extends FieldStructure {
 	public void renderBatched(float timeFromStart) {
 		GameProcess.gameBatch.enableBlending();
 		if (durability > 0) {
-			int index = 3*(GameProcess.FLIMSY_STRUCTURE_START_DURABILITY - durability) / GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;
+			int index = 2* durability / GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;
 			index = index % LaplacityAssets.GLASS_REGIONS.length;
 			if (width < height) {
 				GameProcess.gameBatch.draw(LaplacityAssets.GLASS_REGIONS[index], x - width/2, y -height/2, width, height);

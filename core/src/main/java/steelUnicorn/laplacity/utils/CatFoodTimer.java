@@ -10,6 +10,11 @@ import steelUnicorn.laplacity.ui.CatFoodInterface;
  * Создает таск который каждую секунду уменьшаяет таймер
  * и записывает в нужный label
  *
+ * Класс содержит функции start() и stop() для запуска и остановки таймера. Таймера останавливается
+ * только когда еда у кота полная. При этом с помощью функции checkVisible label скрывается.
+ *
+ * Класс хранит у себя ссылку на текущий интерфейс currentInterface, визуальный таймер
+ * в котором он меняет
  */
 public class CatFoodTimer {
     public static final int MAX_VALUE = 60; //seconds
@@ -17,7 +22,7 @@ public class CatFoodTimer {
 
     private int sec;
     private int min;
-    //Task that will be run each second
+    //Таск который уменьшает таймер на 1 секунду
     public Timer.Task task = new Timer.Task() {
         @Override
         public void run() {

@@ -35,6 +35,9 @@ public class ControllableElectron extends ChargedParticle {
 	private float prevX = 0f;
 	private float prevY = 0f;
 	
+	// emoji
+	private int currentEmoji = 0;
+	
 	public ControllableElectron(float x, float y) {
 		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
 		startX = x;
@@ -46,7 +49,7 @@ public class ControllableElectron extends ChargedParticle {
 	@Override
 	public void draw() {
 		GameProcess.gameBatch.enableBlending();
-		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGION,
+		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGIONS[currentEmoji % LaplacityAssets.CAT_REGIONS.length][currentEmoji / LaplacityAssets.CAT_REGIONS.length],
 				interpX() - CAT_SIZE,
 				interpY() - CAT_SIZE,
 				CAT_SIZE,
@@ -127,6 +130,7 @@ public class ControllableElectron extends ChargedParticle {
 	@Override
 	public void collidedWithTile() {
 		LaplacityAssets.playSound(LaplacityAssets.bumpSound);
+		currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
 	}
 
 	@Override

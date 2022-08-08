@@ -50,13 +50,15 @@ public class LaplacityAssets {
 	public static Texture SPACE_BACKGROUND;
 	
 	// PARTICLES
-	public static Texture PARTICLES_TEXTURE;
-	public static TextureRegion[][] PARTICLES_REGIONS;
+	public static Texture ELECTRON_TEXTURE;
+	public static Texture PROTON_TEXTURE;
+	public static TextureRegion[] ELECTRON_REGIONS;
+	public static TextureRegion[] PROTON_REGIONS;
 	
 	// OBJECTS
 	public static Texture GIFT_TEXTURE;
 	public static Texture CAT_TEXTURE;
-	public static TextureRegion CAT_REGION;
+	public static TextureRegion[][] CAT_REGIONS;
 	
 	// STRUCTURES
 	public static Texture BLADES_TEXTURE;
@@ -66,7 +68,7 @@ public class LaplacityAssets {
 	public static Texture HATCH_TEXTURE;
 	public static TextureRegion[][] HATCH_REGIONS;
 	public static Texture MOVING_WALL_TEXTURE;
-	public static TextureRegion[][] MOVING_WALL_STRUCTURE_REGIONS;
+	public static TextureRegion[] MOVING_WALL_STRUCTURE_REGIONS;
 	public static Texture GLASS_TEXTURE;
 	public static TextureRegion[] GLASS_REGIONS;
 	public static Texture RED_LED_TEXTURE;
@@ -98,7 +100,7 @@ public class LaplacityAssets {
         BLADES_TEXTURE = Globals.assetManager.get("textures/structures/fan.png");
         CELERATORS_TEXTURE = Globals.assetManager.get("textures/structures/celerators.png");
         HATCH_TEXTURE = Globals.assetManager.get("textures/structures/hatch.png");
-        MOVING_WALL_TEXTURE = Globals.assetManager.get("textures/structures/structure_thin.png");
+        MOVING_WALL_TEXTURE = Globals.assetManager.get("textures/structures/moving.png");
         GLASS_TEXTURE = Globals.assetManager.get("textures/structures/glass.png");
         RED_LED_TEXTURE = Globals.assetManager.get("textures/structures/redLed.png");
         HINGE_TEXTURE = Globals.assetManager.get("textures/structures/hinge.png");
@@ -106,7 +108,8 @@ public class LaplacityAssets {
         // OBJECTS
         GIFT_TEXTURE = Globals.assetManager.get("rigidObjects/gift.png");
         CAT_TEXTURE = Globals.assetManager.get("textures/objects/cat.png");
-        PARTICLES_TEXTURE = Globals.assetManager.get("textures/objects/particles.png");
+        ELECTRON_TEXTURE = Globals.assetManager.get("textures/objects/electron.png");
+        PROTON_TEXTURE = Globals.assetManager.get("textures/objects/proton.png");
         
         loadTextureRegions();
         loadBackgrounds();
@@ -115,18 +118,19 @@ public class LaplacityAssets {
     private static void loadTextureRegions() {
     	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[7]);
     	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
-    	cut(PARTICLES_TEXTURE, PARTICLES_REGIONS = new TextureRegion[7][2]);
+    	cut(ELECTRON_TEXTURE, ELECTRON_REGIONS = new TextureRegion[7]);
+    	cut(PROTON_TEXTURE, PROTON_REGIONS = new TextureRegion[7]);
         cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
-        cut(BLADES_TEXTURE, BLADES_REGIONS = new TextureRegion[3]);
+        cut_blades(BLADES_TEXTURE, BLADES_REGIONS = new TextureRegion[2]);
         cut(CELERATORS_TEXTURE, CELERATORS_REGIONS = new TextureRegion[3]);
         cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
-        cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
-        cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[3]);
+        cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[4]);
+        cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[5]);
         cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
         cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
+        cut(CAT_TEXTURE, CAT_REGIONS = new TextureRegion[5][2]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
-        CAT_REGION = new TextureRegion(CAT_TEXTURE);
     }
     
     private static void loadBackgrounds() {
@@ -153,6 +157,21 @@ public class LaplacityAssets {
     			result[i][j] = new TextureRegion(from, i * from.getWidth() / result.length, j * from.getHeight() / result[i].length, from.getWidth() / result.length, from.getHeight() / result[i].length);
     		}
     	}
+    }
+    
+    private static void cut_blades(Texture from, TextureRegion[] result) {
+    	result[0] = new TextureRegion(
+    			from,
+    			0,
+    			0,
+    			from.getWidth() / 4,
+    			from.getHeight());
+    	result[1] = new TextureRegion(
+    			from,
+    			1 * from.getWidth() / 4,
+    			0,
+    			3 * from.getWidth() / 4,
+    			from.getHeight());
     }
 
     public static void changeTrack(String name) {

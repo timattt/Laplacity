@@ -26,8 +26,13 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 import steelUnicorn.laplacity.utils.LevelsParser;
 
 /**
- * Класс LevelTab при создании создает вкладку с уровнями в главном меню.
- * Вкладка начинается с названия, и под названием таблица с уровнями.
+ * Класс создает интерфейс выбора уровней.
+ * Сверху интерфейса: кнопк возврата в меню и описание Levels:
+ * Далее идут уровни секции, по 4 в ряд
+ * И снизу навигационная панель для переключения секций
+ *
+ * Секции хранятся в массиве sections.
+ *
  * Уровни подгружаются из папки /assets/levels/
  */
 public class LevelsTab extends MainMenuTab {
