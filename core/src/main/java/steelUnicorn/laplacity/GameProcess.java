@@ -453,7 +453,8 @@ public class GameProcess {
 	public static void levelFinished() {
 		changeGameMode(GameMode.NONE);
 		Gdx.app.log("game process", "Level finished");
-		
+
+		progress.levelFinished(sectionNumber, levelNumber, currentlyStarsCollected);
 		Globals.winScreen.loadWinScreen(currentlyStarsCollected);
 		Globals.game.getScreenManager().pushScreen(nameWinScreen, null);
 	}

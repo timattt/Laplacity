@@ -13,6 +13,7 @@ import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
+import steelUnicorn.laplacity.utils.PlayerProgress;
 
 /**
  * Класс, который содержит глобальные переменные для всей программы.
@@ -78,4 +79,6 @@ public class Globals {
 
 	//cat Food
 	public static CatFood catFood;
+	//PlayerProgress
+	public static PlayerProgress progress;
 }
