@@ -2,6 +2,11 @@ package steelUnicorn.laplacity.gameModes;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Класс, соответствующий текущему режиму игры.
+ * @author timat
+ *
+ */
 public class GameMode {
 
 	// MODES

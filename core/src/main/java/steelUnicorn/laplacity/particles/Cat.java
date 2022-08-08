@@ -21,15 +21,11 @@ import steelUnicorn.laplacity.gameModes.GameMode;
  * @author timat
  *
  */
-public class ControllableElectron extends ChargedParticle {
+public class Cat extends ChargedParticle {
 
 	// Start velocity
 	private float slingshotX;
 	private float slingshotY;
-	
-	// Start pos
-	private float startX;
-	private float startY;
 
 	// Prev pos
 	private float prevX = 0f;
@@ -38,10 +34,8 @@ public class ControllableElectron extends ChargedParticle {
 	// emoji
 	private int currentEmoji = 0;
 	
-	public ControllableElectron(float x, float y) {
-		super(x, y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
-		startX = x;
-		startY = y;
+	public Cat() {
+		super(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
 		pointLight.setStaticLight(false);
 		pointLight.setDistance(CAT_LIGHT_DISTANCE);
 	}
@@ -86,7 +80,7 @@ public class ControllableElectron extends ChargedParticle {
 	}
 	
 	public void resetToStartPosAndStartVelocity() {
-		setPosition(startX, startY, 0);
+		setPosition(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, 0);
 		savePosition();
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
@@ -121,10 +115,6 @@ public class ControllableElectron extends ChargedParticle {
 	public void collidedWithDeadly() {
 		LaplacityAssets.playSound(LaplacityAssets.hurtSound);
 		GameProcess.justHitted = true;
-	}
-
-	@Override
-	public void collidedWithFinish() {
 	}
 
 	@Override

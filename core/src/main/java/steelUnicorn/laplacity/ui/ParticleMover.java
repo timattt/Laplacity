@@ -33,9 +33,9 @@ public class ParticleMover {
 	
 	public static void tryToMove(float x, float y) {
 		if (current != null) {
-			TMP1.set(mainParticle.getX(), mainParticle.getY());
+			TMP1.set(cat.getX(), cat.getY());
 			TMP1.sub(x, y);
-			if (TMP1.len2() < 4 * PARTICLE_SIZE * PARTICLE_SIZE || !moveStaticParticle(current, x, y)) {
+			if (TMP1.len2() < 4 * PARTICLE_SIZE * PARTICLE_SIZE || !tryToMoveStaticParticle(current, x, y)) {
 				stopMoving();
 			}
 		}

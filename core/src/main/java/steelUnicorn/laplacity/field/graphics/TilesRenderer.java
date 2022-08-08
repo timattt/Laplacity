@@ -12,8 +12,11 @@ import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.SolidTile;
 
-
-
+/**
+ * Класс, который кеширует все тайлы, а потом на каждом тике этот кеш быстро прорисовывает.
+ * @author timat
+ *
+ */
 public class TilesRenderer {
 
 	private static int id;

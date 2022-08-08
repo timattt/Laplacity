@@ -13,13 +13,9 @@ public class Electron extends ChargedParticle {
 	private long lastAnimationUpdate;
 	private int currentTextureIndex = 0;
 	
-	public Electron(float x, float y, boolean isStatic) {
-		super(x, y, PARTICLE_SIZE, -PARTICLE_CHARGE, isStatic, Color.RED);
-		pointLight.setDistance(PARTICLE_LIGHT_DISTANCE);
-	}
-	
 	public Electron(float x, float y) {
-		this(x, y, true);
+		super(x, y, PARTICLE_SIZE, -PARTICLE_CHARGE, true, Color.RED);
+		pointLight.setDistance(PARTICLE_LIGHT_DISTANCE);
 	}
 
 	@Override

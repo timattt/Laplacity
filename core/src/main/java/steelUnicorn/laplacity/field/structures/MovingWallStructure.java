@@ -33,8 +33,8 @@ public class MovingWallStructure extends FieldStructure {
 	private float endCoord;
 	private float currentCoord;
 	private float phaseDelta;
-	private float width;
-	private float height;
+	private float blockWidth;
+	private float blockHeight;
 	private float staticCoord;
 	
 	// Body
@@ -66,8 +66,8 @@ public class MovingWallStructure extends FieldStructure {
 			endCoord = (bounds.top + 1) * sz;
 		}
 		
-		width = (blockRect.right - blockRect.left + 1) * sz;
-		height = (blockRect.top - blockRect.bottom + 1) * sz;
+		blockWidth = (blockRect.right - blockRect.left + 1) * sz;
+		blockHeight = (blockRect.top - blockRect.bottom + 1) * sz;
 		
 		currentCoord = startCoord;
 		
@@ -75,17 +75,17 @@ public class MovingWallStructure extends FieldStructure {
 		float r = 0;
 		
 		if (isHorizontal) {
-			currentCoord += width / 2;
+			currentCoord += blockWidth / 2;
 			staticCoord = LaplacityField.tileSize * 0.5f * (blockRect.top + blockRect.bottom + 1);
 			
 			x = (blockRect.left + blockRect.right + 1) * sz / 2f - (startCoord + endCoord) / 2f;
-			r = (endCoord - startCoord - width) / 2f;
+			r = (endCoord - startCoord - blockWidth) / 2f;
 		} else {
-			currentCoord += height / 2;
+			currentCoord += blockHeight / 2;
 			staticCoord = LaplacityField.tileSize * 0.5f * (blockRect.right + blockRect.left + 1);
 			
 			x = (blockRect.bottom + blockRect.top + 1) * sz / 2f - (startCoord + endCoord) / 2f;
-			r = (endCoord - startCoord - height) / 2f;
+			r = (endCoord - startCoord - blockHeight) / 2f;
 		}
 		
 		phaseDelta = (float) Math.asin(Math.max(-1.0,Math.min(1.0, x / r)));
@@ -135,7 +135,7 @@ public class MovingWallStructure extends FieldStructure {
 		body = GameProcess.registerPhysicalObject(bodydef);
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(width / 2, height / 2);
+		shape.setAsBox(blockWidth / 2, blockHeight / 2);
 		
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = shape;
@@ -153,10 +153,10 @@ public class MovingWallStructure extends FieldStructure {
 		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
 		
 		if (isHorizontal) {
-			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - width) / 2f;
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
 			body.setTransform(currentCoord, staticCoord, 0);
 		} else {
-			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - height) / 2f;
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 			body.setTransform(staticCoord, currentCoord, 0);
 		}
 	}
@@ -166,20 +166,20 @@ public class MovingWallStructure extends FieldStructure {
 		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
 		
 		if (isHorizontal) {
-			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - width) / 2f;
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
 			
 			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
-			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - width / 2, staticCoord - height / 2, 0));
+			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - blockWidth / 2, staticCoord - blockHeight / 2, 0));
 			GameProcess.gameCache.begin();
 			GameProcess.gameCache.draw(cacheId);
 			GameProcess.gameCache.end();
 
 			body.setTransform(currentCoord, staticCoord, 0);
 		} else {
-			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - height) / 2f;
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 			
 			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
-			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - width / 2, currentCoord - height / 2, 0));
+			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - blockWidth / 2, currentCoord - blockHeight / 2, 0));
 			GameProcess.gameCache.begin();
 			GameProcess.gameCache.draw(cacheId);
 			GameProcess.gameCache.end();

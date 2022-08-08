@@ -29,7 +29,7 @@ public class LevelsScreen extends ManagedScreen {
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
         //background
-        background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * Globals.guiViewport.getWorldHeight(),
                 Globals.guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);

@@ -9,10 +9,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.structures.FieldStructure;
 import steelUnicorn.laplacity.utils.RigidTextureLoader;
 
+/**
+ * Стурктура, которая поддреживает подгрузку сложного физического тела.
+ * @author timat
+ *
+ */
 public class RigidStructure extends FieldStructure {
 	
 	// Texture
@@ -23,10 +27,6 @@ public class RigidStructure extends FieldStructure {
 	private Vector2 origin;
 	private Vector2 pos;
 	private float scale;
-	
-	// center
-	private float x;
-	private float y;
 
 	// interpolation
 	private Vector2 prevPos = new Vector2(0f, 0f);
@@ -41,9 +41,8 @@ public class RigidStructure extends FieldStructure {
 	public RigidStructure(int left, int bottom, Pixmap pm, int[] codes, float scale, String path, Texture texture, String name) {
 		super(left, bottom, pm, codes);
 		origin = new Vector2();
-		x = (bounds.left + bounds.right + 1) * LaplacityField.tileSize / 2;
-		y = (bounds.bottom + bounds.top + 1) * LaplacityField.tileSize / 2;
-		pos = new Vector2(x, y);
+
+		pos = new Vector2(centerX, centerY);
 		
 		this.scale = scale;
 		this.texturePath = path;
@@ -57,7 +56,7 @@ public class RigidStructure extends FieldStructure {
 	public void register() {
 		body = RigidTextureLoader.createSolidTexture(texturePath, scale, origin, name);
 		body.setUserData(this);
-		body.setTransform(x, y, 0);
+		body.setTransform(centerX, centerY, 0);
 	}
 
 	@Override
@@ -79,7 +78,7 @@ public class RigidStructure extends FieldStructure {
 
 	@Override
 	public void reset() {
-		body.setTransform(x, y, 0);
+		body.setTransform(centerX, centerY, 0);
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
 		savePosition();

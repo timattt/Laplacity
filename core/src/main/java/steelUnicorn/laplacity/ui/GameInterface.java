@@ -273,7 +273,7 @@ public class GameInterface extends Stage implements GestureListener {
 
 	private float getlen2ToMainParticle(float scX, float scY) {
 		CameraManager.getCameraWorldPos(scX, scY, TMP1);
-		TMP1.sub(mainParticle.getX(), mainParticle.getY());
+		TMP1.sub(cat.getX(), cat.getY());
 		return TMP1.len2();
 	}
 	
@@ -312,7 +312,7 @@ public class GameInterface extends Stage implements GestureListener {
 		}
 		if (TrajectoryRenderer.changingDir) {
 			getlen2ToMainParticle(screenX, screenY);
-			mainParticle.setSlingshot(TMP1.x, TMP1.y);
+			cat.setSlingshot(TMP1.x, TMP1.y);
 			TrajectoryRenderer.updateTrajectory();
 			return true;
 		}

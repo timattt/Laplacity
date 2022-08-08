@@ -56,7 +56,7 @@ public class MainMenu extends Stage {
         super(viewport);
 
         //background
-        background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);

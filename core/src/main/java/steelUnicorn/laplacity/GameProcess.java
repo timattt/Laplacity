@@ -31,7 +31,7 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.particles.ChargedParticle;
-import steelUnicorn.laplacity.particles.ControllableElectron;
+import steelUnicorn.laplacity.particles.Cat;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
 import steelUnicorn.laplacity.utils.LevelsParser.LevelParams;
@@ -59,7 +59,7 @@ public class GameProcess {
 	// OBJECTS
 	//========================================================================================	
 	// Main electron
-	public static ControllableElectron mainParticle;
+	public static Cat cat;
 	
 	// Other particles
 	public static final Array<ChargedParticle> particles = new Array<ChargedParticle>();
@@ -121,14 +121,13 @@ public class GameProcess {
 	public static final float PARTICLE_CHARGE = 300f;
 	public static final float PARTICLE_SIZE = 2f;
 	public static final float CAT_SIZE = 4f;
-	public static final float PARTICLE_MASS = 1f;
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final long PARTICLE_TEXTURES_UPDATE_DELTA = 80;
 	
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;
 	public static final float MAX_DENSITY = 5f;
-	public static final double DIRICHLET_SPRAY_TILE_PROBABILITY = 0.2;
+	public static final float BRUSH_DENSITY_POWER = 0.05f * MAX_DENSITY;
 	
 	// TRAJECTORY
 	public static final int TRAJECTORY_POINTS = 50;
@@ -152,7 +151,6 @@ public class GameProcess {
 	public static final long BLADES_ROTATION_TIME = 3000;
 	public static final float BLADES_THICKNESS_FACTOR = 0.1f;
 	public static final float CELERATION_FACTOR = 5000f;
-	public static final float DISSIPATIVE_MODERATION_FACTOR = -30f;
 	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 3;
 	
 	// LIGHT
@@ -171,8 +169,7 @@ public class GameProcess {
 
 		game.getScreenManager().pushScreen(nameLoadingScreen, nameSlideIn);
 		
-		Gdx.app.log("gameProcess", "level init started: " +
-				"section "+ sectionNumber + "; level " + levelNumber);
+		Gdx.app.log("gameProcess", "level init started: " + "section "+ sectionNumber + "; level " + levelNumber);
 		levelWorld = new World(Vector2.Zero, false);
 		currentGameMode = GameMode.NONE;
 		debugRend = new Box2DDebugRenderer();
@@ -192,7 +189,7 @@ public class GameProcess {
 		TilesRenderer.init();
 		BackgroundRenderer.init();
 		
-		mainParticle = new ControllableElectron(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
+		cat = new Cat();
 		
 		/*
 		 * При инициализации уровня установить коэффициент в 1f
@@ -215,17 +212,20 @@ public class GameProcess {
 		
 		// render
 		//---------------------------------------------
+		// cached
 		BackgroundRenderer.render();
 		TrajectoryRenderer.render();
 		TilesRenderer.render();
 		DensityRenderer.render();
 		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
 		
+		// batched
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		
+		// light
 		if (Settings.isLightingEnabled()) {
 			rayHandler.updateAndRender();
 		}
@@ -257,7 +257,7 @@ public class GameProcess {
 			frameAccumulator += frameTime;
 			while (frameAccumulator >= 0) {
 				saveCurrentState();
-				mainParticle.updatePhysics(delta);
+				cat.updatePhysics(delta);
 				LaplacityField.updateStructuresPhysics(currentTime - startTime);
 				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 				frameAccumulator -= SIMULATION_TIME_STEP;
@@ -280,7 +280,7 @@ public class GameProcess {
 	 * что в данном методе Вы вызываете его метод сохранения состояния.
 	 */
 	private static void saveCurrentState() {
-		mainParticle.savePosition();
+		cat.savePosition();
 		LaplacityField.saveStructuresState();
 	}
 	
@@ -309,7 +309,7 @@ public class GameProcess {
 		}
 		particles.clear();
 		currentGameMode = GameMode.NONE;
-		mainParticle = null;
+		cat = null;
 		if (gameCache != null) {
 			gameCache.dispose();
 			gameCache = null;
@@ -320,8 +320,8 @@ public class GameProcess {
 	public static void clearLevel() {
 		Gdx.app.log("gameProcess", "clearing level...");
 		changeGameMode(GameMode.NONE);
-		mainParticle.setSlingshot(0.0f, 0.0f);
-		mainParticle.resetToStartPosAndStartVelocity();
+		cat.setSlingshot(0.0f, 0.0f);
+		cat.resetToStartPosAndStartVelocity();
 		
 		Array<ChargedParticle> tmp = new Array<ChargedParticle>();
 		tmp.addAll(particles);
@@ -343,19 +343,19 @@ public class GameProcess {
 		
 		if ((nowFlight) && (wasFlight)) {
 			LaplacityField.resetStructures();
-			mainParticle.resetToStartPosAndStartVelocity();
-			mainParticle.makeParticleMoveWithStartVelocity();
+			cat.resetToStartPosAndStartVelocity();
+			cat.makeParticleMoveWithStartVelocity();
 			startTime = TimeUtils.millis();
 		} else {
 			if (nowFlight) {
 				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 				startTime = TimeUtils.millis();
 				currentTime = startTime;
-				mainParticle.makeParticleMoveWithStartVelocity();
+				cat.makeParticleMoveWithStartVelocity();
 			}
 		
 			if (wasFlight) {
-				mainParticle.resetToStartPosAndStartVelocity();
+				cat.resetToStartPosAndStartVelocity();
 				LaplacityField.resetStructures();
 				// После полёта нужно вернуть интер
 				interpCoeff = 1f;
@@ -384,14 +384,16 @@ public class GameProcess {
 			levelWorld.destroyBody(body);
 	}
 	
-	public static void addStaticParticle(ChargedParticle part) {
+	public static boolean tryToAddStaticParticle(ChargedParticle part) {
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		if (tl != null && tl.isAllowDensityChange()) {
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
+			return true;
 		} else {
 			deletePhysicalObject(part.getBody());
 			deletePointLight(part.getPointLight());
+			return false;
 		}
 	}
 	
@@ -407,7 +409,7 @@ public class GameProcess {
 		}
 	}
 	
-	public static boolean moveStaticParticle(ChargedParticle part, float x, float y) {
+	public static boolean tryToMoveStaticParticle(ChargedParticle part, float x, float y) {
 		EmptyTile from = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		EmptyTile to = LaplacityField.getTileFromWorldCoords(x, y);
 		

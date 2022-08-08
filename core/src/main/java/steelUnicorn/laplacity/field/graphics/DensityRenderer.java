@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.VertexAttribute;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import steelUnicorn.laplacity.CameraManager;
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.IntRect;
 
@@ -24,11 +25,14 @@ import steelUnicorn.laplacity.field.physics.IntRect;
  */
 public class DensityRenderer {
 
+	// size
 	private static int blockWidth;
 	private static int blockHeight;
 	
+	// blocks
 	private static DensityBlock[][] blocks;
 	
+	// shader
 	private static ShaderProgram shader;
 	
 	private static int up(int a, int b) {
@@ -41,7 +45,6 @@ public class DensityRenderer {
 		if (!shader.isCompiled()) {
 			Gdx.app.log("shader compile", shader.getLog());
 		}
-			
 			
 		int fieldWidth = LaplacityField.fieldWidth;
 		int fieldHeight = LaplacityField.fieldHeight;
@@ -130,7 +133,7 @@ public class DensityRenderer {
 		
 		private static float dens(int x, int y) {
 			if (x < LaplacityField.fieldWidth && y < LaplacityField.fieldHeight) {
-				return LaplacityField.tiles[x][y].getChargeDensity();
+				return LaplacityField.tiles[x][y].getVisibleDensity() / GameProcess.MAX_DENSITY;
 			}
 			return 0;
 		}

@@ -11,6 +11,12 @@ import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 
+/**
+ * Класс отвечает за прорисовку фонов в игре. Он слева направо рисует последовательность фонов,
+ * которая задана в levelParams. Высота фона всегда равна высоте поля.
+ * @author timat
+ *
+ */
 public class BackgroundRenderer {
 
 	// sprite cache

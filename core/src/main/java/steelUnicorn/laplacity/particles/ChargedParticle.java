@@ -108,15 +108,6 @@ public class ChargedParticle implements CollisionListener {
 	}
 
 	@Override
-	public boolean isFinish() {
-		return false;
-	}
-
-	@Override
-	public void collidedWithFinish() {
-	}
-
-	@Override
 	public boolean isMainParticle() {
 		return false;
 	}

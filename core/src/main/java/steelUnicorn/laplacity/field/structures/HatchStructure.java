@@ -15,15 +15,8 @@ public class HatchStructure extends FieldStructure {
 
 	private static final int[] codes = new int[] {-2105409281};
 	
-	private float x;
-	private float y;
-	
 	public HatchStructure(int left, int bottom, Pixmap pm) {
 		super(left, bottom, pm, codes);
-		
-		float sz = LaplacityField.tileSize;
-		x = (bounds.left + bounds.right + 1) * sz / 2;
-		y = (bounds.bottom + bounds.top + 1) * sz / 2;
 		
 		if (bounds.width() != bounds.height()) {
 			throw new RuntimeException("hatch may be square");
@@ -38,15 +31,15 @@ public class HatchStructure extends FieldStructure {
 	@Override
 	public void renderBatched(float timeFromStart) {
 		if (mayFinish) {
-			mainParticle.getBody().setLinearVelocity(0, 0);
+			cat.getBody().setLinearVelocity(0, 0);
 		}
 		if (mayFinish && TimeUtils.millis() - finishTime > 1000) {
 			GameProcess.justFinished = true;
 		}
 		
 		float sz = LaplacityField.tileSize;
-		TMP1.x = x - mainParticle.getX();
-		TMP1.y = y - mainParticle.getY();
+		TMP1.x = centerX - cat.getX();
+		TMP1.y = centerY - cat.getY();
 		
 		float len = TMP1.len2();
 		

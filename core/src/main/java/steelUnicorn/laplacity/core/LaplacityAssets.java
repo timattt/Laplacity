@@ -76,7 +76,7 @@ public class LaplacityAssets {
 	public static Texture HINGE_TEXTURE;
 	public static TextureRegion[][] HINGE_REGIONS;
 	
-    public static void getAssets() {
+    public static void repackAssets() {
     	// sounds
         clickSound = Globals.assetManager.get("sounds/click.wav");
         lightClickSound = Globals.assetManager.get("sounds/light_click.wav");
@@ -136,13 +136,13 @@ public class LaplacityAssets {
     private static void loadBackgrounds() {
     	BACKGROUNDS = new Array<>();
 
-        FileHandle[] backs = Gdx.files.internal("backgrounds/levelbacks/").list();
+        FileHandle[] backs = Gdx.files.internal("textures/backgrounds/levelbacks/").list();
 
     	for (FileHandle back : backs) {
             BACKGROUNDS.add(Globals.assetManager.get(back.path(), Texture.class));
         }
 
-    	SPACE_BACKGROUND = Globals.assetManager.get("backgrounds/SPACE_BACKGROUND.png", Texture.class);
+    	SPACE_BACKGROUND = Globals.assetManager.get("textures/backgrounds/SPACE_BACKGROUND.png", Texture.class);
     }
     
     private static void cut(Texture from, TextureRegion[] result) {

@@ -6,7 +6,7 @@ import steelUnicorn.laplacity.particles.ChargedParticle;
 public class ParticlesRenderer {
 
 	public static void render(float delta) {
-		mainParticle.draw();
+		cat.draw();
 		for (ChargedParticle cp : particles) {
 			cp.draw();
 		}

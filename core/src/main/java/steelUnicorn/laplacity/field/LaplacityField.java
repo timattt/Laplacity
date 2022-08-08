@@ -22,10 +22,8 @@ import steelUnicorn.laplacity.field.structures.HingeStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.structures.RedLed;
 import steelUnicorn.laplacity.field.structures.rigid.Gift;
-import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
-import steelUnicorn.laplacity.field.tiles.FinishTile;
 import steelUnicorn.laplacity.field.tiles.StructureTile;
 import steelUnicorn.laplacity.field.tiles.TrampolineTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
@@ -82,17 +80,9 @@ public class LaplacityField extends Group {
 					continue;
 				}
 				
-				// black
-				if (c == 255) {
+				// black or blue
+				if (c == 255 || c == 65535) {
 					tiles[i][j] = new WallTile(i, j);
-				} else
-				// green
-				if (c == 16711935) {
-					tiles[i][j] = new FinishTile(i, j);
-				} else
-				// blue
-				if (c == 65535) {
-					tiles[i][j] = new BarrierTile(i, j);
 				} else
 				// red
 				if (c == -16776961) {
@@ -153,8 +143,9 @@ public class LaplacityField extends Group {
 				
 				// empty
 				else {
-					if (c != -1 && c != -65281)
+					if (c != -1 && c != -65281) {
 						Gdx.app.log("unknown tile color", c + "");
+					}
 					tiles[i][j] = new EmptyTile(i, j);
 				}
 				
@@ -241,7 +232,7 @@ public class LaplacityField extends Group {
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
-					tile.addChargeDensity((float) ((1 - TMP1.len2() / (r*r)) * val));
+					tile.addVisibleDensity((float) ((1 - TMP1.len2() / (r*r)) * val));
 				}
 			}
 		}
@@ -270,7 +261,7 @@ public class LaplacityField extends Group {
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
-					tile.setChargeDensity(0);
+					tile.setVisibleDensity(0);
 				}
 			}
 		}
@@ -298,7 +289,7 @@ public class LaplacityField extends Group {
 	public static void clearElectricField() {
 		for (int i = 0; i < fieldWidth; i++)
 			for (int j = 0; j < fieldHeight; j++) {
-				tiles[i][j].setChargeDensity(0.0f);
+				tiles[i][j].setVisibleDensity(0.0f);
 				tiles[i][j].setInvisibleDensity(0.0f);
 				tiles[i][j].setPotential(0.0f);
 			}

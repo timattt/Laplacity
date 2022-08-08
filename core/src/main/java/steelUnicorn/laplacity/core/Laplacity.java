@@ -74,54 +74,43 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
 	}
 	
+	private void loadRec(String path, Class<?> cl) {
+		FileHandle[] sections = Gdx.files.internal(path).list();
+		for (FileHandle fh : sections) {
+			if (fh.isDirectory()) {
+				loadRec(fh.path(), cl);
+			} else {
+				assetManager.load(fh.path(), cl);
+			}
+		}
+	}
+	
 	private void loadAssets() {
 		assetManager = new AssetManager();
 
 		// levels
 		//Создаем мапу где ключи - номер секции, а значения - пути до уровней
 		LevelsParser.loadAssets(assetManager);
+		
 		// ui
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
 		
 		// textures
-		FileHandle[] sections = Gdx.files.internal("textures/").list();
-		for (FileHandle section : sections) {
-			FileHandle[] backs = section.list();
-			for (FileHandle back : backs) {
-				assetManager.load(back.path(), Texture.class);
-			}
-		}
+		loadRec("textures/", Texture.class);
 		
-		// objects
+		// rigid objects
 		assetManager.load("rigidObjects/gift.png", Texture.class);
 		
 		// sounds
-		FileHandle[] snds = Gdx.files.internal("sounds/").list();
-		for (FileHandle snd : snds) {
-			assetManager.load(snd.path(), Sound.class);
-		}
+		loadRec("sounds/", Sound.class);
 		
 		// music
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
-		
-		// backgrounds
-		FileHandle[] backgrounds = Gdx.files.internal("backgrounds/").list();
-		for (FileHandle file : backgrounds) {
-			if (file.isDirectory()) {
-				//Фоны уровней
-				FileHandle[] backs = file.list();
-				for (FileHandle back : backs) {
-					assetManager.load(back.path(), Texture.class);
-				}
-			} else { //Основные фоны
-				assetManager.load(file.path(), Texture.class);
-			}
-		}
 
 		// finish loading
 		assetManager.finishLoading();
-		LaplacityAssets.getAssets();
+		LaplacityAssets.repackAssets();
 	}
 	
 	@Override

@@ -4,11 +4,9 @@ import steelUnicorn.laplacity.field.physics.CollisionListener;
 
 public class TileCollisionListener implements CollisionListener {
 
-	private boolean isFinish;
 	private boolean isDeadly;
 	
 	public TileCollisionListener(int id) {
-		isFinish = id == 5;
 		isDeadly = id == 4;
 	}
 
@@ -19,15 +17,6 @@ public class TileCollisionListener implements CollisionListener {
 
 	@Override
 	public void collidedWithDeadly() {
-	}
-
-	@Override
-	public boolean isFinish() {
-		return isFinish;
-	}
-
-	@Override
-	public void collidedWithFinish() {
 	}
 
 	@Override
@@ -50,7 +39,7 @@ public class TileCollisionListener implements CollisionListener {
 
 	@Override
 	public boolean isTile() {
-		return !isFinish;
+		return true;
 	}
 
 	@Override

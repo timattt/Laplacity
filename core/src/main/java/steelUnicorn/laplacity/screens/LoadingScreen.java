@@ -42,7 +42,7 @@ public class LoadingScreen extends ManagedScreen {
 
         Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
 
-        background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * guiViewport.getWorldHeight(),
                 guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + guiViewport.getWorldWidth() / 2 , 0);

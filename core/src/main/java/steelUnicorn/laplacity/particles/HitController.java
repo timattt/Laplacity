@@ -34,9 +34,6 @@ public class HitController implements ContactListener {
 		if (dat1.isDeadly()) {
 			dat2.collidedWithDeadly();
 		}
-		if (dat1.isFinish()) {
-			dat2.collidedWithFinish();
-		}
 		if (dat1.isStructure()) {
 			dat2.collidedWithStructure();
 		}
@@ -48,9 +45,6 @@ public class HitController implements ContactListener {
 		}
 		if (dat2.isDeadly()) {
 			dat1.collidedWithDeadly();
-		}
-		if (dat2.isFinish()) {
-			dat1.collidedWithFinish();
 		}
 		if (dat2.isStructure()) {
 			dat1.collidedWithStructure();

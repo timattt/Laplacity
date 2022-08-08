@@ -43,7 +43,7 @@ public class WinInterface extends Stage {
     public WinInterface(Viewport viewport) {
         super(viewport);
 
-        background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background = new Image(assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class));
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);

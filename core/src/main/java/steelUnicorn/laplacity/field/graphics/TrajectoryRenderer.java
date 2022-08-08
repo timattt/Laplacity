@@ -43,12 +43,12 @@ public class TrajectoryRenderer {
 		}
 		
 		if (changingDir) {
-			mainParticle.drawStartVelocityArrow();
+			cat.drawStartVelocityArrow();
 		}
 	}
 	
 	public static void updateTrajectory() {
-		mainParticle.calculateTrajectory(trajectory);
+		cat.calculateTrajectory(trajectory);
 	}
 	
 	public static void cleanup() {

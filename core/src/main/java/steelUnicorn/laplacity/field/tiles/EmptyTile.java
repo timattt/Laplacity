@@ -22,7 +22,7 @@ public class EmptyTile {
 	protected float potential;
 	
 	// charge density
-	protected float chargeDensity = 0;
+	protected float visibleDensity = 0;
 	protected float invisibleDensity = 0;
 	
 	// Density change
@@ -40,16 +40,18 @@ public class EmptyTile {
 		setId(1);
 	}
 
-	public void addChargeDensity(float delta) {
+	public void addVisibleDensity(float delta) {
 		if (allowDensityChange) {
-			this.chargeDensity += delta;
-			chargeDensity = Math.min(MAX_DENSITY, chargeDensity);
-			DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
+			this.visibleDensity += delta;
+			visibleDensity = Math.min(MAX_DENSITY, visibleDensity);
+			DensityRenderer.setTileDensity(gridX, gridY, visibleDensity);
 		}
 	}
 
 	public void addInvisibleDensity(float delta) {
-		invisibleDensity += delta;
+		if (allowDensityChange) {
+			invisibleDensity += delta;
+		}
 	}
 	
 	public int getGridX() {
@@ -68,12 +70,12 @@ public class EmptyTile {
 		return potential;
 	}
 
-	public float getChargeDensity() {
-		return chargeDensity;
+	public float getVisibleDensity() {
+		return visibleDensity;
 	}
 
 	public float getTotalChargeDensity() {
-		return chargeDensity + invisibleDensity;
+		return visibleDensity + invisibleDensity;
 	}
 
 	public boolean isAllowDensityChange() {
@@ -84,9 +86,9 @@ public class EmptyTile {
 		this.allowDensityChange = allowDensityChange;
 	}
 
-	public void setChargeDensity(float chargeDensity) {
+	public void setVisibleDensity(float chargeDensity) {
 		if (allowDensityChange) {
-			this.chargeDensity = chargeDensity;
+			this.visibleDensity = chargeDensity;
 			DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
 		}
 	}

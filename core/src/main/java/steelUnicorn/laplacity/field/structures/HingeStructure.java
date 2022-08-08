@@ -25,13 +25,6 @@ public class HingeStructure extends FieldStructure {
 
 	private static final int[] codes = new int[] {13107455, -926365441};
 	
-	// box
-	private float boxX;
-	private float boxY;
-	
-	private float boxWidth;
-	private float boxHeight;
-	
 	// hinge
 	private float hingeX;
 	private float hingeY;
@@ -59,12 +52,6 @@ public class HingeStructure extends FieldStructure {
 		hingeX = (hinge.left + 0.5f) * sz;
 		hingeY = (hinge.top + 0.5f) * sz;
 		
-		boxX = (bounds.left + bounds.right + 1) * sz / 2;
-		boxY = (bounds.bottom + bounds.top + 1) * sz / 2;
-		
-		boxWidth = (bounds.right - bounds.left + 1) * sz;
-		boxHeight = (bounds.top - bounds.bottom + 1) * sz;
-		
 		gameCache.beginCache();
 		for (int x = bounds.left; x <= bounds.right; x++) {
 			for (int y = bounds.bottom; y <= bounds.top; y++) {
@@ -81,11 +68,11 @@ public class HingeStructure extends FieldStructure {
 		// box
 		BodyDef bodydef = new BodyDef();
 		bodydef.type = BodyType.DynamicBody;
-		bodydef.position.set(boxX, boxY);
+		bodydef.position.set(centerX, centerY);
 		box = GameProcess.registerPhysicalObject(bodydef);
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(boxWidth / 2, boxHeight / 2);
+		shape.setAsBox(worldWidth / 2, worldHeight / 2);
 
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = shape;
@@ -115,7 +102,7 @@ public class HingeStructure extends FieldStructure {
 		RevoluteJointDef rjd = new RevoluteJointDef();
 		rjd.bodyA = box;
 		rjd.bodyB = hinge;
-		rjd.localAnchorA.set(hingeX - boxX, hingeY - boxY);
+		rjd.localAnchorA.set(hingeX - centerX, hingeY - centerY);
 		rjd.localAnchorB.setZero();
 		
 		joint = GameProcess.registerJoint(rjd);
@@ -125,7 +112,7 @@ public class HingeStructure extends FieldStructure {
 	public void reset() {
 		box.setAngularVelocity(0);
 		box.setLinearVelocity(0, 0);
-		box.setTransform(boxX, boxY, 0);
+		box.setTransform(centerX, centerY, 0);
 	}
 
 	@Override
@@ -135,7 +122,7 @@ public class HingeStructure extends FieldStructure {
 				transMat.idt().
 				translate(interpX(), interpY(), 0).
 				rotate(0, 0, 1, MathUtils.radDeg * interpAngle()).
-				translate( - boxWidth / 2, - boxHeight/2, 0)
+				translate( - worldWidth / 2, - worldHeight/2, 0)
 				);
 		gameCache.begin();
 		gameCache.draw(cacheId);

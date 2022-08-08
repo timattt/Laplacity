@@ -15,11 +15,35 @@ import steelUnicorn.laplacity.field.physics.IntRect;
  */
 public class FieldStructure implements CollisionListener {
 
+	// rect
 	protected IntRect bounds;
+	
+	// left bottom
+	protected float leftBottomX;
+	protected float leftBottomY;
+	
+	// center
+	protected float centerX;
+	protected float centerY;
+	
+	// world width
+	protected float worldWidth;
+	protected float worldHeight;
 	
 	public FieldStructure(int left, int bottom, Pixmap pm, int[] structureCodes) {
 		bounds = new IntRect();
 		findRect(pm, left, bottom, structureCodes, bounds);
+		
+		float sz = LaplacityField.tileSize;
+		
+		leftBottomX = bounds.left * sz;
+		leftBottomY = bounds.bottom * sz;
+		
+		centerX = (bounds.left + bounds.right + 1) * sz / 2f;
+		centerY = (bounds.bottom + bounds.top + 1) * sz / 2f;
+		
+		worldWidth = bounds.width() * sz;
+		worldHeight = bounds.height() * sz;
 	}
 	
 	public boolean contains(int x, int y) {
@@ -131,14 +155,23 @@ public class FieldStructure implements CollisionListener {
 		result.bottom = y;	
 	}
 	
+	/**
+	 * Вызывается при регистрации структуры на поле
+	 */
 	public void register() {
 		
 	}
 
+	/**
+	 * Вызывается при уничтожении поля
+	 */
 	public void cleanup() {
 		
 	}
 	
+	/**
+	 * Вызывается при окончании полета
+	 */
 	public void reset() {
 		
 	}
@@ -150,15 +183,6 @@ public class FieldStructure implements CollisionListener {
 
 	@Override
 	public void collidedWithDeadly() {
-	}
-
-	@Override
-	public boolean isFinish() {
-		return false;
-	}
-
-	@Override
-	public void collidedWithFinish() {
 	}
 
 	@Override

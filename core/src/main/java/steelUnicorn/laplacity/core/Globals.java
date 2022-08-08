@@ -74,7 +74,6 @@ public class Globals {
 	
 	// Total levels loaded
 	public static int TOTAL_LEVELS_AVAILABLE;
-	public static final int TOTAL_SECTIONS = 1;
 	public static final int LEVELS_PER_SECTION = 10;
 
 	//cat Food
