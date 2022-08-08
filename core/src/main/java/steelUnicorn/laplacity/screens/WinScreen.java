@@ -32,7 +32,7 @@ public class WinScreen extends ManagedScreen {
 	 * Функция перестраивающая winStage, под пройденный уровень (поведение кнопок и количество очков)
 	 * @param score
 	 */
-	public void loadWinScreen(float score) {
+	public void loadWinScreen(int score) {
 		winStage.buildStage(score);
 	}
 

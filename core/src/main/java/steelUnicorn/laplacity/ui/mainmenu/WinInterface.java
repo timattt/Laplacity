@@ -31,8 +31,7 @@ public class WinInterface extends Stage {
     private static final float spaceSize = Globals.UI_WORLD_HEIGHT * 0.03f;
     private static final float btnWidth = Globals.UI_WORLD_WIDTH * 0.1f;
     private static final float btnHeight = Globals.UI_WORLD_HEIGHT * 0.1f;
-    private static final float contentWidth = Globals.UI_WORLD_WIDTH * 0.2f;
-    private static final float contentHeight = Globals.UI_WORLD_HEIGHT * 0.2f;
+    private static final float starSize = Globals.UI_WORLD_HEIGHT * 0.08f;
     private static final float fontScale = 1.5f;
 
     private Table root; //<< Корневая таблица для позиционирования
@@ -75,21 +74,27 @@ public class WinInterface extends Stage {
      *
      * @param score - количество заработанных очков
      */
-    public void buildStage(float score) {
+    public void buildStage(int score) {
         clearStage();
 
         Skin skin = Globals.assetManager.get("ui/uiskin.json", Skin.class);
         //label
-        Label done = new Label("Done\n"
-                + "Score " + String.valueOf(score), skin);
+        Label done = new Label("Done", skin);
         done.setAlignment(Align.center);
         done.setName("doneLabel");
         done.setFontScale(fontScale);
         done.setColor(Color.WHITE);
-        root.add(done).space(spaceSize).size(contentWidth, contentHeight);
+        root.add(done).space(spaceSize);
+        //stars
+        root.row();
+        Table stars = new Table();
+        for (int i = 0; i < score; i++) {
+            Image starImg = new Image(LaplacityAssets.STAR_REGIONS[0]);
+            stars.add(starImg).size(starSize);
+        }
+        root.add(stars);
 
         root.row();
-
         //buttons
         Table buttons = new Table();
         buttons.setName("buttonsTable");
