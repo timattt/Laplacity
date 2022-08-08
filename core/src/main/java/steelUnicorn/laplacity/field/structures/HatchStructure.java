@@ -55,7 +55,7 @@ public class HatchStructure extends FieldStructure {
 		int i = 0;
 		
 		if (len < r * r) {
-			i = (int) (15f * (1f - len / (r * r)));
+			i = (int) (11f * (1f - len / (r * r)));
 		}
 		
 		float R = (bounds.width() * sz / 2);
