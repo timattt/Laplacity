@@ -17,6 +17,9 @@ import steelUnicorn.laplacity.core.Globals;
  *
  * Так же в нем хранится статическая надпись CatHungry которая выводится при нажатии на запуск,
  * когда нет запусков
+ *
+ * Таймер в классе меняет вспомогательный класс CatFoodTimer который отвечает за подсчет времени, и
+ * изменение label'a
  */
 public class CatFoodInterface extends Table {
     private Label text;

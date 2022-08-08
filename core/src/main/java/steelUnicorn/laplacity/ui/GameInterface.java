@@ -161,7 +161,6 @@ public class GameInterface extends Stage implements GestureListener {
 		Array<Actor> btns = guiTable.getChildren();
 		for (Actor btn : btns) {
 			ImageButton icon = (ImageButton) btn;
-			Gdx.app.log("Icons checked", currentGameMode.getName() + " " + icon.getName());
 			if (!icon.getName().equals(currentGameMode.getName())) {
 				icon.setChecked(false);
 			}
