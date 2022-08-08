@@ -14,6 +14,7 @@ import steelUnicorn.laplacity.utils.CatFoodTimer;
  *
  * подгружает текущее количество из preferences и кладет туда же при вызове dispose
  *
+ * При создании, создает объект CatFoodTimer для управление восстановлением запусков.
  */
 public class CatFood {
     // Total launches available

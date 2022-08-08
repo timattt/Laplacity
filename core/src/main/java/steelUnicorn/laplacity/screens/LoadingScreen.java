@@ -18,6 +18,10 @@ import com.badlogic.gdx.utils.Timer;
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.ui.FpsCounter;
 
+/**
+ * Экран загрузки. Используется при включении уровня. Отображает надпись Loading в течении
+ * loadingDuration секунд, с анимацией точек ./../... каждые loadingRate секунд
+ */
 public class LoadingScreen extends ManagedScreen {
     private Stage loadingStage;
     private Label loadingLabel;

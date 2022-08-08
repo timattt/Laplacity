@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import steelUnicorn.laplacity.utils.Settings;
 
+/**
+ * Строчка fps которая обновляется каждый кадр. Позиция задается слева снизу с помощь padSize.
+ */
 public class FpsCounter extends Label {
     public static float padSize = 10;
 
