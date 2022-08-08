@@ -96,7 +96,8 @@ public class MainMenu extends Stage {
      * @param root - корневая таблица сцены
      * @param skin - скин
      */
-    private void createMainMenu(Table root, Skin skin) {
+    @SuppressWarnings("unchecked")
+	private void createMainMenu(Table root, Skin skin) {
         Table mainMenu = new Table();
         root.add(mainMenu).expandX().uniform();
 
