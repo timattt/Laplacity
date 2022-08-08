@@ -70,7 +70,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
 		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
 
-		LaplacityAssets.changeTrack("music/main_menu.mp3");
+		LaplacityAssets.changeTrack("music/main theme_drop.ogg");
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
 	}
 	

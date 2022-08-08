@@ -5,6 +5,7 @@ import java.util.Random;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,8 +16,11 @@ import steelUnicorn.laplacity.utils.Settings;
 public class LaplacityAssets {
     // instance трека, который играет в данный момент.
     // Music - очень тяжёлый класс, поэтому при переключении треков его надо диспозить и грузить заново
+    public static Music intro;
     public static Music music;
+    private static String currentIntro;
     private static String currentMusic;
+    private static OnCompletionListener fromIntroToDrop;
 
     public static FileHandle[] levelTracks;
     private static Random trackRandomizer = new Random();
@@ -197,6 +201,39 @@ public class LaplacityAssets {
             index = trackRandomizer.nextInt(levelTracks.length);
         currentTrack = index;
         changeTrack("music/levels/" + levelTracks[currentTrack].name());
+        //loopTrackWithIntro(levelTracks[currentTrack].name());
+    }
+
+    // передавать просто name без префикса
+    public static void loopTrackWithIntro(String name) {
+        // ставим интро
+        if (currentIntro != null && Globals.assetManager.contains(currentIntro))
+            Globals.assetManager.unload(currentIntro);
+        currentIntro = "music/intros/" + name; 
+        Globals.assetManager.load(currentIntro, Music.class);
+        Globals.assetManager.finishLoadingAsset(currentIntro);
+        intro = Globals.assetManager.get(currentIntro);
+        intro.setVolume(Settings.getMusicVolume());
+        intro.play();
+
+        // асинхронно грузим и ставим в очередь дроп
+        if (currentMusic != null && Globals.assetManager.contains(currentMusic))
+            Globals.assetManager.unload(currentMusic);
+        currentMusic = "music/levels/" + name;
+        Globals.assetManager.load(currentMusic, Music.class);
+        fromIntroToDrop = new OnCompletionListener() {
+            @Override
+            public void onCompletion(Music a) {
+                music.play();
+            }
+        };
+        Globals.assetManager.finishLoadingAsset(currentMusic);
+        music = Globals.assetManager.get(currentMusic);
+        music.setVolume(Settings.getMusicVolume());
+        music.setLooping(true);
+        intro.setOnCompletionListener(fromIntroToDrop);
+        
+
     }
 
     public static void playSound(Sound sound) {
