@@ -8,6 +8,13 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
+/**
+ * Класс для оперирования прогрессом игрока. Сохраняет прогресс в preferences в виде json объекта
+ * Подгружает оттуда же. Если прогресса в Preferences нету, то создается массив нулей.
+ *
+ * Класс содержит функцию levelFinished которая принимает секцию уровень и количество звезд, и
+ * сохраняет прогресс.
+ */
 public class PlayerProgress {
     private final Preferences prefs;
     private Array<Array<Integer>> progress;
@@ -17,16 +24,14 @@ public class PlayerProgress {
         json = new Json();
 
         prefs = Gdx.app.getPreferences("player_progress");
-        if (prefs.contains("progress")) {
-            progress = json.fromJson(Array.class, prefs.getString("progress"));
-        } else {
-            initProgress();
-        }
+
+        initProgress();
 
         Gdx.app.log("Progress", progress.toString());
     }
 
     private void initProgress() {
+        //Создаем массив исходя из текущих уровней (на случай если добавлены новые)
         progress = new Array<>();
 
         for (ObjectMap.Entry<Integer, Array<String>> entry : sectionLevelsPaths) {
@@ -37,6 +42,23 @@ public class PlayerProgress {
             }
 
             progress.add(sectionProgress);
+        }
+
+        //Переносим старый прогресс в новый
+        if (prefs.contains("progress")) {
+            Array<Array<Integer>> previousProgress =
+                    json.fromJson(Array.class, prefs.getString("progress"));
+            //copy previous progress to current
+            for (int secNumber = 0; secNumber < previousProgress.size; secNumber++) {
+                for (int lvlNumber = 0; lvlNumber < previousProgress.get(secNumber).size; lvlNumber++) {
+                    if (progress.size > secNumber) {
+                        if (progress.get(secNumber).size > lvlNumber) {
+                            progress.get(secNumber)
+                                    .set(lvlNumber, previousProgress.get(secNumber).get(lvlNumber));
+                        }
+                    }
+                }
+            }
         }
     }
 
