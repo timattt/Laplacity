@@ -117,7 +117,7 @@ public class LaplacityAssets {
     	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
     	cut(PARTICLES_TEXTURE, PARTICLES_REGIONS = new TextureRegion[7][2]);
         cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
-        cut(BLADES_TEXTURE, BLADES_REGIONS = new TextureRegion[3]);
+        cut_blades(BLADES_TEXTURE, BLADES_REGIONS = new TextureRegion[2]);
         cut(CELERATORS_TEXTURE, CELERATORS_REGIONS = new TextureRegion[3]);
         cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
         cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[10][4]);
@@ -153,6 +153,21 @@ public class LaplacityAssets {
     			result[i][j] = new TextureRegion(from, i * from.getWidth() / result.length, j * from.getHeight() / result[i].length, from.getWidth() / result.length, from.getHeight() / result[i].length);
     		}
     	}
+    }
+    
+    private static void cut_blades(Texture from, TextureRegion[] result) {
+    	result[0] = new TextureRegion(
+    			from,
+    			0,
+    			0,
+    			from.getWidth() / 4,
+    			from.getHeight());
+    	result[1] = new TextureRegion(
+    			from,
+    			1 * from.getWidth() / 4,
+    			0,
+    			3 * from.getWidth() / 4,
+    			from.getHeight());
     }
 
     public static void changeTrack(String name) {

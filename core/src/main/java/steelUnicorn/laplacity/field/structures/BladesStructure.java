@@ -78,6 +78,7 @@ public class BladesStructure extends FieldStructure {
 		fxt.restitution = 1f;
 		body.createFixture(fxt);
 		body.setUserData(this);
+		body.setTransform(x, y, 0);
 		shape.dispose();
 	
 	}
@@ -96,7 +97,7 @@ public class BladesStructure extends FieldStructure {
 		gameBatch.enableBlending();
 		
 		// center
-		gameBatch.draw(LaplacityAssets.BLADES_REGIONS[2],
+		gameBatch.draw(LaplacityAssets.BLADES_REGIONS[0],
 				x - sz / 2,
 				y - sz / 2,
 				sz / 2,
@@ -111,34 +112,19 @@ public class BladesStructure extends FieldStructure {
 		
 		// borders
 		for (int i = 0; i < 4; i++) {
-			float x1 = MathUtils.cosDeg(curAngle) * size * (1 - BLADES_THICKNESS_FACTOR) / 2 + x;
-			float y1 = MathUtils.sinDeg(curAngle) * size * (1 - BLADES_THICKNESS_FACTOR) / 2 + y;
-			gameBatch.draw(LaplacityAssets.BLADES_REGIONS[0],
-					x1 - sz/2,
-					y1 - sz/2,
-					sz/2,
-					sz/2,
-					sz,
-					sz,
-					1f,
-					1f,
-					curAngle+90,
-					false
-					);
-			
-			float r = size / 4 + 1f * sz;
-			x1 = MathUtils.cosDeg(curAngle) * r + x;
-			y1 = MathUtils.sinDeg(curAngle) * r + y;
+			float r = (size  - sz) / 4f + sz / 2- 2f*sz;
+			float x1 = MathUtils.cosDeg(curAngle) * r + x;
+			float y1 = MathUtils.sinDeg(curAngle) * r + y;
 			gameBatch.draw(LaplacityAssets.BLADES_REGIONS[1],
 					x1 - sz/2,
 					y1 - sz/2,
 					sz/2,
 					sz/2,
 					sz,
-					size / 2f - 1.5f * sz,
+					size / 2f - 0.5f * sz + 0.5f * sz, // last is tmp
 					1f,
 					1f,
-					curAngle+90,
+					curAngle-90,
 					false
 					);
 			curAngle += 90;
