@@ -98,24 +98,22 @@ public class MovingWallStructure extends FieldStructure {
 		
 		if (isHorizontal) {
 			for (int y = 0; y < blockRect.height(); y++) {
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], 0, y * sz, sz, sz);
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[0][y % 4], (blockRect.width() - 1) * sz, y * sz, sz, sz);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[y % 3], 0, y * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[y % 3], (blockRect.width() - 1) * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
 			}
 			for (int x = 1; x < blockRect.width() - 1; x++) {
 				for (int y = 0; y < blockRect.height(); y++) {
-					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
-					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
+					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[3], x * sz, y * sz, sz, sz);
 				}
 			}
 		} else {
 			for (int x = 0; x < blockRect.width(); x++) {
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, 0, sz, sz);
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 4][0], x * sz, (blockRect.height() - 1) * sz, sz, sz);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 3], x * sz, 0, sz/2, sz/2, sz, sz, 1, 1, 180);
+				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 3], x * sz, (blockRect.height() - 1) * sz, sz, sz);
 			}
 			for (int x = 0; x < blockRect.width(); x++) {
 				for (int y = 1; y < blockRect.height() - 1; y++) {
-					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[8][3], x * sz, y * sz, sz, sz);
-					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[9][3], x * sz, y * sz, sz, sz);
+					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[3], x * sz, y * sz, sz, sz);
 				}
 			}
 		}
