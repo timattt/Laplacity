@@ -1,10 +1,10 @@
 package steelUnicorn.laplacity.screens;
 
-import static steelUnicorn.laplacity.core.Globals.assetManager;
+import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -29,23 +29,22 @@ public class LevelsScreen extends ManagedScreen {
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
         //background
-        background = new Image(assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background = new Image(MAIN_MENU_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * Globals.guiViewport.getWorldHeight(),
                 Globals.guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);
         levelStage.addActor(background);
 
-        Skin skin = Globals.assetManager.get("ui/uiskin.json", Skin.class);
 
         //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(skin);
+        FpsCounter fpsCounter = new FpsCounter(SKIN);
         levelStage.addActor(fpsCounter);
 
         Table root = new Table();
         root.setFillParent(true);
         levelStage.addActor(root);
 
-        levelsTab = new LevelsTab(skin);
+        levelsTab = new LevelsTab(SKIN);
 
         root.add(levelsTab);
     }

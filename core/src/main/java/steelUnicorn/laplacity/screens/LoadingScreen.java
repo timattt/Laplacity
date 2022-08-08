@@ -4,11 +4,12 @@ import static steelUnicorn.laplacity.core.Globals.assetManager;
 import static steelUnicorn.laplacity.core.Globals.game;
 import static steelUnicorn.laplacity.core.Globals.guiViewport;
 import static steelUnicorn.laplacity.core.Globals.nameGameScreen;
+import static steelUnicorn.laplacity.core.LaplacityAssets.EARTH_BACKGROUND;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -40,19 +41,17 @@ public class LoadingScreen extends ManagedScreen {
     public LoadingScreen() {
         loadingStage = new Stage(guiViewport);
 
-        Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
-
-        background = new Image(assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background = new Image(EARTH_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * guiViewport.getWorldHeight(),
                 guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + guiViewport.getWorldWidth() / 2 , 0);
         loadingStage.addActor(background);
 
         //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(skin);
+        FpsCounter fpsCounter = new FpsCounter(SKIN);
         loadingStage.addActor(fpsCounter);
 
-        loadingLabel = new Label("Loading", skin);
+        loadingLabel = new Label("Loading", SKIN);
         loadingLabel.setScale(scale);
         loadingLabel.setFontScale(scale);
         loadingLabel.setColor(Color.WHITE);
