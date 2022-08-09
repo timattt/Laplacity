@@ -1,10 +1,12 @@
 package steelUnicorn.laplacity.field.graphics;
 
 import static steelUnicorn.laplacity.field.LaplacityField.*;
+import static steelUnicorn.laplacity.GameProcess.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
@@ -20,7 +22,10 @@ import steelUnicorn.laplacity.field.tiles.SolidTile;
 public class TilesRenderer {
 
 	private static int id;
+	private static int animationId;
 	private static final float[] tmp = new float[1];
+	
+	private static long lastAnimationRepaintTime;
 	
 	public static void init() {
 		float sz = LaplacityField.tileSize;
@@ -41,15 +46,59 @@ public class TilesRenderer {
 			}
 		}
 		id = GameProcess.gameCache.endCache();
+		
+		GameProcess.gameCache.beginCache();
+		for (int i = 0; i < fieldWidth; i++) {
+			for (int j = 0; j < fieldHeight; j++) {
+				EmptyTile tl = tiles[i][j];
+				if (tl instanceof SolidTile) {
+					SolidTile stl = (SolidTile) tl;
+					TextureRegion reg = stl.getAnimatedRegion(tmp);
+					if (reg != null) {
+						GameProcess.gameCache.add(reg, stl.getGridX() * sz - d, stl.getGridY() * sz - d,  sz/2, sz/2, sz + 2*d, sz+2*d, 1, 1, tmp[0]);
+					}
+				}
+			}
+		}
+		animationId = GameProcess.gameCache.endCache();
+	}
+	
+	private static void repaintAnims() {
+		float sz = LaplacityField.tileSize;
+		
+		float d = 0.01f;
+		
+		GameProcess.gameCache.beginCache(animationId);
+		for (int i = 0; i < fieldWidth; i++) {
+			for (int j = 0; j < fieldHeight; j++) {
+				EmptyTile tl = tiles[i][j];
+				if (tl instanceof SolidTile) {
+					SolidTile stl = (SolidTile) tl;
+					TextureRegion reg = stl.getAnimatedRegion(tmp);
+					if (reg != null) {
+						GameProcess.gameCache.add(reg, stl.getGridX() * sz - d, stl.getGridY() * sz - d,  sz/2, sz/2, sz + 2*d, sz+2*d, 1, 1, tmp[0]);
+					}
+				}
+			}
+		}
+		GameProcess.gameCache.endCache();
 	}
 	
 	public static void render() {
+		if (TimeUtils.millis() - lastAnimationRepaintTime > TILE_ANIMATION_DELAY) {
+			lastAnimationRepaintTime = TimeUtils.millis();
+			repaintAnims();
+		}
+		
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
 		GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
 		GameProcess.gameCache.begin();
 		GameProcess.gameCache.draw(id);
+		GameProcess.gameCache.end();
+		GameProcess.gameCache.begin();
+		GameProcess.gameCache.draw(animationId);
 		GameProcess.gameCache.end();
 		
 		Gdx.gl.glDisable(GL20.GL_BLEND);

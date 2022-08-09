@@ -140,7 +140,7 @@ public class LaplacityAssets {
     
     private static void loadTextureRegions() {
     	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[7]);
-    	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[3][2]);
+    	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[9][4]);
     	cut(ELECTRON_TEXTURE, ELECTRON_REGIONS = new TextureRegion[7]);
     	cut(PROTON_TEXTURE, PROTON_REGIONS = new TextureRegion[7]);
         cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);

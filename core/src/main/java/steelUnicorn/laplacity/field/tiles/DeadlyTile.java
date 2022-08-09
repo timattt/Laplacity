@@ -14,67 +14,111 @@ public class DeadlyTile extends SolidTile {
 		setId(4);
 	}
 
+	private int animIndex = 0;
+	
+	@Override
+	public TextureRegion getAnimatedRegion(float[] angle) {
+		boolean top = tiles[gridX][gridY + 1] instanceof DeadlyTile;
+		boolean bottom = tiles[gridX][gridY - 1] instanceof DeadlyTile;
+		boolean right = tiles[gridX + 1][gridY] instanceof DeadlyTile;
+		boolean left = tiles[gridX - 1][gridY] instanceof DeadlyTile;
+		
+		animIndex++;
+		animIndex %= 3;
+		
+		// wires
+		if (top && bottom && !left && !right) {
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[6 + (gridX + gridY + animIndex) % 3][0];
+		}
+		if (!top && !bottom && left && right) {
+			angle[0] = 0;
+			return LaplacityAssets.DEADLY_REGIONS[6 + (gridX + gridY + animIndex) % 3][0];
+		}
+		
+		return null;
+	}
+
 	@Override
 	public TextureRegion getRegion(float[] angle) {
 		int val = 0;
 		
-		boolean top = !(gridY < fieldHeight - 1) || tiles[gridX][gridY + 1] instanceof SolidTile;
-		boolean bottom = !(gridY > 0) || tiles[gridX][gridY - 1] instanceof SolidTile;
-		boolean right = !(gridX < fieldWidth - 1) || tiles[gridX + 1][gridY] instanceof SolidTile;
-		boolean left = !(gridX > 0) || tiles[gridX - 1][gridY] instanceof SolidTile;
+		boolean top = tiles[gridX][gridY + 1] instanceof DeadlyTile;
+		boolean bottom = tiles[gridX][gridY - 1] instanceof DeadlyTile;
+		boolean right = tiles[gridX + 1][gridY] instanceof DeadlyTile;
+		boolean left = tiles[gridX - 1][gridY] instanceof DeadlyTile;
 		
 		boolean topRight = !(gridX < fieldWidth - 1) || !(gridY < fieldHeight - 1) || tiles[gridX + 1][gridY + 1] instanceof SolidTile;
 		boolean bottomRight = !(gridX < fieldWidth - 1) || !(0 < gridY) || tiles[gridX + 1][gridY - 1]  instanceof SolidTile;
 		boolean topLeft = !(0 < gridX) || !(gridY < fieldHeight - 1) || tiles[gridX - 1][gridY + 1] instanceof SolidTile;
 		boolean bottomLeft = !(gridX > 0) || !(0 < gridY) || tiles[gridX - 1][gridY - 1] instanceof SolidTile;
 
-		// corners
-		if (!top && bottom && right && !left) {
+		// 1
+		if (top && !bottom && !left && !right) {
+			angle[0] = -90;
+			return LaplacityAssets.DEADLY_REGIONS[3][1];
+		}
+		if (!top && bottom && !left && !right) {
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[3][1];
+		}
+		if (!top && !bottom && left && !right) {
 			angle[0] = 0;
-			return LaplacityAssets.DEADLY_REGIONS[0][val];
+			return LaplacityAssets.DEADLY_REGIONS[3][1];
+		}
+		if (!top && !bottom && !left && right) {
+			angle[0] = 180;
+			return LaplacityAssets.DEADLY_REGIONS[3][1];
+		}
+		
+		// 2
+		if (!top && bottom && right && !left) {
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
 		}
 		if (!top && bottom && !right && left) {
-			angle[0] = -90;
-			return LaplacityAssets.DEADLY_REGIONS[0][val];
+			angle[0] = 0;
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
 		}
 		if (top && !bottom && !right && left) {
-			angle[0] = -180;
-			return LaplacityAssets.DEADLY_REGIONS[0][val];
+			angle[0] = -90;
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
 		}
 		if (top && !bottom && right && !left) {
-			angle[0] = -270;
-			return LaplacityAssets.DEADLY_REGIONS[0][val];
-		}
-		
-		// sides
-		if ((!top && bottom && right && left) || (top && !bottom && right && left)) {
-			angle[0] = 0;
-			return LaplacityAssets.DEADLY_REGIONS[1][val];
-		}
-		if ((top && bottom && !right && left) || (top && bottom && right && !left)){
-			angle[0] = 90;
-			return LaplacityAssets.DEADLY_REGIONS[1][val];
-		}
-
-		// internal corners
-		if (top && bottom && right && left && !topRight && topLeft && bottomLeft && bottomRight) {
-			angle[0] = -90;
-			return LaplacityAssets.DEADLY_REGIONS[2][val];
-		}
-		if (top && bottom && right && left && topRight && !topLeft && bottomLeft && bottomRight) {
-			angle[0] = 0;
-			return LaplacityAssets.DEADLY_REGIONS[2][val];
-		}
-		if (top && bottom && right && left && topRight && topLeft && !bottomLeft && bottomRight) {
-			angle[0] = 90;
-			return LaplacityAssets.DEADLY_REGIONS[2][val];
-		}
-		if (top && bottom && right && left && topRight && topLeft && bottomLeft && !bottomRight) {
 			angle[0] = 180;
-			return LaplacityAssets.DEADLY_REGIONS[2][val];
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
+		}
+		// wires
+		if (top && bottom && !left && !right) {
+			return null;
+		}
+		if (!top && !bottom && left && right) {
+			return null;
 		}
 		
-		return null;
-		//sc.add(LaplacityAssets.DEADLY_REGIONS[0][val], gridX * sz, gridY * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+		// 3
+		if (!top && bottom && right && left) {
+			angle[0] = 0;
+			return LaplacityAssets.DEADLY_REGIONS[4][0];
+		}
+		if (top && !bottom && right && left) {
+			angle[0] = 180;
+			return LaplacityAssets.DEADLY_REGIONS[4][0];
+		}
+		if (top && bottom && !right && left) {
+			angle[0] = -90;
+			return LaplacityAssets.DEADLY_REGIONS[4][0];
+		}
+		if (top && bottom && right && !left) {
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[4][0];
+		}
+	
+		// 4
+		if (top && bottom && right && left) {
+			return LaplacityAssets.DEADLY_REGIONS[5][2];
+		}
+		
+		return LaplacityAssets.DEADLY_REGIONS[0][0];
 	}
 }

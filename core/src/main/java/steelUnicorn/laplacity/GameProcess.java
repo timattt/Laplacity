@@ -150,6 +150,7 @@ public class GameProcess {
 	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 3;
 	public static final float STAR_SIZE = 2f;
 	public static final long STAR_ROTATION_TIME = 100;
+	public static final long TILE_ANIMATION_DELAY = 200;
 	
 	// LIGHT
 	public static final float AMBIENT_INTENSITY = 0.9f;
