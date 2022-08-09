@@ -113,33 +113,4 @@ public class LevelsParser {
 
         return levelParams.get(section - 1).get(level - 1);
     }
-
-    /**
-     * Вспомогательный класс для хранения параметров уровня. Создается из json файлов
-     */
-    public static class LevelParams {
-        private Array<Integer> backId; //массив фонов
-
-        public LevelParams() {
-        }
-
-        public LevelParams(Array<Integer> backId) {
-            this.backId = backId;
-        }
-
-        public Array<Integer> getBackId() {
-            return backId;
-        }
-
-        public void setBackId(Array<Integer> backId) {
-            this.backId = backId;
-        }
-
-        @Override
-        public String toString() {
-            return "LevelParams{" +
-                    "backId=" + backId.toString() +
-                    '}';
-        }
-    }
 }

@@ -54,8 +54,11 @@ public class LaplacityAssets {
 	// BACKGROUNDS
 	public static Array<Texture> BACKGROUNDS;
 	public static Texture SPACE_BACKGROUND;
-    public static Texture MAIN_MENU_BACKGROUND;
-    public static Texture EARTH_BACKGROUND;
+  public static Texture MAIN_MENU_BACKGROUND;
+  public static Texture EARTH_BACKGROUND;
+
+  //HINTS
+  public static Array<Texture> HINTS;
 
 	// PARTICLES
 	public static Texture ELECTRON_TEXTURE;
@@ -129,6 +132,7 @@ public class LaplacityAssets {
         
         loadTextureRegions();
         loadBackgrounds();
+        loadHints();
 
         SKIN = Globals.assetManager.get("ui/uiskin.json", Skin.class);
         ICONS = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
@@ -166,6 +170,18 @@ public class LaplacityAssets {
 
         MAIN_MENU_BACKGROUND = Globals.assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class);
         EARTH_BACKGROUND = Globals.assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class);
+    }
+
+    private static void loadHints() {
+        HINTS = new Array<>();
+
+        FileHandle[] hints = Gdx.files.internal("textures/hints/").list();
+
+        for (FileHandle hint : hints) {
+            HINTS.add(Globals.assetManager.get(hint.path(), Texture.class));
+        }
+
+        Gdx.app.log("Hints loaded", HINTS.toString());
     }
     
     private static void cut(Texture from, TextureRegion[] result) {

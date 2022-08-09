@@ -34,7 +34,7 @@ import steelUnicorn.laplacity.particles.ChargedParticle;
 import steelUnicorn.laplacity.particles.Cat;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
-import steelUnicorn.laplacity.utils.LevelsParser.LevelParams;
+import steelUnicorn.laplacity.utils.LevelParams;
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
