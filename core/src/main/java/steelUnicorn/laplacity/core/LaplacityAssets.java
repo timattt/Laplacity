@@ -8,7 +8,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.utils.Settings;
@@ -52,7 +54,9 @@ public class LaplacityAssets {
 	// BACKGROUNDS
 	public static Array<Texture> BACKGROUNDS;
 	public static Texture SPACE_BACKGROUND;
-	
+    public static Texture MAIN_MENU_BACKGROUND;
+    public static Texture EARTH_BACKGROUND;
+
 	// PARTICLES
 	public static Texture ELECTRON_TEXTURE;
 	public static Texture PROTON_TEXTURE;
@@ -81,7 +85,12 @@ public class LaplacityAssets {
 	public static TextureRegion[][] HINGE_REGIONS;
 	public static Texture STAR_TEXTURE;
 	public static TextureRegion[] STAR_REGIONS;
-	
+
+    //UI
+    public static Skin SKIN;
+    public static TextureAtlas ICONS;
+
+
     public static void repackAssets() {
     	// sounds
         clickSound = Globals.assetManager.get("sounds/click.wav");
@@ -120,6 +129,9 @@ public class LaplacityAssets {
         
         loadTextureRegions();
         loadBackgrounds();
+
+        SKIN = Globals.assetManager.get("ui/uiskin.json", Skin.class);
+        ICONS = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
     }
     
     private static void loadTextureRegions() {
@@ -151,6 +163,9 @@ public class LaplacityAssets {
         }
 
     	SPACE_BACKGROUND = Globals.assetManager.get("textures/backgrounds/SPACE_BACKGROUND.png", Texture.class);
+
+        MAIN_MENU_BACKGROUND = Globals.assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class);
+        EARTH_BACKGROUND = Globals.assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class);
     }
     
     private static void cut(Texture from, TextureRegion[] result) {
