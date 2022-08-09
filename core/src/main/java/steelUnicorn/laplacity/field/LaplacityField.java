@@ -21,6 +21,7 @@ import steelUnicorn.laplacity.field.structures.HatchStructure;
 import steelUnicorn.laplacity.field.structures.HingeStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.structures.RedLed;
+import steelUnicorn.laplacity.field.structures.Star;
 import steelUnicorn.laplacity.field.structures.rigid.Gift;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
@@ -137,6 +138,12 @@ public class LaplacityField extends Group {
 				// red led
 				if (c == -771751681) {
 					RedLed str = new RedLed(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
+				} else
+				// star
+				if (c == -757989121) {
+					Star str = new Star(i, j, pxmap);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
 				}

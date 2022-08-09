@@ -1,8 +1,9 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
 import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
@@ -56,18 +57,17 @@ public class MainMenu extends Stage {
         super(viewport);
 
         //background
-        background = new Image(assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background = new Image(MAIN_MENU_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
         addActor(background);
 
-        Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
         //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(skin);
+        FpsCounter fpsCounter = new FpsCounter(SKIN);
         addActor(fpsCounter);
         //CatFood
-        catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
+        catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), SKIN);
         catFI.setPosition(this.getWidth() / 2, this.getHeight() - catFI.getPrefHeight() / 2);
         addActor(catFI);
         catFood.timer.setCurrentInterface(catFI);
@@ -77,10 +77,10 @@ public class MainMenu extends Stage {
         root.setFillParent(true);
         addActor(root);
 
-        settingsTab = new SettingsTab(skin);
-        creditsTab = new CreditsTab(skin);
+        settingsTab = new SettingsTab(SKIN);
+        creditsTab = new CreditsTab(SKIN);
 
-        createMainMenu(root, skin);
+        createMainMenu(root, SKIN);
     }
 
     //Функция вызывается при открытии главного меню, чтобы обновить параметры!
@@ -96,7 +96,8 @@ public class MainMenu extends Stage {
      * @param root - корневая таблица сцены
      * @param skin - скин
      */
-    private void createMainMenu(Table root, Skin skin) {
+    @SuppressWarnings("unchecked")
+	private void createMainMenu(Table root, Skin skin) {
         Table mainMenu = new Table();
         root.add(mainMenu).expandX().uniform();
 

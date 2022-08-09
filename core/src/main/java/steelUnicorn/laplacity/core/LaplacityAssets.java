@@ -8,7 +8,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.utils.Settings;
@@ -52,9 +54,11 @@ public class LaplacityAssets {
 	// BACKGROUNDS
 	public static Array<Texture> BACKGROUNDS;
 	public static Texture SPACE_BACKGROUND;
+  public static Texture MAIN_MENU_BACKGROUND;
+  public static Texture EARTH_BACKGROUND;
 
-    //HINTS
-    public static Array<Texture> HINTS;
+  //HINTS
+  public static Array<Texture> HINTS;
 
 	// PARTICLES
 	public static Texture ELECTRON_TEXTURE;
@@ -82,7 +86,14 @@ public class LaplacityAssets {
 	public static TextureRegion[] RED_RED_REGIONS;
 	public static Texture HINGE_TEXTURE;
 	public static TextureRegion[][] HINGE_REGIONS;
-	
+	public static Texture STAR_TEXTURE;
+	public static TextureRegion[] STAR_REGIONS;
+
+    //UI
+    public static Skin SKIN;
+    public static TextureAtlas ICONS;
+
+
     public static void repackAssets() {
     	// sounds
         clickSound = Globals.assetManager.get("sounds/click.wav");
@@ -111,6 +122,7 @@ public class LaplacityAssets {
         GLASS_TEXTURE = Globals.assetManager.get("textures/structures/glass.png");
         RED_LED_TEXTURE = Globals.assetManager.get("textures/structures/redLed.png");
         HINGE_TEXTURE = Globals.assetManager.get("textures/structures/hinge.png");
+        STAR_TEXTURE = Globals.assetManager.get("textures/structures/stars.png");
         
         // OBJECTS
         GIFT_TEXTURE = Globals.assetManager.get("rigidObjects/gift.png");
@@ -121,6 +133,9 @@ public class LaplacityAssets {
         loadTextureRegions();
         loadBackgrounds();
         loadHints();
+
+        SKIN = Globals.assetManager.get("ui/uiskin.json", Skin.class);
+        ICONS = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
     }
     
     private static void loadTextureRegions() {
@@ -137,6 +152,7 @@ public class LaplacityAssets {
         cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
         cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
         cut(CAT_TEXTURE, CAT_REGIONS = new TextureRegion[5][2]);
+        cut(STAR_TEXTURE, STAR_REGIONS = new TextureRegion[8]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
     }
@@ -151,6 +167,9 @@ public class LaplacityAssets {
         }
 
     	SPACE_BACKGROUND = Globals.assetManager.get("textures/backgrounds/SPACE_BACKGROUND.png", Texture.class);
+
+        MAIN_MENU_BACKGROUND = Globals.assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class);
+        EARTH_BACKGROUND = Globals.assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class);
     }
 
     private static void loadHints() {

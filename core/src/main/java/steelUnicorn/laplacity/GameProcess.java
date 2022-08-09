@@ -53,6 +53,7 @@ public class GameProcess {
 	public static GameMode currentGameMode;
 
 	public static LevelParams levelParams;
+	private static int currentlyStarsCollected;
 	//========================================================================================
 	
 	
@@ -134,15 +135,10 @@ public class GameProcess {
 	public static final int STEPS_PER_POINT = 2;
 	public static final float TRAJECTORY_VELOCITY_MULTIPLIER = 2f;
 	
-	// SCORE
-	public static final float SCORE_PER_PARTICLE = 1f;
-	public static final float SCORE_PER_DENSITY_UNIT = 0.01f;
-	public static final float MAX_SCORE = 100f;
-	
 	// PHYSICS
 	public static final float TRAJECTORY_TIME_STEP = 1f/60f; // используется при расчёте траектории для подсказки
-	public static final int VELOCITY_STEPS = 1;
-	public static final int POSITION_STEPS = 3;
+	public static final int VELOCITY_STEPS = 4;
+	public static final int POSITION_STEPS = 2;
 	public static final float SIMULATION_TIME_STEP = 1f/60f; // используется непосредственно в игре
 	public static final int RAYS_COUNT = 500;
 	
@@ -152,6 +148,8 @@ public class GameProcess {
 	public static final float BLADES_THICKNESS_FACTOR = 0.1f;
 	public static final float CELERATION_FACTOR = 5000f;
 	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 3;
+	public static final float STAR_SIZE = 2f;
+	public static final long STAR_ROTATION_TIME = 100;
 	
 	// LIGHT
 	public static final float AMBIENT_INTENSITY = 0.9f;
@@ -348,6 +346,7 @@ public class GameProcess {
 			startTime = TimeUtils.millis();
 		} else {
 			if (nowFlight) {
+				currentlyStarsCollected = 0;
 				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
 				startTime = TimeUtils.millis();
 				currentTime = startTime;
@@ -447,26 +446,17 @@ public class GameProcess {
 		}
 	}
 	
+	public static void collectStar() {
+		currentlyStarsCollected++;
+	}
+	
 	public static void levelFinished() {
 		changeGameMode(GameMode.NONE);
 		Gdx.app.log("game process", "Level finished");
-		
-		Globals.winScreen.loadWinScreen(calculateScore());
+
+		progress.levelFinished(sectionNumber, levelNumber, currentlyStarsCollected);
+		Globals.winScreen.loadWinScreen(currentlyStarsCollected);
 		Globals.game.getScreenManager().pushScreen(nameWinScreen, null);
-	}
-	
-	public static int calculateScore() {
-		float dens = 0;
-		
-		for (int x = 0; x < LaplacityField.fieldWidth; x++) {
-			for (int y = 0; y < LaplacityField.fieldHeight; y++) {
-				dens += Math.abs(LaplacityField.tiles[x][y].getTotalChargeDensity()) * SCORE_PER_DENSITY_UNIT;
-			}
-		}
-		
-		float part = particles.size * SCORE_PER_PARTICLE;
-		
-		return (int) (0.5f * MAX_SCORE / (1f + dens) + 0.5f * MAX_SCORE / (part + 1f));
 	}
 	
 }
