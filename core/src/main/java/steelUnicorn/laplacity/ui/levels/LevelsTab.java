@@ -4,9 +4,9 @@ import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
+import static steelUnicorn.laplacity.core.LaplacityAssets.ICONS;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -99,13 +99,10 @@ public class LevelsTab extends MainMenuTab {
         private float arrowSize = UI_WORLD_WIDTH * 0.04f;
 
         public LevelsNav(Skin skin) {
-            TextureAtlas icons = Globals.assetManager.get("ui/gameicons/icons.atlas",
-                    TextureAtlas.class);
-
             defaults().space(LevelsTab.tabSpace);
             ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
                     skin.get(ImageButton.ImageButtonStyle.class));
-            style.imageUp = new TextureRegionDrawable(icons.findRegion("arrowleft"));
+            style.imageUp = new TextureRegionDrawable(ICONS.findRegion("arrowleft"));
             leftArrow = new ImageButton(style);
             leftArrow.addListener(new ChangeListener() {
                 @Override
@@ -124,7 +121,7 @@ public class LevelsTab extends MainMenuTab {
 
             style = new ImageButton.ImageButtonStyle(
                     skin.get(ImageButton.ImageButtonStyle.class));
-            style.imageUp = new TextureRegionDrawable(icons.findRegion("arrowright"));
+            style.imageUp = new TextureRegionDrawable(ICONS.findRegion("arrowright"));
             rightArrow = new ImageButton(style);
             rightArrow.addListener(new ChangeListener() {
                 @Override

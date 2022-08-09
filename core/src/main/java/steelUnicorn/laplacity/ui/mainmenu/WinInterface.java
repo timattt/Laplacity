@@ -1,6 +1,7 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
-import static steelUnicorn.laplacity.core.Globals.assetManager;
+import static steelUnicorn.laplacity.core.LaplacityAssets.EARTH_BACKGROUND;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,14 +43,13 @@ public class WinInterface extends Stage {
     public WinInterface(Viewport viewport) {
         super(viewport);
 
-        background = new Image(assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background = new Image(EARTH_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
         addActor(background);
         //fpsCounter
-        Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
-        FpsCounter fpsCounter = new FpsCounter(skin);
+        FpsCounter fpsCounter = new FpsCounter(SKIN);
         addActor(fpsCounter);
 
         root = new Table();
@@ -77,9 +77,8 @@ public class WinInterface extends Stage {
     public void buildStage(int score) {
         clearStage();
 
-        Skin skin = Globals.assetManager.get("ui/uiskin.json", Skin.class);
         //label
-        Label done = new Label("Done", skin);
+        Label done = new Label("Done", SKIN);
         done.setAlignment(Align.center);
         done.setName("doneLabel");
         done.setFontScale(fontScale);
@@ -104,7 +103,7 @@ public class WinInterface extends Stage {
                 .space(spaceSize)
                 .size(btnWidth, btnHeight);
 
-        addButton(buttons, "Exit", skin, "exitBtn", new ChangeListener() {
+        addButton(buttons, "Exit", SKIN, "exitBtn", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -113,7 +112,7 @@ public class WinInterface extends Stage {
             }
         });
 
-        addButton(buttons, "Replay", skin, "replayBtn", new ChangeListener() {
+        addButton(buttons, "Replay", SKIN, "replayBtn", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -126,7 +125,7 @@ public class WinInterface extends Stage {
         //Если текущий уровень максимален, кнопки max не будет
         if ((GameProcess.sectionNumber - 1) * Globals.LEVELS_PER_SECTION
                 + GameProcess.levelNumber < Globals.TOTAL_LEVELS_AVAILABLE) {
-            addButton(buttons, "Next", skin, "nextBtn", new ChangeListener() {
+            addButton(buttons, "Next", SKIN, "nextBtn", new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LaplacityAssets.playSound(LaplacityAssets.clickSound);

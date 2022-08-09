@@ -2,11 +2,12 @@ package steelUnicorn.laplacity.ui;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.core.LaplacityAssets.ICONS;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,7 +16,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;;
@@ -38,7 +37,6 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
-	private TextureAtlas icons;
 	private CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_HEIGHT / 10;
 	private static final float iconSpace = iconSize * 0.1f;
@@ -47,7 +45,6 @@ public class GameInterface extends Stage implements GestureListener {
 	ImageButton flightBtn;
 	ImageButton editBtn;
 	Table guiTable;
-	Skin skin;
 	/**
 	 * Конструктор создающий интерфейс
 	 * @param viewport
@@ -74,11 +71,10 @@ public class GameInterface extends Stage implements GestureListener {
 	 */
 	private void createInterface() {
 		//Dialogs initialize
-		skin = Globals.assetManager.get("ui/uiskin.json");
-		returnDialog = new ReturnDialog(skin);
+		returnDialog = new ReturnDialog(SKIN);
 
 		//FpsCounter
-		FpsCounter fpsCounter = new FpsCounter(skin);
+		FpsCounter fpsCounter = new FpsCounter(SKIN);
 		addActor(fpsCounter);
 
 		//interface intitialize
@@ -90,10 +86,10 @@ public class GameInterface extends Stage implements GestureListener {
 		root.add().expand().uniform();
 
 		//cat interface
-		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
+		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), SKIN);
 		root.add(catFI).expand().top().uniform();
 		catFood.timer.setCurrentInterface(catFI);
-		catFI.setBackground(skin.newDrawable("white", Color.valueOf("120A39FF")));
+		catFI.setBackground(SKIN.newDrawable("white", Color.valueOf("120A39FF")));
 
 		//Icons Table
 		guiTable = new Table();
@@ -103,7 +99,6 @@ public class GameInterface extends Stage implements GestureListener {
 				.height(iconSize)
 				.space(iconSpace);
 
-		icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
 
 		//reload and return buttons
 		guiTable.add(createIcon("Return", new ClickListener(){
@@ -181,10 +176,10 @@ public class GameInterface extends Stage implements GestureListener {
 	 */
 	private ImageButton createIcon(String name, ClickListener listener) {
 		ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
-				skin.newDrawable("white", Color.valueOf("837d7eff")),
-				skin.newDrawable("white", Color.valueOf("505251ff")),
-				skin.newDrawable("white", Color.GREEN),
-				new TextureRegionDrawable(icons.findRegion(name)),
+				SKIN.newDrawable("white", Color.valueOf("837d7eff")),
+				SKIN.newDrawable("white", Color.valueOf("505251ff")),
+				SKIN.newDrawable("white", Color.GREEN),
+				new TextureRegionDrawable(ICONS.findRegion(name)),
 				null,
 				null);
 		ImageButton btn = new ImageButton(style);
