@@ -21,7 +21,7 @@ public class FpsCounter extends Label {
 
     private void updateFps() {
         setVisible(Settings.isShowFps());
-        setText(String.valueOf(Gdx.graphics.getFramesPerSecond()) + " fps");
+        setText("                " + String.valueOf(Gdx.graphics.getFramesPerSecond()) + " fps");
     }
 
     public void act(float delta) {
