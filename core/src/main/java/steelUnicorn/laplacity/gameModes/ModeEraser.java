@@ -23,6 +23,8 @@ public class ModeEraser extends GameMode {
 	@Override
 	public void tap(float x, float y) {
 		makeErase(x, y);
+		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		TrajectoryRenderer.updateTrajectory();
 	}
 
 	@Override
