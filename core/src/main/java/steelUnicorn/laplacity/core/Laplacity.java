@@ -27,6 +27,7 @@ import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.LevelsParser;
+import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
 
 /** Класс запуска игры. Инициализируем поля из класса Globals. Загружаем assets. */
@@ -45,6 +46,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		loadAssets();
 		Settings.loadSettings();
 		catFood = new CatFood();
+		progress = new PlayerProgress();
 
 		CameraManager.init();
 		game = this;
@@ -133,6 +135,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		assetManager.dispose();
 		Settings.saveSettings();
 		catFood.dispose();
+		progress.dispose();
 	}
 	
 	public void showInterstitial() {
