@@ -113,6 +113,8 @@ public class HingeStructure extends FieldStructure {
 		box.setAngularVelocity(0);
 		box.setLinearVelocity(0, 0);
 		box.setTransform(centerX, centerY, 0);
+		prevAngle = 0;
+		prevPos.set(centerX, centerY);
 	}
 
 	@Override
