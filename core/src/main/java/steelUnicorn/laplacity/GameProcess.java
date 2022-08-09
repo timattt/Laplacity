@@ -383,9 +383,19 @@ public class GameProcess {
 			levelWorld.destroyBody(body);
 	}
 	
+	private static boolean isParticleTooClose(ChargedParticle part) {
+		for (ChargedParticle p : particles) {
+			TMP1.set(p.getX(), p.getY()).sub(part.getX(), part.getY());
+			if (TMP1.len2() < (p.getRadius() + part.getRadius()) * (p.getRadius() + part.getRadius())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static boolean tryToAddStaticParticle(ChargedParticle part) {
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
-		if (tl != null && tl.isAllowDensityChange()) {
+		if (tl != null && tl.isAllowDensityChange() && !isParticleTooClose(part)) {
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
 			return true;

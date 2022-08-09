@@ -46,7 +46,8 @@ public class PlayerProgress {
 
         //Переносим старый прогресс в новый
         if (prefs.contains("progress")) {
-            Array<Array<Integer>> previousProgress =
+            @SuppressWarnings("unchecked")
+			Array<Array<Integer>> previousProgress =
                     json.fromJson(Array.class, prefs.getString("progress"));
             //copy previous progress to current
             for (int secNumber = 0; secNumber < previousProgress.size; secNumber++) {

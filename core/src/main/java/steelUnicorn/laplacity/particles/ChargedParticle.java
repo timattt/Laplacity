@@ -29,8 +29,12 @@ public class ChargedParticle implements CollisionListener {
 	// light
 	protected PointLight pointLight;
 	
+	// size
+	protected float radius;
+	
 	public ChargedParticle(float x, float y, float rad, float charge, boolean isStatic, Color lightColor) {
 		this.charge = charge;
+		this.radius = rad;
 		
 		BodyDef bodydef = new BodyDef();
 		bodydef.type = isStatic ? BodyType.StaticBody : BodyType.DynamicBody;
@@ -133,6 +137,10 @@ public class ChargedParticle implements CollisionListener {
 
 	@Override
 	public void collidedWithTile() {
+	}
+
+	public float getRadius() {
+		return radius;
 	}
 
 }
