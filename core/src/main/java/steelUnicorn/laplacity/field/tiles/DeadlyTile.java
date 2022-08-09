@@ -41,18 +41,11 @@ public class DeadlyTile extends SolidTile {
 
 	@Override
 	public TextureRegion getRegion(float[] angle) {
-		int val = 0;
-		
 		boolean top = tiles[gridX][gridY + 1] instanceof DeadlyTile;
 		boolean bottom = tiles[gridX][gridY - 1] instanceof DeadlyTile;
 		boolean right = tiles[gridX + 1][gridY] instanceof DeadlyTile;
 		boolean left = tiles[gridX - 1][gridY] instanceof DeadlyTile;
 		
-		boolean topRight = !(gridX < fieldWidth - 1) || !(gridY < fieldHeight - 1) || tiles[gridX + 1][gridY + 1] instanceof SolidTile;
-		boolean bottomRight = !(gridX < fieldWidth - 1) || !(0 < gridY) || tiles[gridX + 1][gridY - 1]  instanceof SolidTile;
-		boolean topLeft = !(0 < gridX) || !(gridY < fieldHeight - 1) || tiles[gridX - 1][gridY + 1] instanceof SolidTile;
-		boolean bottomLeft = !(gridX > 0) || !(0 < gridY) || tiles[gridX - 1][gridY - 1] instanceof SolidTile;
-
 		// 1
 		if (top && !bottom && !left && !right) {
 			angle[0] = -90;
