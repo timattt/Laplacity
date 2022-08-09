@@ -337,6 +337,9 @@ Use Dirichlet-spray to attract smoother.
 
 ![image](https://user-images.githubusercontent.com/45181367/182649158-d63a77d8-7ae4-4ad3-b177-a8241799a0cf.png)
 
+### Фон для экрана загрузки уровня
+ 
+
 
 
 ## Арты
