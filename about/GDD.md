@@ -268,6 +268,20 @@
 Возможно для вращения проще сделать ее 3д модель и крутить ее
 
 
+
+## Обучение
+
+![image](https://user-images.githubusercontent.com/45181367/183647060-3c938b11-d2cc-44f6-95ea-19ca135c65bf.png)
+Drug the space suit.
+
+![image](https://user-images.githubusercontent.com/45181367/183653707-5ea84152-6885-49e0-9eaa-e799ca6eaeeb.png)
+Be aware of lightnings. 
+Blue particles attract the cosmocat, and red ones repeal.
+
+![image](https://user-images.githubusercontent.com/45181367/183655948-529188cd-cff5-4977-a2ae-00de6f37e109.png)
+Use Dirichlet-spray to attract smoother. 
+
+
 ## Фоны 
 Фоны должны быть 2д и не очень детальными, на них будут размещаться все игровые элементы. Нужно составить 20 уровней. Высота фона всегда одна и та же и равна 1080п, Фон состоит из набора 5-6 блоков по 432 или 864 пикселя в ширину, комбинирующихся между собой в любой последовательности.
 
