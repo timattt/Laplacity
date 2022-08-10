@@ -1,0 +1,167 @@
+
+texskin.png
+size: 2048, 2048
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+clean
+  rotate: false
+  xy: 1, 1423
+  size: 230, 229
+  orig: 230, 229
+  offset: 0, 0
+  index: -1
+clean2
+  rotate: false
+  xy: 1, 355
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+credits
+  rotate: false
+  xy: 465, 1508
+  size: 144, 144
+  orig: 144, 144
+  offset: 0, 0
+  index: -1
+credits2
+  rotate: false
+  xy: 233, 769
+  size: 190, 190
+  orig: 190, 190
+  offset: 0, 0
+  index: -1
+dirichlet
+  rotate: false
+  xy: 1, 1203
+  size: 230, 218
+  orig: 230, 218
+  offset: 0, 0
+  index: -1
+dirichlet2
+  rotate: false
+  xy: 829, 1871
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+electron
+  rotate: false
+  xy: 233, 1423
+  size: 230, 229
+  orig: 230, 229
+  offset: 0, 0
+  index: -1
+electron2
+  rotate: false
+  xy: 1, 178
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+erase
+  rotate: false
+  xy: 233, 961
+  size: 230, 229
+  orig: 230, 229
+  offset: 0, 0
+  index: -1
+erase2
+  rotate: false
+  xy: 1719, 1871
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+menu
+  rotate: false
+  xy: 1, 983
+  size: 230, 218
+  orig: 230, 218
+  offset: 0, 0
+  index: -1
+menu2
+  rotate: false
+  xy: 1007, 1871
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 1, 1654
+  size: 598, 179
+  orig: 598, 179
+  offset: 0, 0
+  index: -1
+play2
+  rotate: false
+  xy: 1, 1835
+  size: 630, 211
+  orig: 630, 211
+  offset: 0, 0
+  index: -1
+playicon
+  rotate: false
+  xy: 233, 1192
+  size: 230, 229
+  orig: 230, 229
+  offset: 0, 0
+  index: -1
+playicon2
+  rotate: false
+  xy: 1, 1
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+proton
+  rotate: false
+  xy: 1, 532
+  size: 219, 229
+  orig: 219, 229
+  offset: 0, 0
+  index: -1
+proton2
+  rotate: false
+  xy: 1185, 1871
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+settings
+  rotate: false
+  xy: 1897, 1900
+  size: 148, 146
+  orig: 148, 146
+  offset: 0, 0
+  index: -1
+settings2
+  rotate: false
+  xy: 633, 1853
+  size: 194, 193
+  orig: 194, 193
+  offset: 0, 0
+  index: -1
+starticon
+  rotate: false
+  xy: 1, 763
+  size: 230, 218
+  orig: 230, 218
+  offset: 0, 0
+  index: -1
+starticon2
+  rotate: false
+  xy: 1363, 1871
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1
+stopicon
+  rotate: false
+  xy: 1541, 1871
+  size: 176, 175
+  orig: 176, 175
+  offset: 0, 0
+  index: -1

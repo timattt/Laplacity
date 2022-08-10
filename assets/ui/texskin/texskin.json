@@ -1,0 +1,49 @@
+{
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	play: {
+		up: play
+		down: play2
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	clean: {
+		imageUp: clean
+		imageDown: clean2
+	}
+	proton: {
+		imageUp: proton
+		imageDown: proton2
+	}
+	electron: {
+		imageUp: electron
+		imageDown: electron2
+	}
+	start: {
+		imageUp: playicon
+		imageDown: playicon2
+	}
+	stop: {
+		imageUp: stopicon
+	}
+	dirichlet: {
+		imageUp: dirichlet
+		imageDown: dirichlet2
+	}
+	settings: {
+		imageUp: settings
+		imageDown: settings2
+	}
+	credits: {
+		imageUp: credits
+		imageDown: credits2
+	}
+	eraser: {
+		imageUp: erase
+		imageDown: erase2
+	}
+	Menu: {
+		imageUp: menu
+		imageDown: menu2
+	}
+}
+}

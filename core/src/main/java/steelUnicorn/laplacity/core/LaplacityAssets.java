@@ -91,6 +91,7 @@ public class LaplacityAssets {
 
     //UI
     public static Skin SKIN;
+    public static Skin TEXSKIN;
     public static TextureAtlas ICONS;
 
 
@@ -135,6 +136,7 @@ public class LaplacityAssets {
         loadHints();
 
         SKIN = Globals.assetManager.get("ui/uiskin.json", Skin.class);
+        TEXSKIN = Globals.assetManager.get("ui/texskin/texskin.json", Skin.class);
         ICONS = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
     }
     
