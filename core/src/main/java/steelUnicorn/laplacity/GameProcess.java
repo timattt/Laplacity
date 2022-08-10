@@ -206,6 +206,32 @@ public class GameProcess {
 			return;
 		}
 		
+		// update
+		//---------------------------------------------
+		currentGameMode.update();
+		gameUI.act(delta);
+		if (currentGameMode == GameMode.FLIGHT) {
+			long newTime = TimeUtils.millis();
+			float frameTime = ((float) (newTime - currentTime)) / 1000f;
+			currentTime = newTime;
+			frameAccumulator += frameTime;
+			while (frameAccumulator >= 0) {
+				saveCurrentState();
+				cat.updatePhysics(frameTime);
+				LaplacityField.updateStructuresPhysics(currentTime - startTime);
+				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
+				frameAccumulator -= SIMULATION_TIME_STEP;
+			}
+			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
+			CameraManager.update(frameTime);
+		} else {
+			CameraManager.update(delta);
+		}
+		for (PointLight pl : lights) {
+			pl.update();
+		}
+		//---------------------------------------------
+		
 		gameBatch.setProjectionMatrix(CameraManager.camMat());
 		rayHandler.setCombinedMatrix(CameraManager.getCamera());
 		
@@ -242,32 +268,6 @@ public class GameProcess {
 		if (justFinished) {
 			levelFinished();
 			justFinished = false;
-		}
-		//---------------------------------------------
-		
-		// update
-		//---------------------------------------------
-		currentGameMode.update();
-		gameUI.act(delta);
-		if (currentGameMode == GameMode.FLIGHT) {
-			long newTime = TimeUtils.millis();
-			float frameTime = ((float) (newTime - currentTime)) / 1000f;
-			currentTime = newTime;
-			frameAccumulator += frameTime;
-			while (frameAccumulator >= 0) {
-				saveCurrentState();
-				cat.updatePhysics(delta);
-				LaplacityField.updateStructuresPhysics(currentTime - startTime);
-				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
-				frameAccumulator -= SIMULATION_TIME_STEP;
-			}
-			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
-			CameraManager.update(frameTime);
-		} else {
-			CameraManager.update(delta);
-		}
-		for (PointLight pl : lights) {
-			pl.update();
 		}
 		//---------------------------------------------
 	}
