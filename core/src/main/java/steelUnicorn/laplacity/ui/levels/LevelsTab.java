@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
@@ -21,7 +20,6 @@ import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 import steelUnicorn.laplacity.utils.LevelsParser;
 
@@ -36,7 +34,6 @@ import steelUnicorn.laplacity.utils.LevelsParser;
  * Уровни подгружаются из папки /assets/levels/
  */
 public class LevelsTab extends MainMenuTab {
-    private static final float menuBtnWidth = UI_WORLD_WIDTH * 0.08f;
     private LevelsNav nav;
     private int currentSection;
 
@@ -48,7 +45,13 @@ public class LevelsTab extends MainMenuTab {
         super();
         currentSection = 1;
 
-        addReturnButton(skin);
+        addReturnButton(skin, new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
+            }
+        });
         //Description
         row();
         addDescription("Levels:", skin);
@@ -59,18 +62,6 @@ public class LevelsTab extends MainMenuTab {
         row();
         nav = new LevelsNav(skin);
         add(nav).pad(nav.navPad);
-    }
-
-    private Cell<TextButton> addReturnButton(Skin skin) {
-        TextButton btn = new TextButton("Menu", skin);
-        btn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
-            }
-        });
-        return add(btn).size(menuBtnWidth, MainMenu.menuHeight);
     }
 
     private Cell<LevelSection> addSections(Skin skin) {
