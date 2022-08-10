@@ -6,26 +6,26 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-	clean: {
+	Clear: {
 		imageUp: clean
 		imageDown: clean2
 	}
-	proton: {
+	Protons: {
 		imageUp: proton
 		imageDown: proton2
 	}
-	electron: {
+	Electrons: {
 		imageUp: electron
 		imageDown: electron2
 	}
-	start: {
+	Flight: {
 		imageUp: playicon
 		imageDown: playicon2
 	}
-	stop: {
+	Pause: {
 		imageUp: stopicon
-	}
-	dirichlet: {
+	},
+	Dirichlet: {
 		imageUp: dirichlet
 		imageDown: dirichlet2
 	}
@@ -37,7 +37,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: credits
 		imageDown: credits2
 	}
-	eraser: {
+	Eraser: {
 		imageUp: erase
 		imageDown: erase2
 	}
