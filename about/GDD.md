@@ -272,7 +272,7 @@
 ## Обучение
 
 ![image](https://user-images.githubusercontent.com/45181367/183647060-3c938b11-d2cc-44f6-95ea-19ca135c65bf.png)
-Drug the space suit.
+Drag the space suit.
 
 ![image](https://user-images.githubusercontent.com/45181367/183653707-5ea84152-6885-49e0-9eaa-e799ca6eaeeb.png)
 Be aware of lightnings. 
