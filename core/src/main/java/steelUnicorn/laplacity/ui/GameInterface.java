@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -45,6 +46,8 @@ public class GameInterface extends Stage implements GestureListener {
 	ImageButton pauseBtn;
 	Table guiTable;
 	Array<Actor> visibleActors;
+
+	Image selectedMode;
 	/**
 	 * Конструктор создающий интерфейс
 	 * @param viewport
@@ -73,14 +76,12 @@ public class GameInterface extends Stage implements GestureListener {
 		visibleActors = new Array<>();
 		//Dialogs initialize
 		returnDialog = new ReturnDialog(SKIN);
-
 		//FpsCounter
 		FpsCounter fpsCounter = new FpsCounter(SKIN);
 		addActor(fpsCounter);
 
 		//interface intitialize
 		Table root = new Table();
-		root.setDebug(true);
 		root.setFillParent(true);
 		addActor(root);
 
@@ -102,7 +103,6 @@ public class GameInterface extends Stage implements GestureListener {
 
 		//Icons Table
 		guiTable = new Table();
-		guiTable.setDebug(true);
 		root.add(guiTable).expandX().growY().right().uniform();
 		guiTable.defaults()
 				.width(iconSize)
@@ -111,7 +111,6 @@ public class GameInterface extends Stage implements GestureListener {
 
 		guiTable.add(createModeIcon("Protons", GameMode.PROTONS, LaplacityAssets.genStartSound)).top();
 		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound)).top();
-
 		//modes
 		flightBtn = createIcon("Flight", new ClickListener(){
 			@Override
@@ -136,11 +135,14 @@ public class GameInterface extends Stage implements GestureListener {
 		guiTable.add(vertical).colspan(3).right().growY();
 
 		vertical.defaults()
-				.width(iconSize)
-				.height(iconSize)
+				.size(iconSize)
 				.space(iconSpace);
 
-		vertical.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound)).top();
+		vertical.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
+		vertical.row();
+		vertical.add(createModeSelector())
+				.height(TEXSKIN.getDrawable("square_Eraser").getMinHeight()
+						/ TEXSKIN.getDrawable("square_Eraser").getMinHeight() * iconSize);
 		vertical.row();
 		vertical.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 		vertical.row();
@@ -160,6 +162,13 @@ public class GameInterface extends Stage implements GestureListener {
 	 * для изменения вида gui
 	 */
 	public void updateCurMode() {
+		if (currentGameMode != GameMode.FLIGHT && currentGameMode != GameMode.NONE) {
+			selectedMode.setDrawable(TEXSKIN.getDrawable("square_" + currentGameMode.getName()));
+			selectedMode.setVisible(true);
+		} else {
+			selectedMode.setVisible(false);
+		}
+
 		if (currentGameMode == GameMode.FLIGHT) {
 			flightCell.setActor(pauseBtn);
 			for (Actor actor : visibleActors) {
@@ -210,7 +219,13 @@ public class GameInterface extends Stage implements GestureListener {
 			}
 		});
 	}
-	
+
+	private Image createModeSelector() {
+		selectedMode = new Image();
+		selectedMode.setVisible(false);
+		return selectedMode;
+	}
+
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		return false;
