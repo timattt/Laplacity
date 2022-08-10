@@ -85,7 +85,7 @@ public class LaplacityAssets {
 	public static Texture RED_LED_TEXTURE;
 	public static TextureRegion[] RED_RED_REGIONS;
 	public static Texture HINGE_TEXTURE;
-	public static TextureRegion[][] HINGE_REGIONS;
+	public static TextureRegion[] HINGE_REGIONS;
 	public static Texture STAR_TEXTURE;
 	public static TextureRegion[] STAR_REGIONS;
 
@@ -149,7 +149,7 @@ public class LaplacityAssets {
         cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[4]);
         cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[5]);
         cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
-        cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[3][2]);
+        cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[4]);
         cut(CAT_TEXTURE, CAT_REGIONS = new TextureRegion[5][2]);
         cut(STAR_TEXTURE, STAR_REGIONS = new TextureRegion[8]);
         
