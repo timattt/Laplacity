@@ -61,10 +61,28 @@ public class CameraManager {
 		}
 	}
 	
+	/*
 	public static void update(float dt) {
 		if (isMoving) {
 			float dx = CAMERA_VELOCITY * sgn(targetX - camera.position.x) * dt;
 			float dy = CAMERA_VELOCITY * sgn(targetY - camera.position.y) * dt;
+			float newX = camera.position.x + dx;
+			float newY = camera.position.y + dy;
+			if ((Math.abs(targetX - newX) < Math.abs(dx)) && (Math.abs(targetY - newY) < Math.abs(dy))) {
+				isMoving = false;
+			} else {
+				setPosition(newX, newY);
+			}
+		}
+	}
+	*/
+
+	public static void update(float dt) {
+		if (isMoving) {
+			float xVelocity = (Math.abs(targetX - camera.position.x) > 2) ? Math.abs(targetX - camera.position.x - 2) + 10f : 0f;
+			float yVelocity = (Math.abs(targetY - camera.position.y) > 1) ? Math.abs(targetY - camera.position.y - 1) + 10f : 0f;
+			float dx = xVelocity * sgn(targetX - camera.position.x) * dt;
+			float dy = yVelocity * sgn(targetY - camera.position.y) * dt;
 			float newX = camera.position.x + dx;
 			float newY = camera.position.y + dy;
 			if ((Math.abs(targetX - newX) < Math.abs(dx)) && (Math.abs(targetY - newY) < Math.abs(dy))) {
