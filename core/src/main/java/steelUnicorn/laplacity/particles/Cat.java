@@ -38,6 +38,8 @@ public class Cat extends ChargedParticle {
 		super(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
 		pointLight.setStaticLight(false);
 		pointLight.setDistance(CAT_LIGHT_DISTANCE);
+		prevX = LaplacityField.electronStartPos.x;
+		prevY = LaplacityField.electronStartPos.y;
 	}
 
 	@Override

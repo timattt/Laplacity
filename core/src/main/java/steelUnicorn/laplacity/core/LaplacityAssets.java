@@ -93,7 +93,6 @@ public class LaplacityAssets {
     public static Skin SKIN;
     public static TextureAtlas ICONS;
 
-
     public static void repackAssets() {
     	// sounds
         clickSound = Globals.assetManager.get("sounds/click.wav");
