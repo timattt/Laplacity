@@ -2,8 +2,6 @@ package steelUnicorn.laplacity.field.structures;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
-import javax.management.RuntimeErrorException;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
