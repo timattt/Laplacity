@@ -226,6 +226,8 @@ public class GameProcess {
 			CameraManager.update(frameTime);
 		} else {
 			CameraManager.update(delta);
+			FieldCalculator.iterate();
+			TrajectoryRenderer.updateTrajectory();
 		}
 		for (PointLight pl : lights) {
 			pl.update();
@@ -348,7 +350,7 @@ public class GameProcess {
 		} else {
 			if (nowFlight) {
 				currentlyStarsCollected = 0;
-				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+				FieldCalculator.finishCalculation();;
 				startTime = TimeUtils.millis();
 				currentTime = startTime;
 				cat.makeParticleMoveWithStartVelocity();

@@ -27,7 +27,7 @@ public class ModeDirichlet extends GameMode {
 	public void tap(float x, float y) {
 		LaplacityAssets.playSound(LaplacityAssets.spraySound);
 		makeSpray(x, y);
-		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 
@@ -61,7 +61,7 @@ public class ModeDirichlet extends GameMode {
 	public void panStop(float x, float y) {
 		isSoundLooping = false;
 		LaplacityAssets.stopSound(LaplacityAssets.spraySound);
-		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 
