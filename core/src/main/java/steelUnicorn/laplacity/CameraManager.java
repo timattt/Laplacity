@@ -15,12 +15,11 @@ import steelUnicorn.laplacity.field.LaplacityField;
 public class CameraManager {
 	
 	// VELOCITY
-	public static final float CAMERA_VELOCITY = 15f;
+	public static final float BASE_VELOCITY = 10f;
 
 	// ZOOM
 	public static final float MIN_ZOOM = 0.5f;
 	public static final float MAX_ZOOM = 1f;
-	public static final float ZOOM_COEFF = 0.00004f;
 	
 	// CAMERA
 	private static OrthographicCamera camera;
@@ -29,6 +28,19 @@ public class CameraManager {
 	private static float targetX;
 	private static float targetY;
 	private static boolean isMoving = false;
+
+	// Bounding box
+	private static final float CAMERA_BB_X = 2f;
+	private static final float CAMERA_BB_Y = 1f;
+
+	// Переменные, используемые при обработке двухпальцевых жестов
+	private static Vector2 cameraPositionWithoutZoom = new Vector2();
+	private static Vector2 zoomDirection = new Vector2();
+	private static boolean isPinching = false;
+	private static float initialDistance = 0f;
+	private static float currentDistance = 0f;
+	private static float initialZoom = 1f;
+	private static float zoomMultiplier = 1f;
 	
 	public static void init() {
 		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
@@ -39,7 +51,7 @@ public class CameraManager {
 		setPosition(GameProcess.cat.getX(), GameProcess.cat.getY());
 	}
 	
-	public static void moveTo(float x, float y) {
+	public static void setMoving(float x, float y) {
 		targetX = clampX(x);
 		targetY = clampY(y);
 		isMoving = true;
@@ -60,11 +72,15 @@ public class CameraManager {
 			return 1f;
 		}
 	}
-	
+
 	public static void update(float dt) {
 		if (isMoving) {
-			float dx = CAMERA_VELOCITY * sgn(targetX - camera.position.x) * dt;
-			float dy = CAMERA_VELOCITY * sgn(targetY - camera.position.y) * dt;
+			float xVelocity = (Math.abs(targetX - camera.position.x) > CAMERA_BB_X) ?
+				Math.abs(targetX - camera.position.x - CAMERA_BB_X) + BASE_VELOCITY : 0f;
+			float yVelocity = (Math.abs(targetY - camera.position.y) > CAMERA_BB_Y) ?
+				Math.abs(targetY - camera.position.y - CAMERA_BB_Y) + BASE_VELOCITY : 0f;
+			float dx = xVelocity * sgn(targetX - camera.position.x) * dt;
+			float dy = yVelocity * sgn(targetY - camera.position.y) * dt;
 			float newX = camera.position.x + dx;
 			float newY = camera.position.y + dy;
 			if ((Math.abs(targetX - newX) < Math.abs(dx)) && (Math.abs(targetY - newY) < Math.abs(dy))) {
@@ -75,7 +91,7 @@ public class CameraManager {
 		}
 	}
 	
-	public static void stopMove() {
+	public static void stopMoving() {
 		isMoving = false;
 	}
 	
@@ -98,12 +114,7 @@ public class CameraManager {
 		return Math.max(min, Math.min(max, y));
 	}
 	
-	public static void setXPosition(float x) {
-		camera.position.x = clampX(x);
-		camera.update();
-	}
-
-	public static void setPosition(float x, float y) {
+	private static void setPosition(float x, float y) {
 		camera.position.x = clampX(x);
 		camera.position.y = clampY(y);
 		camera.update();
@@ -130,15 +141,6 @@ public class CameraManager {
 		return camera;
 	}
 
-	// Переменные, используемые при обработке двухпальцевых жестов
-	private static Vector2 cameraPositionWithoutZoom = new Vector2();
-	private static Vector2 zoomDirection = new Vector2();
-	private static boolean isPinching = false;
-	private static float initialDistance = 0f;
-	private static float currentDistance = 0f;
-	private static float initialZoom = 1f;
-	private static float zoomMultiplier = 1f;
-
 	/**
 	 * Функция, обрабатывающая двухпальцевые жесты.
 	 * Поддерживается зум и перемещение камеры в двух направлениях.
@@ -150,19 +152,49 @@ public class CameraManager {
 	public static void processPinch(Vector2 initialFirstPointer, Vector2 initialSecondPointer, Vector2 firstPointer, Vector2 secondPointer) {
 		if (!isPinching) {
 			// Initialize pinching event since LibGDX lacks startPinching() method
+			/*
+			 * Addidional plotting is required to make zooming smooth.
+			 * We take two points: current camera position and the point in between two initial pointer positions.
+			 * If we fully zoom in, the camera should approach the point in between, let call it zoomTarget.
+			 * So we plot a straight line through these point, the camera must stick to this line when moving.
+			 * Vector zoomDirection is zoomTarger - camera.position, it is the direction of this straight line
+			 * Finally, we must set the point where camera should be without zoom
+			 * If we start pinching with zoom coefficient equal to 1, this is simply camera.position
+			 * But if not, we can extrapolate camera movement past current camera.position.
+			 * The zoom factor is simply current distance between fingers / initial distance
+			 * Note that we don't calculate precise distance to avoid square root calculation
+			 * 
+			 * To move camera, we simply traack the movement of the point in between the fingers
+			 */
+
+			// 1. Find zoomDirection vector
 			cameraPositionWithoutZoom.set(camera.position.x, camera.position.y);
-			getCameraWorldPos(0.5f * (initialFirstPointer.x + initialSecondPointer.x), 0.5f * (initialFirstPointer.y + initialSecondPointer.y), zoomDirection);
+			getCameraWorldPos(
+				0.5f * (initialFirstPointer.x + initialSecondPointer.x),
+				0.5f * (initialFirstPointer.y + initialSecondPointer.y),
+				zoomDirection
+			);
 			zoomDirection.sub(cameraPositionWithoutZoom);
+			// 2. find interpolation coefficient and extrapolate camera position without zoom using it
 			float interpCoeff = (MAX_ZOOM - camera.zoom) / (MAX_ZOOM - MIN_ZOOM);
 			cameraPositionWithoutZoom.x -= interpCoeff * zoomDirection.x;
 			cameraPositionWithoutZoom.y -= interpCoeff * zoomDirection.y;
-			initialDistance = Math.abs(initialFirstPointer.x - initialSecondPointer.x) + Math.abs(initialFirstPointer.y - initialSecondPointer.y);
+			// 3. Save initial distance between fingers and initial zoom
+			initialDistance = 
+				Math.abs(initialFirstPointer.x - initialSecondPointer.x) +
+				Math.abs(initialFirstPointer.y - initialSecondPointer.y);
 			initialZoom = camera.zoom;
 			isPinching = true;
 		}
-		float centerDx = camera.zoom * (initialFirstPointer.x + initialSecondPointer.x - firstPointer.x - secondPointer.x) / (2f * Gdx.graphics.getWidth()) * SCREEN_WORLD_WIDTH;
-		float centerDy = -camera.zoom * (initialFirstPointer.y + initialSecondPointer.y - firstPointer.y - secondPointer.y) / (2f * Gdx.graphics.getHeight()) * SCREEN_WORLD_HEIGHT;
-		currentDistance = Math.abs(firstPointer.x - secondPointer.x) + Math.abs(firstPointer.y - secondPointer.y);
+		float centerDx = 
+			(initialFirstPointer.x + initialSecondPointer.x - firstPointer.x - secondPointer.x) *
+			camera.zoom * SCREEN_WORLD_WIDTH /(2f * Gdx.graphics.getWidth());
+		float centerDy =
+			-(initialFirstPointer.y + initialSecondPointer.y - firstPointer.y - secondPointer.y) *
+			camera.zoom * SCREEN_WORLD_HEIGHT / (2f * Gdx.graphics.getHeight());
+		currentDistance =
+			Math.abs(firstPointer.x - secondPointer.x) +
+			Math.abs(firstPointer.y - secondPointer.y);
 		if (currentDistance < Globals.EPSILON_PRECISION) {
 			zoomMultiplier = MAX_ZOOM;
 		} else {
@@ -170,7 +202,10 @@ public class CameraManager {
 		}
 		camera.zoom = MathUtils.clamp(zoomMultiplier * initialZoom, MIN_ZOOM, MAX_ZOOM);
 		float interpCoeff = (MAX_ZOOM - camera.zoom) / (MAX_ZOOM - MIN_ZOOM);
-		setPosition(centerDx + cameraPositionWithoutZoom.x + interpCoeff * zoomDirection.x, centerDy + cameraPositionWithoutZoom.y + interpCoeff * zoomDirection.y);
+		setPosition(
+			centerDx + cameraPositionWithoutZoom.x + interpCoeff * zoomDirection.x,
+			centerDy + cameraPositionWithoutZoom.y + interpCoeff * zoomDirection.y
+		);
 	}
 
 	public static void stopPinching() {
