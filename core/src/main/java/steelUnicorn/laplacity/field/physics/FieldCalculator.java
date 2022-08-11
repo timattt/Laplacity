@@ -15,8 +15,9 @@ public class FieldCalculator {
 
 	// Вычислительные константы
 	// Можно перенести их в другое место из этого класса
-	public static final float precision = 0.001f;
-	public static final int maxIter = 1000;
+	public static final float PRECISION = 0.05f;
+	public static final int MAX_ITER_COUNT = 3000;
+	public static final int ITER_PER_FRAME = (int) (MAX_ITER_COUNT / 60f);
 
 	// Буферы для промежуточных вычислений
 	private static int bufLength = 0;
@@ -24,6 +25,14 @@ public class FieldCalculator {
 	private static float[] densityVector;
 	private static float[] potentialVector;
 	private static float[] tmpBuffer;
+
+	// Параметры текущей сессии вычислений
+	private static boolean isCalculating = false;
+	private static int iterationsSpent = 0;
+	private static int fWidth = 0;
+	private static int fHeight = 0;
+	private static float h = 0f;
+	private static EmptyTile[][] tiles;
 
 	/**
 	 * Функция, вычисляющая i-й элемент свёртки заданного вектора с блочной матрицей свойств поля.
@@ -98,7 +107,7 @@ public class FieldCalculator {
 		Arrays.fill(result, 0.0f);
 
 		// Главный цикл итерационного метода
-		for (int k = 0; k < maxIter; k++) {
+		for (int k = 0; k < MAX_ITER_COUNT; k++) {
 
 			// Вычисление вектора невязки
 			intermediateConvolution(result, N, M, h, residualsBuffer);
@@ -115,7 +124,7 @@ public class FieldCalculator {
 				tmpDotResiduals += tmpBuffer[i] * residualsBuffer[i];
 			}
 			// Проверим, насколько близок к нулю знаменатель
-			if (Math.abs(tmpDotResiduals) < precision) {// Если невязка тоже небольшая, то скорее всего мы уже решили задачу
+			if (Math.abs(tmpDotResiduals) < PRECISION) {// Если невязка тоже небольшая, то скорее всего мы уже решили задачу
 					break; // Эта ветвь часто достигается, когда поле изначально нулевое
 			}
 			float descendStepValue = residualsDotResiduals / tmpDotResiduals;
@@ -129,7 +138,7 @@ public class FieldCalculator {
 					maxDifference = difference;
 				result[i] = nextIterOfResult;
 			}
-			if (maxDifference < precision)
+			if (maxDifference < PRECISION)
 				break;
 		}
 		/*
@@ -172,6 +181,76 @@ public class FieldCalculator {
 				tiles[i][j].setPotential(potentialVector[k++]);
 	}
 
+	public static void initPotentialCalculation(EmptyTile[][] _tiles) {
+		fWidth = LaplacityField.fieldWidth;
+		fHeight = LaplacityField.fieldHeight;
+		h = LaplacityField.tileSize;
+		iterationsSpent = 0;
+		tiles = _tiles;
+		if ((fWidth == 0) || (fHeight == 0))
+			throw new RuntimeException("Fatal error: zero field dimensions");
+		int n = fWidth * fHeight;
+		if (n != bufLength)
+			resizeBuffers(n);
+		int k = 0;
+		for (int i = 0; i < fWidth; i++)
+			for (int j = 0; j < fHeight; j++)
+				densityVector[k++] = -tiles[i][j].getTotalChargeDensity();
+		isCalculating = true;
+	}
+
+	public static void resetPotential() {
+		if (potentialVector != null)
+			Arrays.fill(potentialVector, 0f);
+	}
+
+	public static void iterate() {
+		if (isCalculating == false) {
+			return;
+		}
+		for (int k = 0; k < ITER_PER_FRAME; k++) {
+			// Вычисление вектора невязки
+			intermediateConvolution(potentialVector, fHeight, fWidth, h, residualsBuffer);
+			for (int i = 0; i < bufLength; i++)
+				residualsBuffer[i] -= densityVector[i];
+			// Временный вектор для вычисления шага итерации
+			intermediateConvolution(residualsBuffer, fHeight, fWidth, h, tmpBuffer);
+			// Вычисление шага итерации: числитель отдельно от знаменателя
+			float residualsDotResiduals = 0, tmpDotResiduals = 0;
+			for (int i = 0; i < bufLength; i++) {
+				residualsDotResiduals += residualsBuffer[i] * residualsBuffer[i];
+				tmpDotResiduals += tmpBuffer[i] * residualsBuffer[i];
+			}
+			// Проверим, насколько близок к нулю знаменатель
+			if (Math.abs(tmpDotResiduals) < PRECISION) {// Если невязка тоже небольшая, то скорее всего мы уже решили задачу
+				isCalculating = false;
+				break;
+			}
+			float descendStepValue = residualsDotResiduals / tmpDotResiduals;
+			// Записываем новую итерацию и проверяем условие нормального выхода из цикла
+			float maxDifference = 0f, difference = 0f, nextIterOfResult = 0f;
+			for (int i = 0; i < bufLength; i++) {
+				nextIterOfResult = potentialVector[i] - (descendStepValue * residualsBuffer[i]);
+				difference = Math.abs(potentialVector[i] - nextIterOfResult);
+				if (difference > maxDifference)
+					maxDifference = difference;
+				potentialVector[i] = nextIterOfResult;
+			}
+			if (maxDifference < PRECISION) {
+				isCalculating = false;
+				break;
+			}
+		}
+		iterationsSpent += ITER_PER_FRAME;
+		if (iterationsSpent > MAX_ITER_COUNT) {
+			isCalculating = false;
+		}
+		int k = 0;
+		for (int i = 0; i < fWidth; i++)
+			for (int j = 0; j < fHeight; j++)
+				tiles[i][j].setPotential(potentialVector[k++]);
+	}
+
 	private static float twoPointScheme(float fMinus, float fPlus, float step) {
 		return 0.5f * (fPlus - fMinus) / step;
 	}
@@ -211,6 +290,12 @@ public class FieldCalculator {
 			result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), 0.0f, h);
 		} else { // внутренняя точка
 			result.y = -twoPointScheme(tiles[i][j - 1].getPotential(), tiles[i][j+1].getPotential(), h);
+		}
+	}
+
+	public static void finishCalculation() {
+		while (isCalculating) {
+			iterate();
 		}
 	}
 }

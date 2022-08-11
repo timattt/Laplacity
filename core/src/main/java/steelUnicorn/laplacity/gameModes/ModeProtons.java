@@ -22,7 +22,7 @@ public class ModeProtons extends GameMode {
 	public void tap(float x, float y) {
 		LaplacityAssets.playSound(LaplacityAssets.placeSound);
 		tryToAddStaticParticle(new Proton(x, y));
-		FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 	

@@ -197,7 +197,7 @@ public class GameProcess {
 		 * записанных в экземплярах классов этих тел
 		 */
 		interpCoeff = 1f;
-		
+		FieldCalculator.resetPotential();
 		CameraManager.setToMainParticle();
 	}
 	
@@ -226,6 +226,8 @@ public class GameProcess {
 			CameraManager.update(frameTime);
 		} else {
 			CameraManager.update(delta);
+			FieldCalculator.iterate();
+			TrajectoryRenderer.updateTrajectory();
 		}
 		for (PointLight pl : lights) {
 			pl.update();
@@ -330,6 +332,7 @@ public class GameProcess {
 		particles.clear();
 		
 		LaplacityField.clearElectricField();
+		FieldCalculator.resetPotential();
 		DensityRenderer.updateDensity();
 		TrajectoryRenderer.updateTrajectory();
 		Gdx.app.log("gameProcess", "level cleared!");
@@ -348,7 +351,7 @@ public class GameProcess {
 		} else {
 			if (nowFlight) {
 				currentlyStarsCollected = 0;
-				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+				FieldCalculator.finishCalculation();;
 				startTime = TimeUtils.millis();
 				currentTime = startTime;
 				cat.makeParticleMoveWithStartVelocity();
