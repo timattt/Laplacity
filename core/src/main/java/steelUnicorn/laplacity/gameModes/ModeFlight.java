@@ -14,7 +14,7 @@ public class ModeFlight extends GameMode {
 
 	@Override
 	public void update() {
-		CameraManager.setMoving(GameProcess.cat.getX(),GameProcess.cat.getY());
+		CameraManager.setMoving(GameProcess.cat.interpX(),GameProcess.cat.interpY());
 	}
 
 	@Override

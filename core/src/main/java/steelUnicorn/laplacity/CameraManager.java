@@ -16,6 +16,7 @@ public class CameraManager {
 	
 	// VELOCITY
 	public static final float BASE_VELOCITY = 10f;
+	private static final float VELOCITY_DISTANCE_MULTIPLIER = 6f;
 
 	// ZOOM
 	public static final float MIN_ZOOM = 0.5f;
@@ -62,25 +63,27 @@ public class CameraManager {
 		isMoving = false;
 	}
 
-	private static float sgn(float x) {
-		if (x < 1f && -1f < x) {
-			return x;
-		}
-		if (x < 0) {
-			return -1f;
-		} else {
-			return 1f;
-		}
-	}
-
 	public static void update(float dt) {
 		if (isMoving) {
+			/*
+			 * Сначала находим модуль скорости
+			 * Если мы за пределами коробки (BB), то скорость складывается из базового значения
+			 * и слагаемого, пропорционального расстоянию до коробки.
+			 * Базовое значение не может превышать скорость тела (кота)
+			*/
 			float xVelocity = (Math.abs(targetX - camera.position.x) > CAMERA_BB_X) ?
-				Math.abs(targetX - camera.position.x - CAMERA_BB_X) + BASE_VELOCITY : 0f;
+				(Math.abs(targetX - camera.position.x) - CAMERA_BB_X) * VELOCITY_DISTANCE_MULTIPLIER +
+				MathUtils.clamp(BASE_VELOCITY, 0f, Math.abs(GameProcess.cat.getVelocity().x)) :
+				0f;
+
 			float yVelocity = (Math.abs(targetY - camera.position.y) > CAMERA_BB_Y) ?
-				Math.abs(targetY - camera.position.y - CAMERA_BB_Y) + BASE_VELOCITY : 0f;
-			float dx = xVelocity * sgn(targetX - camera.position.x) * dt;
-			float dy = yVelocity * sgn(targetY - camera.position.y) * dt;
+				(Math.abs(targetY - camera.position.y) - CAMERA_BB_Y) * VELOCITY_DISTANCE_MULTIPLIER +
+				MathUtils.clamp(BASE_VELOCITY, 0f, Math.abs(GameProcess.cat.getVelocity().y)) :
+				0f;
+			
+			// Теперь находим dx
+			float dx = xVelocity * Math.signum(targetX - camera.position.x) * dt;
+			float dy = yVelocity * Math.signum(targetY - camera.position.y) * dt;
 			float newX = camera.position.x + dx;
 			float newY = camera.position.y + dy;
 			if ((Math.abs(targetX - newX) < Math.abs(dx)) && (Math.abs(targetY - newY) < Math.abs(dy))) {
