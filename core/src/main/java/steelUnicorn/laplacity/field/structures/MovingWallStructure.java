@@ -3,7 +3,9 @@ package steelUnicorn.laplacity.field.structures;
 import static steelUnicorn.laplacity.GameProcess.*;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -42,7 +44,9 @@ public class MovingWallStructure extends FieldStructure {
 	
 	// graph
 	private int cacheId;
+	private int cacheStableId;
 	private static final Matrix4 cacheMat = new Matrix4();
+	private int gcd;
 	
 	public MovingWallStructure(int left, int bottom, Pixmap pm) {
 		super(left, bottom, pm, allCodes);
@@ -89,6 +93,13 @@ public class MovingWallStructure extends FieldStructure {
 		}
 		
 		phaseDelta = (float) Math.asin(Math.max(-1.0,Math.min(1.0, x / r)));
+		gcd = gcd(blockRect.width(), blockRect.height());
+	}
+	
+	private int gcd(int a, int b) {
+		if (b == 0)
+			return a;
+		return gcd(b, a % b);
 	}
 	
 	private void createCache() {
@@ -97,28 +108,72 @@ public class MovingWallStructure extends FieldStructure {
 		float sz = LaplacityField.tileSize;
 		
 		if (isHorizontal) {
-			for (int y = 0; y < blockRect.height(); y++) {
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[y % 3], 0, y * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[y % 3], (blockRect.width() - 1) * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
-			}
-			for (int x = 1; x < blockRect.width() - 1; x++) {
-				for (int y = 0; y < blockRect.height(); y++) {
-					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[3], x * sz, y * sz, sz, sz);
+			for (int x = 0; x < blockRect.width(); x += gcd) {
+				for (int y = 0; y < blockRect.height(); y += gcd) {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[1][0];
+					if (y == 0) {
+						reg = LaplacityAssets.ELEVATOR_REGIONS[0][0];
+					}
+					if (y == blockRect.height() - gcd) {
+						reg = LaplacityAssets.ELEVATOR_REGIONS[2][0];
+					}
+					GameProcess.gameCache.add(reg, x * sz, y * sz, gcd * sz/2, gcd * sz/2, gcd * sz, gcd * sz, 1, 1, 90);
 				}
 			}
 		} else {
-			for (int x = 0; x < blockRect.width(); x++) {
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 3], x * sz, 0, sz/2, sz/2, sz, sz, 1, 1, 180);
-				GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[x % 3], x * sz, (blockRect.height() - 1) * sz, sz, sz);
-			}
-			for (int x = 0; x < blockRect.width(); x++) {
-				for (int y = 1; y < blockRect.height() - 1; y++) {
-					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[3], x * sz, y * sz, sz, sz);
+			for (int x = 0; x < blockRect.width(); x+=gcd) {
+				for (int y = 0; y < blockRect.height(); y+=gcd) {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[1][0];
+					if (x == 0) {
+						reg = LaplacityAssets.ELEVATOR_REGIONS[0][0];
+					}
+					if (x == blockRect.width() - gcd) {
+						reg = LaplacityAssets.ELEVATOR_REGIONS[2][0];
+					}
+					GameProcess.gameCache.add(reg, x * sz, y * sz, gcd*sz, gcd*sz);
 				}
 			}
 		}
 		
 		cacheId = GameProcess.gameCache.endCache();
+		
+		GameProcess.gameCache.beginCache();
+		
+		if (isHorizontal) {
+			for (int x = 0; x < bounds.width(); x++) {
+				if (x == 0) {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[0][2];
+					GameProcess.gameCache.add(reg, x * sz, 0 * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
+					GameProcess.gameCache.add(reg, x * sz, (bounds.height() - 1) * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
+				} else if (x == bounds.width() - 1) {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[0][2];
+					GameProcess.gameCache.add(reg, x * sz, 0 * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+					GameProcess.gameCache.add(reg, x * sz, (bounds.height() - 1) * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+				} else {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[2][2];
+					GameProcess.gameCache.add(reg, x * sz, 0 * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+					GameProcess.gameCache.add(reg, x * sz, (bounds.height() - 1) * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+				}
+			}
+		} else {
+			for (int y = 0; y < bounds.height(); y++) {
+				if (y == 0) {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[0][2];
+					GameProcess.gameCache.add(reg, 0 * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
+					GameProcess.gameCache.add(reg, (bounds.width() - 1) * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, -90);
+				} else if (y == bounds.height() - 1) {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[0][2];
+					GameProcess.gameCache.add(reg, 0 * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+					GameProcess.gameCache.add(reg, (bounds.width() - 1) * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
+				} else {
+					TextureRegion reg = LaplacityAssets.ELEVATOR_REGIONS[2][2];
+					GameProcess.gameCache.add(reg, 0 * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+					GameProcess.gameCache.add(reg, (bounds.width() - 1) * sz, y * sz, sz/2, sz/2, sz, sz, 1, 1, 0);
+				}
+			}
+		}
+		
+		cacheStableId = GameProcess.gameCache.endCache();
 	}
 
 	@Override
@@ -164,30 +219,36 @@ public class MovingWallStructure extends FieldStructure {
 	@Override
 	public void renderCached(float timeFromStart) {
 		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
-		
+
+		Gdx.gl.glEnable(GL20.GL_BLEND);
+
+		GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
+
+		float sz = LaplacityField.tileSize;
+
+		GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(bounds.left * sz, bounds.bottom * sz, 0));
+
+		GameProcess.gameCache.begin();
+		GameProcess.gameCache.draw(cacheStableId);
+		GameProcess.gameCache.end();
+
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
-			
-			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - blockWidth / 2, staticCoord - blockHeight / 2, 0));
-			GameProcess.gameCache.begin();
-			GameProcess.gameCache.draw(cacheId);
-			GameProcess.gameCache.end();
-
 			body.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
-			
-			GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - blockWidth / 2, currentCoord - blockHeight / 2, 0));
-			GameProcess.gameCache.begin();
-			GameProcess.gameCache.draw(cacheId);
-			GameProcess.gameCache.end();
-
 			body.setTransform(staticCoord, currentCoord, 0);
 		}
-		
+
+		GameProcess.gameCache.begin();
+		GameProcess.gameCache.draw(cacheId);
+		GameProcess.gameCache.end();
+
 		GameProcess.gameCache.setTransformMatrix(cacheMat.idt());
+
+		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 
 	@Override

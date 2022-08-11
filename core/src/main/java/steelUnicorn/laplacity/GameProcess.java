@@ -239,16 +239,19 @@ public class GameProcess {
 		
 		// render
 		//---------------------------------------------
-		// cached
 		BackgroundRenderer.render();
-		TrajectoryRenderer.render();
 		TilesRenderer.render();
 		DensityRenderer.render();
 		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
 		
-		// batched
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
+		ParticlesRenderer.render(delta);
+		gameBatch.end();
+		
+		TrajectoryRenderer.render();
+		
+		gameBatch.begin();
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		

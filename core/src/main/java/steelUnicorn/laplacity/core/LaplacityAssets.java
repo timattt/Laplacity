@@ -54,11 +54,11 @@ public class LaplacityAssets {
 	// BACKGROUNDS
 	public static Array<Texture> BACKGROUNDS;
 	public static Texture SPACE_BACKGROUND;
-  public static Texture MAIN_MENU_BACKGROUND;
-  public static Texture EARTH_BACKGROUND;
+	public static Texture MAIN_MENU_BACKGROUND;
+	public static Texture EARTH_BACKGROUND;
 
-  //HINTS
-  public static Array<Texture> HINTS;
+	//HINTS
+	public static Array<Texture> HINTS;
 
 	// PARTICLES
 	public static Texture ELECTRON_TEXTURE;
@@ -88,6 +88,8 @@ public class LaplacityAssets {
 	public static TextureRegion[] HINGE_REGIONS;
 	public static Texture STAR_TEXTURE;
 	public static TextureRegion[] STAR_REGIONS;
+	public static Texture ELEVATOR_TEXTURE;
+	public static TextureRegion[][] ELEVATOR_REGIONS;
 
     //UI
     public static Skin SKIN;
@@ -122,6 +124,7 @@ public class LaplacityAssets {
         RED_LED_TEXTURE = Globals.assetManager.get("textures/structures/redLed.png");
         HINGE_TEXTURE = Globals.assetManager.get("textures/structures/hinge.png");
         STAR_TEXTURE = Globals.assetManager.get("textures/structures/stars.png");
+        ELEVATOR_TEXTURE = Globals.assetManager.get("textures/structures/elevator.png");
         
         // OBJECTS
         GIFT_TEXTURE = Globals.assetManager.get("rigidObjects/gift.png");
@@ -152,6 +155,7 @@ public class LaplacityAssets {
         cut(HINGE_TEXTURE, HINGE_REGIONS = new TextureRegion[4]);
         cut(CAT_TEXTURE, CAT_REGIONS = new TextureRegion[5][2]);
         cut(STAR_TEXTURE, STAR_REGIONS = new TextureRegion[8]);
+        cut(ELEVATOR_TEXTURE, ELEVATOR_REGIONS = new TextureRegion[3][3]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
     }
