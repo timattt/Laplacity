@@ -149,4 +149,8 @@ public class Cat extends ChargedParticle {
 		prevY = getY();
 	}
 
+	public Vector2 getVelocity() {
+		return body.getLinearVelocity();
+	}
+
 }
