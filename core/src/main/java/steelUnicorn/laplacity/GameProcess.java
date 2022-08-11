@@ -197,7 +197,7 @@ public class GameProcess {
 		 * записанных в экземплярах классов этих тел
 		 */
 		interpCoeff = 1f;
-		
+		FieldCalculator.resetPotential();
 		CameraManager.setToMainParticle();
 	}
 	
@@ -332,6 +332,7 @@ public class GameProcess {
 		particles.clear();
 		
 		LaplacityField.clearElectricField();
+		FieldCalculator.resetPotential();
 		DensityRenderer.updateDensity();
 		TrajectoryRenderer.updateTrajectory();
 		Gdx.app.log("gameProcess", "level cleared!");

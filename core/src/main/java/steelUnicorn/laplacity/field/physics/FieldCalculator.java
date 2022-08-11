@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.field.physics;
 
 import java.util.Arrays;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.field.LaplacityField;
@@ -17,7 +16,7 @@ public class FieldCalculator {
 	// Вычислительные константы
 	// Можно перенести их в другое место из этого класса
 	public static final float PRECISION = 0.05f;
-	public static final int MAX_ITER_COUNT = 1000;
+	public static final int MAX_ITER_COUNT = 3000;
 	public static final int ITER_PER_FRAME = (int) (MAX_ITER_COUNT / 60f);
 
 	// Буферы для промежуточных вычислений
@@ -197,15 +196,18 @@ public class FieldCalculator {
 		for (int i = 0; i < fWidth; i++)
 			for (int j = 0; j < fHeight; j++)
 				densityVector[k++] = -tiles[i][j].getTotalChargeDensity();
-		Arrays.fill(potentialVector, 0f);
 		isCalculating = true;
+	}
+
+	public static void resetPotential() {
+		if (potentialVector != null)
+			Arrays.fill(potentialVector, 0f);
 	}
 
 	public static void iterate() {
 		if (isCalculating == false) {
 			return;
 		}
-		Gdx.app.log("calc", "iterations spent = " + String.valueOf(iterationsSpent));
 		for (int k = 0; k < ITER_PER_FRAME; k++) {
 			// Вычисление вектора невязки
 			intermediateConvolution(potentialVector, fHeight, fWidth, h, residualsBuffer);
@@ -222,7 +224,6 @@ public class FieldCalculator {
 			// Проверим, насколько близок к нулю знаменатель
 			if (Math.abs(tmpDotResiduals) < PRECISION) {// Если невязка тоже небольшая, то скорее всего мы уже решили задачу
 				isCalculating = false;
-				Gdx.app.log("calc", "finishing by semi precision");
 				break;
 			}
 			float descendStepValue = residualsDotResiduals / tmpDotResiduals;
@@ -236,7 +237,6 @@ public class FieldCalculator {
 				potentialVector[i] = nextIterOfResult;
 			}
 			if (maxDifference < PRECISION) {
-				Gdx.app.log("calc", "finishing by precision");
 				isCalculating = false;
 				break;
 			}
@@ -244,7 +244,6 @@ public class FieldCalculator {
 		iterationsSpent += ITER_PER_FRAME;
 		if (iterationsSpent > MAX_ITER_COUNT) {
 			isCalculating = false;
-			Gdx.app.log("calc", "finishing by max iter");
 		}
 		int k = 0;
 		for (int i = 0; i < fWidth; i++)
