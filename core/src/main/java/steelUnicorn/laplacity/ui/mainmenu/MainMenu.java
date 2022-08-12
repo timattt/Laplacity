@@ -39,7 +39,8 @@ public class MainMenu extends Stage {
 
     public static final float menuWidth = UI_WORLD_WIDTH * 0.2f;	// << menu button width ratio
     public static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
-    public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
+    public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.06f; // << space between elements
+    public static final float iconSize = UI_WORLD_HEIGHT * 0.15f;
 
     private SettingsTab settingsTab;
     private CreditsTab creditsTab;
@@ -106,7 +107,7 @@ public class MainMenu extends Stage {
         mainCell = root.add(mainMenu);
 
         //play
-        Button btn = new Button(TEXSKIN.get("play", Button.ButtonStyle.class));
+        Button btn = new Button(TEXSKIN.get("PlayBtn", Button.ButtonStyle.class));
         btn.setName("play");
         btn.addListener(new ChangeListener() {
             @Override
@@ -130,8 +131,7 @@ public class MainMenu extends Stage {
                 mainCell.setActor(settingsTab.settingsPane);
             }
         });
-
-        icons.add(icon).left().expandX();
+        icons.add(icon).expandX().size(iconSize);
         //credits
         icon = new ImageButton(TEXSKIN.get("credits", ImageButton.ImageButtonStyle.class));
         icon.setName("credits");
@@ -142,22 +142,7 @@ public class MainMenu extends Stage {
                 mainCell.setActor(creditsTab);
             }
         });
-        icons.add(icon).right().expandX();
-
-        //testads
-        mainMenu.row();
-        TextButton adBtn = new TextButton("Test ad", skin);
-        btn.setName("testAd");
-        btn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.showRewarded();
-            }
-        });
-        mainMenu.add(adBtn).width(menuWidth)
-                .height(menuHeight)
-                .space(menuSpaceSize);
+        icons.add(icon).expandX().size(iconSize);
     }
 
     public void returnMainMenu() {

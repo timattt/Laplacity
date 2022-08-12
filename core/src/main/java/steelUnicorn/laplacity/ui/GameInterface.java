@@ -140,9 +140,9 @@ public class GameInterface extends Stage implements GestureListener {
 
 		vertical.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
 		vertical.row();
-		vertical.add(createModeSelector())
+		vertical.add(createModeSelector()).width(iconSize)
 				.height(TEXSKIN.getDrawable("square_Eraser").getMinHeight()
-						/ TEXSKIN.getDrawable("square_Eraser").getMinHeight() * iconSize);
+						/ TEXSKIN.getDrawable("square_Eraser").getMinWidth() * iconSize);
 		vertical.row();
 		vertical.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 		vertical.row();
