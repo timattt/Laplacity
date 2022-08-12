@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.field.structures;
 import static steelUnicorn.laplacity.GameProcess.*;
 
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.math.MathUtils;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
@@ -19,6 +20,8 @@ public class AcceleratorStructure extends FieldStructure {
 	private float dirX;
 	private float dirY;
 	
+	private float angle;
+	
 	public AcceleratorStructure(int left, int bottom, Pixmap pm, int initCode) {
 		super(left, bottom, pm, codes1);
 		IntRect direction = new IntRect();
@@ -32,6 +35,8 @@ public class AcceleratorStructure extends FieldStructure {
 		
 		dirX = Globals.TMP1.x;
 		dirY = Globals.TMP1.y;
+		
+		angle = (float) Math.acos(dirX) * MathUtils.radDeg * Math.signum(dirY);
 	}
 
 	@Override
@@ -45,7 +50,7 @@ public class AcceleratorStructure extends FieldStructure {
 	@Override
 	public void renderBatched(float timeFromStart) {		
 		gameBatch.enableBlending();
-		gameBatch.draw(LaplacityAssets.CELERATORS_REGIONS[0], leftBottomX, leftBottomY, worldWidth, worldHeight);
+		gameBatch.draw(LaplacityAssets.CELERATORS_REGIONS[0], leftBottomX, leftBottomY, worldWidth/2, worldHeight/2, worldWidth, worldHeight, 1, 1, angle);
 		gameBatch.disableBlending();
 	}
 
