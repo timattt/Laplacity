@@ -36,7 +36,7 @@ public class AcceleratorStructure extends FieldStructure {
 		dirX = Globals.TMP1.x;
 		dirY = Globals.TMP1.y;
 		
-		angle = (float) Math.acos(dirX) * MathUtils.radDeg * Math.signum(dirY);
+		angle = (float) Math.acos(dirX) * MathUtils.radDeg * Math.signum(dirY + 0.001f);
 	}
 
 	@Override
