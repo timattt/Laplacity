@@ -54,6 +54,9 @@ tmp/
 .externalToolBuilders/
 *.launch
 
+## VS Code
+.vscode/
+
 ## NetBeans
 **/nbproject/private/
 nbbuild/
