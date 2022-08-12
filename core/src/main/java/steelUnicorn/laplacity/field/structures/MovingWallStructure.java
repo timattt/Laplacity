@@ -94,6 +94,10 @@ public class MovingWallStructure extends FieldStructure {
 		
 		phaseDelta = (float) Math.asin(Math.max(-1.0,Math.min(1.0, x / r)));
 		gcd = gcd(blockRect.width(), blockRect.height());
+		
+		if (gcd == blockRect.width() || gcd == blockRect.height()) {
+			gcd = 1;
+		}
 	}
 	
 	private int gcd(int a, int b) {
