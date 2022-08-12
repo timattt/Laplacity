@@ -27,13 +27,15 @@ public class HatchStructure extends FieldStructure {
 
 	private long finishTime;
 	private boolean mayFinish = false;
+	private static final long ANIM_TIME = 1500;
 	
 	@Override
 	public void renderBatched(float timeFromStart) {
 		if (mayFinish) {
 			cat.getBody().setLinearVelocity(0, 0);
+			cat.setAnimationCoef((float)(TimeUtils.millis() - finishTime) / (float)ANIM_TIME);
 		}
-		if (mayFinish && TimeUtils.millis() - finishTime > 1000) {
+		if (mayFinish && TimeUtils.millis() - finishTime > ANIM_TIME) {
 			GameProcess.justFinished = true;
 		}
 		
@@ -56,6 +58,7 @@ public class HatchStructure extends FieldStructure {
 		if (len < R * R && !mayFinish) {
 			mayFinish = true;
 			finishTime = TimeUtils.millis();
+			cat.playFinishAnimation(centerX, centerY);
 		}
 		
 		GameProcess.gameBatch.enableBlending();
