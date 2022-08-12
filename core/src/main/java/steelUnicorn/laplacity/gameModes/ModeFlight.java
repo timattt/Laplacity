@@ -14,7 +14,7 @@ public class ModeFlight extends GameMode {
 
 	@Override
 	public void update() {
-		CameraManager.moveTo(GameProcess.cat.getX(),GameProcess.cat.getY());
+		CameraManager.setMoving(GameProcess.cat.interpX(),GameProcess.cat.interpY());
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class ModeFlight extends GameMode {
 
 	@Override
 	public void replaced() {
-		CameraManager.moveTo(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
+		CameraManager.setMoving(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
 	}
 
 }

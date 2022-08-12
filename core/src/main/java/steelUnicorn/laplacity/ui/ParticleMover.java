@@ -43,7 +43,7 @@ public class ParticleMover {
 	
 	public static void stopMoving() {
 		if (current != null) {
-			FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+			FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 			TrajectoryRenderer.updateTrajectory();
 			current = null;
 		}

@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.BackgroundRenderer;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
@@ -150,7 +151,7 @@ public class GameProcess {
 	public static final int FLIMSY_STRUCTURE_START_DURABILITY = 3;
 	public static final float STAR_SIZE = 2f;
 	public static final long STAR_ROTATION_TIME = 100;
-	public static final long TILE_ANIMATION_DELAY = 200;
+	public static final long TILE_ANIMATION_DELAY = 100;
 	
 	// LIGHT
 	public static final float AMBIENT_INTENSITY = 0.9f;
@@ -197,7 +198,7 @@ public class GameProcess {
 		 * записанных в экземплярах классов этих тел
 		 */
 		interpCoeff = 1f;
-		
+		FieldCalculator.resetPotential();
 		CameraManager.setToMainParticle();
 	}
 	
@@ -206,21 +207,51 @@ public class GameProcess {
 			return;
 		}
 		
+		// update
+		//---------------------------------------------
+		currentGameMode.update();
+		gameUI.act(delta);
+		if (currentGameMode == GameMode.FLIGHT) {
+			long newTime = TimeUtils.millis();
+			float frameTime = ((float) (newTime - currentTime)) / 1000f;
+			currentTime = newTime;
+			frameAccumulator += frameTime;
+			while (frameAccumulator >= 0) {
+				saveCurrentState();
+				cat.updatePhysics(frameTime);
+				LaplacityField.updateStructuresPhysics(currentTime - startTime);
+				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
+				frameAccumulator -= SIMULATION_TIME_STEP;
+			}
+			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
+			CameraManager.update(frameTime);
+		} else {
+			CameraManager.update(delta);
+			if (FieldCalculator.isCalculating()) {
+				FieldCalculator.iterate();
+				TrajectoryRenderer.updateTrajectory();
+			}
+		}
+		//---------------------------------------------
+		
 		gameBatch.setProjectionMatrix(CameraManager.camMat());
 		rayHandler.setCombinedMatrix(CameraManager.getCamera());
 		
 		// render
 		//---------------------------------------------
-		// cached
 		BackgroundRenderer.render();
-		TrajectoryRenderer.render();
 		TilesRenderer.render();
 		DensityRenderer.render();
 		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
 		
-		// batched
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
+		ParticlesRenderer.render(delta);
+		gameBatch.end();
+		
+		TrajectoryRenderer.render();
+		
+		gameBatch.begin();
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		
@@ -242,32 +273,6 @@ public class GameProcess {
 		if (justFinished) {
 			levelFinished();
 			justFinished = false;
-		}
-		//---------------------------------------------
-		
-		// update
-		//---------------------------------------------
-		currentGameMode.update();
-		gameUI.act(delta);
-		if (currentGameMode == GameMode.FLIGHT) {
-			long newTime = TimeUtils.millis();
-			float frameTime = ((float) (newTime - currentTime)) / 1000f;
-			currentTime = newTime;
-			frameAccumulator += frameTime;
-			while (frameAccumulator >= 0) {
-				saveCurrentState();
-				cat.updatePhysics(delta);
-				LaplacityField.updateStructuresPhysics(currentTime - startTime);
-				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
-				frameAccumulator -= SIMULATION_TIME_STEP;
-			}
-			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
-			CameraManager.update(frameTime);
-		} else {
-			CameraManager.update(delta);
-		}
-		for (PointLight pl : lights) {
-			pl.update();
 		}
 		//---------------------------------------------
 	}
@@ -330,6 +335,7 @@ public class GameProcess {
 		particles.clear();
 		
 		LaplacityField.clearElectricField();
+		FieldCalculator.resetPotential();
 		DensityRenderer.updateDensity();
 		TrajectoryRenderer.updateTrajectory();
 		Gdx.app.log("gameProcess", "level cleared!");
@@ -348,7 +354,7 @@ public class GameProcess {
 		} else {
 			if (nowFlight) {
 				currentlyStarsCollected = 0;
-				FieldCalculator.calculateFieldPotential(LaplacityField.tiles);
+				FieldCalculator.finishCalculation();;
 				startTime = TimeUtils.millis();
 				currentTime = startTime;
 				cat.makeParticleMoveWithStartVelocity();
@@ -459,6 +465,7 @@ public class GameProcess {
 	
 	public static void collectStar() {
 		currentlyStarsCollected++;
+		LaplacityAssets.playSound(LaplacityAssets.starSound);
 	}
 	
 	public static void levelFinished() {

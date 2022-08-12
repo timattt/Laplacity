@@ -34,24 +34,42 @@ public class Cat extends ChargedParticle {
 	// emoji
 	private int currentEmoji = 0;
 	
+	// finish animation
+	private float finishX;
+	private float finishY;
+	private boolean playingFinishAnim;
+	private float animationCoef = 0;
+	
 	public Cat() {
 		super(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
-		pointLight.setStaticLight(false);
-		pointLight.setDistance(CAT_LIGHT_DISTANCE);
+		deletePointLight(pointLight);
+		prevX = LaplacityField.electronStartPos.x;
+		prevY = LaplacityField.electronStartPos.y;
+		getBody().setBullet(true);
 	}
 
 	@Override
 	public void draw() {
+		float x = interpX();
+		float y = interpY();
+		float scale = 1;
+		
+		if (playingFinishAnim) {
+			x = (finishX - x) * animationCoef + x;
+			y = (finishY - y) * animationCoef + y;
+			scale = 0.8f + 0.2f * (1f - animationCoef);
+		}
+		
 		GameProcess.gameBatch.enableBlending();
 		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGIONS[currentEmoji % LaplacityAssets.CAT_REGIONS.length][currentEmoji / LaplacityAssets.CAT_REGIONS.length],
-				interpX() - CAT_SIZE,
-				interpY() - CAT_SIZE,
+				x - CAT_SIZE,
+				y - CAT_SIZE,
 				CAT_SIZE,
 				CAT_SIZE,
 				2 * CAT_SIZE,
 				2 * CAT_SIZE,
-				1f,
-				1f,
+				scale,
+				scale,
 				body.getAngle() * MathUtils.radDeg
 				);
 		GameProcess.gameBatch.disableBlending();
@@ -67,7 +85,6 @@ public class Cat extends ChargedParticle {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
-		pointLight.setPosition(interpX(), interpY());
 	}
 
 	public void setSlingshot(float x, float y) {
@@ -84,6 +101,7 @@ public class Cat extends ChargedParticle {
 		savePosition();
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
+		playingFinishAnim = false;
 	}
 	
 	public void drawStartVelocityArrow() {
@@ -123,17 +141,18 @@ public class Cat extends ChargedParticle {
 		currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
 	}
 
-	@Override
-	public void collidedWithStructure() {
-		LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
-	}
-
 	public float interpX() {
 		return (1 - interpCoeff) * prevX + interpCoeff * getX();
 	}
 
 	public float interpY() {
 		return (1 - interpCoeff) * prevY + interpCoeff * getY();
+	}
+
+	@Override
+	public void collidedWithTrampoline() {
+		LaplacityAssets.playSound(LaplacityAssets.trampolineSound);
+		currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
 	}
 
 	/**
@@ -147,4 +166,19 @@ public class Cat extends ChargedParticle {
 		prevY = getY();
 	}
 
+	public Vector2 getVelocity() {
+		return body.getLinearVelocity();
+	}
+
+	public void playFinishAnimation(float finX, float finY) {
+		finishX = finX;
+		finishY = finY;
+		playingFinishAnim = true;
+	}
+
+	public void setAnimationCoef(float animationCoef) {
+		this.animationCoef = animationCoef;
+	}
+	
+	
 }

@@ -87,6 +87,10 @@ public class FlimsyStructure extends FieldStructure {
 		
 		if (durability == 0) {
 			justBroken = true;
+			
+			LaplacityAssets.playSound(LaplacityAssets.glassBreakingSound);
+		} else {
+			LaplacityAssets.playSound(LaplacityAssets.glassBumpSound);
 		}
 	}
 

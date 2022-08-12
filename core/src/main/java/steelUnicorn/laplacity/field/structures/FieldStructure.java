@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.field.structures;
 
 import com.badlogic.gdx.graphics.Pixmap;
 
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.CollisionListener;
 import steelUnicorn.laplacity.field.physics.IntRect;
@@ -192,6 +193,7 @@ public class FieldStructure implements CollisionListener {
 
 	@Override
 	public void collidedWithMainParticle() {
+		LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
 	}
 
 	@Override
@@ -222,5 +224,14 @@ public class FieldStructure implements CollisionListener {
 	}
 
 	public void savePosition() {
+	}
+
+	@Override
+	public boolean isTrampoline() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithTrampoline() {
 	}
 }
