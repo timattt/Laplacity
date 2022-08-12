@@ -279,7 +279,6 @@ public class LaplacityField extends Group {
 			TMP1.sub(pt.getX(), pt.getY());
 			if (TMP1.len2() < r * r) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
-				// TODO очень не нравится вызывать звук отсюда
 				deleteStaticParticle(pt);
 				k--;
 			}

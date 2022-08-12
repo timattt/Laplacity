@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.BackgroundRenderer;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
@@ -465,7 +466,7 @@ public class GameProcess {
 	
 	public static void collectStar() {
 		currentlyStarsCollected++;
-		// TODO PLAY STAR SOUND HERE
+		LaplacityAssets.playSound(LaplacityAssets.starSound);
 	}
 	
 	public static void levelFinished() {
