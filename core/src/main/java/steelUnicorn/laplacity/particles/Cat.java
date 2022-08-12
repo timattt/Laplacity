@@ -42,8 +42,7 @@ public class Cat extends ChargedParticle {
 	
 	public Cat() {
 		super(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
-		pointLight.setStaticLight(false);
-		pointLight.setDistance(CAT_LIGHT_DISTANCE);
+		deletePointLight(pointLight);
 		prevX = LaplacityField.electronStartPos.x;
 		prevY = LaplacityField.electronStartPos.y;
 		getBody().setBullet(true);
@@ -86,7 +85,6 @@ public class Cat extends ChargedParticle {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
 		}
-		pointLight.setPosition(interpX(), interpY());
 	}
 
 	public void setSlingshot(float x, float y) {

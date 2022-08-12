@@ -232,9 +232,6 @@ public class GameProcess {
 				TrajectoryRenderer.updateTrajectory();
 			}
 		}
-		for (PointLight pl : lights) {
-			pl.update();
-		}
 		//---------------------------------------------
 		
 		gameBatch.setProjectionMatrix(CameraManager.camMat());
