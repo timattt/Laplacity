@@ -236,8 +236,11 @@ public class LaplacityAssets {
         while (index == currentTrack)
             index = trackRandomizer.nextInt(levelTracks.length);
         currentTrack = index;
-        changeTrack("music/levels/" + levelTracks[currentTrack].name());
-        loopTrackWithIntro(levelTracks[currentTrack].name());
+		if (levelTracks[currentTrack].name().charAt(0) == 'a') {
+        	changeTrack("music/levels/" + levelTracks[currentTrack].name());
+		} else {
+        	loopTrackWithIntro(levelTracks[currentTrack].name());
+		}
     }
 
     // передавать просто name без префикса
