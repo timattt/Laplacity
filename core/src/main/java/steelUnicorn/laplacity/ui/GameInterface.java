@@ -93,13 +93,12 @@ public class GameInterface extends Stage implements GestureListener {
 				updateCurMode();
 				returnDialog.show(GameInterface.this);
 			}
-		})).expand().top().left().uniform().size(iconSize).pad(iconSpace);
+		})).expand().top().left().uniform().size(iconSize).pad(2 * iconSpace);
 
 		//cat interface
 		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), SKIN);
 		root.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
-		catFI.setBackground(SKIN.newDrawable("white", Color.valueOf("120A39FF")));
 
 		//Icons Table
 		guiTable = new Table();

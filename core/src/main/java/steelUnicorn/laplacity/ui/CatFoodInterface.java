@@ -1,12 +1,14 @@
 package steelUnicorn.laplacity.ui;
 
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Timer;
 
@@ -26,8 +28,6 @@ public class CatFoodInterface extends Table {
     private Label timerLabel;
 
     private float padSize = 10;
-    private float tableWidth = Globals.UI_WORLD_WIDTH * 0.1f;
-    private float tableHeight = Globals.UI_WORLD_HEIGHT * 0.05f;
 
     private static float scale = 3;
     private static Label hungryMsg;
@@ -35,13 +35,13 @@ public class CatFoodInterface extends Table {
 
     public CatFoodInterface(int launches, Skin skin) {
         //Interface creation
-        defaults().pad(padSize).size(tableWidth / 2, tableHeight);
+        defaults().pad(padSize);
 
         text = new Label("Food: " + launches, skin);
         text.setColor(Color.WHITE);
         add(text);
 
-        TextButton btn = new TextButton(" + 5", skin);
+        Button btn = new Button(TEXSKIN.get("interstitial", Button.ButtonStyle.class));
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -50,7 +50,7 @@ public class CatFoodInterface extends Table {
         });
         add(btn);
 
-        btn = new TextButton(" + 10", skin);
+        btn = new Button(TEXSKIN.get("rewarded", Button.ButtonStyle.class));
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
