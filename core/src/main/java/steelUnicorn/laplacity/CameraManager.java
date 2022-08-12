@@ -49,7 +49,9 @@ public class CameraManager {
 	
 	public static void setToMainParticle() {
 		camera.zoom = MAX_ZOOM;
-		setPosition(GameProcess.cat.getX(), GameProcess.cat.getY());
+		targetX = GameProcess.cat.getX();
+		targetY = GameProcess.cat.getY();
+		setPosition(targetX, targetY);
 	}
 	
 	public static void setMoving(float x, float y) {
