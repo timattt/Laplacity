@@ -143,11 +143,6 @@ public class Cat extends ChargedParticle {
 		currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
 	}
 
-	@Override
-	public void collidedWithStructure() {
-		LaplacityAssets.playSound(LaplacityAssets.bumpStructureSound);
-	}
-
 	public float interpX() {
 		return (1 - interpCoeff) * prevX + interpCoeff * getX();
 	}
@@ -158,7 +153,8 @@ public class Cat extends ChargedParticle {
 
 	@Override
 	public void collidedWithTrampoline() {
-		// TODO TRAMPOLINE SOUND HERE
+		LaplacityAssets.playSound(LaplacityAssets.trampolineSound);
+		currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
 	}
 
 	/**

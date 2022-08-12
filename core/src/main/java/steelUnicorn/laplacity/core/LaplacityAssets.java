@@ -40,6 +40,10 @@ public class LaplacityAssets {
 	public static Sound popupSound;
 	public static Sound annihilationSound;
 	public static Sound spraySound;
+	public static Sound trampolineSound;
+	public static Sound glassBreakingSound;
+	public static Sound glassBumpSound;
+	public static Sound starSound;
 
 	// TILES
 	public static Texture BARRIER_TEXTURE;
@@ -109,6 +113,10 @@ public class LaplacityAssets {
         popupSound = Globals.assetManager.get("sounds/popup.wav");
         annihilationSound = Globals.assetManager.get("sounds/annihilation.wav");
         spraySound = Globals.assetManager.get("sounds/spray.wav");
+		trampolineSound = Globals.assetManager.get("sounds/trampoline.wav");
+		glassBreakingSound = Globals.assetManager.get("sounds/glass_break.wav");
+		glassBumpSound = Globals.assetManager.get("sounds/bump_glass.wav");
+		starSound = Globals.assetManager.get("sounds/star.wav");
         
         // TILES
         TRAMPOLINE_TEXTURE = Globals.assetManager.get("textures/tiles/trampoline.png");
