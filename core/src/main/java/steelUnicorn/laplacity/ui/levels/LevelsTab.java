@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -102,9 +103,10 @@ public class LevelsTab extends MainMenuTab {
             });
             add(leftArrow).size(arrowSize);
 
-            sectionName = new Label("Section " + LevelsTab.this.currentSection, skin);
+            sectionName = new Label("Section " + LevelsTab.this.currentSection, TEXSKIN);
             sectionName.setColor(Color.WHITE);
-            add(sectionName);
+            sectionName.setAlignment(Align.center);
+            add(sectionName).width(sectionName.getPrefWidth() + 50);
 
             rightArrow = new ImageButton(TEXSKIN.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {

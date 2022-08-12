@@ -69,7 +69,7 @@ public class MainMenu extends Stage {
         addActor(fpsCounter);
 
         //CatFood
-        catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), SKIN);
+        catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), TEXSKIN);
         catFI.setPosition(this.getWidth() / 2, this.getHeight() - catFI.getPrefHeight() / 2);
         addActor(catFI);
         catFood.timer.setCurrentInterface(catFI);

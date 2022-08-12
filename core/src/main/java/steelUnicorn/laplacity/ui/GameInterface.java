@@ -96,7 +96,7 @@ public class GameInterface extends Stage implements GestureListener {
 		})).expand().top().left().uniform().size(iconSize).pad(2 * iconSpace);
 
 		//cat interface
-		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), SKIN);
+		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), TEXSKIN);
 		root.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
 

@@ -1,6 +1,6 @@
 package steelUnicorn.laplacity.ui;
 
-import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.core.Globals;
@@ -39,9 +40,10 @@ public class CatFoodInterface extends Table {
 
         text = new Label("Food: " + launches, skin);
         text.setColor(Color.WHITE);
-        add(text);
+        text.setAlignment(Align.center);
+        add(text).width(text.getPrefWidth() + 50);
 
-        Button btn = new Button(TEXSKIN.get("interstitial", Button.ButtonStyle.class));
+        Button btn = new Button(skin.get("interstitial", Button.ButtonStyle.class));
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -50,7 +52,7 @@ public class CatFoodInterface extends Table {
         });
         add(btn);
 
-        btn = new Button(TEXSKIN.get("rewarded", Button.ButtonStyle.class));
+        btn = new Button(skin.get("rewarded", Button.ButtonStyle.class));
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -62,10 +64,12 @@ public class CatFoodInterface extends Table {
         timerLabel = new Label("5:00", skin);
         timerLabel.setColor(Color.WHITE);
         timerLabel.setVisible(false);
-        add(timerLabel);
+        timerLabel.setAlignment(Align.center);
+        add(timerLabel).width(timerLabel.getPrefWidth() + 50);
+
         //hungryMsg init
         if (hungryMsg == null) {
-            createHungry(skin);
+            createHungry(SKIN);
         }
     }
 
