@@ -4,7 +4,7 @@ import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
-import static steelUnicorn.laplacity.core.LaplacityAssets.ICONS;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -45,7 +44,7 @@ public class LevelsTab extends MainMenuTab {
         super();
         currentSection = 1;
 
-        addReturnButton(skin, new ChangeListener() {
+        addReturnButton(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -87,14 +86,11 @@ public class LevelsTab extends MainMenuTab {
         private ImageButton rightArrow;
 
         private float navPad = UI_WORLD_HEIGHT * 0.08f;
-        private float arrowSize = UI_WORLD_WIDTH * 0.04f;
+        private float arrowSize = UI_WORLD_WIDTH * 0.06f;
 
         public LevelsNav(Skin skin) {
             defaults().space(LevelsTab.tabSpace);
-            ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
-                    skin.get(ImageButton.ImageButtonStyle.class));
-            style.imageUp = new TextureRegionDrawable(ICONS.findRegion("arrowleft"));
-            leftArrow = new ImageButton(style);
+            leftArrow = new ImageButton(TEXSKIN.get("leftarrow", ImageButton.ImageButtonStyle.class));
             leftArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -110,10 +106,7 @@ public class LevelsTab extends MainMenuTab {
             sectionName.setColor(Color.WHITE);
             add(sectionName);
 
-            style = new ImageButton.ImageButtonStyle(
-                    skin.get(ImageButton.ImageButtonStyle.class));
-            style.imageUp = new TextureRegionDrawable(ICONS.findRegion("arrowright"));
-            rightArrow = new ImageButton(style);
+            rightArrow = new ImageButton(TEXSKIN.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {

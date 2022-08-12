@@ -17,7 +17,7 @@ public class CreditsTab extends MainMenuTab {
     public CreditsTab(Skin skin) {
         super();
 
-        addReturnButton(skin, new ChangeListener() {
+        addReturnButton(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);

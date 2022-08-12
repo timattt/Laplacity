@@ -1,16 +1,15 @@
 package steelUnicorn.laplacity.ui.mainmenu.tabs;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-
-import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 
 /**
  * Класс родитель вкладок в главном меню.
@@ -34,9 +33,9 @@ public class MainMenuTab  extends Table {
         add(description).space(tabSpace);
     }
 
-    protected Cell<TextButton> addReturnButton(Skin skin, ChangeListener listener) {
-        TextButton btn = new TextButton("Menu", skin);
+    protected Cell<Button> addReturnButton(ChangeListener listener) {
+        Button btn = new Button(TEXSKIN.get("BackMenuBtn", Button.ButtonStyle.class));
         btn.addListener(listener);
-        return add(btn).size(MainMenu.menuWidth, MainMenu.menuHeight);
+        return add(btn);
     }
 }

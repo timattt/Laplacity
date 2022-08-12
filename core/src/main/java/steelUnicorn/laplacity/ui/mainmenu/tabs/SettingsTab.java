@@ -31,7 +31,7 @@ public class SettingsTab extends MainMenuTab {
     public SettingsTab(Skin skin) {
         super();
 
-        addReturnButton(skin, new ChangeListener() {
+        addReturnButton(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
