@@ -46,7 +46,7 @@ public class LevelsScreen extends ManagedScreen {
 
         levelsTab = new LevelsTab(SKIN);
 
-        root.add(levelsTab).growY().top().padTop(MainMenu.menuTopPad);
+        root.add(levelsTab).growY().padTop(MainMenu.menuTopPad);
     }
 
     @Override

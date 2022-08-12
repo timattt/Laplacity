@@ -38,7 +38,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private CatFoodInterface catFI;
-	private static final float iconSize = UI_WORLD_WIDTH * 0.07f;
+	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
 	private static final float iconSpace = iconSize * 0.08f;
 
 	Cell<Button> flightCell;
@@ -93,12 +93,13 @@ public class GameInterface extends Stage implements GestureListener {
 				updateCurMode();
 				returnDialog.show(GameInterface.this);
 			}
-		})).expand().top().left().uniform().size(iconSize).pad(2 * iconSpace);
+		})).expand().top().left().uniform().size(iconSize).pad(iconSpace);
 
 		//cat interface
 		catFI = new CatFoodInterface(TEXSKIN);
 		root.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
+		visibleActors.add(catFI);
 
 		//Icons Table
 		guiTable = new Table();
@@ -106,7 +107,7 @@ public class GameInterface extends Stage implements GestureListener {
 		guiTable.defaults()
 				.width(iconSize)
 				.height(iconSize)
-				.pad(iconSpace);
+				.space(iconSpace);
 
 		guiTable.add(createModeIcon("Protons", GameMode.PROTONS, LaplacityAssets.genStartSound)).top();
 		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound)).top();
@@ -134,8 +135,7 @@ public class GameInterface extends Stage implements GestureListener {
 		guiTable.add(vertical).colspan(3).right().growY();
 
 		vertical.defaults()
-				.size(iconSize)
-				.pad(iconSpace);
+				.size(iconSize);
 
 		vertical.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
 		vertical.row();

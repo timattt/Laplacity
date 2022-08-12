@@ -36,7 +36,7 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 public class MainMenu extends Stage {
 
     public static final float menuTopPad = UI_WORLD_HEIGHT * 0.28f; // << menu button height ratio
-    public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.06f; // << space between elements
+    public static final float menuLeftSpace = UI_WORLD_HEIGHT * 0.06f; // << space between elements
     public static final float iconSize = UI_WORLD_HEIGHT * 0.15f;
 
     private SettingsTab settingsTab;
@@ -62,10 +62,6 @@ public class MainMenu extends Stage {
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
         addActor(background);
 
-        //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(SKIN);
-        addActor(fpsCounter);
-
         //MainMenu
         Table root = new Table();
         root.setFillParent(true);
@@ -75,6 +71,10 @@ public class MainMenu extends Stage {
         creditsTab = new CreditsTab(SKIN);
 
         createMainMenu(root, SKIN);
+
+        //fpsCounter
+        FpsCounter fpsCounter = new FpsCounter(SKIN);
+        addActor(fpsCounter);
     }
 
     //Функция вызывается при открытии главного меню, чтобы обновить параметры!
@@ -91,7 +91,37 @@ public class MainMenu extends Stage {
     @SuppressWarnings("unchecked")
 	private void createMainMenu(Table root, Skin skin) {
         mainMenu = new Table();
-        mainCell = root.add(mainMenu).expandY().top().padTop(menuTopPad);
+        mainCell = root.add(mainMenu).grow();
+        //left icons
+        Table icons = new Table();
+        mainMenu.add(icons).expand().fillY()
+                .left().padLeft(menuLeftSpace).uniform();
+        //options
+        ImageButton icon = new ImageButton(TEXSKIN.get("credits", ImageButton.ImageButtonStyle.class));
+        icon.setName("credits");
+        icon.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                mainCell.setActor(creditsTab);
+                mainCell.fill(false).top().padTop(MainMenu.menuTopPad);
+            }
+        });
+        icons.add(icon).top().expandY().size(iconSize);
+        //credits
+        icons.row();
+        icon = new ImageButton(TEXSKIN.get("settings", ImageButton.ImageButtonStyle.class));
+        icon.setName("settings");
+        icon.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                mainCell.setActor(settingsTab.settingsPane);
+                mainCell.fill(false).top().padTop(MainMenu.menuTopPad);
+            }
+        });
+
+        icons.add(icon).expandY().bottom().size(iconSize);
 
         //play
         Button btn = new Button(TEXSKIN.get("PlayBtn", Button.ButtonStyle.class));
@@ -103,37 +133,14 @@ public class MainMenu extends Stage {
                 game.getScreenManager().pushScreen(nameLevelsScreen, nameSlideOut);
             }
         });
-        mainMenu.add(btn);
+        mainMenu.add(btn).expand().uniform();
 
-        mainMenu.row();
-        Table icons = new Table();
-        mainMenu.add(icons).growX().spaceTop(menuSpaceSize);
-        //options
-        ImageButton icon = new ImageButton(TEXSKIN.get("settings", ImageButton.ImageButtonStyle.class));
-        icon.setName("settings");
-        icon.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                mainCell.setActor(settingsTab.settingsPane);
-            }
-        });
-        icons.add(icon).expandX().size(iconSize);
-        //credits
-        icon = new ImageButton(TEXSKIN.get("credits", ImageButton.ImageButtonStyle.class));
-        icon.setName("credits");
-        icon.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                mainCell.setActor(creditsTab);
-            }
-        });
-        icons.add(icon).expandX().size(iconSize);
+        mainMenu.add().expand().uniform();
     }
 
     public void returnMainMenu() {
         mainCell.setActor(mainMenu);
+        mainCell.fill().center().padTop(0);
     }
 
     public void resizeBackground() {

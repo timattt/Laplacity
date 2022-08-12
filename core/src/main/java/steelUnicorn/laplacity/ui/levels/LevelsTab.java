@@ -96,25 +96,26 @@ public class LevelsTab extends MainMenuTab {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LevelsTab.this.currentSection--;
-                    sectionName.setText("Section " + LevelsTab.this.currentSection);
+                    updateSectionName();
                     LevelsTab.this.updateSection();
                     checkVisible();
                 }
             });
             add(leftArrow).size(arrowSize);
 
-            sectionName = new Label("Section " + LevelsTab.this.currentSection, TEXSKIN);
+            sectionName = new Label("Section 00" + LevelsTab.this.currentSection, TEXSKIN);
             sectionName.setColor(Color.WHITE);
             sectionName.setAlignment(Align.center);
-            add(sectionName);
+            add(sectionName).size(sectionName.getPrefWidth(), sectionName.getPrefHeight());
+            updateSectionName();
 
             rightArrow = new ImageButton(TEXSKIN.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LevelsTab.this.currentSection++;
-                    sectionName.setText("Section " + LevelsTab.this.currentSection);
                     LevelsTab.this.updateSection();
+                    updateSectionName();
                     checkVisible();
                 }
             });
@@ -135,6 +136,10 @@ public class LevelsTab extends MainMenuTab {
             } else {
                 rightArrow.setVisible(true);
             }
+        }
+
+        private void updateSectionName() {
+            sectionName.setText("Section " + LevelsTab.this.currentSection);
         }
     }
 }
