@@ -27,7 +27,7 @@ public class FieldCalculator {
 	private static float[] tmpBuffer;
 
 	// Параметры текущей сессии вычислений
-	private static boolean isCalculating = false;
+	private static boolean calculating = false;
 	private static int iterationsSpent = 0;
 	private static int fWidth = 0;
 	private static int fHeight = 0;
@@ -196,7 +196,7 @@ public class FieldCalculator {
 		for (int i = 0; i < fWidth; i++)
 			for (int j = 0; j < fHeight; j++)
 				densityVector[k++] = -tiles[i][j].getTotalChargeDensity();
-		isCalculating = true;
+		calculating = true;
 	}
 
 	public static void resetPotential() {
@@ -205,7 +205,7 @@ public class FieldCalculator {
 	}
 
 	public static void iterate() {
-		if (isCalculating == false) {
+		if (calculating == false) {
 			return;
 		}
 		for (int k = 0; k < ITER_PER_FRAME; k++) {
@@ -223,7 +223,7 @@ public class FieldCalculator {
 			}
 			// Проверим, насколько близок к нулю знаменатель
 			if (Math.abs(tmpDotResiduals) < PRECISION) {// Если невязка тоже небольшая, то скорее всего мы уже решили задачу
-				isCalculating = false;
+				calculating = false;
 				break;
 			}
 			float descendStepValue = residualsDotResiduals / tmpDotResiduals;
@@ -237,13 +237,13 @@ public class FieldCalculator {
 				potentialVector[i] = nextIterOfResult;
 			}
 			if (maxDifference < PRECISION) {
-				isCalculating = false;
+				calculating = false;
 				break;
 			}
 		}
 		iterationsSpent += ITER_PER_FRAME;
 		if (iterationsSpent > MAX_ITER_COUNT) {
-			isCalculating = false;
+			calculating = false;
 		}
 		int k = 0;
 		for (int i = 0; i < fWidth; i++)
@@ -294,8 +294,12 @@ public class FieldCalculator {
 	}
 
 	public static void finishCalculation() {
-		while (isCalculating) {
+		while (calculating) {
 			iterate();
 		}
+	}
+
+	public static boolean isCalculating() {
+		return calculating;
 	}
 }

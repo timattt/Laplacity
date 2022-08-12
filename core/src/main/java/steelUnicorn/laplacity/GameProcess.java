@@ -226,8 +226,10 @@ public class GameProcess {
 			CameraManager.update(frameTime);
 		} else {
 			CameraManager.update(delta);
-			FieldCalculator.iterate();
-			TrajectoryRenderer.updateTrajectory();
+			if (FieldCalculator.isCalculating()) {
+				FieldCalculator.iterate();
+				TrajectoryRenderer.updateTrajectory();
+			}
 		}
 		for (PointLight pl : lights) {
 			pl.update();
