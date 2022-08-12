@@ -13,11 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 import steelUnicorn.laplacity.ui.FpsCounter;
@@ -37,8 +35,7 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
  */
 public class MainMenu extends Stage {
 
-    public static final float menuWidth = UI_WORLD_WIDTH * 0.2f;	// << menu button width ratio
-    public static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
+    public static final float menuTopPad = UI_WORLD_HEIGHT * 0.28f; // << menu button height ratio
     public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.06f; // << space between elements
     public static final float iconSize = UI_WORLD_HEIGHT * 0.15f;
 
@@ -104,7 +101,7 @@ public class MainMenu extends Stage {
     @SuppressWarnings("unchecked")
 	private void createMainMenu(Table root, Skin skin) {
         mainMenu = new Table();
-        mainCell = root.add(mainMenu);
+        mainCell = root.add(mainMenu).expandY().top().padTop(menuTopPad);
 
         //play
         Button btn = new Button(TEXSKIN.get("PlayBtn", Button.ButtonStyle.class));

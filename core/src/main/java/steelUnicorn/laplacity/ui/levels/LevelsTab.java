@@ -60,7 +60,7 @@ public class LevelsTab extends MainMenuTab {
 
         row();
         nav = new LevelsNav(skin);
-        add(nav).pad(nav.navPad);
+        add(nav).expandY().bottom().padTop(nav.navPad).padBottom(nav.navPad);
     }
 
     private Cell<LevelSection> addSections(Skin skin) {
@@ -85,7 +85,7 @@ public class LevelsTab extends MainMenuTab {
         private ImageButton leftArrow;
         private ImageButton rightArrow;
 
-        private float navPad = UI_WORLD_HEIGHT * 0.08f;
+        private float navPad = UI_WORLD_HEIGHT * 0.06f;
         private float arrowSize = UI_WORLD_WIDTH * 0.06f;
 
         public LevelsNav(Skin skin) {

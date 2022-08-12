@@ -19,9 +19,9 @@ import steelUnicorn.laplacity.utils.LevelsParser;
  * Используется в классе LevelsTab для отображения уровней для выбора
  */
 public class LevelSection extends Table {
-    private static final float lvlBtnSize = UI_WORLD_WIDTH * 0.04f;
+    public static final float lvlBtnSize = UI_WORLD_WIDTH * 0.04f;
     private static final int levelsRow = 4;
-    private static float tabSpace = UI_WORLD_HEIGHT * 0.03f;
+    public static float tabSpace = UI_WORLD_HEIGHT * 0.03f;
 
     private final int sectionNumber;  //section number greater than pathsSize by 1
     public LevelSection(int sectionNumber, Skin skin) {
