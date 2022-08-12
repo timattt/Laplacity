@@ -179,7 +179,7 @@ public class MovingWallStructure extends FieldStructure {
 	@Override
 	public void register() {
 		BodyDef bodydef = new BodyDef();
-		bodydef.type = BodyType.StaticBody;
+		bodydef.type = BodyType.KinematicBody;
 		
 		if (isHorizontal) {
 			bodydef.position.set(currentCoord, staticCoord);
@@ -205,14 +205,11 @@ public class MovingWallStructure extends FieldStructure {
 
 	@Override
 	public void updatePhysics(float timeFromStart) {
-		float phi = (float) Math.sin(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
-		
+		float psi = (float) Math.cos(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
 		if (isHorizontal) {
-			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
-			body.setTransform(currentCoord, staticCoord, 0);
+			body.setLinearVelocity(psi * (endCoord - startCoord - blockWidth) / 2f, 0f);
 		} else {
-			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
-			body.setTransform(staticCoord, currentCoord, 0);
+			body.setLinearVelocity(0f, psi * (endCoord - startCoord - blockWidth) / 2f);
 		}
 	}
 
