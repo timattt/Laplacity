@@ -2,6 +2,8 @@ package steelUnicorn.laplacity.android;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+
+import barsoosayque.libgdxoboe.OboeAudio;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.utils.AdHandler;
 import android.app.Dialog;
@@ -165,7 +167,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 	@Override
 	public AndroidAudio createAudio(Context context, AndroidApplicationConfiguration config) {
-		return  new AsynchronousAndroidAudio(context, config);
+		return  new OboeAudio(context.getAssets());
 	}
 
 }
