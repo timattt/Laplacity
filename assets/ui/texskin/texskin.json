@@ -1,49 +1,88 @@
 {
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	MortendBold: {
+		file: MortendBold.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	textcolor: {
+		r: 0.59607846
+		g: 0.5568628
+		b: 0.76862746
+		a: 1
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
-	play: {
-		up: play
-		down: play2
+	PlayBtn: {
+		up: play_btn
+		down: play_btn_pressed
+	}
+	BackMenuBtn: {
+		up: back_to_menu
+		down: back_to_menu_pressed
+	}
+	interstitial: {
+		up: inters
+		down: inters_pressed
+	}
+	rewarded: {
+		up: rewarded
+		down: rewarded_pressed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-	Clear: {
-		imageUp: clean
-		imageDown: clean2
+	Menu: {
+		imageUp: home
+		imageDown: home_pressed
 	}
 	Protons: {
 		imageUp: proton
-		imageDown: proton2
+		imageDown: proton_pressed
 	}
 	Electrons: {
 		imageUp: electron
-		imageDown: electron2
+		imageDown: electron_pressed
 	}
 	Flight: {
-		imageUp: playicon
-		imageDown: playicon2
+		imageUp: play
+		imageDown: play_pressed
 	}
-	Pause: {
-		imageUp: stopicon
-	},
+	Eraser: {
+		imageUp: eraser
+		imageDown: eraser_pressed
+	}
 	Dirichlet: {
-		imageUp: dirichlet
-		imageDown: dirichlet2
+		imageUp: spray
+		imageDown: spray_pressed
+	}
+	Clear: {
+		imageUp: clear_pressed
+		imageDown: clear
 	}
 	settings: {
 		imageUp: settings
-		imageDown: settings2
+		imageDown: settings_pressed
 	}
 	credits: {
 		imageUp: credits
-		imageDown: credits2
+		imageDown: credits_pressed
 	}
-	Eraser: {
-		imageUp: erase
-		imageDown: erase2
+	leftarrow: {
+		imageUp: leftarrow
+		imageDown: leftarrow_pressed
 	}
-	Menu: {
-		imageUp: menu
-		imageDown: menu2
+	rightarrow: {
+		imageUp: rightarrow
+		imageDown: rightarrow_pressed
+	}
+	Pause: {
+		imageUp: stopicon
 	}
 }
 }

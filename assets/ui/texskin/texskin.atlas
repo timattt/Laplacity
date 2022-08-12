@@ -4,220 +4,297 @@ size: 2048, 2048
 format: RGBA8888
 filter: Linear, Linear
 repeat: none
-clean
+stopicon
   rotate: false
-  xy: 245, 1154
-  size: 230, 229
-  orig: 230, 229
-  offset: 0, 0
-  index: -1
-clean2
-  rotate: false
-  xy: 1, 1
+  xy: 617, 1683
   size: 176, 175
   orig: 176, 175
+  offset: 0, 0
+  index: -1
+back_to_menu
+  rotate: false
+  xy: 1, 1860
+  size: 614, 179
+  orig: 614, 179
+  offset: 0, 0
+  index: -1
+back_to_menu_pressed
+  rotate: false
+  xy: 1, 1679
+  size: 614, 179
+  orig: 614, 179
+  offset: 0, 0
+  index: -1
+clear
+  rotate: false
+  xy: 795, 1709
+  size: 150, 149
+  orig: 150, 149
+  offset: 0, 0
+  index: -1
+clear_pressed
+  rotate: false
+  xy: 1845, 1752
+  size: 140, 139
+  orig: 140, 139
   offset: 0, 0
   index: -1
 credits
   rotate: false
-  xy: 639, 1316
+  xy: 1699, 1744
   size: 144, 144
   orig: 144, 144
   offset: 0, 0
   index: -1
-credits2
+credits_pressed
   rotate: false
-  xy: 1746, 1855
-  size: 190, 190
-  orig: 190, 190
-  offset: 0, 0
-  index: -1
-dirichlet
-  rotate: false
-  xy: 1, 629
-  size: 230, 218
-  orig: 230, 218
-  offset: 0, 0
-  index: -1
-dirichlet2
-  rotate: false
-  xy: 601, 1639
-  size: 176, 175
-  orig: 176, 175
+  xy: 1, 1369
+  size: 152, 152
+  orig: 152, 152
   offset: 0, 0
   index: -1
 electron
   rotate: false
-  xy: 1, 398
-  size: 230, 229
-  orig: 230, 229
+  xy: 509, 1538
+  size: 140, 139
+  orig: 140, 139
   offset: 0, 0
   index: -1
-electron2
+electron_pressed
   rotate: false
-  xy: 779, 1639
-  size: 176, 175
-  orig: 176, 175
+  xy: 1375, 1890
+  size: 150, 149
+  orig: 150, 149
   offset: 0, 0
   index: -1
-erase
+eraser
   rotate: false
-  xy: 1097, 1816
-  size: 230, 229
-  orig: 230, 229
+  xy: 651, 1542
+  size: 140, 139
+  orig: 140, 139
   offset: 0, 0
   index: -1
-erase2
+eraser_pressed
   rotate: false
-  xy: 1023, 1462
-  size: 176, 175
-  orig: 176, 175
+  xy: 1, 1218
+  size: 150, 149
+  orig: 150, 149
   offset: 0, 0
   index: -1
-menu
+home
   rotate: false
-  xy: 1, 178
-  size: 230, 218
-  orig: 230, 218
+  xy: 459, 1382
+  size: 140, 139
+  orig: 140, 139
   offset: 0, 0
   index: -1
-menu2
+home_pressed
   rotate: false
-  xy: 489, 1462
-  size: 176, 175
-  orig: 176, 175
+  xy: 155, 1372
+  size: 150, 149
+  orig: 150, 149
+  offset: 0, 0
+  index: -1
+inters
+  rotate: false
+  xy: 1699, 1656
+  size: 127, 86
+  orig: 127, 86
+  offset: 0, 0
+  index: -1
+inters_pressed
+  rotate: false
+  xy: 1064, 1463
+  size: 117, 78
+  orig: 117, 78
+  offset: 0, 0
+  index: -1
+leftarrow
+  rotate: false
+  xy: 935, 1568
+  size: 140, 139
+  orig: 140, 139
+  offset: 0, 0
+  index: -1
+leftarrow_pressed
+  rotate: false
+  xy: 307, 1372
+  size: 150, 149
+  orig: 150, 149
   offset: 0, 0
   index: -1
 play
   rotate: false
-  xy: 1, 1653
+  xy: 601, 1397
+  size: 140, 139
+  orig: 140, 139
+  offset: 0, 0
+  index: -1
+play_btn
+  rotate: false
+  xy: 617, 1860
   size: 598, 179
   orig: 598, 179
   offset: 0, 0
   index: -1
-play2
+play_btn_pressed
   rotate: false
-  xy: 1, 1834
-  size: 630, 211
-  orig: 630, 211
+  xy: 617, 1860
+  size: 598, 179
+  orig: 598, 179
   offset: 0, 0
   index: -1
-playicon
+play_pressed
   rotate: false
-  xy: 633, 1816
-  size: 230, 229
-  orig: 230, 229
-  offset: 0, 0
-  index: -1
-playicon2
-  rotate: false
-  xy: 667, 1462
-  size: 176, 175
-  orig: 176, 175
+  xy: 947, 1709
+  size: 150, 149
+  orig: 150, 149
   offset: 0, 0
   index: -1
 proton
   rotate: false
-  xy: 1329, 1816
-  size: 219, 229
-  orig: 219, 229
+  xy: 743, 1401
+  size: 140, 139
+  orig: 140, 139
   offset: 0, 0
   index: -1
-proton2
+proton_pressed
   rotate: false
-  xy: 845, 1462
-  size: 176, 175
-  orig: 176, 175
+  xy: 1527, 1890
+  size: 150, 149
+  orig: 150, 149
+  offset: 0, 0
+  index: -1
+rewarded
+  rotate: false
+  xy: 935, 1480
+  size: 127, 86
+  orig: 127, 86
+  offset: 0, 0
+  index: -1
+rewarded_pressed
+  rotate: false
+  xy: 885, 1400
+  size: 117, 78
+  orig: 117, 78
+  offset: 0, 0
+  index: -1
+rightarrow
+  rotate: false
+  xy: 1077, 1543
+  size: 140, 139
+  orig: 140, 139
+  offset: 0, 0
+  index: -1
+rightarrow_pressed
+  rotate: false
+  xy: 1679, 1890
+  size: 150, 149
+  orig: 150, 149
   offset: 0, 0
   index: -1
 settings
   rotate: false
-  xy: 489, 1314
+  xy: 1831, 1893
   size: 148, 146
   orig: 148, 146
   offset: 0, 0
   index: -1
-settings2
+settings_pressed
   rotate: false
-  xy: 1550, 1852
-  size: 194, 193
-  orig: 194, 193
+  xy: 1217, 1885
+  size: 156, 154
+  orig: 156, 154
   offset: 0, 0
   index: -1
-square_Dirichlet2
+spray
   rotate: false
-  xy: 1, 1385
-  size: 242, 266
-  orig: 242, 266
+  xy: 793, 1542
+  size: 140, 139
+  orig: 140, 139
+  offset: 0, 0
+  index: -1
+spray_pressed
+  rotate: false
+  xy: 1, 1067
+  size: 150, 149
+  orig: 150, 149
   offset: 0, 0
   index: -1
 square_Dirichlet
   rotate: false
-  xy: 1485, 1618
-  size: 170, 196
-  orig: 170, 196
+  xy: 1099, 1684
+  size: 148, 174
+  orig: 148, 174
   offset: 0, 0
   index: -1
-square_Electrons2
+square_Dirichlet_pressed
   rotate: false
-  xy: 1, 1117
-  size: 242, 266
-  orig: 242, 266
+  xy: 1, 177
+  size: 150, 176
+  orig: 150, 176
   offset: 0, 0
   index: -1
 square_Electrons
   rotate: false
-  xy: 1657, 1654
-  size: 170, 196
-  orig: 170, 196
-  offset: 0, 0
-  index: -1
-square_Eraser2
-  rotate: false
-  xy: 1, 849
-  size: 240, 266
-  orig: 240, 266
+  xy: 1249, 1709
+  size: 148, 174
+  orig: 148, 174
   offset: 0, 0
   index: -1
 square_Eraser
   rotate: false
-  xy: 1829, 1657
-  size: 170, 196
-  orig: 170, 196
-  offset: 0, 0
-  index: -1
-square_Protons2
-  rotate: false
-  xy: 245, 1385
-  size: 242, 266
-  orig: 242, 266
+  xy: 1399, 1714
+  size: 148, 174
+  orig: 148, 174
   offset: 0, 0
   index: -1
 square_Protons
   rotate: false
-  xy: 1313, 1618
-  size: 170, 196
-  orig: 170, 196
+  xy: 1549, 1714
+  size: 148, 174
+  orig: 148, 174
   offset: 0, 0
   index: -1
-starticon
+square_btn
   rotate: false
-  xy: 865, 1827
-  size: 230, 218
-  orig: 230, 218
+  xy: 1, 1
+  size: 148, 174
+  orig: 148, 174
   offset: 0, 0
   index: -1
-starticon2
+square_btn_pressed
   rotate: false
-  xy: 957, 1639
-  size: 176, 175
-  orig: 176, 175
+  xy: 1, 889
+  size: 150, 176
+  orig: 150, 176
   offset: 0, 0
   index: -1
-stopicon
+square_electrons_pressed
   rotate: false
-  xy: 1135, 1639
-  size: 176, 175
-  orig: 176, 175
+  xy: 1, 711
+  size: 150, 176
+  orig: 150, 176
+  offset: 0, 0
+  index: -1
+square_eraser_pressed
+  rotate: false
+  xy: 1, 533
+  size: 150, 176
+  orig: 150, 176
+  offset: 0, 0
+  index: -1
+square_protons_pressed
+  rotate: false
+  xy: 1, 355
+  size: 150, 176
+  orig: 150, 176
+  offset: 0, 0
+  index: -1
+MortendBold
+  rotate: false
+  xy: 1, 1523
+  size: 506, 154
+  orig: 506, 154
   offset: 0, 0
   index: -1
