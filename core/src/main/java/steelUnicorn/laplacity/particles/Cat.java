@@ -40,6 +40,7 @@ public class Cat extends ChargedParticle {
 		pointLight.setDistance(CAT_LIGHT_DISTANCE);
 		prevX = LaplacityField.electronStartPos.x;
 		prevY = LaplacityField.electronStartPos.y;
+		getBody().setBullet(true);
 	}
 
 	@Override
