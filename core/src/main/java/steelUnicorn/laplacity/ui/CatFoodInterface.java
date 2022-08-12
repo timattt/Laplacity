@@ -28,22 +28,22 @@ public class CatFoodInterface extends Table {
     private Label text;
     private Label timerLabel;
 
-    private float padSize = 10;
+    private float padSize = 5;
 
     private static float scale = 3;
     private static Label hungryMsg;
     private static boolean isShown = false;
 
-    public CatFoodInterface(int launches, Skin skin) {
+    public CatFoodInterface(Skin skin) {
         //Interface creation
         defaults().pad(padSize);
 
-        text = new Label("Food: " + launches, skin);
+        text = new Label("Food: 00", skin);
         text.setColor(Color.WHITE);
         text.setAlignment(Align.center);
-        add(text).width(text.getPrefWidth() + 50);
+        add(text).size(text.getPrefWidth(), text.getPrefHeight());
 
-        Button btn = new Button(skin.get("interstitial", Button.ButtonStyle.class));
+        Button btn = new Button(skin.get("interstitial_bug", Button.ButtonStyle.class));
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -52,7 +52,7 @@ public class CatFoodInterface extends Table {
         });
         add(btn);
 
-        btn = new Button(skin.get("rewarded", Button.ButtonStyle.class));
+        btn = new Button(skin.get("rewarded_bug", Button.ButtonStyle.class));
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -61,16 +61,18 @@ public class CatFoodInterface extends Table {
         });
         add(btn);
 
-        timerLabel = new Label("5:00", skin);
+        timerLabel = new Label("00:00", skin);
         timerLabel.setColor(Color.WHITE);
         timerLabel.setVisible(false);
         timerLabel.setAlignment(Align.center);
-        add(timerLabel).width(timerLabel.getPrefWidth() + 50);
+        add(timerLabel).size(timerLabel.getPrefWidth(), timerLabel.getPrefHeight());
 
         //hungryMsg init
         if (hungryMsg == null) {
             createHungry(SKIN);
         }
+
+        update(Globals.catFood.getTotalLaunchesAvailable());
     }
 
     public void update(int launches) {

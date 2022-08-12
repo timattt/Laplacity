@@ -106,7 +106,7 @@ public class LevelsTab extends MainMenuTab {
             sectionName = new Label("Section " + LevelsTab.this.currentSection, TEXSKIN);
             sectionName.setColor(Color.WHITE);
             sectionName.setAlignment(Align.center);
-            add(sectionName).width(sectionName.getPrefWidth() + 50);
+            add(sectionName);
 
             rightArrow = new ImageButton(TEXSKIN.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {

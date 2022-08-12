@@ -27,13 +27,21 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		up: back_to_menu
 		down: back_to_menu_pressed
 	}
-	interstitial: {
-		up: inters
-		down: inters_pressed
+	interstitial_meat: {
+		up: inter1
+		down: inter1_pressed
 	}
-	rewarded: {
-		up: rewarded
-		down: rewarded_pressed
+	rewarded_meat: {
+		up: reward1
+		down: reward1_pressed
+	}
+	interstitial_bug: {
+		up: inter2
+		down: inter2pressed
+	}
+	rewarded_bug: {
+		up: reward2
+		down: reward2pressed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
@@ -82,14 +90,19 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageDown: rightarrow_pressed
 	}
 	Pause: {
-		imageUp: stopicon
+		imageUp: pause
+		imageDown: pause_pressed
+	}
+	Refresh: {
+		imageUp: refresh
+		imageDown: refresh_pressed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
 		font: MortendBold
 		fontColor: textcolor
-		background: test
+		background: label_back_short
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

@@ -38,7 +38,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private CatFoodInterface catFI;
-	private static final float iconSize = UI_WORLD_WIDTH * 0.08f;
+	private static final float iconSize = UI_WORLD_WIDTH * 0.07f;
 	private static final float iconSpace = iconSize * 0.08f;
 
 	Cell<Button> flightCell;
@@ -96,7 +96,7 @@ public class GameInterface extends Stage implements GestureListener {
 		})).expand().top().left().uniform().size(iconSize).pad(2 * iconSpace);
 
 		//cat interface
-		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), TEXSKIN);
+		catFI = new CatFoodInterface(TEXSKIN);
 		root.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
 

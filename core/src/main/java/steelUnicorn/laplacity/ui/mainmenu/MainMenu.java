@@ -42,8 +42,6 @@ public class MainMenu extends Stage {
     private SettingsTab settingsTab;
     private CreditsTab creditsTab;
 
-    private CatFoodInterface catFI;
-
     private Table mainMenu;
     private Cell<Table> mainCell;
 
@@ -68,12 +66,6 @@ public class MainMenu extends Stage {
         FpsCounter fpsCounter = new FpsCounter(SKIN);
         addActor(fpsCounter);
 
-        //CatFood
-        catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), TEXSKIN);
-        catFI.setPosition(this.getWidth() / 2, this.getHeight() - catFI.getPrefHeight() / 2);
-        addActor(catFI);
-        catFood.timer.setCurrentInterface(catFI);
-
         //MainMenu
         Table root = new Table();
         root.setFillParent(true);
@@ -87,8 +79,6 @@ public class MainMenu extends Stage {
 
     //Функция вызывается при открытии главного меню, чтобы обновить параметры!
     public void show() {
-        catFI.update(catFood.getTotalLaunchesAvailable());
-        catFood.timer.setCurrentInterface(catFI);
         mainCell.setActor(mainMenu);
     }
 
