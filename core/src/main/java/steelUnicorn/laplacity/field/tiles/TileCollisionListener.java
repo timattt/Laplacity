@@ -5,9 +5,11 @@ import steelUnicorn.laplacity.field.physics.CollisionListener;
 public class TileCollisionListener implements CollisionListener {
 
 	private boolean isDeadly;
+	private boolean isTrampoline;
 	
 	public TileCollisionListener(int id) {
 		isDeadly = id == 4;
+		isTrampoline = id == 15;
 	}
 
 	@Override
@@ -44,6 +46,15 @@ public class TileCollisionListener implements CollisionListener {
 
 	@Override
 	public void collidedWithTile() {
+	}
+
+	@Override
+	public boolean isTrampoline() {
+		return isTrampoline;
+	}
+
+	@Override
+	public void collidedWithTrampoline() {
 	}
 
 }

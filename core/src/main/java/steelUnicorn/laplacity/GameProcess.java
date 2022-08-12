@@ -465,6 +465,7 @@ public class GameProcess {
 	
 	public static void collectStar() {
 		currentlyStarsCollected++;
+		// TODO PLAY STAR SOUND HERE
 	}
 	
 	public static void levelFinished() {

@@ -139,6 +139,11 @@ public class Cat extends ChargedParticle {
 		return (1 - interpCoeff) * prevY + interpCoeff * getY();
 	}
 
+	@Override
+	public void collidedWithTrampoline() {
+		// TODO TRAMPOLINE SOUND HERE
+	}
+
 	/**
 	 * Сохраняет текущее положение частицы во внутреннюю память частицы
 	 * При прорисовке будет использована интерполяция между записанным

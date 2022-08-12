@@ -19,4 +19,7 @@ public interface CollisionListener {
 	public boolean isTile();
 	public void collidedWithTile();
 	
+	public boolean isTrampoline();
+	public void collidedWithTrampoline();
+	
 }

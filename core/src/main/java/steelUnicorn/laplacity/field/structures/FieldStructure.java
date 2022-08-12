@@ -223,4 +223,13 @@ public class FieldStructure implements CollisionListener {
 
 	public void savePosition() {
 	}
+
+	@Override
+	public boolean isTrampoline() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithTrampoline() {
+	}
 }
