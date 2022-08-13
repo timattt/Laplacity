@@ -73,19 +73,15 @@ public class MovingWallStructure extends FieldStructure {
 		blockWidth = (blockRect.right - blockRect.left + 1) * sz;
 		blockHeight = (blockRect.top - blockRect.bottom + 1) * sz;
 		
-		currentCoord = startCoord;
-		
 		float x = 0;
 		float r = 0;
 		
 		if (isHorizontal) {
-			currentCoord += blockWidth / 2;
 			staticCoord = LaplacityField.tileSize * 0.5f * (blockRect.top + blockRect.bottom + 1);
 			
 			x = (blockRect.left + blockRect.right + 1) * sz / 2f - (startCoord + endCoord) / 2f;
 			r = (endCoord - startCoord - blockWidth) / 2f;
 		} else {
-			currentCoord += blockHeight / 2;
 			staticCoord = LaplacityField.tileSize * 0.5f * (blockRect.right + blockRect.left + 1);
 			
 			x = (blockRect.bottom + blockRect.top + 1) * sz / 2f - (startCoord + endCoord) / 2f;
@@ -97,6 +93,14 @@ public class MovingWallStructure extends FieldStructure {
 		
 		if (gcd == blockRect.width() || gcd == blockRect.height()) {
 			gcd = 1;
+		}
+		
+		float phi = (float) Math.sin(phaseDelta);
+
+		if (isHorizontal) {
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
+		} else {
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 		}
 	}
 	
@@ -208,13 +212,29 @@ public class MovingWallStructure extends FieldStructure {
 	}
 
 	@Override
-	public void updatePhysics(float timeFromStart) {
-		float psi = (float) Math.cos(phaseDelta + Math.PI * (double) (timeFromStart) / (double) (MOVING_WALL_CYCLE_TIME));
+	public void updatePhysics(float timeFromStart) { 
+		float omega = (float) (Math.PI / (double) MOVING_WALL_CYCLE_TIME);
+		float psi = (float) Math.cos(phaseDelta + timeFromStart * omega);
 		if (isHorizontal) {
-			body.setLinearVelocity(psi * (endCoord - startCoord - blockWidth) / 2f, 0f);
+			body.setLinearVelocity(omega*1000f*psi * (endCoord - startCoord - blockWidth) / 2f, 0f);
 		} else {
-			body.setLinearVelocity(0f, psi * (endCoord - startCoord - blockWidth) / 2f);
+			body.setLinearVelocity(0f, omega*1000f*psi * (endCoord - startCoord - blockHeight) / 2f);
 		}
+	}
+
+	@Override
+	public void reset() {
+		float phi = (float) Math.sin(phaseDelta);
+
+		if (isHorizontal) {
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
+			body.setTransform(currentCoord, staticCoord, 0);
+		} else {
+			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
+			body.setTransform(staticCoord, currentCoord, 0);
+		}
+		
+		body.setLinearVelocity(0, 0);
 	}
 
 	@Override
@@ -236,11 +256,9 @@ public class MovingWallStructure extends FieldStructure {
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - blockWidth / 2, staticCoord - blockHeight / 2, 0));
-			body.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - blockWidth / 2, currentCoord - blockHeight / 2, 0));
-			body.setTransform(staticCoord, currentCoord, 0);
 		}
 
 		GameProcess.gameCache.begin();

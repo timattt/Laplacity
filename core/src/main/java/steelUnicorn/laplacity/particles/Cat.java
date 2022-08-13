@@ -117,6 +117,7 @@ public class Cat extends ChargedParticle {
 
 	public void calculateTrajectory(Vector2[] dest) {
 		makeParticleMoveWithStartVelocity();
+		LaplacityField.resetStructures();
 		for (int i = 0; i < TRAJECTORY_POINTS; i++) {
 			dest[i].set(body.getTransform().getPosition());
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
