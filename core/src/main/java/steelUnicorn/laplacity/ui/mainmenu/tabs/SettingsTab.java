@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
@@ -30,6 +31,15 @@ public class SettingsTab extends MainMenuTab {
     public SettingsTab(Skin skin) {
         super();
 
+        addReturnButton(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                MainMenu stage = (MainMenu) SettingsTab.this.getStage();
+                stage.returnMainMenu();
+            }
+        });
+        row();
         addDescription("Settings:", skin);
         row();
         addSettings(skin);

@@ -4,7 +4,7 @@ import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
-import static steelUnicorn.laplacity.core.LaplacityAssets.ICONS;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -13,15 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 import steelUnicorn.laplacity.utils.LevelsParser;
 
@@ -36,7 +34,6 @@ import steelUnicorn.laplacity.utils.LevelsParser;
  * Уровни подгружаются из папки /assets/levels/
  */
 public class LevelsTab extends MainMenuTab {
-    private static final float menuBtnWidth = UI_WORLD_WIDTH * 0.08f;
     private LevelsNav nav;
     private int currentSection;
 
@@ -48,7 +45,13 @@ public class LevelsTab extends MainMenuTab {
         super();
         currentSection = 1;
 
-        addReturnButton(skin);
+        addReturnButton(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
+            }
+        });
         //Description
         row();
         addDescription("Levels:", skin);
@@ -58,19 +61,7 @@ public class LevelsTab extends MainMenuTab {
 
         row();
         nav = new LevelsNav(skin);
-        add(nav).pad(nav.navPad);
-    }
-
-    private Cell<TextButton> addReturnButton(Skin skin) {
-        TextButton btn = new TextButton("Menu", skin);
-        btn.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
-            }
-        });
-        return add(btn).size(menuBtnWidth, MainMenu.menuHeight);
+        add(nav).expandY().bottom().padTop(nav.navPad).padBottom(nav.navPad);
     }
 
     private Cell<LevelSection> addSections(Skin skin) {
@@ -95,40 +86,36 @@ public class LevelsTab extends MainMenuTab {
         private ImageButton leftArrow;
         private ImageButton rightArrow;
 
-        private float navPad = UI_WORLD_HEIGHT * 0.08f;
-        private float arrowSize = UI_WORLD_WIDTH * 0.04f;
+        private float navPad = UI_WORLD_HEIGHT * 0.06f;
+        private float arrowSize = UI_WORLD_WIDTH * 0.06f;
 
         public LevelsNav(Skin skin) {
             defaults().space(LevelsTab.tabSpace);
-            ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
-                    skin.get(ImageButton.ImageButtonStyle.class));
-            style.imageUp = new TextureRegionDrawable(ICONS.findRegion("arrowleft"));
-            leftArrow = new ImageButton(style);
+            leftArrow = new ImageButton(TEXSKIN.get("leftarrow", ImageButton.ImageButtonStyle.class));
             leftArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LevelsTab.this.currentSection--;
-                    sectionName.setText("Section " + LevelsTab.this.currentSection);
+                    updateSectionName();
                     LevelsTab.this.updateSection();
                     checkVisible();
                 }
             });
             add(leftArrow).size(arrowSize);
 
-            sectionName = new Label("Section " + LevelsTab.this.currentSection, skin);
+            sectionName = new Label("Section 00" + LevelsTab.this.currentSection, TEXSKIN);
             sectionName.setColor(Color.WHITE);
-            add(sectionName);
+            sectionName.setAlignment(Align.center);
+            add(sectionName).size(sectionName.getPrefWidth(), sectionName.getPrefHeight());
+            updateSectionName();
 
-            style = new ImageButton.ImageButtonStyle(
-                    skin.get(ImageButton.ImageButtonStyle.class));
-            style.imageUp = new TextureRegionDrawable(ICONS.findRegion("arrowright"));
-            rightArrow = new ImageButton(style);
+            rightArrow = new ImageButton(TEXSKIN.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LevelsTab.this.currentSection++;
-                    sectionName.setText("Section " + LevelsTab.this.currentSection);
                     LevelsTab.this.updateSection();
+                    updateSectionName();
                     checkVisible();
                 }
             });
@@ -149,6 +136,10 @@ public class LevelsTab extends MainMenuTab {
             } else {
                 rightArrow.setVisible(true);
             }
+        }
+
+        private void updateSectionName() {
+            sectionName.setText("Section " + LevelsTab.this.currentSection);
         }
     }
 }

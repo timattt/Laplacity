@@ -96,9 +96,10 @@ public class LaplacityAssets {
 	public static Texture ELEVATOR_TEXTURE;
 	public static TextureRegion[][] ELEVATOR_REGIONS;
 
-	//UI
-	public static Skin SKIN;
-	public static TextureAtlas ICONS;
+    //UI
+    public static Skin SKIN;
+    public static Skin TEXSKIN;
+    public static TextureAtlas ICONS;
 
     public static void repackAssets() {
     	// sounds
@@ -146,6 +147,7 @@ public class LaplacityAssets {
         loadHints();
 
         SKIN = Globals.assetManager.get("ui/uiskin.json", Skin.class);
+        TEXSKIN = Globals.assetManager.get("ui/texskin/texskin.json", Skin.class);
         ICONS = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
     }
     

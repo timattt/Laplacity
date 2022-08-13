@@ -13,6 +13,7 @@ import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.levels.LevelsTab;
+import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 
 /**
  * Класс LevelsScreen
@@ -45,7 +46,7 @@ public class LevelsScreen extends ManagedScreen {
 
         levelsTab = new LevelsTab(SKIN);
 
-        root.add(levelsTab);
+        root.add(levelsTab).growY().padTop(MainMenu.menuTopPad);
     }
 
     @Override

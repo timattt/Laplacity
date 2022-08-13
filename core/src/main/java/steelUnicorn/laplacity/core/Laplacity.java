@@ -96,6 +96,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		
 		// ui
 		assetManager.load("ui/uiskin.json", Skin.class);
+		assetManager.load("ui/texskin/texskin.json", Skin.class);
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
 		
 		// textures

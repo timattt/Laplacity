@@ -3,23 +3,23 @@ package steelUnicorn.laplacity.ui.mainmenu;
 import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
-import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 
 /**
@@ -35,16 +35,15 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
  */
 public class MainMenu extends Stage {
 
-    public static final float menuWidth = UI_WORLD_WIDTH * 0.2f;	// << menu button width ratio
-    public static final float menuHeight = UI_WORLD_HEIGHT * 0.06f; // << menu button height ratio
-    public static final float menuSpaceSize = UI_WORLD_HEIGHT * 0.03f; // << space between elements
+    public static final float menuTopPad = UI_WORLD_HEIGHT * 0.28f; // << menu button height ratio
+    public static final float menuLeftSpace = UI_WORLD_HEIGHT * 0.06f; // << space between elements
+    public static final float iconSize = UI_WORLD_HEIGHT * 0.15f;
 
     private SettingsTab settingsTab;
     private CreditsTab creditsTab;
 
-    private CatFoodInterface catFI;
-
-    private Cell<MainMenuTab> tabCell;
+    private Table mainMenu;
+    private Cell<Table> mainCell;
 
     private Image background;
     /**
@@ -63,15 +62,6 @@ public class MainMenu extends Stage {
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
         addActor(background);
 
-        //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(SKIN);
-        addActor(fpsCounter);
-        //CatFood
-        catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), SKIN);
-        catFI.setPosition(this.getWidth() / 2, this.getHeight() - catFI.getPrefHeight() / 2);
-        addActor(catFI);
-        catFood.timer.setCurrentInterface(catFI);
-
         //MainMenu
         Table root = new Table();
         root.setFillParent(true);
@@ -81,13 +71,15 @@ public class MainMenu extends Stage {
         creditsTab = new CreditsTab(SKIN);
 
         createMainMenu(root, SKIN);
+
+        //fpsCounter
+        FpsCounter fpsCounter = new FpsCounter(SKIN);
+        addActor(fpsCounter);
     }
 
     //Функция вызывается при открытии главного меню, чтобы обновить параметры!
     public void show() {
-        catFI.update(catFood.getTotalLaunchesAvailable());
-        catFood.timer.setCurrentInterface(catFI);
-        tabCell.setActor(null);
+        mainCell.setActor(mainMenu);
     }
 
     /**
@@ -98,66 +90,57 @@ public class MainMenu extends Stage {
      */
     @SuppressWarnings("unchecked")
 	private void createMainMenu(Table root, Skin skin) {
-        Table mainMenu = new Table();
-        root.add(mainMenu).expandX().uniform();
+        mainMenu = new Table();
+        mainCell = root.add(mainMenu).grow();
+        //left icons
+        Table icons = new Table();
+        mainMenu.add(icons).expand().fillY()
+                .left().padLeft(menuLeftSpace).uniform();
+        //options
+        ImageButton icon = new ImageButton(TEXSKIN.get("credits", ImageButton.ImageButtonStyle.class));
+        icon.setName("credits");
+        icon.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                mainCell.setActor(creditsTab);
+                mainCell.fill(false).top().padTop(MainMenu.menuTopPad);
+            }
+        });
+        icons.add(icon).top().expandY().size(iconSize);
+        //credits
+        icons.row();
+        icon = new ImageButton(TEXSKIN.get("settings", ImageButton.ImageButtonStyle.class));
+        icon.setName("settings");
+        icon.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                mainCell.setActor(settingsTab.settingsPane);
+                mainCell.fill(false).top().padTop(MainMenu.menuTopPad);
+            }
+        });
 
-        tabCell = root.add().growX().uniform();
+        icons.add(icon).expandY().bottom().size(iconSize);
 
-        mainMenu.defaults()
-                .width(menuWidth)
-                .height(menuHeight)
-                .space(menuSpaceSize);
         //play
-        addMenuButton(mainMenu, "Play", skin, "playBtn", new ChangeListener() {
+        Button btn = new Button(TEXSKIN.get("PlayBtn", Button.ButtonStyle.class));
+        btn.setName("play");
+        btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 game.getScreenManager().pushScreen(nameLevelsScreen, nameSlideOut);
             }
         });
+        mainMenu.add(btn).expand().uniform();
 
-        //options
-        mainMenu.row();
-        addMenuButton(mainMenu, "Settings", skin, "settingsBtn", settingsTab.settingsPane);
-
-        //credits
-        mainMenu.row();
-        addMenuButton(mainMenu, "Credits", skin, "creditsBtn", creditsTab);
-
-        //testads
-        mainMenu.row();
-        addMenuButton(mainMenu, "Test ad", skin, "testAd", new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.showRewarded();
-            }
-        });
+        mainMenu.add().expand().uniform();
     }
 
-    /**
-     * Функция добавления кнопки в главное меню
-     * @param table - таблица для добавления
-     * @param text - текст на кнопке
-     * @param skin - скин
-     * @param name - имя кнопки в таблице
-     * @param listener - обработчик нажатий
-     */
-    private void addMenuButton(Table table, String text, Skin skin, String name, ChangeListener listener) {
-        TextButton btn = new TextButton(text, skin);
-        btn.setName(name);
-        btn.addListener(listener);
-        table.add(btn);
-    }
-
-    private void addMenuButton(Table table, String text, Skin skin, String name, Actor tabActor) {
-        addMenuButton(table, text, skin, name, new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                tabCell.setActor(tabActor);
-            }
-        });
+    public void returnMainMenu() {
+        mainCell.setActor(mainMenu);
+        mainCell.fill().center().padTop(0);
     }
 
     public void resizeBackground() {

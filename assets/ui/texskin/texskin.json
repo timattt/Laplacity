@@ -1,0 +1,113 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	MortendBold: {
+		file: MortendBold.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	textcolor: {
+		r: 0.59607846
+		g: 0.5568628
+		b: 0.76862746
+		a: 1
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	PlayBtn: {
+		up: play_btn
+		down: play_btn_pressed
+	}
+	BackMenuBtn: {
+		up: back_to_menu
+		down: back_to_menu_pressed
+	}
+	interstitial_meat: {
+		up: inter1
+		down: inter1_pressed
+	}
+	rewarded_meat: {
+		up: reward1
+		down: reward1_pressed
+	}
+	interstitial_bug: {
+		up: inter2
+		down: inter2pressed
+	}
+	rewarded_bug: {
+		up: reward2
+		down: reward2pressed
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	Menu: {
+		imageUp: home
+		imageDown: home_pressed
+	}
+	Protons: {
+		imageUp: proton
+		imageDown: proton_pressed
+	}
+	Electrons: {
+		imageUp: electron
+		imageDown: electron_pressed
+	}
+	Flight: {
+		imageUp: play
+		imageDown: play_pressed
+	}
+	Eraser: {
+		imageUp: eraser
+		imageDown: eraser_pressed
+	}
+	Dirichlet: {
+		imageUp: spray
+		imageDown: spray_pressed
+	}
+	Clear: {
+		imageUp: clear_pressed
+		imageDown: clear
+	}
+	settings: {
+		imageUp: settings
+		imageDown: settings_pressed
+	}
+	credits: {
+		imageUp: credits
+		imageDown: credits_pressed
+	}
+	leftarrow: {
+		imageUp: leftarrow
+		imageDown: leftarrow_pressed
+	}
+	rightarrow: {
+		imageUp: rightarrow
+		imageDown: rightarrow_pressed
+	}
+	Pause: {
+		imageUp: pause
+		imageDown: pause_pressed
+	}
+	Refresh: {
+		imageUp: refresh
+		imageDown: refresh_pressed
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: MortendBold
+		fontColor: textcolor
+		background: label_back_short
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}
