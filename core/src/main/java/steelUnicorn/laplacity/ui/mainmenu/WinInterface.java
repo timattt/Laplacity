@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.GameProcess;
@@ -85,14 +86,11 @@ public class WinInterface extends Stage {
         done.setColor(Color.WHITE);
         root.add(done).space(spaceSize);
         //stars
-        root.row();
-        Table stars = new Table();
-        for (int i = 0; i < score; i++) {
-            Image starImg = new Image(LaplacityAssets.STAR_REGIONS[0]);
-            stars.add(starImg).size(starSize);
+        if (score > 0) {
+            root.row();
+            Table stars = getStarRows(score);
+            root.add(stars);
         }
-        root.add(stars);
-
         root.row();
         //buttons
         Table buttons = new Table();
@@ -164,5 +162,50 @@ public class WinInterface extends Stage {
                         * this.getViewport().getWorldHeight(),
                 this.getViewport().getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + this.getViewport().getWorldWidth() / 2 , 0);
+    }
+
+    /**
+     * функция создания пирамиды
+     * @param score - количество очков
+     * @return - таблица с пирамидой
+     */
+    private Table getStarRows(int score) {
+        Array<Table> rows = new Array<>();
+        int n = 3;  //количество звезд в основании
+        if (score <= n) {
+            rows.add(getStarRow(score));
+        } else {
+            while (!(n * (n - 1) / 2 < score && score <= n * (n + 1) / 2)) {
+                n++;
+            }
+
+            for (int rowStars = n;  score > 0; rowStars--) {
+                rows.add(getStarRow((score - rowStars < 0) ? score : rowStars));
+                score -= rowStars;
+            }
+        }
+
+        rows.reverse();
+        Table stars = new Table();
+        for (Table row : rows) {
+            stars.add(row);
+            stars.row();
+        }
+
+        return stars;
+    }
+
+    /**
+     * 1 строчка с score звезд
+     * @param score - количество звезд
+     * @return строчка таблицы
+     */
+    private Table getStarRow(int score) {
+        Table row = new Table();
+        for (int i = score; i > 0; i--) {
+            row.add(new Image(LaplacityAssets.STAR_REGIONS[0])).size(starSize);
+        }
+
+        return row;
     }
 }
