@@ -34,7 +34,7 @@ public class BladesStructure extends FieldStructure {
 	@Override
 	public void register() {
 		BodyDef bodydef = new BodyDef();
-		bodydef.type = BodyType.StaticBody;
+		bodydef.type = BodyType.KinematicBody;
 		
 		body = GameProcess.registerPhysicalObject(bodydef);
 
@@ -46,7 +46,7 @@ public class BladesStructure extends FieldStructure {
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = shape;
 		fxt.density = 1;
-		fxt.restitution = 1f;
+		fxt.restitution = 0.2f;
 		body.createFixture(fxt);
 		body.setUserData(this);
 		shape.dispose();
@@ -59,7 +59,7 @@ public class BladesStructure extends FieldStructure {
 		fxt = new FixtureDef();
 		fxt.shape = shape;
 		fxt.density = 1;
-		fxt.restitution = 1f;
+		fxt.restitution = 0.2f;
 		body.createFixture(fxt);
 		body.setUserData(this);
 		body.setTransform(centerX, centerY, 0);
@@ -69,8 +69,7 @@ public class BladesStructure extends FieldStructure {
 
 	@Override
 	public void updatePhysics(float timeFromStart) {
-		float curAngle = (float) (360 * timeFromStart / (float)BLADES_ROTATION_TIME);
-		body.setTransform(centerX, centerY, (float) (2 * Math.PI * curAngle / 360f));
+		body.setAngularVelocity(2000f * (float) Math.PI / (float)BLADES_ROTATION_TIME);
 	}
 
 	@Override
@@ -120,6 +119,12 @@ public class BladesStructure extends FieldStructure {
 	@Override
 	public void cleanup() {
 		deletePhysicalObject(body);
+	}
+
+	@Override
+	public void reset() {
+		body.setAngularVelocity(0f);
+		body.setTransform(centerX, centerY, 0f);
 	}
 
 }
