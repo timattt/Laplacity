@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -21,7 +22,6 @@ import com.badlogic.gdx.utils.Array;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
-import steelUnicorn.laplacity.utils.LevelsParser;
 
 /**
  * Класс создает интерфейс выбора уровней.
@@ -65,9 +65,9 @@ public class LevelsTab extends MainMenuTab {
     }
 
     private Cell<LevelSection> addSections(Skin skin) {
-        sections = new Array<>(LevelsParser.sectionLevelsPaths.size);
+        sections = new Array<>(sectionLevels.size);
 
-        for (int i = 0; i < LevelsParser.sectionLevelsPaths.size; i++) {
+        for (int i = 0; i < sectionLevels.size; i++) {
             sections.add(new LevelSection(i + 1, skin));
         }
 
@@ -131,7 +131,7 @@ public class LevelsTab extends MainMenuTab {
                 leftArrow.setVisible(true);
             }
 
-            if (currentSection == LevelsParser.sectionLevelsPaths.size) {
+            if (currentSection == sectionLevels.size) {
                 rightArrow.setVisible(false);
             } else {
                 rightArrow.setVisible(true);

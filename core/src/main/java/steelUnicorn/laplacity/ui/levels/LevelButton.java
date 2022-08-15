@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.ui.levels;
 
 
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.utils.LevelsParser;
 
@@ -20,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
  *
  */
 public class LevelButton extends TextButton {
-	private final String lvlImgPath;
+	private final Texture lvlImg;
 	private final int levelNumber;
 	private final int sectionNumber;
 
@@ -36,16 +35,16 @@ public class LevelButton extends TextButton {
 			GameProcess.levelNumber = btn.levelNumber;
 			GameProcess.sectionNumber = btn.sectionNumber;
 			GameProcess.levelParams = LevelsParser.getParams(btn.sectionNumber, btn.levelNumber);
-			GameProcess.initLevel(Globals.assetManager.get(btn.lvlImgPath, Texture.class));
+			GameProcess.initLevel(btn.lvlImg);
 
 			LaplacityAssets.setLevelTrack();;
 		}
 	};
 
-	public LevelButton(String text, Skin skin, String lvlImgPath,
+	public LevelButton(String text, Skin skin, Texture lvlImg,
 					   int levelNumber, int sectionNumber) {
 		super(text, skin);
-		this.lvlImgPath = lvlImgPath;
+		this.lvlImg = lvlImg;
 		this.levelNumber = levelNumber;
 		this.sectionNumber = sectionNumber;
 	}

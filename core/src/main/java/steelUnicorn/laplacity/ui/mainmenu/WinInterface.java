@@ -2,9 +2,9 @@ package steelUnicorn.laplacity.ui.mainmenu;
 
 import static steelUnicorn.laplacity.core.LaplacityAssets.EARTH_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -114,9 +114,8 @@ public class WinInterface extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                GameProcess.initLevel(Globals.assetManager.get(
-                        LevelsParser.sectionLevelsPaths.get(GameProcess.sectionNumber)
-                                .get(GameProcess.levelNumber - 1), Texture.class));
+                GameProcess.initLevel(sectionLevels.get(GameProcess.sectionNumber - 1)
+                                .get(GameProcess.levelNumber - 1));
             }
         });
 
@@ -129,9 +128,9 @@ public class WinInterface extends Stage {
                     LaplacityAssets.playSound(LaplacityAssets.clickSound);
                     int nextSection;
                     int nextLevel;
-                    if (GameProcess.sectionNumber < LevelsParser.sectionLevelsPaths.size &&
+                    if (GameProcess.sectionNumber < sectionLevels.size &&
                         GameProcess.levelNumber
-                                == LevelsParser.sectionLevelsPaths.get(GameProcess.sectionNumber).size) {
+                                == sectionLevels.get(GameProcess.sectionNumber - 1).size) {
                         nextSection = ++GameProcess.sectionNumber;
                         nextLevel = GameProcess.levelNumber = 1;
                     } else {
@@ -139,9 +138,7 @@ public class WinInterface extends Stage {
                         nextLevel = ++GameProcess.levelNumber;
                     }
                     GameProcess.levelParams = LevelsParser.getParams(nextSection, nextLevel);
-                    GameProcess.initLevel(Globals.assetManager.get(
-                            LevelsParser.sectionLevelsPaths.get(nextSection).get(nextLevel - 1),
-                            Texture.class));
+                    GameProcess.initLevel(sectionLevels.get(nextSection - 1).get(nextLevel - 1));
                     LaplacityAssets.setLevelTrack();
                 }
             });
