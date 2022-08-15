@@ -119,7 +119,7 @@ public class Cat implements CollisionListener {
 	public void updatePhysics(float delta) {
 		if (currentGameMode == GameMode.FLIGHT) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
-			body.applyForceToCenter(TMP1.scl(PARTICLE_CHARGE / body.getMass()), false);
+			body.applyForceToCenter(TMP1.scl(-PARTICLE_CHARGE / body.getMass()), false);
 		}
 	}
 
@@ -158,7 +158,7 @@ public class Cat implements CollisionListener {
 			dest[i].set(body.getTransform().getPosition());
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
 				FieldCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
-				body.applyForceToCenter(TMP1.scl(PARTICLE_CHARGE / body.getMass()), false);
+				body.applyForceToCenter(TMP1.scl(-PARTICLE_CHARGE / body.getMass()), false);
 				body.getWorld().step(TRAJECTORY_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 			}
 		}
