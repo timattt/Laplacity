@@ -26,7 +26,6 @@ import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
-import steelUnicorn.laplacity.utils.LevelsParser;
 import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -75,7 +74,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		LaplacityAssets.changeTrack("music/main theme_drop.ogg");
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
 	}
-	
+
 	private void loadRec(String path, Class<?> cl) {
 		FileHandle[] sections = Gdx.files.internal(path).list();
 		for (FileHandle fh : sections) {
@@ -91,9 +90,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		assetManager = new AssetManager();
 
 		// levels
-		//Создаем мапу где ключи - номер секции, а значения - пути до уровней
-		LevelsParser.loadAssets(assetManager);
-		
+		loadRec("levels/", Texture.class);
+
 		// ui
 		assetManager.load("ui/uiskin.json", Skin.class);
 		assetManager.load("ui/texskin/texskin.json", Skin.class);

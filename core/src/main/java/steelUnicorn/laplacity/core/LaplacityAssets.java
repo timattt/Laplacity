@@ -16,6 +16,9 @@ import com.badlogic.gdx.utils.Array;
 import steelUnicorn.laplacity.utils.Settings;
 
 public class LaplacityAssets {
+	//levels
+	private static Array<Array<Texture>> sectionLevels;
+
 	// instance трека, который играет в данный момент.
 	// Music - очень тяжёлый класс, поэтому при переключении треков его надо диспозить и грузить заново
 	public static Music intro;
@@ -102,6 +105,8 @@ public class LaplacityAssets {
     public static TextureAtlas ICONS;
 
     public static void repackAssets() {
+		repackLevels();
+
     	// sounds
         clickSound = Globals.assetManager.get("sounds/click.wav");
         lightClickSound = Globals.assetManager.get("sounds/light_click.wav");
@@ -170,6 +175,29 @@ public class LaplacityAssets {
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
     }
+
+	private static void repackLevels() {
+		sectionLevels = new Array<>();
+
+		FileHandle[] sectionFolders = Gdx.files.internal("levels/").list();
+
+		Globals.TOTAL_LEVELS_AVAILABLE = 0;
+		for (FileHandle folder : sectionFolders) {
+			if (folder.isDirectory()) {
+				Array<Texture> lvls = new Array<>();
+
+				FileHandle[] files = folder.list();
+				for (FileHandle file : files) {
+					if (file.extension().equals("png")) {
+						lvls.add(Globals.assetManager.get(file.path(), Texture.class));
+						Globals.TOTAL_LEVELS_AVAILABLE++;
+					}
+				}
+
+				sectionLevels.add(lvls);
+			}
+		}
+	}
     
     private static void loadBackgrounds() {
     	BACKGROUNDS = new Array<>();
