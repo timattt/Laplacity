@@ -7,10 +7,16 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.physics.CollisionListener;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
@@ -21,7 +27,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;
  * @author timat
  *
  */
-public class Cat extends ChargedParticle {
+public class Cat implements CollisionListener {
 
 	// Start velocity
 	private float slingshotX;
@@ -40,15 +46,45 @@ public class Cat extends ChargedParticle {
 	private boolean playingFinishAnim;
 	private float animationCoef = 0;
 	
+	// body
+	private Body body;
+	
 	public Cat() {
-		super(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, CAT_SIZE, - PARTICLE_CHARGE, false, Color.WHITE);
-		deletePointLight(pointLight);
 		prevX = LaplacityField.electronStartPos.x;
 		prevY = LaplacityField.electronStartPos.y;
-		getBody().setBullet(true);
+		
+		BodyDef bodydef = new BodyDef();
+		bodydef.type = BodyType.DynamicBody;
+		bodydef.position.set(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y);
+		
+		body = registerPhysicalObject(bodydef);
+		
+		CircleShape cir = new CircleShape();
+		cir.setRadius(CAT_SIZE);
+		
+		FixtureDef fxt = new FixtureDef();
+		fxt.shape = cir;
+		fxt.density = 0.25f;
+		fxt.restitution = 1f;
+		fxt.friction = 0f;
+		fxt.restitution = 0;
+		
+		body.createFixture(fxt);
+		body.setUserData(this);
+		
+		cir.dispose();
+		
+		body.setBullet(true);
 	}
 
-	@Override
+	public float getX() {
+		return body.getTransform().getPosition().x;
+	}
+	
+	public float getY() {
+		return body.getTransform().getPosition().y;
+	}
+	
 	public void draw() {
 		float x = interpX();
 		float y = interpY();
@@ -83,7 +119,7 @@ public class Cat extends ChargedParticle {
 	public void updatePhysics(float delta) {
 		if (currentGameMode == GameMode.FLIGHT) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
-			body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
+			body.applyForceToCenter(TMP1.scl(PARTICLE_CHARGE / body.getMass()), false);
 		}
 	}
 
@@ -97,7 +133,7 @@ public class Cat extends ChargedParticle {
 	}
 	
 	public void resetToStartPosAndStartVelocity() {
-		setPosition(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, 0);
+		body.setTransform(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, 0);
 		savePosition();
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
@@ -117,11 +153,12 @@ public class Cat extends ChargedParticle {
 
 	public void calculateTrajectory(Vector2[] dest) {
 		makeParticleMoveWithStartVelocity();
+		LaplacityField.resetStructures();
 		for (int i = 0; i < TRAJECTORY_POINTS; i++) {
 			dest[i].set(body.getTransform().getPosition());
 			for (int j = 0; j < STEPS_PER_POINT; j++) {
 				FieldCalculator.calculateFieldIntensity(body.getTransform().getPosition().x, body.getTransform().getPosition().y, LaplacityField.tiles, TMP1);
-				body.applyForceToCenter(TMP1.scl(charge / getMass()), false);
+				body.applyForceToCenter(TMP1.scl(PARTICLE_CHARGE / body.getMass()), false);
 				body.getWorld().step(TRAJECTORY_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
 			}
 		}
@@ -178,6 +215,38 @@ public class Cat extends ChargedParticle {
 
 	public void setAnimationCoef(float animationCoef) {
 		this.animationCoef = animationCoef;
+	}
+
+	@Override
+	public boolean isDeadly() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithMainParticle() {
+	}
+
+	@Override
+	public boolean isStructure() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithStructure() {
+	}
+
+	@Override
+	public boolean isTile() {
+		return false;
+	}
+
+	@Override
+	public boolean isTrampoline() {
+		return false;
+	}
+
+	public Body getBody() {
+		return body;
 	}
 	
 	

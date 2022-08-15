@@ -1,9 +1,7 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
 import static steelUnicorn.laplacity.core.Globals.*;
-import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
-import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
-import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.*;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -17,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.ui.CatFoodInterface;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
@@ -88,7 +85,6 @@ public class MainMenu extends Stage {
      * @param root - корневая таблица сцены
      * @param skin - скин
      */
-    @SuppressWarnings("unchecked")
 	private void createMainMenu(Table root, Skin skin) {
         mainMenu = new Table();
         mainCell = root.add(mainMenu).grow();
