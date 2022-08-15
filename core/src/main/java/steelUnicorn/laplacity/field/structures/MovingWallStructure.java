@@ -87,7 +87,6 @@ public class MovingWallStructure extends FieldStructure {
 		
 		@Override
 		public void collidedWithMainParticle() {
-			LaplacityAssets.playSound(LaplacityAssets.hurtSound);
 			GameProcess.justHitted = true;
 		}
 		
