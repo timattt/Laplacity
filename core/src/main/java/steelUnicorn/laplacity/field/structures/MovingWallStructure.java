@@ -256,9 +256,11 @@ public class MovingWallStructure extends FieldStructure {
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - blockWidth / 2, staticCoord - blockHeight / 2, 0));
+			body.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - blockWidth / 2, currentCoord - blockHeight / 2, 0));
+			body.setTransform(staticCoord, currentCoord, 0);
 		}
 
 		GameProcess.gameCache.begin();
