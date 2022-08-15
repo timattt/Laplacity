@@ -2,13 +2,14 @@ package steelUnicorn.laplacity.ui.levels;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
+import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 
-import steelUnicorn.laplacity.utils.LevelsParser;
 
 /**
  * Класс секции уровней
@@ -37,21 +38,21 @@ public class LevelSection extends Table {
      */
     private void addLevels(Skin skin) {
         //Подтягивание массива путей по номеру секции
-        if (sectionNumber - 1 < LevelsParser.sectionLevelsPaths.size) {
-            Array<String> lvlPaths = LevelsParser.sectionLevelsPaths.get(sectionNumber);
+        if (sectionNumber - 1 < sectionLevels.size) {
+            Array<Texture> lvlImages = sectionLevels.get(sectionNumber - 1);
 
             defaults().size(lvlBtnSize)
                     .space(tabSpace);
 
-            for (int i = 1; i <= lvlPaths.size; i++) {
-                LevelButton btn = new LevelButton(String.valueOf(i), skin, lvlPaths.get(i - 1),
+            for (int i = 1; i <= lvlImages.size; i++) {
+                LevelButton btn = new LevelButton(String.valueOf(i), skin, lvlImages.get(i - 1),
                         i, sectionNumber);
                 btn.setName("level" + i);
                 btn.addListener(LevelButton.listener);
 
                 add(btn);
                 //new Row
-                if (i % levelsRow == 0 && i != lvlPaths.size) {
+                if (i % levelsRow == 0 && i != lvlImages.size) {
                     row();
                 }
             }

@@ -1,12 +1,12 @@
 package steelUnicorn.laplacity.utils;
 
-import static steelUnicorn.laplacity.utils.LevelsParser.sectionLevelsPaths;
+import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ObjectMap;
 
 /**
  * Класс для оперирования прогрессом игрока. Сохраняет прогресс в preferences в виде json объекта
@@ -34,10 +34,10 @@ public class PlayerProgress {
         //Создаем массив исходя из текущих уровней (на случай если добавлены новые)
         progress = new Array<>();
 
-        for (ObjectMap.Entry<Integer, Array<String>> entry : sectionLevelsPaths) {
+        for (Array<Texture> lvls : sectionLevels) {
             //Каждое вхождение в sectionLevels это секция. entry.value - уровни
             Array<Integer> sectionProgress = new Array<>();
-            for (int i = 0; i < entry.value.size; i++) {
+            for (int i = 0; i < lvls.size; i++) {
                 sectionProgress.add(0);
             }
 
