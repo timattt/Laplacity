@@ -17,6 +17,7 @@ import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.physics.CollisionListener;
 import steelUnicorn.laplacity.field.physics.IntRect;
 
 /**
@@ -47,6 +48,52 @@ public class MovingWallStructure extends FieldStructure {
 	private int cacheStableId;
 	private static final Matrix4 cacheMat = new Matrix4();
 	private int gcd;
+	
+	// destroyer
+	private static final CollisionListener anchorListener = new CollisionListener() {
+		@Override
+		public boolean isTrampoline() {
+			return false;
+		}
+		
+		@Override
+		public boolean isTile() {
+			return false;
+		}
+		
+		@Override
+		public boolean isStructure() {
+			return false;
+		}
+		
+		@Override
+		public boolean isMainParticle() {
+			return false;
+		}
+		
+		@Override
+		public boolean isDeadly() {
+			return false;
+		}
+		
+		@Override
+		public void collidedWithTrampoline() {}
+		
+		@Override
+		public void collidedWithTile() {}
+		
+		@Override
+		public void collidedWithStructure() {}
+		
+		@Override
+		public void collidedWithMainParticle() {
+			GameProcess.justHitted = true;
+		}
+		
+		@Override
+		public void collidedWithDeadly() {}
+	};
+	private Body destroyer;
 	
 	public MovingWallStructure(int left, int bottom, Pixmap pm) {
 		super(left, bottom, pm, allCodes);
@@ -208,6 +255,29 @@ public class MovingWallStructure extends FieldStructure {
 		body.setUserData(this);
 		shape.dispose();
 		
+		// destroyer
+		bodydef = new BodyDef();
+		bodydef.type = BodyType.StaticBody;
+		
+		if (isHorizontal) {
+			bodydef.position.set(currentCoord, staticCoord);
+		} else {
+			bodydef.position.set(staticCoord, currentCoord);
+		}
+		
+		destroyer = GameProcess.registerPhysicalObject(bodydef);
+
+		shape = new PolygonShape();
+		shape.setAsBox(blockWidth / 2f - LaplacityField.tileSize / 4, blockHeight / 2f - LaplacityField.tileSize / 4);
+		
+		fxt = new FixtureDef();
+		fxt.shape = shape;
+		fxt.density = 0;
+		fxt.restitution = 0f;
+		destroyer.createFixture(fxt);
+		destroyer.setUserData(anchorListener);
+		shape.dispose();
+		
 		createCache();
 	}
 
@@ -229,9 +299,11 @@ public class MovingWallStructure extends FieldStructure {
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
 			body.setTransform(currentCoord, staticCoord, 0);
+			destroyer.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 			body.setTransform(staticCoord, currentCoord, 0);
+			destroyer.setTransform(staticCoord, currentCoord, 0);
 		}
 		
 		body.setLinearVelocity(0, 0);
@@ -256,9 +328,11 @@ public class MovingWallStructure extends FieldStructure {
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - blockWidth / 2, staticCoord - blockHeight / 2, 0));
+			destroyer.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - blockWidth / 2, currentCoord - blockHeight / 2, 0));
+			destroyer.setTransform(staticCoord, currentCoord, 0);
 		}
 
 		GameProcess.gameCache.begin();
@@ -273,6 +347,7 @@ public class MovingWallStructure extends FieldStructure {
 	@Override
 	public void cleanup() {
 		deletePhysicalObject(body);
+		deletePhysicalObject(destroyer);
 	}
 
 }
