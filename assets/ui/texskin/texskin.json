@@ -45,7 +45,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
-	Menu: {
+	Home: {
 		imageUp: home
 		imageDown: home_pressed
 	}

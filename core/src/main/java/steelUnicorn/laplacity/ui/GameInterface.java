@@ -86,7 +86,7 @@ public class GameInterface extends Stage implements GestureListener {
 		addActor(root);
 
 		//return button
-		root.add(createIcon("Menu", new ClickListener(){
+		root.add(createIcon("Home", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
