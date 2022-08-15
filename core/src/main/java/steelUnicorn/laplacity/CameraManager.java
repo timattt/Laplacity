@@ -31,8 +31,8 @@ public class CameraManager {
 	private static boolean isMoving = false;
 
 	// Bounding box
-	private static final float CAMERA_BB_X = 2f;
-	private static final float CAMERA_BB_Y = 1f;
+	private static final float CAMERA_BB_X = 5f;
+	private static final float CAMERA_BB_Y = 3f;
 
 	// Переменные, используемые при обработке двухпальцевых жестов
 	private static Vector2 cameraPositionWithoutZoom = new Vector2();
@@ -42,7 +42,7 @@ public class CameraManager {
 	private static float currentDistance = 0f;
 	private static float initialZoom = 1f;
 	private static float zoomMultiplier = 1f;
-	
+
 	public static void init() {
 		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
 	}
@@ -55,8 +55,8 @@ public class CameraManager {
 	}
 	
 	public static void setMoving(float x, float y) {
-		targetX = clampX(x);
-		targetY = clampY(y);
+		targetX = x;
+		targetY = y;
 		isMoving = true;
 	}
 
@@ -82,7 +82,7 @@ public class CameraManager {
 				(Math.abs(targetY - camera.position.y) - CAMERA_BB_Y) * VELOCITY_DISTANCE_MULTIPLIER +
 				MathUtils.clamp(BASE_VELOCITY, 0f, Math.abs(GameProcess.cat.getVelocity().y)) :
 				0f;
-			
+			Gdx.app.log(String.valueOf(xVelocity), String.valueOf(yVelocity));
 			// Теперь находим dx
 			float dx = xVelocity * Math.signum(targetX - camera.position.x) * dt;
 			float dy = yVelocity * Math.signum(targetY - camera.position.y) * dt;
