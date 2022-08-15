@@ -74,6 +74,24 @@ public class DeadlyTile extends SolidTile {
 		boolean topLeft = !(0 < gridX) || !(gridY < fieldHeight - 1) || tiles[gridX - 1][gridY + 1] instanceof DeadlyTile;
 		boolean bottomLeft = !(gridX > 0) || !(0 < gridY) || tiles[gridX - 1][gridY - 1] instanceof DeadlyTile;
 		
+		// corners
+		if (top && bottom && right && left && !topRight && bottomRight && topLeft && bottomLeft) {
+			angle[0] = 180;
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
+		}
+		if (top && bottom && right && left && topRight && bottomRight && topLeft && !bottomLeft) {
+			angle[0] = 0;
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
+		}
+		if (top && bottom && right && left && topRight && !bottomRight && topLeft && bottomLeft) {
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
+		}
+		if (top && bottom && right && left && topRight && bottomRight && !topLeft && bottomLeft) {
+			angle[0] = -90;
+			return LaplacityAssets.DEADLY_REGIONS[5][3];
+		}
+		
 		// 1
 		if (top && !bottom && !left && !right) {
 			angle[0] = -90;
