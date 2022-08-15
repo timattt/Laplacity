@@ -31,18 +31,16 @@ public class CameraManager {
 	private static boolean isMoving = false;
 
 	// Bounding box
-	private static final float CAMERA_BB_X = 2f;
-	private static final float CAMERA_BB_Y = 1f;
+	private static final float CAMERA_BB_X = 5f;
+	private static final float CAMERA_BB_Y = 3f;
 
 	// Переменные, используемые при обработке двухпальцевых жестов
-	private static Vector2 cameraPositionWithoutZoom = new Vector2();
-	private static Vector2 zoomDirection = new Vector2();
+	private static final Vector2 cameraPositionWithoutZoom = new Vector2();
+	private static final Vector2 zoomDirection = new Vector2();
 	private static boolean isPinching = false;
 	private static float initialDistance = 0f;
-	private static float currentDistance = 0f;
 	private static float initialZoom = 1f;
-	private static float zoomMultiplier = 1f;
-	
+
 	public static void init() {
 		camera = new OrthographicCamera(SCREEN_WORLD_WIDTH, SCREEN_WORLD_HEIGHT);
 	}
@@ -55,8 +53,8 @@ public class CameraManager {
 	}
 	
 	public static void setMoving(float x, float y) {
-		targetX = clampX(x);
-		targetY = clampY(y);
+		targetX = x;
+		targetY = y;
 		isMoving = true;
 	}
 
@@ -82,7 +80,6 @@ public class CameraManager {
 				(Math.abs(targetY - camera.position.y) - CAMERA_BB_Y) * VELOCITY_DISTANCE_MULTIPLIER +
 				MathUtils.clamp(BASE_VELOCITY, 0f, Math.abs(GameProcess.cat.getVelocity().y)) :
 				0f;
-			
 			// Теперь находим dx
 			float dx = xVelocity * Math.signum(targetX - camera.position.x) * dt;
 			float dy = yVelocity * Math.signum(targetY - camera.position.y) * dt;
@@ -197,11 +194,10 @@ public class CameraManager {
 		float centerDy =
 			-(initialFirstPointer.y + initialSecondPointer.y - firstPointer.y - secondPointer.y) *
 			camera.zoom * SCREEN_WORLD_HEIGHT / (2f * Gdx.graphics.getHeight());
-		currentDistance =
-			Math.abs(firstPointer.x - secondPointer.x) +
-			Math.abs(firstPointer.y - secondPointer.y);
+		float currentDistance = Math.abs(firstPointer.x - secondPointer.x) +
+				Math.abs(firstPointer.y - secondPointer.y);
+		float zoomMultiplier = MAX_ZOOM;
 		if (currentDistance < Globals.EPSILON_PRECISION) {
-			zoomMultiplier = MAX_ZOOM;
 		} else {
 			zoomMultiplier = initialDistance / currentDistance;
 		}
