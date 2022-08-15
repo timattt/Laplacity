@@ -8,14 +8,20 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 
 public class DeadlyTile extends SolidTile {
 
+	private static boolean currentTexture = false;
+	
 	public DeadlyTile(int gridX, int gridY) {
 		super(gridX, gridY);
 		setAllowDensityChange(false);
 		setId(4);
+		index = gridX + gridY;
 	}
 
 	@Override
 	public TextureRegion getRegion(float[] angle) {
+		if (currentTexture) {
+			return texture1(angle);
+		}
 		return texture2(angle);
 	}
 
@@ -51,29 +57,29 @@ public class DeadlyTile extends SolidTile {
 		// wires
 		if (top && bottom && !left && !right) {
 			angle[0] = 90;
-			return LaplacityAssets.DEADLY_REGIONS[7][1];
+			return LaplacityAssets.DEADLY_REGIONS[3][4];//LaplacityAssets.DEADLY_REGIONS[7][1];
 		}
 		if (!top && !bottom && left && right) {
 			angle[0] = 0;
-			return LaplacityAssets.DEADLY_REGIONS[7][1];
+			return LaplacityAssets.DEADLY_REGIONS[3][4];//LaplacityAssets.DEADLY_REGIONS[7][1];
 		}
 		
 		// 3
 		if (!top && bottom && right && left && bottomLeft && bottomRight) {
 			angle[0] = 0;
-			return LaplacityAssets.DEADLY_REGIONS[7][0];
+			return LaplacityAssets.DEADLY_REGIONS[3][4];//LaplacityAssets.DEADLY_REGIONS[7][0];
 		}
 		if (top && !bottom && right && left && topLeft && topRight) {
 			angle[0] = 0;
-			return LaplacityAssets.DEADLY_REGIONS[7][0];
+			return LaplacityAssets.DEADLY_REGIONS[3][4];//LaplacityAssets.DEADLY_REGIONS[7][0];
 		}
 		if (top && bottom && !right && left && topLeft && bottomLeft) {
 			angle[0] = 90;
-			return LaplacityAssets.DEADLY_REGIONS[7][0];
+			return LaplacityAssets.DEADLY_REGIONS[3][4];//LaplacityAssets.DEADLY_REGIONS[7][0];
 		}
 		if (top && bottom && right && !left && topRight && bottomRight) {
 			angle[0] = 90;
-			return LaplacityAssets.DEADLY_REGIONS[7][0];
+			return LaplacityAssets.DEADLY_REGIONS[3][4];//LaplacityAssets.DEADLY_REGIONS[7][0];
 		}
 		//-------
 		
@@ -159,6 +165,61 @@ public class DeadlyTile extends SolidTile {
 		return LaplacityAssets.DEADLY_REGIONS[0][0];
 	}
 	
+	private int index = 0;
+	
+	@Override
+	public TextureRegion getAnimatedRegion(float[] angle) {
+		boolean top = tiles[gridX][gridY + 1] instanceof DeadlyTile;
+		boolean bottom = tiles[gridX][gridY - 1] instanceof DeadlyTile;
+		boolean right = tiles[gridX + 1][gridY] instanceof DeadlyTile;
+		boolean left = tiles[gridX - 1][gridY] instanceof DeadlyTile;
+		
+		boolean topRight = !(gridX < fieldWidth - 1) || !(gridY < fieldHeight - 1) || tiles[gridX + 1][gridY + 1] instanceof DeadlyTile;
+		boolean bottomRight = !(gridX < fieldWidth - 1) || !(0 < gridY) || tiles[gridX + 1][gridY - 1]  instanceof DeadlyTile;
+		boolean topLeft = !(0 < gridX) || !(gridY < fieldHeight - 1) || tiles[gridX - 1][gridY + 1] instanceof DeadlyTile;
+		boolean bottomLeft = !(gridX > 0) || !(0 < gridY) || tiles[gridX - 1][gridY - 1] instanceof DeadlyTile;
+		index++;
+		index %= 3;
+		
+		//--------
+		// wires
+		if (top && bottom && !left && !right) {
+			if (currentTexture) {return LaplacityAssets.DEADLY_REGIONS[3][4];}
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[7+index][0];
+		}
+		if (!top && !bottom && left && right) {
+			if (currentTexture) {return LaplacityAssets.DEADLY_REGIONS[3][4];}
+			angle[0] = 0;
+			return LaplacityAssets.DEADLY_REGIONS[7+index][0];
+		}
+		
+		// 3
+		if (!top && bottom && right && left && bottomLeft && bottomRight) {
+			if (currentTexture) {return LaplacityAssets.DEADLY_REGIONS[3][4];}
+			angle[0] = 0;
+			return LaplacityAssets.DEADLY_REGIONS[7+index][0];
+		}
+		if (top && !bottom && right && left && topLeft && topRight) {
+			if (currentTexture) {return LaplacityAssets.DEADLY_REGIONS[3][4];}
+			angle[0] = 0;
+			return LaplacityAssets.DEADLY_REGIONS[7+index][0];
+		}
+		if (top && bottom && !right && left && topLeft && bottomLeft) {
+			if (currentTexture) {return LaplacityAssets.DEADLY_REGIONS[3][4];}
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[7+index][0];
+		}
+		if (top && bottom && right && !left && topRight && bottomRight) {
+			if (currentTexture) {return LaplacityAssets.DEADLY_REGIONS[3][4];}
+			angle[0] = 90;
+			return LaplacityAssets.DEADLY_REGIONS[7+index][0];
+		}
+		//-------
+		
+		return null;
+	}
+
 	private TextureRegion texture1(float[] angle) {
 		boolean top = tiles[gridX][gridY + 1] instanceof DeadlyTile;
 		boolean bottom = tiles[gridX][gridY - 1] instanceof DeadlyTile;
@@ -297,5 +358,9 @@ public class DeadlyTile extends SolidTile {
 		}
 		
 		return LaplacityAssets.DEADLY_REGIONS[0][0];
+	}
+	
+	public static void changeTexture() {
+		currentTexture = !currentTexture;
 	}
 }

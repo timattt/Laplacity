@@ -27,6 +27,8 @@ public class TilesRenderer {
 	
 	private static long lastAnimationRepaintTime;
 	
+	private static boolean repaintRequested = false;
+	
 	public static void init() {
 		float sz = LaplacityField.tileSize;
 		
@@ -63,6 +65,27 @@ public class TilesRenderer {
 		animationId = GameProcess.gameCache.endCache();
 	}
 	
+	private static void repaint() {
+		float sz = LaplacityField.tileSize;
+		
+		float d = 0.01f;
+		
+		GameProcess.gameCache.beginCache(id);
+		for (int i = 0; i < fieldWidth; i++) {
+			for (int j = 0; j < fieldHeight; j++) {
+				EmptyTile tl = tiles[i][j];
+				if (tl instanceof SolidTile) {
+					SolidTile stl = (SolidTile) tl;
+					TextureRegion reg = stl.getRegion(tmp);
+					if (reg != null) {
+						GameProcess.gameCache.add(reg, stl.getGridX() * sz - d, stl.getGridY() * sz - d,  sz/2, sz/2, sz + 2*d, sz+2*d, 1, 1, tmp[0]);
+					}
+				}
+			}
+		}
+		GameProcess.gameCache.endCache();
+	}
+	
 	private static void repaintAnims() {
 		float sz = LaplacityField.tileSize;
 		
@@ -85,6 +108,10 @@ public class TilesRenderer {
 	}
 	
 	public static void render() {
+		if (repaintRequested) {
+			repaint();
+			repaintRequested = false;
+		}
 		if (TimeUtils.millis() - lastAnimationRepaintTime > TILE_ANIMATION_DELAY) {
 			lastAnimationRepaintTime = TimeUtils.millis();
 			repaintAnims();
@@ -107,4 +134,7 @@ public class TilesRenderer {
 	public static void cleanup() {
 	}
 	
+	public static void requestRepaint() {
+		repaintRequested = true;
+	}
 }

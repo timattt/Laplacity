@@ -12,12 +12,15 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.field.graphics.TilesRenderer;
 import steelUnicorn.laplacity.field.physics.CollisionListener;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
+import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
 
@@ -43,8 +46,12 @@ public class Cat implements CollisionListener {
 	// finish animation
 	private float finishX;
 	private float finishY;
-	private boolean playingFinishAnim;
+	private boolean playingFinishAnim = false;
 	private float animationCoef = 0;
+	
+	// dead animation
+	private boolean playingDeadAnim = false;
+	private long deadAnimationStartTime;
 	
 	// body
 	private Body body;
@@ -85,6 +92,10 @@ public class Cat implements CollisionListener {
 		return body.getTransform().getPosition().y;
 	}
 	
+	private void setDeadEmoji() {
+		currentEmoji = 5;
+	}
+	
 	public void draw() {
 		float x = interpX();
 		float y = interpY();
@@ -94,6 +105,21 @@ public class Cat implements CollisionListener {
 			x = (finishX - x) * animationCoef + x;
 			y = (finishY - y) * animationCoef + y;
 			scale = 0.8f + 0.2f * (1f - animationCoef);
+		}
+		if (playingDeadAnim) {
+			setDeadEmoji();
+			if (TimeUtils.millis() - deadAnimationStartTime > DEAD_ANIMATION_TIME) {
+				playingDeadAnim = false;
+				GameProcess.justHitted = true;
+				DeadlyTile.changeTexture();
+				TilesRenderer.requestRepaint();
+				setNormalRandomEmoji();
+			}
+			float t = TimeUtils.millis() - deadAnimationStartTime;
+			float r = 1f;
+			float omega = 0.1f;
+			x += r * Math.cos(omega * t);
+			y += r * Math.sin(omega * t);
 		}
 		
 		GameProcess.gameBatch.enableBlending();
@@ -111,6 +137,12 @@ public class Cat implements CollisionListener {
 		GameProcess.gameBatch.disableBlending();
 	}
 	
+	private void setNormalRandomEmoji() {
+		do {
+			currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
+		} while (currentEmoji == 5);
+	}
+
 	@Override
 	public boolean isMainParticle() {
 		return true;
@@ -169,13 +201,17 @@ public class Cat implements CollisionListener {
 	@Override
 	public void collidedWithDeadly() {
 		LaplacityAssets.playSound(LaplacityAssets.hurtSound);
-		GameProcess.justHitted = true;
+		playingDeadAnim = true;
+		deadAnimationStartTime = TimeUtils.millis();
+		body.setLinearVelocity(0, 0);
+		DeadlyTile.changeTexture();
+		TilesRenderer.requestRepaint();
 	}
 
 	@Override
 	public void collidedWithTile() {
 		LaplacityAssets.playSound(LaplacityAssets.bumpSound);
-		currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
+		setNormalRandomEmoji();
 	}
 
 	public float interpX() {

@@ -125,6 +125,7 @@ public class GameProcess {
 	public static final float CAT_SIZE = 4f;
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final long PARTICLE_TEXTURES_UPDATE_DELTA = 80;
+	public static final long DEAD_ANIMATION_TIME = 1000;
 	
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;
