@@ -403,6 +403,7 @@ public class GameProcess {
 	public static boolean tryToAddStaticParticle(ChargedParticle part) {
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		if (tl != null && tl.isAllowDensityChange() && !isParticleTooClose(part)) {
+			LaplacityAssets.playSound(LaplacityAssets.placeSound);
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
 			return true;
