@@ -29,8 +29,7 @@ public class ReturnDialog extends Dialog {
 		color.a = 0;
 		setColor(color);
 		//initialize
-		text("Return to main menu");
-		getContentTable();
+		text("Return to levels");
 		getButtonTable().pad(padSize);
 		getButtonTable().pad(padSize).defaults()
 						.width(btnWidth)
@@ -46,7 +45,7 @@ public class ReturnDialog extends Dialog {
 		LaplacityAssets.playSound(LaplacityAssets.clickSound);
 		if ((Boolean) object) {
 			LaplacityAssets.changeTrack("music/main theme_drop.ogg");
-			Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, null);
+			Globals.game.getScreenManager().pushScreen(Globals.nameLevelsScreen, null);
 		}
 	}
 }
