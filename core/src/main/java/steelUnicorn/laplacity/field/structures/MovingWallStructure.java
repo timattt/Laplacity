@@ -138,8 +138,8 @@ public class MovingWallStructure extends FieldStructure {
 		phaseDelta = (float) Math.asin(Math.max(-1.0,Math.min(1.0, x / r)));
 		gcd = gcd(blockRect.width(), blockRect.height());
 		
-		if (gcd == blockRect.width() || gcd == blockRect.height()) {
-			gcd = 1;
+		if (blockRect.width() % blockRect.height() != 0 && blockRect.height() % blockRect.width() != 0) {
+			Gdx.app.log("moving wall", "Warning. width and height are not good!");
 		}
 		
 		float phi = (float) Math.sin(phaseDelta);
