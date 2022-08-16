@@ -26,7 +26,7 @@ public class TrajectoryRenderer {
 	
 	public static void init() {
 		for (int i = 0; i < TRAJECTORY_POINTS; i++) {
-			trajectory[i] = new Vector2();
+			trajectory[i] = new Vector2(-10000, -10000);
 		}
 	}
 	

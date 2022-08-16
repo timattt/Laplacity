@@ -35,7 +35,7 @@ public class BackgroundRenderer {
 		float w = aspect * h;
 
 		gameCache.add(new TextureRegion(tex), - w, 0, w, h);
-		gameCache.add(new TextureRegion(tex), w, 0, w, h);
+
 		
 		idSpace = gameCache.endCache();
 
@@ -52,7 +52,14 @@ public class BackgroundRenderer {
 			gameCache.add(new TextureRegion(tex), x, 0, w, h);
 			x += w;
 			i++;
-		}
+		}		
+		
+		tex = LaplacityAssets.SPACE_BACKGROUND;
+		aspect = (float) tex.getWidth() / (float) tex.getHeight();
+		h = fieldHeight * sz;
+		w = aspect * h;
+		
+		gameCache.add(new TextureRegion(tex), x, 0, w, h);
 		
 		id = gameCache.endCache();
 	}
