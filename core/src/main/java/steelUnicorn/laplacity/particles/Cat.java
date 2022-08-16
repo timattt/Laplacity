@@ -149,7 +149,7 @@ public class Cat implements CollisionListener {
 	}
 
 	public void updatePhysics(float delta) {
-		if (currentGameMode == GameMode.FLIGHT) {
+		if (currentGameMode == GameMode.FLIGHT && !playingDeadAnim && !playingFinishAnim) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(-PARTICLE_CHARGE / body.getMass()), false);
 		}
@@ -170,6 +170,7 @@ public class Cat implements CollisionListener {
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
 		playingFinishAnim = false;
+		playingDeadAnim = false;
 	}
 	
 	public void drawStartVelocityArrow() {
@@ -200,6 +201,9 @@ public class Cat implements CollisionListener {
 
 	@Override
 	public void collidedWithDeadly() {
+		if (playingDeadAnim) {
+			return;
+		}
 		LaplacityAssets.playSound(LaplacityAssets.hurtSound);
 		playingDeadAnim = true;
 		deadAnimationStartTime = TimeUtils.millis();
