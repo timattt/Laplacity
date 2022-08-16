@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.utils.LevelParams.Hint;
 
 /**
  * Класс отвечает за прорисовку фонов в игре. Он слева направо рисует последовательность фонов,
@@ -60,6 +61,14 @@ public class BackgroundRenderer {
 		w = aspect * h;
 		
 		gameCache.add(new TextureRegion(tex), x, 0, w, h);
+		
+		for (Hint hint : levelParams.getLevelHints()) {
+			tex = (LaplacityAssets.HINTS.get(hint.getHintId()));
+			aspect = (float) tex.getWidth() / (float) tex.getHeight();
+			h = fieldHeight * sz;
+			w = aspect * h;
+			gameCache.add(new TextureRegion(tex), 0, 0, w, h);
+		}
 		
 		id = gameCache.endCache();
 	}

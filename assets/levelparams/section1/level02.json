@@ -2,16 +2,5 @@
 	backIds: [
 		8
 	],
-	levelHints: [
-		{
-			x: 1,
-			y: 2,
-			hintId: 3
-		},
-		{
-			x: 1,
-			y: 2,
-			hintId: 3
-		}
-	]
+	levelHints: []
 }
