@@ -233,15 +233,18 @@ public class LaplacityAssets {
 	}
 	
 	private static void cut(Texture from, TextureRegion[] result) {
+		int d = 1;
 		for (int i = 0; i < result.length; i++) {
-			result[i] = new TextureRegion(from, i * from.getWidth() / result.length, 0, from.getWidth() / result.length, from.getHeight());
+			result[i] = new TextureRegion(from, i * from.getWidth() / result.length + d, d, from.getWidth() / result.length - 2 * d, from.getHeight() - 2 * d);
 		}
 	}
 	
 	private static void cut(Texture from, TextureRegion[][] result) {
+		int d = 1;
+		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[i].length; j++) {
-				result[i][j] = new TextureRegion(from, i * from.getWidth() / result.length, j * from.getHeight() / result[i].length, from.getWidth() / result.length, from.getHeight() / result[i].length);
+				result[i][j] = new TextureRegion(from, i * from.getWidth() / result.length + d, j * from.getHeight() / result[i].length + d, from.getWidth() / result.length - 2 * d, from.getHeight() / result[i].length - 2 * d);
 			}
 		}
 	}

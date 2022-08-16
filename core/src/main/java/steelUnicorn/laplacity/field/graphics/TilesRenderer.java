@@ -34,6 +34,8 @@ public class TilesRenderer {
 	
 	private static long startTime;
 	
+	private static final float d = 0.0f;
+	
 	public static void init() {
 		shader = new ShaderProgram(Gdx.files.internal("shaders/Tiles.vert"), Gdx.files.internal("shaders/Tiles.frag"));
 		startTime = TimeUtils.millis();
@@ -43,8 +45,6 @@ public class TilesRenderer {
 		}
 		
 		float sz = LaplacityField.tileSize;
-		
-		float d = 0.01f;
 
 		GameProcess.gameCache.beginCache();
 		for (int i = 0; i < fieldWidth; i++) {
@@ -80,8 +80,6 @@ public class TilesRenderer {
 	private static void repaint() {
 		float sz = LaplacityField.tileSize;
 		
-		float d = 0.01f;
-		
 		GameProcess.gameCache.beginCache(id);
 		for (int i = 0; i < fieldWidth; i++) {
 			for (int j = 0; j < fieldHeight; j++) {
@@ -100,8 +98,6 @@ public class TilesRenderer {
 	
 	private static void repaintAnims() {
 		float sz = LaplacityField.tileSize;
-		
-		float d = 0.01f;
 		
 		GameProcess.gameCache.beginCache(animationId);
 		for (int i = 0; i < fieldWidth; i++) {
