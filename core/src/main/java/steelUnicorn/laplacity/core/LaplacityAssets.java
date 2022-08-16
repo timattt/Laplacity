@@ -160,7 +160,7 @@ public class LaplacityAssets {
     
     private static void loadTextureRegions(AssetManager assetManager) {
     	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[7]);
-    	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[11][5]);
+    	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[11][5], true);
     	cut(ELECTRON_TEXTURE, ELECTRON_REGIONS = new TextureRegion[7]);
     	cut(PROTON_TEXTURE, PROTON_REGIONS = new TextureRegion[7]);
         cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
@@ -233,14 +233,22 @@ public class LaplacityAssets {
 	}
 	
 	private static void cut(Texture from, TextureRegion[] result) {
-		int d = 1;
+		cut(from, result, false);
+	}
+	
+	private static void cut(Texture from, TextureRegion[][] result) {
+		cut(from, result, false);
+	}
+	
+	private static void cut(Texture from, TextureRegion[] result, boolean useD) {
+		int d = useD ? 1 : 0;
 		for (int i = 0; i < result.length; i++) {
 			result[i] = new TextureRegion(from, i * from.getWidth() / result.length + d, d, from.getWidth() / result.length - 2 * d, from.getHeight() - 2 * d);
 		}
 	}
 	
-	private static void cut(Texture from, TextureRegion[][] result) {
-		int d = 1;
+	private static void cut(Texture from, TextureRegion[][] result, boolean useD) {
+		int d = useD ? 1 : 0;
 		
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[i].length; j++) {
