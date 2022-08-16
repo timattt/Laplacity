@@ -158,7 +158,7 @@ public class MovingWallStructure extends FieldStructure {
 		
 		float sz = LaplacityField.tileSize;
 		
-		if (blockRect.width() % blockRect.height() != 0 && blockRect.height() % blockRect.width() != 0) {
+		if ((blockRect.width() % blockRect.height() != 0 && blockRect.height() % blockRect.width() != 0) || blockRect.width() == blockRect.height()) {
 			if (isHorizontal) {
 				for (int y = 0; y < blockRect.height(); y++) {
 					GameProcess.gameCache.add(LaplacityAssets.MOVING_WALL_STRUCTURE_REGIONS[y % 3], 0, y * sz, sz/2, sz/2, sz, sz, 1, 1, 90);
