@@ -127,7 +127,7 @@ public class TilesRenderer {
 		GameProcess.gameCache.begin();
 		GameProcess.gameCache.draw(animationId);
 		GameProcess.gameCache.end();
-		
+
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 	
