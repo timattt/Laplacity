@@ -20,7 +20,7 @@ void main() {
         	float omega = 10.;
       
         	
-        	float coef = (1. + sin(k * (pos.x + pos.y) + omega * time)) / 2f;
+        	float coef = (1. + sin(k * (pos.x + pos.y) + omega * time)) / 2.;
         	gl_FragColor.r = 0.8 + coef * 0.2;
        }
         
