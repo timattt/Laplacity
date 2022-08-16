@@ -1,11 +1,12 @@
 package steelUnicorn.laplacity.field.graphics;
 
-import static steelUnicorn.laplacity.field.LaplacityField.*;
 import static steelUnicorn.laplacity.GameProcess.*;
+import static steelUnicorn.laplacity.field.LaplacityField.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.CameraManager;
@@ -29,11 +30,22 @@ public class TilesRenderer {
 	
 	private static boolean repaintRequested = false;
 	
+	private static ShaderProgram shader;
+	
+	private static long startTime;
+	
 	public static void init() {
+		shader = new ShaderProgram(Gdx.files.internal("shaders/Tiles.vert"), Gdx.files.internal("shaders/Tiles.frag"));
+		startTime = TimeUtils.millis();
+		
+		if (!shader.isCompiled()) {
+			Gdx.app.log("shader compile", shader.getLog());
+		}
+		
 		float sz = LaplacityField.tileSize;
 		
 		float d = 0.01f;
-		
+
 		GameProcess.gameCache.beginCache();
 		for (int i = 0; i < fieldWidth; i++) {
 			for (int j = 0; j < fieldHeight; j++) {
@@ -120,6 +132,9 @@ public class TilesRenderer {
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		
+		shader.bind();
+		GameProcess.gameCache.setShader(shader);
+		shader.setUniformf("time", (float)(TimeUtils.millis() - startTime) / 1000f);
 		GameProcess.gameCache.setProjectionMatrix(CameraManager.camMat());
 		GameProcess.gameCache.begin();
 		GameProcess.gameCache.draw(id);
@@ -127,11 +142,16 @@ public class TilesRenderer {
 		GameProcess.gameCache.begin();
 		GameProcess.gameCache.draw(animationId);
 		GameProcess.gameCache.end();
+		GameProcess.gameCache.setShader(null);
 
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 	}
 	
 	public static void cleanup() {
+		if (shader != null) {
+			shader.dispose();
+			shader = null;
+		}
 	}
 	
 	public static void requestRepaint() {
