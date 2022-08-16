@@ -3,9 +3,10 @@ package steelUnicorn.laplacity.core;
 import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.audio.Music.OnCompletionListener;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -105,59 +106,59 @@ public class LaplacityAssets {
     public static Skin TEXSKIN;
     public static TextureAtlas ICONS;
 
-    public static void repackAssets() {
-		repackLevels();
+    public static void repackAssets(AssetManager assetManager) {
+		repackLevels(assetManager);
 
     	// sounds
-        clickSound = Globals.assetManager.get("sounds/click.wav");
-        lightClickSound = Globals.assetManager.get("sounds/light_click.wav");
-        bumpSound = Globals.assetManager.get("sounds/bump_barrier.wav");
-        placeSound = Globals.assetManager.get("sounds/place.wav");
-        hurtSound = Globals.assetManager.get("sounds/bump_deadly.wav");
-        bumpStructureSound = Globals.assetManager.get("sounds/bump_structure.wav");
-        genStartSound = Globals.assetManager.get("sounds/generator_start.wav");
-        sprayStartSound = Globals.assetManager.get("sounds/spray_start.wav");
-        popupSound = Globals.assetManager.get("sounds/popup.wav");
-        annihilationSound = Globals.assetManager.get("sounds/annihilation.wav");
-        spraySound = Globals.assetManager.get("sounds/spray.wav");
-		trampolineSound = Globals.assetManager.get("sounds/trampoline.wav");
-		glassBreakingSound = Globals.assetManager.get("sounds/glass_break.wav");
-		glassBumpSound = Globals.assetManager.get("sounds/bump_glass.wav");
-		starSound = Globals.assetManager.get("sounds/star.wav");
+        clickSound = assetManager.get("sounds/click.wav");
+        lightClickSound = assetManager.get("sounds/light_click.wav");
+        bumpSound = assetManager.get("sounds/bump_barrier.wav");
+        placeSound = assetManager.get("sounds/place.wav");
+        hurtSound = assetManager.get("sounds/bump_deadly.wav");
+        bumpStructureSound = assetManager.get("sounds/bump_structure.wav");
+        genStartSound = assetManager.get("sounds/generator_start.wav");
+        sprayStartSound = assetManager.get("sounds/spray_start.wav");
+        popupSound = assetManager.get("sounds/popup.wav");
+        annihilationSound = assetManager.get("sounds/annihilation.wav");
+        spraySound = assetManager.get("sounds/spray.wav");
+		trampolineSound = assetManager.get("sounds/trampoline.wav");
+		glassBreakingSound = assetManager.get("sounds/glass_break.wav");
+		glassBumpSound = assetManager.get("sounds/bump_glass.wav");
+		starSound = assetManager.get("sounds/star.wav");
         
         // TILES
-        TRAMPOLINE_TEXTURE = Globals.assetManager.get("textures/tiles/trampoline.png");
-        BARRIER_TEXTURE = Globals.assetManager.get("textures/tiles/barrier.png");
-        DEADLY_TEXTURE = Globals.assetManager.get("textures/tiles/deadly.png");
-        WALL_TEXTURE = Globals.assetManager.get("textures/tiles/wall.png"); 
+        TRAMPOLINE_TEXTURE = assetManager.get("textures/tiles/trampoline.png");
+        BARRIER_TEXTURE = assetManager.get("textures/tiles/barrier.png");
+        DEADLY_TEXTURE = assetManager.get("textures/tiles/deadly.png");
+        WALL_TEXTURE = assetManager.get("textures/tiles/wall.png"); 
         
         // STRUCTURES
-        BLADES_TEXTURE = Globals.assetManager.get("textures/structures/fan.png");
-        CELERATORS_TEXTURE = Globals.assetManager.get("textures/structures/celerators.png");
-        HATCH_TEXTURE = Globals.assetManager.get("textures/structures/hatch.png");
-        MOVING_WALL_TEXTURE = Globals.assetManager.get("textures/structures/moving.png");
-        GLASS_TEXTURE = Globals.assetManager.get("textures/structures/glass.png");
-        RED_LED_TEXTURE = Globals.assetManager.get("textures/structures/redLed.png");
-        HINGE_TEXTURE = Globals.assetManager.get("textures/structures/hinge.png");
-        STAR_TEXTURE = Globals.assetManager.get("textures/structures/stars.png");
-        ELEVATOR_TEXTURE = Globals.assetManager.get("textures/structures/elevator.png");
+        BLADES_TEXTURE = assetManager.get("textures/structures/fan.png");
+        CELERATORS_TEXTURE = assetManager.get("textures/structures/celerators.png");
+        HATCH_TEXTURE = assetManager.get("textures/structures/hatch.png");
+        MOVING_WALL_TEXTURE = assetManager.get("textures/structures/moving.png");
+        GLASS_TEXTURE = assetManager.get("textures/structures/glass.png");
+        RED_LED_TEXTURE = assetManager.get("textures/structures/redLed.png");
+        HINGE_TEXTURE = assetManager.get("textures/structures/hinge.png");
+        STAR_TEXTURE = assetManager.get("textures/structures/stars.png");
+        ELEVATOR_TEXTURE = assetManager.get("textures/structures/elevator.png");
         
         // OBJECTS
-        GIFT_TEXTURE = Globals.assetManager.get("rigidObjects/gift.png");
-        CAT_TEXTURE = Globals.assetManager.get("textures/objects/cat.png");
-        ELECTRON_TEXTURE = Globals.assetManager.get("textures/objects/electron.png");
-        PROTON_TEXTURE = Globals.assetManager.get("textures/objects/proton.png");
+        GIFT_TEXTURE = assetManager.get("rigidObjects/gift.png");
+        CAT_TEXTURE = assetManager.get("textures/objects/cat.png");
+        ELECTRON_TEXTURE = assetManager.get("textures/objects/electron.png");
+        PROTON_TEXTURE = assetManager.get("textures/objects/proton.png");
         
-        loadTextureRegions();
-        loadBackgrounds();
-        loadHints();
+        loadTextureRegions(assetManager);
+        loadBackgrounds(assetManager);
+        loadHints(assetManager);
 
-        SKIN = Globals.assetManager.get("ui/uiskin.json", Skin.class);
-        TEXSKIN = Globals.assetManager.get("ui/texskin/texskin.json", Skin.class);
-        ICONS = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
+        SKIN = assetManager.get("ui/uiskin.json", Skin.class);
+        TEXSKIN = assetManager.get("ui/texskin/texskin.json", Skin.class);
+        ICONS = assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
     }
     
-    private static void loadTextureRegions() {
+    private static void loadTextureRegions(AssetManager assetManager) {
     	cut(BARRIER_TEXTURE, BARRIER_REGIONS = new TextureRegion[7]);
     	cut(DEADLY_TEXTURE, DEADLY_REGIONS = new TextureRegion[11][5]);
     	cut(ELECTRON_TEXTURE, ELECTRON_REGIONS = new TextureRegion[7]);
@@ -177,7 +178,7 @@ public class LaplacityAssets {
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
     }
 
-	private static void repackLevels() {
+	private static void repackLevels(AssetManager assetManager) {
 		if (LevelsParser.levelParams == null) {
 			LevelsParser.parseParams();
 		}
@@ -194,7 +195,7 @@ public class LaplacityAssets {
 				FileHandle[] files = folder.list();
 				for (FileHandle file : files) {
 					if (file.extension().equals("png")) {
-						lvls.add(Globals.assetManager.get(file.path(), Texture.class));
+						lvls.add(assetManager.get(file.path(), Texture.class));
 						Globals.TOTAL_LEVELS_AVAILABLE++;
 					}
 				}
@@ -204,28 +205,28 @@ public class LaplacityAssets {
 		}
 	}
     
-    private static void loadBackgrounds() {
+    private static void loadBackgrounds(AssetManager assetManager) {
     	BACKGROUNDS = new Array<>();
 
 		FileHandle[] backs = Gdx.files.internal("textures/backgrounds/levelbacks/").list();
 
 		for (FileHandle back : backs) {
-			BACKGROUNDS.add(Globals.assetManager.get(back.path(), Texture.class));
+			BACKGROUNDS.add(assetManager.get(back.path(), Texture.class));
 		}
 
-		SPACE_BACKGROUND = Globals.assetManager.get("textures/backgrounds/SPACE_BACKGROUND.png", Texture.class);
+		SPACE_BACKGROUND = assetManager.get("textures/backgrounds/SPACE_BACKGROUND.png", Texture.class);
 
-		MAIN_MENU_BACKGROUND = Globals.assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class);
-		EARTH_BACKGROUND = Globals.assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class);
+		MAIN_MENU_BACKGROUND = assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class);
+		EARTH_BACKGROUND = assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class);
 	}
 
-	private static void loadHints() {
+	private static void loadHints(AssetManager assetManager) {
 		HINTS = new Array<>();
 
 		FileHandle[] hints = Gdx.files.internal("textures/hints/").list();
 
 		for (FileHandle hint : hints) {
-			HINTS.add(Globals.assetManager.get(hint.path(), Texture.class));
+			HINTS.add(assetManager.get(hint.path(), Texture.class));
 		}
 
 		Gdx.app.log("Hints loaded", HINTS.toString());
@@ -261,14 +262,16 @@ public class LaplacityAssets {
 	}
 
 	public static void changeTrack(String name) {
-		if (currentMusic != null && Globals.assetManager.contains(currentMusic))
-			Globals.assetManager.unload(currentMusic);
-		if (currentIntro != null && Globals.assetManager.contains(currentIntro))
-			Globals.assetManager.unload(currentIntro);
+		AssetManager assetManager = Globals.game.assetManager;
+		
+		if (currentMusic != null && assetManager.contains(currentMusic))
+			assetManager.unload(currentMusic);
+		if (currentIntro != null && assetManager.contains(currentIntro))
+			assetManager.unload(currentIntro);
 		currentMusic = name;
-		Globals.assetManager.load(currentMusic, Music.class);
-		Globals.assetManager.finishLoadingAsset(currentMusic);
-		music = Globals.assetManager.get(currentMusic);
+		assetManager.load(currentMusic, Music.class);
+		assetManager.finishLoadingAsset(currentMusic);
+		music = assetManager.get(currentMusic);
 		music.setLooping(true);
 		music.setVolume(Settings.getMusicVolume());
 		music.play();
@@ -293,29 +296,31 @@ public class LaplacityAssets {
 
 	// передавать просто name без префикса
 	public static void loopTrackWithIntro(String name) {
+		AssetManager assetManager = Globals.game.assetManager;
+		
 		// ставим интро
-		if (currentIntro != null && Globals.assetManager.contains(currentIntro))
-			Globals.assetManager.unload(currentIntro);
+		if (currentIntro != null && assetManager.contains(currentIntro))
+			assetManager.unload(currentIntro);
 		currentIntro = "music/intros/" + name; 
-		Globals.assetManager.load(currentIntro, Music.class);
-		Globals.assetManager.finishLoadingAsset(currentIntro);
-		intro = Globals.assetManager.get(currentIntro);
+		assetManager.load(currentIntro, Music.class);
+		assetManager.finishLoadingAsset(currentIntro);
+		intro = assetManager.get(currentIntro);
 		intro.setVolume(Settings.getMusicVolume());
 		intro.play();
 
 		// асинхронно грузим и ставим в очередь дроп
-		if (currentMusic != null && Globals.assetManager.contains(currentMusic))
-			Globals.assetManager.unload(currentMusic);
+		if (currentMusic != null && assetManager.contains(currentMusic))
+			assetManager.unload(currentMusic);
 		currentMusic = "music/levels/" + name;
-		Globals.assetManager.load(currentMusic, Music.class);
+		assetManager.load(currentMusic, Music.class);
 		fromIntroToDrop = new OnCompletionListener() {
 			@Override
 			public void onCompletion(Music a) {
 				music.play();
 			}
 		};
-		Globals.assetManager.finishLoadingAsset(currentMusic);
-		music = Globals.assetManager.get(currentMusic);
+		assetManager.finishLoadingAsset(currentMusic);
+		music = assetManager.get(currentMusic);
 		music.setVolume(Settings.getMusicVolume());
 		music.setLooping(true);
 		intro.setOnCompletionListener(fromIntroToDrop);

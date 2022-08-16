@@ -32,6 +32,7 @@ import steelUnicorn.laplacity.utils.Settings;
 /** Класс запуска игры. Инициализируем поля из класса Globals. Загружаем assets. */
 public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
+	public AssetManager assetManager;
 	private SpriteBatch transitionBatch;
 	private AdHandler adHandler;
 	
@@ -111,7 +112,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 
 		// finish loading
 		assetManager.finishLoading();
-		LaplacityAssets.repackAssets();
+		LaplacityAssets.repackAssets(assetManager);
 	}
 	
 	@Override

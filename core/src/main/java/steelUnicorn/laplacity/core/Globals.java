@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity.core;
 
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -63,9 +62,6 @@ public class Globals {
 	public static WinScreen winScreen;
 	public static LevelsScreen levelsScreen;
 	public static LoadingScreen loadingScreen;
-
-	// Resource manager
-	public static AssetManager assetManager;
 
 	// TMP
 	public static final Vector2 TMP1 = new Vector2();
