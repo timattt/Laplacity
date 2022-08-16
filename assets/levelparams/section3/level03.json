@@ -1,6 +1,8 @@
 {
 	backIds: [
-		7
+		{value: 2},
+		{value: 3},
+		{value: 1},
 	],
 	levelHints: [
 		{

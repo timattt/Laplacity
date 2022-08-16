@@ -26,34 +26,28 @@ public class BackgroundRenderer {
 	public static void init() {
 		gameCache.beginCache();
 		
-		int fieldWidth = LaplacityField.fieldWidth;
 		int fieldHeight = LaplacityField.fieldHeight;
 		float sz = LaplacityField.tileSize;
 		
+		Texture tex = LaplacityAssets.SPACE_BACKGROUND;
+		float aspect = (float) tex.getWidth() / (float) tex.getHeight();
+		float h = fieldHeight * sz;
+		float w = aspect * h;
 
-		float x = 2 * fieldWidth * sz;
-
-		while (x > 0) {
-			Texture tex = LaplacityAssets.SPACE_BACKGROUND;
-			float aspect = (float) tex.getWidth() / (float) tex.getHeight();
-			float h = fieldHeight * sz;
-			float w = aspect * h;
-
-			gameCache.add(new TextureRegion(tex), x - w, 0, w, h);
-			x -= w;
-		}
+		gameCache.add(new TextureRegion(tex), - w, 0, w, h);
+		gameCache.add(new TextureRegion(tex), w, 0, w, h);
 		
 		idSpace = gameCache.endCache();
 
-		x = 0;
+		float x = 0;
 
 		gameCache.beginCache();
-		
+		Gdx.app.log("background rnederer", levelParams.getBackIds().toString());
 		for (int i = 0; i < levelParams.getBackIds().size; i++) {
-			Texture tex = LaplacityAssets.BACKGROUNDS.get(levelParams.getBackIds().get(i));
-			float aspect = (float) tex.getWidth() / (float) tex.getHeight();
-			float h = fieldHeight * sz;
-			float w = aspect * h;
+			tex = LaplacityAssets.BACKGROUNDS.get(levelParams.getBackIds().get(i));
+			aspect = (float) tex.getWidth() / (float) tex.getHeight();
+			h = fieldHeight * sz;
+			w = aspect * h;
 			
 			gameCache.add(new TextureRegion(tex), x, 0, w, h);
 			x += w;
