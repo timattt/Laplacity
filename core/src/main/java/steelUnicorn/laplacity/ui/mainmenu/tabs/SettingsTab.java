@@ -25,6 +25,7 @@ import steelUnicorn.laplacity.utils.Settings;
  */
 public class SettingsTab extends MainMenuTab {
     public ScrollPane settingsPane;
+    private Table settings;
     private static float cbSize = Globals.UI_WORLD_HEIGHT * 0.04f;
     private static float cbPad = cbSize * 0.2f;
 
@@ -42,20 +43,22 @@ public class SettingsTab extends MainMenuTab {
         row();
         addDescription("Settings:", skin);
         row();
-        addSettings(skin);
 
-        settingsPane = new ScrollPane(this);
+        createSettings(skin);
+
+        settingsPane = new ScrollPane(settings);
         settingsPane.validate();
         settingsPane.setName("tab");
         settingsPane.setFadeScrollBars(false);
+
+        add(settingsPane).space(tabSpace);
     }
 
     /**
      * Функция добавляет настройки во вкладку.
      */
-    private void addSettings(Skin skin) {
-        Table settings = new Table();
-        add(settings).space(tabSpace);
+    private void createSettings(Skin skin) {
+        settings = new Table();
         settings.defaults().left().space(tabSpace);
 
         //Sound and music

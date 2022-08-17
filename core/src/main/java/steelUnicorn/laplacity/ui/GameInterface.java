@@ -37,6 +37,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
+	private SettingsDialog settingsDialog;
 	private CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
 	private static final float iconSpace = iconSize * 0.08f;
@@ -76,6 +77,7 @@ public class GameInterface extends Stage implements GestureListener {
 		visibleActors = new Array<>();
 		//Dialogs initialize
 		returnDialog = new ReturnDialog(SKIN);
+		settingsDialog = new SettingsDialog(SKIN);
 		//FpsCounter
 		FpsCounter fpsCounter = new FpsCounter(SKIN);
 		addActor(fpsCounter);
@@ -102,7 +104,7 @@ public class GameInterface extends Stage implements GestureListener {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
 				Gdx.app.log("GameInterface", "settings pressed");
-				//settingsDialog.show(GameInterface.this);
+				settingsDialog.show(GameInterface.this);
 			}
 		})).expandY().bottom().size(iconSize);
 		root.add(leftIcons).expand().fillY().left().pad(iconSpace).uniform();
