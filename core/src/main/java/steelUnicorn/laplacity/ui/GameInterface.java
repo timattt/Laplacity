@@ -138,7 +138,7 @@ public class GameInterface extends Stage implements GestureListener {
 
 					catFI.update(catFood.launch());
 				} else {
-					CatFoodInterface.showHungry(GameInterface.this);
+					catFI.showHungry(GameInterface.this);
 					changeGameMode(GameMode.NONE);
 				}
 			}

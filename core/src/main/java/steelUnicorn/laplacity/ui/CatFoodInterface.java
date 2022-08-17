@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.ui;
 
-import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.core.Globals;
 
@@ -30,8 +28,8 @@ public class CatFoodInterface extends Table {
 
     private float padSize = 5;
 
-    private static float scale = 3;
-    private static Label hungryMsg;
+    private CatDialog hungryDialog;
+
     private static boolean isShown = false;
 
     public CatFoodInterface(Skin skin) {
@@ -68,8 +66,8 @@ public class CatFoodInterface extends Table {
         add(timerLabel).size(timerLabel.getPrefWidth(), timerLabel.getPrefHeight());
 
         //hungryMsg init
-        if (hungryMsg == null) {
-            createHungry(SKIN);
+        if (hungryDialog == null) {
+            hungryDialog = new CatDialog(this, skin);
         }
 
         update(Globals.catFood.getTotalLaunchesAvailable());
@@ -83,32 +81,7 @@ public class CatFoodInterface extends Table {
         return timerLabel;
     }
 
-    //hungry message logic
-    private static void createHungry(Skin skin) {
-        hungryMsg = new Label("Cat Hungry", skin);
-        hungryMsg.setColor(Color.RED);
-        hungryMsg.setName("hungryMessage");
-        hungryMsg.setVisible(false);
-        hungryMsg.setSize(hungryMsg.getWidth() * scale, hungryMsg.getHeight() * scale);
-        hungryMsg.setFontScale(scale);
-    }
-
-    public static void showHungry(Stage stg) {
-        if (!stg.getActors().contains(hungryMsg, true)) {
-            hungryMsg.setPosition(stg.getWidth() / 2 - hungryMsg.getWidth() / 2,
-                    stg.getHeight() / 2 - hungryMsg.getHeight() / 2);
-            stg.addActor(hungryMsg);
-        }
-        if (!isShown) { //Проверка на то что надпись уже показывается
-            isShown = true;
-            hungryMsg.setVisible(true);
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    hungryMsg.setVisible(false);
-                    isShown = false;
-                }
-            }, 2.5f);
-        }
+    public void showHungry(Stage stg) {
+        hungryDialog.show(stg);
     }
 }

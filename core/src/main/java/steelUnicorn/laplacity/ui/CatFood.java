@@ -25,7 +25,7 @@ public class CatFood {
 
     //advertisment
     private static final int REWARDED_LAUNCHES = 10;
-    private static final int INTERSTITIAL_LAUNCHES = 5;
+    private static final int INTERSTITIAL_LAUNCHES = 2;
 
     public CatFoodTimer timer;
     //Конструктор подгружает из preferences
