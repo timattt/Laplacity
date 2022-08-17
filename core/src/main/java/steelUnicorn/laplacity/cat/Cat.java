@@ -130,11 +130,11 @@ public class Cat implements CollisionListener {
 	}
 	
 	public void resetToStartPosAndStartVelocity() {
+		CatAnimationManager.stopCurrentAnimation();
 		body.setTransform(LaplacityField.electronStartPos.x, LaplacityField.electronStartPos.y, 0);
 		savePosition();
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
-		CatAnimationManager.stopCurrentAnimation();
 	}
 	
 	public void drawStartVelocityArrow() {

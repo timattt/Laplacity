@@ -75,7 +75,7 @@ public class GameProcess {
 	//========================================================================================
 	// Stage, world, ui
 	private static World levelWorld;
-	private static GameInterface gameUI;
+	public static GameInterface gameUI;
 	public static SpriteBatch gameBatch;
 	public static SpriteCache gameCache;
 	private static RayHandler rayHandler;

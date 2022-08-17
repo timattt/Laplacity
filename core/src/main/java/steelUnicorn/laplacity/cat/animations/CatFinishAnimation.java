@@ -22,6 +22,7 @@ public class CatFinishAnimation extends CatAnimation {
 	@Override
 	public void animationStarted() {
 		GameProcess.cat.getBody().setLinearVelocity(0, 0);
+		GameProcess.gameUI.setPauseButtonEnabled(false);
 	}
 
 	@Override
@@ -33,6 +34,7 @@ public class CatFinishAnimation extends CatAnimation {
 
 	@Override
 	public void animationEnded() {
+		GameProcess.gameUI.setPauseButtonEnabled(true);
 		GameProcess.cat.setPosition(finishX, finishY);
 		GameProcess.justFinished = true;
 	}

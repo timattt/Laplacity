@@ -38,8 +38,8 @@ public class CatAnimationManager {
 	
 	public static void stopCurrentAnimation() {
 		if (currentAnimation != null) {
-			currentAnimation.animationEnded();
 			currentAnimation.finished = true;
+			currentAnimation.animationEnded();
 			currentAnimation = null;
 		}
 	}
