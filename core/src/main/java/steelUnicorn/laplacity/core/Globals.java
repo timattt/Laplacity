@@ -68,6 +68,7 @@ public class Globals {
 	public static final Vector2 TMP2 = new Vector2();
 	public static final Vector3 TMP3 = new Vector3();
 	public static final Vector3 TMP4 = new Vector3();
+	public static final Vector2 TMP5 = new Vector2();
 	
 	// Total levels loaded
 	public static int TOTAL_LEVELS_AVAILABLE;

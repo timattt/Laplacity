@@ -156,8 +156,17 @@ public class Cat implements CollisionListener {
 	}
 
 	public void setSlingshot(float x, float y) {
-		slingshotX = x;
-		slingshotY = y;
+		TMP5.set(x, y);
+		float len = TMP5.len();
+		
+		if (len > SLINGSHOT_MAX_LENGTH) {
+			TMP5.scl(SLINGSHOT_MAX_LENGTH / len);
+			slingshotX = TMP5.x;
+			slingshotY = TMP5.y;
+		} else {
+			slingshotX = x;
+			slingshotY = y;
+		}
 	}
 	
 	public void makeParticleMoveWithStartVelocity() {
