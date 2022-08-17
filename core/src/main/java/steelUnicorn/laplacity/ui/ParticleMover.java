@@ -28,6 +28,7 @@ public class ParticleMover {
 		
 		if (p != null && !TrajectoryRenderer.changingDir) {
 			current = p;
+			current.useVirtual(x, y);
 		}
 	}
 	
@@ -35,15 +36,16 @@ public class ParticleMover {
 		if (current != null) {
 			TMP1.set(cat.getX(), cat.getY());
 			TMP1.sub(x, y);
-			if (TMP1.len2() < 4 * PARTICLE_SIZE * PARTICLE_SIZE) {
-				stopMoving();
+			if (TMP1.len2() > 4 * CAT_SIZE * CAT_SIZE) {
+				tryToMoveStaticParticle(current, x, y);
 			}
-			tryToMoveStaticParticle(current, x, y);
+			current.useVirtual(x, y);
 		}
 	}
 	
-	public static void stopMoving() {
+	public static void stopMoving(float x, float y) {
 		if (current != null) {
+			current.disableVirtual();
 			FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 			TrajectoryRenderer.updateTrajectory();
 			current = null;

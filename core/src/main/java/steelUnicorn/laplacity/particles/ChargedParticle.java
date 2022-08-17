@@ -32,6 +32,11 @@ public class ChargedParticle implements CollisionListener {
 	// size
 	protected float radius;
 	
+	// drag
+	protected boolean useVirtualCoords = false;
+	protected float virtualX;
+	protected float virtualY;
+	
 	public ChargedParticle(float x, float y, float rad, float charge, boolean isStatic, Color lightColor) {
 		this.charge = charge;
 		this.radius = rad;
@@ -60,6 +65,16 @@ public class ChargedParticle implements CollisionListener {
 		pointLight.attachToBody(body);
 		
 		setPosition(x, y);
+	}
+	
+	public void useVirtual(float x, float y) {
+		useVirtualCoords = true;
+		virtualX = x;
+		virtualY = y;
+	}
+	
+	public void disableVirtual() {
+		useVirtualCoords = false;
 	}
 	
 	public void draw() {
