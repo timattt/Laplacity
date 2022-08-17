@@ -23,8 +23,17 @@ public class Proton extends ChargedParticle {
 			lastAnimationUpdate = TimeUtils.millis();
 			currentTextureIndex = (currentTextureIndex + 1) % LaplacityAssets.PROTON_REGIONS.length;
 		}
+		
+		float x = getX();
+		float y = getY();
+		
+		if (useVirtualCoords) {
+			x = virtualX;
+			y = virtualY;
+		}
+		
 		GameProcess.gameBatch.enableBlending();
-		GameProcess.gameBatch.draw(LaplacityAssets.PROTON_REGIONS[currentTextureIndex], getX() - PARTICLE_SIZE, getY() - PARTICLE_SIZE, 2 * PARTICLE_SIZE, 2 * PARTICLE_SIZE);
+		GameProcess.gameBatch.draw(LaplacityAssets.PROTON_REGIONS[currentTextureIndex], x - PARTICLE_SIZE, y - PARTICLE_SIZE, 2 * PARTICLE_SIZE, 2 * PARTICLE_SIZE);
 		GameProcess.gameBatch.disableBlending();
 	}
 

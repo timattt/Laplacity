@@ -48,7 +48,7 @@ public class ModeElectrons extends GameMode {
 
 	@Override
 	public void touchUp(float x, float y) {
-		ParticleMover.stopMoving();
+		ParticleMover.stopMoving(x, y);
 	}
 
 	@Override
