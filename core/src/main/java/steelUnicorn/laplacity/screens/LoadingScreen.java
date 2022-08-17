@@ -3,7 +3,7 @@ package steelUnicorn.laplacity.screens;
 import static steelUnicorn.laplacity.core.Globals.game;
 import static steelUnicorn.laplacity.core.Globals.guiViewport;
 import static steelUnicorn.laplacity.core.Globals.nameGameScreen;
-import static steelUnicorn.laplacity.core.LaplacityAssets.EARTH_BACKGROUND;
+import static steelUnicorn.laplacity.core.LaplacityAssets.LOAD_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 
 import com.badlogic.gdx.Gdx;
@@ -39,7 +39,7 @@ public class LoadingScreen extends ManagedScreen {
     public LoadingScreen() {
         loadingStage = new Stage(guiViewport);
 
-        background = new Image(EARTH_BACKGROUND);
+        background = new Image(LOAD_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * guiViewport.getWorldHeight(),
                 guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + guiViewport.getWorldWidth() / 2 , 0);
