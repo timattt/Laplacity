@@ -135,8 +135,8 @@ public class GameProcess {
 	// TRAJECTORY
 	public static final int TRAJECTORY_POINTS = 20;
 	public static final int STEPS_PER_POINT = 2;
-	public static final float TRAJECTORY_VELOCITY_MULTIPLIER = 4f;
-	public static final float SLINGSHOT_MAX_LENGTH = 20f;
+	public static final float TRAJECTORY_VELOCITY_MULTIPLIER = 3f;
+	public static final float SLINGSHOT_MAX_LENGTH = 22f;
 	
 	// PHYSICS
 	public static final float TRAJECTORY_TIME_STEP = 1f/60f; // используется при расчёте траектории для подсказки
