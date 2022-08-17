@@ -40,6 +40,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private SettingsDialog settingsDialog;
 	private CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
+	private static final float settingsSize = iconSize * 0.9f;
 	private static final float iconSpace = iconSize * 0.08f;
 
 	Cell<Button> flightCell;
@@ -106,7 +107,8 @@ public class GameInterface extends Stage implements GestureListener {
 				Gdx.app.log("GameInterface", "settings pressed");
 				settingsDialog.show(GameInterface.this);
 			}
-		})).expandY().bottom().size(iconSize);
+		})).expandY().bottom().size(settingsSize);
+
 		root.add(leftIcons).expand().fillY().left().pad(iconSpace).uniform();
 
 
