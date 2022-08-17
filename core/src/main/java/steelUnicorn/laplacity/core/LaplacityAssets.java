@@ -49,6 +49,9 @@ public class LaplacityAssets {
 	public static Sound glassBreakingSound;
 	public static Sound glassBumpSound;
 	public static Sound starSound;
+	public static Sound eraserSweepSound;
+	public static Sound eraserLoopSound;
+	public static Sound bumpParticleSound;
 
 	// TILES
 	public static Texture BARRIER_TEXTURE;
@@ -126,6 +129,9 @@ public class LaplacityAssets {
 		glassBreakingSound = assetManager.get("sounds/glass_break.wav");
 		glassBumpSound = assetManager.get("sounds/bump_glass.wav");
 		starSound = assetManager.get("sounds/star.wav");
+		eraserSweepSound = assetManager.get("sounds/eraser_sw.wav");
+		eraserLoopSound = assetManager.get("sounds/eraser_loop.wav");
+		bumpParticleSound = assetManager.get("sounds/bump_particle.wav");
         
         // TILES
         TRAMPOLINE_TEXTURE = assetManager.get("textures/tiles/trampoline.png");

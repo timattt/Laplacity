@@ -95,6 +95,7 @@ public class LevelsTab extends MainMenuTab {
             leftArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    LaplacityAssets.playSound(LaplacityAssets.clickSound);
                     LevelsTab.this.currentSection--;
                     updateSectionName();
                     LevelsTab.this.updateSection();
@@ -113,6 +114,7 @@ public class LevelsTab extends MainMenuTab {
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    LaplacityAssets.playSound(LaplacityAssets.clickSound);
                     LevelsTab.this.currentSection++;
                     LevelsTab.this.updateSection();
                     updateSectionName();

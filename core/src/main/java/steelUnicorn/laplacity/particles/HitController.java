@@ -45,6 +45,9 @@ public class HitController implements ContactListener {
 		} else if (dat1.isTile()) {
 			dat2.collidedWithTile();
 		}
+		if (dat1.isParticle()) {
+			dat2.collidedWithParticle();
+		}
 		
 		if (dat2.isDeadly()) {
 			dat1.collidedWithDeadly();
@@ -59,6 +62,9 @@ public class HitController implements ContactListener {
 			dat1.collidedWithTrampoline();
 		} else if (dat2.isTile()) {
 			dat1.collidedWithTile();
+		}
+		if (dat2.isParticle()) {
+			dat1.collidedWithParticle();
 		}
 	}
 	

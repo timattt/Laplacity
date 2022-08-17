@@ -75,6 +75,11 @@ public class MovingWallStructure extends FieldStructure {
 		public boolean isDeadly() {
 			return false;
 		}
+
+		@Override
+		public boolean isParticle() {
+			return false;
+		}
 		
 		@Override
 		public void collidedWithTrampoline() {}
@@ -92,6 +97,9 @@ public class MovingWallStructure extends FieldStructure {
 		
 		@Override
 		public void collidedWithDeadly() {}
+
+		@Override
+		public void collidedWithParticle() {}
 	};
 	private Body destroyer;
 	

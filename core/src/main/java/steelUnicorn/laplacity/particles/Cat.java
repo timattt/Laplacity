@@ -298,5 +298,13 @@ public class Cat implements CollisionListener {
 		return body;
 	}
 	
-	
+	@Override
+	public boolean isParticle() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithParticle() {
+		LaplacityAssets.playSound(LaplacityAssets.bumpParticleSound);
+	}
 }

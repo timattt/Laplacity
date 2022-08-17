@@ -57,4 +57,13 @@ public class TileCollisionListener implements CollisionListener {
 	public void collidedWithTrampoline() {
 	}
 
+	@Override
+	public boolean isParticle() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithParticle() {
+	}
+
 }

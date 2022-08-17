@@ -21,5 +21,8 @@ public interface CollisionListener {
 	
 	public boolean isTrampoline();
 	public void collidedWithTrampoline();
+
+	public boolean isParticle();
+	public  void  collidedWithParticle();
 	
 }

@@ -234,4 +234,14 @@ public class FieldStructure implements CollisionListener {
 	@Override
 	public void collidedWithTrampoline() {
 	}
+
+	@Override
+	public  boolean isParticle() {
+		return false;
+	}
+
+	@Override
+	public void collidedWithParticle() {
+	}
+
 }
