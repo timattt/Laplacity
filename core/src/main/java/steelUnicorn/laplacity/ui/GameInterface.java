@@ -363,4 +363,7 @@ public class GameInterface extends Stage implements GestureListener {
 		currentGameMode.pinchStop();
 	}
 	
+	public void setPauseButtonEnabled(boolean val) {
+		pauseBtn.setVisible(val);
+	}
 }

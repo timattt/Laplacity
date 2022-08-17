@@ -5,11 +5,12 @@ import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.cat.animations.CatFinishAnimation;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
+import steelUnicorn.laplacity.particles.CatAnimationManager;
 
 public class HatchStructure extends FieldStructure {
 
@@ -25,18 +26,12 @@ public class HatchStructure extends FieldStructure {
 		Gdx.app.log("new hatch structure", "bounds: " + bounds);
 	}
 
-	private long finishTime;
-	private boolean mayFinish = false;
-	private static final long ANIM_TIME = 1500;
+	private CatFinishAnimation anim = null;
 	
 	@Override
 	public void renderBatched(float timeFromStart) {
-		if (mayFinish) {
-			cat.getBody().setLinearVelocity(0, 0);
-			cat.setAnimationCoef((float)(TimeUtils.millis() - finishTime) / (float)ANIM_TIME);
-		}
-		if (mayFinish && TimeUtils.millis() - finishTime > ANIM_TIME) {
-			GameProcess.justFinished = true;
+		if (anim != null && anim.isFinished()) {
+			anim = null;
 		}
 		
 		float sz = LaplacityField.tileSize;
@@ -55,10 +50,9 @@ public class HatchStructure extends FieldStructure {
 		
 		float R = (bounds.width() * sz / 2);
 		
-		if (len < R * R && !mayFinish) {
-			mayFinish = true;
-			finishTime = TimeUtils.millis();
-			cat.playFinishAnimation(centerX, centerY);
+		if (len < R * R && anim == null) {
+			anim = (CatFinishAnimation) cat.startAnimation(CatAnimationManager.FINISH);
+			anim.setFinishPos(centerX, centerY);
 		}
 		
 		GameProcess.gameBatch.enableBlending();

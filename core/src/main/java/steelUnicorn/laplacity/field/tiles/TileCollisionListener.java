@@ -41,7 +41,7 @@ public class TileCollisionListener implements CollisionListener {
 
 	@Override
 	public boolean isTile() {
-		return true;
+		return !isDeadly && !isTrampoline;
 	}
 
 	@Override
