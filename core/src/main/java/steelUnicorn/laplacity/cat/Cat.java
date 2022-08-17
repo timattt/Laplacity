@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.particles;
+package steelUnicorn.laplacity.cat;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
@@ -9,19 +9,19 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.field.graphics.TilesRenderer;
 import steelUnicorn.laplacity.field.physics.CollisionListener;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
-import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
+import steelUnicorn.laplacity.particles.CatAnimationManager;
+import steelUnicorn.laplacity.particles.CatAnimationManager.CatAnimation;
 
 
 /**
@@ -39,19 +39,6 @@ public class Cat implements CollisionListener {
 	// Prev pos
 	private float prevX = 0f;
 	private float prevY = 0f;
-	
-	// emoji
-	private int currentEmoji = 0;
-	
-	// finish animation
-	private float finishX;
-	private float finishY;
-	private boolean playingFinishAnim = false;
-	private float animationCoef = 0;
-	
-	// dead animation
-	private boolean playingDeadAnim = false;
-	private long deadAnimationStartTime;
 	
 	// body
 	private Body body;
@@ -92,55 +79,33 @@ public class Cat implements CollisionListener {
 		return body.getTransform().getPosition().y;
 	}
 	
-	private void setDeadEmoji() {
-		currentEmoji = 5;
+	public void setPosition(float x, float y) {
+		body.setTransform(x, y, 0);
+		prevX = x;
+		prevY = y;
 	}
 	
+	public CatAnimation startAnimation(CatAnimation type) {
+		return CatAnimationManager.startAnimation(type);
+	}
+
 	public void draw() {
-		float x = interpX();
-		float y = interpY();
-		float scale = 1;
-		
-		if (playingFinishAnim) {
-			x = (finishX - x) * animationCoef + x;
-			y = (finishY - y) * animationCoef + y;
-			scale = 0.8f + 0.2f * (1f - animationCoef);
-		}
-		if (playingDeadAnim) {
-			setDeadEmoji();
-			if (TimeUtils.millis() - deadAnimationStartTime > DEAD_ANIMATION_TIME) {
-				playingDeadAnim = false;
-				GameProcess.justHitted = true;
-				DeadlyTile.changeTexture();
-				TilesRenderer.requestRepaint();
-				setNormalRandomEmoji();
-			}
-			float t = TimeUtils.millis() - deadAnimationStartTime;
-			float r = 1f;
-			float omega = 0.1f;
-			x += r * Math.cos(omega * t);
-			y += r * Math.sin(omega * t);
-		}
+		Globals.TMP3.set(interpX(), interpY(), 1f);
+		CatAnimationManager.update(Globals.TMP3);
 		
 		GameProcess.gameBatch.enableBlending();
-		GameProcess.gameBatch.draw(LaplacityAssets.CAT_REGIONS[currentEmoji % LaplacityAssets.CAT_REGIONS.length][currentEmoji / LaplacityAssets.CAT_REGIONS.length],
-				x - CAT_SIZE,
-				y - CAT_SIZE,
+		GameProcess.gameBatch.draw(CatAnimationManager.getTextureRegion(),
+				TMP3.x - CAT_SIZE,
+				TMP3.y - CAT_SIZE,
 				CAT_SIZE,
 				CAT_SIZE,
 				2 * CAT_SIZE,
 				2 * CAT_SIZE,
-				scale,
-				scale,
+				TMP3.z,
+				TMP3.z,
 				body.getAngle() * MathUtils.radDeg
 				);
 		GameProcess.gameBatch.disableBlending();
-	}
-	
-	private void setNormalRandomEmoji() {
-		do {
-			currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
-		} while (currentEmoji == 5);
 	}
 
 	@Override
@@ -149,7 +114,7 @@ public class Cat implements CollisionListener {
 	}
 
 	public void updatePhysics(float delta) {
-		if (currentGameMode == GameMode.FLIGHT && !playingDeadAnim && !playingFinishAnim) {
+		if (currentGameMode == GameMode.FLIGHT && !CatAnimationManager.isPlayingSomeAnimation()) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(-PARTICLE_CHARGE / body.getMass()), false);
 		}
@@ -169,8 +134,7 @@ public class Cat implements CollisionListener {
 		savePosition();
 		body.setLinearVelocity(0, 0);
 		body.setAngularVelocity(0);
-		playingFinishAnim = false;
-		playingDeadAnim = false;
+		CatAnimationManager.stopCurrentAnimation();
 	}
 	
 	public void drawStartVelocityArrow() {
@@ -201,21 +165,18 @@ public class Cat implements CollisionListener {
 
 	@Override
 	public void collidedWithDeadly() {
-		if (playingDeadAnim) {
+		if (CatAnimationManager.isPlayingSomeAnimation()) {
 			return;
 		}
 		LaplacityAssets.playSound(LaplacityAssets.hurtSound);
-		playingDeadAnim = true;
-		deadAnimationStartTime = TimeUtils.millis();
+		CatAnimationManager.startAnimation(CatAnimationManager.DEATH);
 		body.setLinearVelocity(0, 0);
-		DeadlyTile.changeTexture();
-		TilesRenderer.requestRepaint();
 	}
 
 	@Override
 	public void collidedWithTile() {
 		LaplacityAssets.playSound(LaplacityAssets.bumpSound);
-		setNormalRandomEmoji();
+		CatAnimationManager.setRandomEmoji();
 	}
 
 	public float interpX() {
@@ -229,7 +190,7 @@ public class Cat implements CollisionListener {
 	@Override
 	public void collidedWithTrampoline() {
 		LaplacityAssets.playSound(LaplacityAssets.trampolineSound);
-		currentEmoji = (int) (Math.random() * LaplacityAssets.CAT_REGIONS.length * LaplacityAssets.CAT_REGIONS[0].length);
+		CatAnimationManager.setRandomEmoji();
 	}
 
 	/**
@@ -245,16 +206,6 @@ public class Cat implements CollisionListener {
 
 	public Vector2 getVelocity() {
 		return body.getLinearVelocity();
-	}
-
-	public void playFinishAnimation(float finX, float finY) {
-		finishX = finX;
-		finishY = finY;
-		playingFinishAnim = true;
-	}
-
-	public void setAnimationCoef(float animationCoef) {
-		this.animationCoef = animationCoef;
 	}
 
 	@Override

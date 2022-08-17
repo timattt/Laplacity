@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
+import steelUnicorn.laplacity.cat.Cat;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
@@ -32,7 +33,6 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.particles.ChargedParticle;
-import steelUnicorn.laplacity.particles.Cat;
 import steelUnicorn.laplacity.particles.HitController;
 import steelUnicorn.laplacity.ui.GameInterface;
 import steelUnicorn.laplacity.utils.LevelParams;
@@ -126,6 +126,7 @@ public class GameProcess {
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final long PARTICLE_TEXTURES_UPDATE_DELTA = 80;
 	public static final long DEAD_ANIMATION_TIME = 1000;
+	public static final long FINISH_ANIMATION_TIME = 1500;
 	
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;

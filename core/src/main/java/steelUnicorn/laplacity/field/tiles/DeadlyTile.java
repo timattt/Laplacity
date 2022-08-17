@@ -360,7 +360,7 @@ public class DeadlyTile extends SolidTile {
 		return LaplacityAssets.DEADLY_REGIONS[0][0];
 	}
 	
-	public static void changeTexture() {
-		currentTexture = !currentTexture;
+	public static void setActiveTexture(boolean active) {
+		currentTexture = active;
 	}
 }
