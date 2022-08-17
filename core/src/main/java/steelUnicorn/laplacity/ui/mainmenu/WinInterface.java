@@ -120,8 +120,7 @@ public class WinInterface extends Stage {
         });
 
         //Если текущий уровень максимален, кнопки max не будет
-        if ((GameProcess.sectionNumber - 1) * Globals.LEVELS_PER_SECTION
-                + GameProcess.levelNumber < Globals.TOTAL_LEVELS_AVAILABLE) {
+        if (checkNextLevel()) {
             addButton(buttons, "Next", SKIN, "nextBtn", new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -143,6 +142,12 @@ public class WinInterface extends Stage {
                 }
             });
         }
+    }
+
+    private static boolean checkNextLevel() {
+        return GameProcess.levelNumber < sectionLevels.get(GameProcess.sectionNumber - 1).size ||
+                (GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size &&
+                        GameProcess.sectionNumber < sectionLevels.size);
     }
 
     private void addButton(Table table, String text, Skin skin,
