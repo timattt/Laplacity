@@ -1,7 +1,13 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	MortendBold: {
-		file: MortendBold.fnt
+	RS_extrabold32: {
+		file: RS_extrabold32.fnt
+	}
+	RS_extralight32: {
+		file: RS_extralight32.fnt
+	}
+	RS_regular32: {
+		file: RS_regular32.fnt
 	}
 }
 com.badlogic.gdx.graphics.Color: {
@@ -42,6 +48,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	rewarded_bug: {
 		up: reward2
 		down: reward2pressed
+	}
+	ExitBtn: {
+		up: exit
+		down: exit_pressed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
@@ -100,7 +110,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: MortendBold
+		font: RS_extrabold32
 		fontColor: textcolor
 		background: label_back_short
 	}
