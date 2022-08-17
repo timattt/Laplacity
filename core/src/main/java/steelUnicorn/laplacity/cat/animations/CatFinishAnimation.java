@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.cat.animations;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 
 import steelUnicorn.laplacity.GameProcess;
@@ -27,7 +26,6 @@ public class CatFinishAnimation extends CatAnimation {
 
 	@Override
 	public void updateAnimation(Vector3 pos_and_scale, float t) {
-		Gdx.app.log("debug", "ggg " + animationCoef);
 		pos_and_scale.x = (finishX - pos_and_scale.x) * animationCoef + pos_and_scale.x;
 		pos_and_scale.y = (finishY - pos_and_scale.y) * animationCoef + pos_and_scale.y;
 		pos_and_scale.z = 0.8f + 0.2f * (1f - animationCoef);
