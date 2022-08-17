@@ -152,4 +152,13 @@ public class ChargedParticle implements CollisionListener {
 	public void collidedWithTrampoline() {
 	}
 
+	@Override
+	public boolean isParticle() {
+		return true;
+	}
+
+	@Override
+	public void collidedWithParticle() {
+	}
+
 }
