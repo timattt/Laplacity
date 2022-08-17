@@ -37,8 +37,10 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
+	private SettingsDialog settingsDialog;
 	private CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
+	private static final float settingsSize = iconSize * 0.9f;
 	private static final float iconSpace = iconSize * 0.08f;
 
 	Cell<Button> flightCell;
@@ -76,6 +78,7 @@ public class GameInterface extends Stage implements GestureListener {
 		visibleActors = new Array<>();
 		//Dialogs initialize
 		returnDialog = new ReturnDialog(SKIN);
+		settingsDialog = new SettingsDialog(SKIN);
 		//FpsCounter
 		FpsCounter fpsCounter = new FpsCounter(SKIN);
 		addActor(fpsCounter);
@@ -86,14 +89,28 @@ public class GameInterface extends Stage implements GestureListener {
 		addActor(root);
 
 		//return button
-		root.add(createIcon("Home", new ClickListener(){
+		Table leftIcons = new Table();
+		leftIcons.add(createIcon("Home", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
 				returnDialog.show(GameInterface.this);
 			}
-		})).expand().top().left().uniform().size(iconSize).pad(iconSpace);
+		})).expandY().top().size(iconSize);
+		leftIcons.row();
+		leftIcons.add(createIcon("settings", new ClickListener(){
+			@Override
+			public void clicked (InputEvent event, float x, float y) {
+				LaplacityAssets.playSound(LaplacityAssets.popupSound);
+				updateCurMode();
+				Gdx.app.log("GameInterface", "settings pressed");
+				settingsDialog.show(GameInterface.this);
+			}
+		})).expandY().bottom().size(settingsSize);
+
+		root.add(leftIcons).expand().fillY().left().pad(iconSpace).uniform();
+
 
 		//cat interface
 		catFI = new CatFoodInterface(TEXSKIN);

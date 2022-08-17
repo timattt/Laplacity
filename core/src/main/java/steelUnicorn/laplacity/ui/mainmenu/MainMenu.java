@@ -112,7 +112,7 @@ public class MainMenu extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                mainCell.setActor(settingsTab.settingsPane);
+                mainCell.setActor(settingsTab);
                 mainCell.fill(false).top().padTop(MainMenu.menuTopPad);
             }
         });
