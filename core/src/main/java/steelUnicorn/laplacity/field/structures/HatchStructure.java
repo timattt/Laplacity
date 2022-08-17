@@ -30,7 +30,7 @@ public class HatchStructure extends FieldStructure {
 	
 	@Override
 	public void renderBatched(float timeFromStart) {
-		if (anim.isFinished()) {
+		if (anim != null && anim.isFinished()) {
 			anim = null;
 		}
 		
