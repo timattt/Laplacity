@@ -86,14 +86,27 @@ public class GameInterface extends Stage implements GestureListener {
 		addActor(root);
 
 		//return button
-		root.add(createIcon("Home", new ClickListener(){
+		Table leftIcons = new Table();
+		leftIcons.add(createIcon("Home", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
 				returnDialog.show(GameInterface.this);
 			}
-		})).expand().top().left().uniform().size(iconSize).pad(iconSpace);
+		})).expandY().top().size(iconSize);
+		leftIcons.row();
+		leftIcons.add(createIcon("settings", new ClickListener(){
+			@Override
+			public void clicked (InputEvent event, float x, float y) {
+				LaplacityAssets.playSound(LaplacityAssets.popupSound);
+				updateCurMode();
+				Gdx.app.log("GameInterface", "settings pressed");
+				//settingsDialog.show(GameInterface.this);
+			}
+		})).expandY().bottom().size(iconSize);
+		root.add(leftIcons).expand().fillY().left().pad(iconSpace).uniform();
+
 
 		//cat interface
 		catFI = new CatFoodInterface(TEXSKIN);
