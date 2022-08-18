@@ -61,6 +61,14 @@ repositories {
 configurations { natives }
 
 dependencies {
+
+	implementation 'com.ironsource.sdk:mediationsdk:7.2.4' 
+	
+	implementation fileTree(dir: 'libs', include: ['*.jar']) 
+    implementation 'com.google.android.gms:play-services-appset:16.0.0' 
+    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0' 
+    implementation 'com.google.android.gms:play-services-basement:17.1.1' 
+
 	def acraVersion = '5.9.6'
 	implementation "ch.acra:acra-mail:$acraVersion"
 	implementation "ch.acra:acra-toast:$acraVersion"

@@ -27,7 +27,10 @@ buildscript {
 
 allprojects {
 	repositories {
-        maven { url 'https://jitpack.io' }
+        maven { 
+			url 'https://jitpack.io'
+			url 'https://android-sdk.is.com/'
+		}
         google()
         mavenCentral()
     }
