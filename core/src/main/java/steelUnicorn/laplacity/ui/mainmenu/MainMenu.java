@@ -77,6 +77,7 @@ public class MainMenu extends Stage {
     //Функция вызывается при открытии главного меню, чтобы обновить параметры!
     public void show() {
         mainCell.setActor(mainMenu);
+        settingsTab.show();
     }
 
     /**
