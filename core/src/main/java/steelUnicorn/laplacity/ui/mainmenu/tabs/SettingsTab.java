@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
+
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
@@ -144,5 +145,17 @@ public class SettingsTab extends MainMenuTab {
         addCheckbox(table, label, skin,
                 isChecked, listener,
                 name, Color.WHITE);
+    }
+
+    //Вызывается при показывании настроек, для синхронизации интерфейса
+    public void show() {
+        ((CheckBox)settings.findActor("soundCheckbox"))
+                .setChecked(Settings.getSoundVolume() == Settings.VOLUME.ON.ordinal());
+        ((CheckBox)settings.findActor("musicCheckbox"))
+                .setChecked(Settings.getMusicVolume() == Settings.VOLUME.ON.ordinal());
+        ((CheckBox)settings.findActor("lightingCheckbox"))
+                .setChecked(Settings.isLightingEnabled());
+        ((CheckBox)settings.findActor("fpsCheckbox"))
+                .setChecked(Settings.isShowFps());
     }
 }
