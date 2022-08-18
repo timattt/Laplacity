@@ -11,6 +11,12 @@ com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	}
 }
 com.badlogic.gdx.graphics.Color: {
+	black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
 	textcolor: {
 		r: 0.59607846
 		g: 0.5568628
@@ -22,6 +28,12 @@ com.badlogic.gdx.graphics.Color: {
 		g: 1
 		b: 1
 		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	black_pixel: {
+		name: white-pixel
+		color: black
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
@@ -118,6 +130,14 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
 		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	cat_hungry: {
+		background: hungy_cut,
+		titleFont: RS_extrabold32
+		titleFontColor: textcolor,
+		stageBackground: black_pixel
 	}
 }
 }
