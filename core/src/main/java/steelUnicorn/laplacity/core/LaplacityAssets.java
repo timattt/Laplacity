@@ -27,10 +27,9 @@ public class LaplacityAssets {
 	public static Music music;
 	private static String currentIntro;
 	private static String currentMusic;
-	private static OnCompletionListener fromIntroToDrop;
 
 	public static FileHandle[] levelTracks;
-	private static Random trackRandomizer = new Random();
+	private static final Random trackRandomizer = new Random();
 	private static int currentTrack = 0;
 
 	// SOUNDS
@@ -298,7 +297,7 @@ public class LaplacityAssets {
 				from.getHeight());
 		result[1] = new TextureRegion(
 				from,
-				1 * from.getWidth() / 4,
+				from.getWidth() / 4,
 				0,
 				3 * from.getWidth() / 4,
 				from.getHeight());
@@ -356,12 +355,7 @@ public class LaplacityAssets {
 			assetManager.unload(currentMusic);
 		currentMusic = "music/levels/" + name;
 		assetManager.load(currentMusic, Music.class);
-		fromIntroToDrop = new OnCompletionListener() {
-			@Override
-			public void onCompletion(Music a) {
-				music.play();
-			}
-		};
+		OnCompletionListener fromIntroToDrop = a -> music.play();
 		assetManager.finishLoadingAsset(currentMusic);
 		music = assetManager.get(currentMusic);
 		music.setVolume(Settings.getMusicVolume());
@@ -385,5 +379,12 @@ public class LaplacityAssets {
 	
 	public static void stopSound(Sound sound) {
 		sound.stop();
+	}
+
+	public static void syncMusicVolume() {
+		if (intro != null)
+			intro.setVolume(Settings.getMusicVolume());
+		if (music != null)
+			music.setVolume(Settings.getMusicVolume());
 	}
 }
