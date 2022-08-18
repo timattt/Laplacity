@@ -59,6 +59,10 @@ public class ParticlesManager {
 		}
 		GameProcess.gameBatch.disableBlending();
 	}
+
+	public static void createParticle(float x, float y, float w, float h, long durat, float angle, TextureRegion[] regs) {
+		createParticle(x, y, w, h, durat, angle, regs[(int) (regs.length * Math.random())]);
+	}
 	
 	
 
