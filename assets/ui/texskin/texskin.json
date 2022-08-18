@@ -65,6 +65,14 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		up: exit
 		down: exit_pressed
 	}
+	NextBtn: {
+		up: next
+		down: next_pressed
+	}
+	ReplayBtn: {
+		up: replay
+		down: replay_pressed
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 	Home: {
@@ -134,9 +142,9 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	cat_hungry: {
-		background: hungy_cut,
+		background: hungy_cut
 		titleFont: RS_extrabold32
-		titleFontColor: textcolor,
+		titleFontColor: textcolor
 		stageBackground: black_pixel
 	}
 }
