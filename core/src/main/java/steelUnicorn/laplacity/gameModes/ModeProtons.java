@@ -5,10 +5,10 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.CameraManager;
+import steelUnicorn.laplacity.chargedParticles.Proton;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
-import steelUnicorn.laplacity.particles.Proton;
 import steelUnicorn.laplacity.ui.ParticleMover;
 
 public class ModeProtons extends GameMode {

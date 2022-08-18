@@ -14,14 +14,15 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.chargedParticles.CatAnimationManager;
+import steelUnicorn.laplacity.chargedParticles.CatAnimationManager.CatAnimation;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.CollisionListener;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
-import steelUnicorn.laplacity.particles.CatAnimationManager;
-import steelUnicorn.laplacity.particles.CatAnimationManager.CatAnimation;
+import steelUnicorn.laplacity.particles.ParticlesManager;
 
 
 /**
@@ -186,6 +187,7 @@ public class Cat implements CollisionListener {
 	public void collidedWithTile() {
 		LaplacityAssets.playSound(LaplacityAssets.bumpSound);
 		CatAnimationManager.setRandomEmoji();
+		genHitParts();
 	}
 
 	public float interpX() {
@@ -200,6 +202,7 @@ public class Cat implements CollisionListener {
 	public void collidedWithTrampoline() {
 		LaplacityAssets.playSound(LaplacityAssets.trampolineSound);
 		CatAnimationManager.setRandomEmoji();
+		genHitParts();
 	}
 
 	/**
@@ -231,8 +234,13 @@ public class Cat implements CollisionListener {
 		return false;
 	}
 
+	private void genHitParts() {
+		ParticlesManager.createParticleInRandomCircle(interpX(), interpY(), CAT_SIZE, CAT_SIZE, 4*CAT_SIZE, 1000, LaplacityAssets.PARTICLES_BOOM_REGIONS, 90);
+	}
+	
 	@Override
 	public void collidedWithStructure() {
+		genHitParts();
 	}
 
 	@Override

@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 import steelUnicorn.laplacity.cat.Cat;
+import steelUnicorn.laplacity.chargedParticles.ChargedParticle;
+import steelUnicorn.laplacity.chargedParticles.HitController;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
@@ -32,8 +34,7 @@ import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
-import steelUnicorn.laplacity.particles.ChargedParticle;
-import steelUnicorn.laplacity.particles.HitController;
+import steelUnicorn.laplacity.particles.ParticlesManager;
 import steelUnicorn.laplacity.ui.GameInterface;
 import steelUnicorn.laplacity.utils.LevelParams;
 import steelUnicorn.laplacity.utils.Settings;
@@ -212,6 +213,7 @@ public class GameProcess {
 		
 		// update
 		//---------------------------------------------
+		ParticlesManager.updateParticleSystem(delta);
 		currentGameMode.update();
 		gameUI.act(delta);
 		if (currentGameMode == GameMode.FLIGHT) {
@@ -256,6 +258,7 @@ public class GameProcess {
 		
 		gameBatch.begin();
 		ParticlesRenderer.render(delta);
+		ParticlesManager.renderAllParticles();
 		gameBatch.end();
 		
 		// light

@@ -3,7 +3,7 @@ package steelUnicorn.laplacity.cat.animations;
 import com.badlogic.gdx.math.Vector3;
 
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.particles.CatAnimationManager.CatAnimation;
+import steelUnicorn.laplacity.chargedParticles.CatAnimationManager.CatAnimation;
 
 public class CatFinishAnimation extends CatAnimation {
 

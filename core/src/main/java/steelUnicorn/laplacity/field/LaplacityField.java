@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 
+import steelUnicorn.laplacity.chargedParticles.ChargedParticle;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
@@ -28,7 +29,6 @@ import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.field.tiles.StructureTile;
 import steelUnicorn.laplacity.field.tiles.TrampolineTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
-import steelUnicorn.laplacity.particles.ChargedParticle;
 
 /**
  * Класс со статическими полями и функциями, связанными с tilemap. Тут есть размеры поля, массив тайлов,

@@ -1,7 +1,8 @@
 package steelUnicorn.laplacity.field.graphics;
 
 import static steelUnicorn.laplacity.GameProcess.*;
-import steelUnicorn.laplacity.particles.ChargedParticle;
+
+import steelUnicorn.laplacity.chargedParticles.ChargedParticle;
 
 public class ParticlesRenderer {
 

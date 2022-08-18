@@ -3,10 +3,10 @@ package steelUnicorn.laplacity.cat.animations;
 import com.badlogic.gdx.math.Vector3;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.chargedParticles.CatAnimationManager;
+import steelUnicorn.laplacity.chargedParticles.CatAnimationManager.CatAnimation;
 import steelUnicorn.laplacity.field.graphics.TilesRenderer;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
-import steelUnicorn.laplacity.particles.CatAnimationManager;
-import steelUnicorn.laplacity.particles.CatAnimationManager.CatAnimation;
 
 public class CatDeathAnimation extends CatAnimation {
 

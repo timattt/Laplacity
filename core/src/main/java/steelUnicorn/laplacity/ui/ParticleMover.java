@@ -3,10 +3,10 @@ package steelUnicorn.laplacity.ui;
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 
+import steelUnicorn.laplacity.chargedParticles.ChargedParticle;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
-import steelUnicorn.laplacity.particles.ChargedParticle;
 
 public class ParticleMover {
 

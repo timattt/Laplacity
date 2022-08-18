@@ -8,9 +8,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.cat.animations.CatFinishAnimation;
+import steelUnicorn.laplacity.chargedParticles.CatAnimationManager;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
-import steelUnicorn.laplacity.particles.CatAnimationManager;
 
 public class HatchStructure extends FieldStructure {
 

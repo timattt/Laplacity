@@ -74,7 +74,7 @@ public class LaplacityAssets {
 	//HINTS
 	public static Array<Texture> HINTS;
 
-	// PARTICLES
+	// CHARGED PARTICLES
 	public static Texture ELECTRON_TEXTURE;
 	public static Texture PROTON_TEXTURE;
 	public static TextureRegion[] ELECTRON_REGIONS;
@@ -110,9 +110,28 @@ public class LaplacityAssets {
     public static Skin TEXSKIN;
     public static TextureAtlas ICONS;
 
+	// PARTICLES
+	public static Texture PARTICLES_BOOM;
+	public static Texture PARTICLES_STARS1;
+	public static Texture PARTICLES_STARS2;
+	public static Texture PARTICLES_EXPLOSION;
+	public static Texture PARTICLES_STEP;
+	public static TextureRegion[] PARTICLES_BOOM_REGIONS;
+	public static TextureRegion[] PARTICLES_STARS1_REGIONS;
+	public static TextureRegion[] PARTICLES_STARS2_REGIONS;
+	public static TextureRegion[] PARTICLES_EXPLOSION_REGIONS;
+	public static TextureRegion[] PARTICLES_STEP_REGIONS;
+    
     public static void repackAssets(AssetManager assetManager) {
 		repackLevels(assetManager);
 
+		// particles
+		PARTICLES_BOOM = assetManager.get("textures/particles/particles1.png");
+		PARTICLES_STARS1 = assetManager.get("textures/particles/particles2.png");
+		PARTICLES_STARS2 = assetManager.get("textures/particles/particles4.png");
+		PARTICLES_EXPLOSION = assetManager.get("textures/particles/particles6.png");
+		PARTICLES_STEP = assetManager.get("textures/particles/particles5.png");
+		
     	// sounds
         clickSound = assetManager.get("sounds/click.wav");
         lightClickSound = assetManager.get("sounds/light_click.wav");
@@ -181,6 +200,11 @@ public class LaplacityAssets {
         cut(CAT_TEXTURE, CAT_REGIONS = new TextureRegion[5][2]);
         cut(STAR_TEXTURE, STAR_REGIONS = new TextureRegion[8]);
         cut(ELEVATOR_TEXTURE, ELEVATOR_REGIONS = new TextureRegion[3][3]);
+        cut(PARTICLES_BOOM, PARTICLES_BOOM_REGIONS = new TextureRegion[6]);
+        cut(PARTICLES_EXPLOSION, PARTICLES_EXPLOSION_REGIONS = new TextureRegion[3]);
+        cut(PARTICLES_STEP, PARTICLES_STEP_REGIONS = new TextureRegion[3]);
+        cut(PARTICLES_STARS1, PARTICLES_STARS1_REGIONS = new TextureRegion[6]);
+        cut(PARTICLES_STARS2, PARTICLES_STARS2_REGIONS = new TextureRegion[6]);
         
         TRAMPOLINE_REGION = new TextureRegion(TRAMPOLINE_TEXTURE);
     }

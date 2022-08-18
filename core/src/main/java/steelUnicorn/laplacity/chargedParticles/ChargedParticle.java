@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.particles;
+package steelUnicorn.laplacity.chargedParticles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
