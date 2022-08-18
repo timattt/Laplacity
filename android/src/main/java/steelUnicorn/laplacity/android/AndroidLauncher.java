@@ -94,7 +94,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 		MobileAds.initialize(this);
 		
 		if (useIron)
-			IronSource.init(this, "15fc33d15l");
+			IronSource.init(this, "15fc33d15");
 
         ACRA.init(getApplication(), new CoreConfigurationBuilder()
 			//core configuration:
