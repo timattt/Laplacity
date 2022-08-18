@@ -61,6 +61,10 @@ repositories {
 configurations { natives }
 
 dependencies {
+	def acraVersion = '5.9.6'
+	implementation "ch.acra:acra-mail:$acraVersion"
+	implementation "ch.acra:acra-toast:$acraVersion"
+
 	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 	implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
 	implementation files('../libs/libgdx-oboe.aar')

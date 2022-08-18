@@ -34,6 +34,12 @@ import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
 
+import org.acra.ACRA;
+import org.acra.config.CoreConfigurationBuilder;
+import org.acra.config.ToastConfigurationBuilder;
+import org.acra.config.MailSenderConfigurationBuilder;
+import org.acra.data.StringFormat;
+
 /** Launches the Android application. */
 public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
@@ -70,6 +76,32 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 		MobileAds.initialize(this);
 
+        ACRA.init(getApplication(), new CoreConfigurationBuilder()
+			//core configuration:
+			.withReportFormat(StringFormat.JSON)
+			.withPluginConfigurations(
+				//each plugin you chose above can be configured with its builder like this:
+				new MailSenderConfigurationBuilder()
+				//required
+				.withMailTo("timattt@gmail.com")
+				//defaults to true
+				.withReportAsFile(true)
+				//defaults to ACRA-report.stacktrace
+				.withReportFileName("Crash.json")
+				//defaults to "<applicationId> Crash Report"
+				.withSubject("Error in Cataway")
+				//defaults to empty
+				.withBody("Error message for Cataway game")
+				.build()
+			)
+		);
+   
+	   Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+				@Override
+				public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
+					ACRA.getErrorReporter().handleException(paramThrowable);
+				}
+			});
 	}
 
 	private AdView createAdView() {
