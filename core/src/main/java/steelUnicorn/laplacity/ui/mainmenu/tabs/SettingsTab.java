@@ -83,7 +83,7 @@ public class SettingsTab extends MainMenuTab {
                         LaplacityAssets.playSound(LaplacityAssets.clickSound);
                         CheckBox box = (CheckBox) actor;
                         Settings.setMusicVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
-                        LaplacityAssets.music.setVolume(Settings.getMusicVolume());
+                        LaplacityAssets.syncMusicVolume();
                     }
                 }, "musicCheckbox");
 
