@@ -56,6 +56,7 @@ public class GameProcess {
 
 	public static LevelParams levelParams;
 	private static int currentlyStarsCollected;
+	public static final int MAX_STAR = 3;
 	//========================================================================================
 	
 	
