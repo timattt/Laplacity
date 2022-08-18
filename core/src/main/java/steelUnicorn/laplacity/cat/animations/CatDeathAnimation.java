@@ -5,8 +5,10 @@ import com.badlogic.gdx.math.Vector3;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.chargedParticles.CatAnimationManager;
 import steelUnicorn.laplacity.chargedParticles.CatAnimationManager.CatAnimation;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TilesRenderer;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
+import steelUnicorn.laplacity.particles.ParticlesManager;
 
 public class CatDeathAnimation extends CatAnimation {
 
@@ -19,6 +21,17 @@ public class CatDeathAnimation extends CatAnimation {
 		DeadlyTile.setActiveTexture(true);
 		TilesRenderer.requestRepaint();
 		CatAnimationManager.setEmoji(5);
+		
+		for (int i = 0; i < 20; i++) {
+			ParticlesManager.createParticleInRandomCircle(
+					GameProcess.cat.getX(),
+					GameProcess.cat.getY(),
+					GameProcess.CAT_SIZE,
+					GameProcess.CAT_SIZE/2,
+					GameProcess.CAT_SIZE/2,
+					GameProcess.DEAD_ANIMATION_TIME,
+					LaplacityAssets.PARTICLES_STARS1_REGIONS,(float)Math.random() * 360);
+		}
 	}
 
 	@Override
