@@ -83,7 +83,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 				//each plugin you chose above can be configured with its builder like this:
 				new MailSenderConfigurationBuilder()
 				//required
-				.withMailTo("timattt@gmail.com")
+				.withMailTo("support@steel-uni.com")
 				//defaults to true
 				.withReportAsFile(true)
 				//defaults to ACRA-report.stacktrace
