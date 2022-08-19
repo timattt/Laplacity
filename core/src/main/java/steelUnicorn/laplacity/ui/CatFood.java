@@ -4,7 +4,6 @@ package steelUnicorn.laplacity.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.utils.CatFoodTimer;
 
 /**
@@ -68,16 +67,13 @@ public class CatFood {
         }
     }
 
-    //Функция показа рекламы и добавления запусков в награду
-    public int callInterstitialAd() {
-        Globals.game.showInterstitial();
+    public int interstitialShown() {
         totalLaunchesAvailable += INTERSTITIAL_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;
     }
 
-    public int callRewardedAd() {
-        Globals.game.showRewarded();
+    public int rewardedShown() {
         totalLaunchesAvailable += REWARDED_LAUNCHES;
         checkBounds();
         return totalLaunchesAvailable;

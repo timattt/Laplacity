@@ -38,7 +38,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private SettingsDialog settingsDialog;
-	private CatFoodInterface catFI;
+	public CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
 	private static final float settingsSize = iconSize * 0.9f;
 	private static final float iconSpace = iconSize * 0.08f;
