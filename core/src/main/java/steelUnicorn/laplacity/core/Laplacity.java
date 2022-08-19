@@ -36,6 +36,9 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	private SpriteBatch transitionBatch;
 	private AdHandler adHandler;
 	
+	public boolean interstitialJustShown = false;
+	public boolean rewardedJustShown = false;
+	
 	public Laplacity(AdHandler adHand) {
 		adHandler = adHand;
 	}
@@ -148,6 +151,16 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		if (adHandler != null) {
 			adHandler.showOrLoadRewarded();
 		}
+	}
+	
+	public void interstitialOk() {
+		interstitialJustShown = true;
+		adHandler.debugMessage("From game show int OK!");
+	}
+	
+	public void rewardedOk() {
+		rewardedJustShown = true;
+		adHandler.debugMessage("From game show rew OK!");
 	}
 	
 }

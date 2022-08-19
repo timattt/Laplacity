@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.android;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.Gdx;
 
 import barsoosayque.libgdxoboe.OboeAudio;
 import steelUnicorn.laplacity.core.Laplacity;
@@ -67,7 +68,10 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	private InterstitialAd interstitialAd;
 	private RewardedAd rewardedAd;
 
-	private static boolean useIron = true;
+	private static final boolean debugIsEnabled = false;
+	private static final boolean useIron = true;
+
+	private Laplacity gameInstance;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +96,6 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 		startAdvertising(admobView);
 
 		MobileAds.initialize(this);
-		
-		if (useIron)
-			IronSource.init(this, "15fc33d15");
 
         ACRA.init(getApplication(), new CoreConfigurationBuilder()
 			//core configuration:
@@ -123,56 +124,138 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 				}
 			});
 			
-		if (useIron)
+		if (useIron) {
 			IronSource.setInterstitialListener(new InterstitialListener() {
-			/**
-			 * Invoked when Interstitial Ad is ready to be shown after load function was called.
-			 */
-			@Override
-			public void onInterstitialAdReady() {
-				message("ready");
-			}
-			/**
-			 * invoked when there is no Interstitial Ad available after calling load function.
-			 */
-			@Override
-			public void onInterstitialAdLoadFailed(IronSourceError error) {
-				message(error.toString());
-			}
-			/**
-			 * Invoked when the Interstitial Ad Unit is opened
-			 */
-			@Override
-			public void onInterstitialAdOpened() {
-			}
-			/*
-			 * Invoked when the ad is closed and the user is about to return to the application.
-			 */
-			@Override
-			public void onInterstitialAdClosed() {
-			}
-			/**
-			 * Invoked when Interstitial ad failed to show.
-			 * @param error - An object which represents the reason of showInterstitial failure.
-			 */
-			@Override
-			public void onInterstitialAdShowFailed(IronSourceError error) {
-				message(error.toString());
-			}
-			/*
-			 * Invoked when the end user clicked on the interstitial ad, for supported networks only. 
-			 */
-			@Override
-			public void onInterstitialAdClicked() {
-			}
-		   /** Invoked right before the Interstitial screen is about to open. 
-			*  NOTE - This event is available only for some of the networks. 
-			*  You should NOT treat this event as an interstitial impression, but rather use InterstitialAdOpenedEvent 
-			*/ 
-			@Override 
-			public void onInterstitialAdShowSucceeded() { 
-			}
-		});
+				/**
+				 * Invoked when Interstitial Ad is ready to be shown after load function was called.
+				 */
+				@Override
+				public void onInterstitialAdReady() {
+					debug("interstitial ad is ready");
+					IronSource.showInterstitial("intAd");
+				}
+				/**
+				 * invoked when there is no Interstitial Ad available after calling load function.
+				 */
+				@Override
+				public void onInterstitialAdLoadFailed(IronSourceError error) {
+					message("interstitial ad load failed: " + error.toString());
+				}
+				/**
+				 * Invoked when the Interstitial Ad Unit is opened
+				 */
+				@Override
+				public void onInterstitialAdOpened() {
+					debug("interstitial ad opened");
+					if (gameInstance != null) {
+						gameInstance.interstitialOk();
+					}
+				}
+				/*
+				 * Invoked when the ad is closed and the user is about to return to the application.
+				 */
+				@Override
+				public void onInterstitialAdClosed() {
+					debug("interstitial ad closed");
+				}
+				/**
+				 * Invoked when Interstitial ad failed to show.
+				 * @param error - An object which represents the reason of showInterstitial failure.
+				 */
+				@Override
+				public void onInterstitialAdShowFailed(IronSourceError error) {
+					message("interstitial ad error: " + error.toString());
+				}
+				/*
+				 * Invoked when the end user clicked on the interstitial ad, for supported networks only. 
+				 */
+				@Override
+				public void onInterstitialAdClicked() {
+					debug("interstitial ad clicked");
+				}
+			   /** Invoked right before the Interstitial screen is about to open. 
+				*  NOTE - This event is available only for some of the networks. 
+				*  You should NOT treat this event as an interstitial impression, but rather use InterstitialAdOpenedEvent 
+				*/ 
+				@Override 
+				public void onInterstitialAdShowSucceeded() {
+					debug("interstitial show ok");
+				}
+			});
+			IronSource.setRewardedVideoListener(new RewardedVideoListener() {
+				/**
+				 * Invoked when the RewardedVideo ad view has opened.
+				 * Your Activity will lose focus. Please avoid performing heavy
+				 * tasks till the video ad will be closed.
+				 */
+				@Override
+				public void onRewardedVideoAdOpened() {
+					debug("rewarded ad opened");
+				}
+				/*Invoked when the RewardedVideo ad view is about to be closed.
+				Your activity will now regain its focus.*/
+				@Override
+				public void onRewardedVideoAdClosed() {
+					debug("rewarded ad closed");
+				}
+				/**
+				 * Invoked when there is a change in the ad availability status.
+				 *
+				 * @param - available - value will change to true when rewarded videos are *available.
+				 *          You can then show the video by calling showRewardedVideo().
+				 *          Value will change to false when no videos are available.
+				 */
+				@Override
+				public void onRewardedVideoAvailabilityChanged(boolean available) {
+					//Change the in-app 'Traffic Driver' state according to availability.
+				}
+				/**
+				/**
+				 * Invoked when the user completed the video and should be rewarded.
+				 * If using server-to-server callbacks you may ignore this events and wait *for the callback from the ironSource server.
+				 *
+				 * @param - placement - the Placement the user completed a video from.
+				 */
+				@Override
+				public void onRewardedVideoAdRewarded(Placement placement) {
+					debug("rewarded video ad rewarded: " + placement.toString());
+					if (gameInstance != null) {
+						gameInstance.rewardedOk();
+					}
+				}
+				/* Invoked when RewardedVideo call to show a rewarded video has failed
+				 * IronSourceError contains the reason for the failure.
+				 */
+				@Override
+				public void onRewardedVideoAdShowFailed(IronSourceError error) {
+					message("error while showing rewarded: " + error.toString());
+				}
+				/*Invoked when the end user clicked on the RewardedVideo ad
+				*/
+				@Override
+			   public void onRewardedVideoAdClicked(Placement placement){
+				   debug("rewarded video ad clicked: " + placement.toString());
+			   }
+				/* Note: the events AdStarted and AdEnded below are not available for all supported rewarded video 
+				   ad networks. Check which events are available per ad network you choose 
+				   to include in your build.
+				   We recommend only using events which register to ALL ad networks you 
+				   include in your build.
+				* Invoked when the video ad starts playing.
+				*/
+				 @Override
+				 public void onRewardedVideoAdStarted(){
+					 debug("rewarded video ad started");
+				 }
+				/* Invoked when the video ad finishes plating. */
+				@Override
+				public void onRewardedVideoAdEnded(){
+					debug("rewarded video ad ended");
+				}
+			});
+			
+			IronSource.init(this, "15fc33d15");
+		}
 		
 		IntegrationHelper.validateIntegration(this);
 	}
@@ -192,7 +275,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	}
 
 	private View createGameView(AndroidApplicationConfiguration cfg) {
-		gameView = initializeForView(new Laplacity(this), cfg);
+		gameView = initializeForView(gameInstance = new Laplacity(this), cfg);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -210,6 +293,19 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	private void message(String text) {
 		Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
 	}
+	
+	private void debug(String text) {
+		if (debugIsEnabled) {
+			message(text);
+		} else {
+			Gdx.app.log("android debug", text);
+		}
+	}
+
+	@Override
+	public void debugMessage(String text) {
+		debug(text);
+	}
 
 	@Override
 	public void showOrLoadInterstital() {
@@ -218,7 +314,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 				
 				public void run() {
 					if (useIron) {
-						IronSource.showInterstitial("secondAd");
+						IronSource.loadInterstitial();
 					} else {
 						AdRequest interstitialRequest = new AdRequest.Builder().build();
 						InterstitialAd.load(AndroidLauncher.this, AD_UNIT_ID_INTERSTITIAL, interstitialRequest, new InterstitialAdLoadCallback() {

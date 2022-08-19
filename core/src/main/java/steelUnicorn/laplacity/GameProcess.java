@@ -240,6 +240,16 @@ public class GameProcess {
 		}
 		//---------------------------------------------
 		
+		// ADS
+		if (Globals.game.interstitialJustShown) {
+			Globals.game.interstitialJustShown = false;
+			// TODO +2
+		}
+		if (Globals.game.rewardedJustShown) {
+			Globals.game.rewardedJustShown = false;
+			// TODO +10
+		}
+		
 		gameBatch.setProjectionMatrix(CameraManager.camMat());
 		rayHandler.setCombinedMatrix(CameraManager.getCamera());
 		
