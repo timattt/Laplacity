@@ -62,6 +62,13 @@ configurations { natives }
 
 dependencies {
 
+    implementation 'com.devtodev:android:1.14.10'
+    implementation 'com.android.installreferrer:installreferrer:2.2'
+    implementation 'com.google.android.gms:play-services-base:17.6.0'
+    implementation 'com.google.firebase:firebase-core:19.0.0'
+    implementation 'androidx.preference:preference:1.1.1' //or higher, required for SDK version 1.14.8 and higher
+
+
 	implementation 'com.ironsource.sdk:mediationsdk:7.2.4' 
 	
 	implementation fileTree(dir: 'libs', include: ['*.jar']) 

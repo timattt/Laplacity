@@ -53,6 +53,7 @@ public class GameProcess {
 	public static int levelNumber;
 	public static int sectionNumber;
 	public static GameMode currentGameMode;
+	private static int totalStarts = 0;
 
 	public static LevelParams levelParams;
 	private static int currentlyStarsCollected;
@@ -171,7 +172,7 @@ public class GameProcess {
 	//========================================================================================	
 	public static void initLevel(Texture level) {
 		disposeLevel();
-
+		
 		game.getScreenManager().pushScreen(nameLoadingScreen, nameSlideIn);
 		
 		Gdx.app.log("gameProcess", "level init started: " + "section "+ sectionNumber + "; level " + levelNumber);
@@ -195,6 +196,7 @@ public class GameProcess {
 		BackgroundRenderer.init();
 		
 		cat = new Cat();
+		totalStarts = 0;
 		
 		/*
 		 * При инициализации уровня установить коэффициент в 1f
@@ -307,6 +309,7 @@ public class GameProcess {
 	
 	public static void disposeLevel() {
 		Gdx.app.log("gameProcess", "level cleanup started");
+		totalStarts = 0;
 		BackgroundRenderer.cleanup();
 		LaplacityField.cleanupStructures();
 		TrajectoryRenderer.cleanup();
@@ -370,6 +373,7 @@ public class GameProcess {
 			startTime = TimeUtils.millis();
 		} else {
 			if (nowFlight) {
+				totalStarts++;
 				currentlyStarsCollected = 0;
 				FieldCalculator.finishCalculation();;
 				startTime = TimeUtils.millis();
@@ -487,6 +491,7 @@ public class GameProcess {
 	}
 	
 	public static void levelFinished() {
+		Globals.game.analyticsCollector.levelFinished(levelNumber, currentlyStarsCollected, particles.size, totalStarts);
 		changeGameMode(GameMode.NONE);
 		Gdx.app.log("game process", "Level finished");
 

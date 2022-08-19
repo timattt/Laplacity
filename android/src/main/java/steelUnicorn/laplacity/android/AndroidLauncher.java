@@ -1,5 +1,9 @@
 package steelUnicorn.laplacity.android;
 
+import com.devtodev.core.DevToDev;
+import java.util.*;
+import android.provider.Settings.Secure;
+
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.Gdx;
@@ -7,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import barsoosayque.libgdxoboe.OboeAudio;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.utils.AdHandler;
+import steelUnicorn.laplacity.utils.AnalyticsCollector;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -57,7 +62,7 @@ import com.ironsource.mediationsdk.sdk.RewardedVideoListener;
 import com.ironsource.mediationsdk.utils.IronSourceUtils;
 
 /** Launches the Android application. */
-public class AndroidLauncher extends AndroidApplication implements AdHandler {
+public class AndroidLauncher extends AndroidApplication implements AdHandler, AnalyticsCollector {
 
 	private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3299479021580908/9211056129";
 	private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3299479021580908/5567641319";
@@ -72,6 +77,8 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	private static final boolean useIron = true;
 
 	private Laplacity gameInstance;
+
+	private String android_id;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +101,8 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 		setContentView(layout);
 		startAdvertising(admobView);
+
+		android_id = Secure.getString(getContext().getContentResolver(), Secure.ANDROID_ID);
 
 		MobileAds.initialize(this);
 
@@ -123,7 +132,10 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 					ACRA.getErrorReporter().handleException(paramThrowable);
 				}
 			});
-			
+
+		DevToDev.setUserId(android_id);
+        DevToDev.init(getContext(), "7dca5fc9-4716-0a4e-9ab1-ba18913c9fec", "KY9v2UTCJWsgpBokqX5c1jwIAGDdZLSm");
+
 		if (useIron) {
 			IronSource.setInterstitialListener(new InterstitialListener() {
 				/**
@@ -259,6 +271,16 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 		
 		IntegrationHelper.validateIntegration(this);
 	}
+	
+	@Override
+	public void levelFinished(int levelNumber, int starsCollected, int totalParticlesPlaced, int totalTry) {
+		HashMap<String, Integer> resources = new HashMap<>();
+		resources.put("starsFarmed", starsCollected);
+		resources.put("particlesUsed", totalParticlesPlaced);
+		resources.put("try", totalTry);
+		DevToDev.levelUp(levelNumber, resources);
+		DevToDev.sendBufferedEvents();
+	}
 
 	private AdView createAdView() {
 		adView = new AdView(this);
@@ -275,7 +297,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 	}
 
 	private View createGameView(AndroidApplicationConfiguration cfg) {
-		gameView = initializeForView(gameInstance = new Laplacity(this), cfg);
+		gameView = initializeForView(gameInstance = new Laplacity(this, this), cfg);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);

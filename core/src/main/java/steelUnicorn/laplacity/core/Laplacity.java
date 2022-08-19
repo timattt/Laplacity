@@ -26,6 +26,7 @@ import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
+import steelUnicorn.laplacity.utils.AnalyticsCollector;
 import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -35,12 +36,14 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	public AssetManager assetManager;
 	private SpriteBatch transitionBatch;
 	private AdHandler adHandler;
+	public AnalyticsCollector analyticsCollector;
 	
 	public boolean interstitialJustShown = false;
 	public boolean rewardedJustShown = false;
 	
-	public Laplacity(AdHandler adHand) {
+	public Laplacity(AdHandler adHand, AnalyticsCollector ac) {
 		adHandler = adHand;
+		analyticsCollector = ac;
 	}
 
 	@Override
