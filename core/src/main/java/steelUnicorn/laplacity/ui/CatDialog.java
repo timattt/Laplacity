@@ -74,10 +74,10 @@ public class CatDialog extends Dialog {
         if (object instanceof HungryResult) {
             switch ((HungryResult) object) {
                 case INTER:
-                    catFI.update(Globals.catFood.callInterstitialAd());
+                    Globals.game.showInterstitial();
                     break;
                 case REWARD:
-                    catFI.update(Globals.catFood.callRewardedAd());
+                    Globals.game.showRewarded();
                     break;
             }
         }

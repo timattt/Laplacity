@@ -243,11 +243,11 @@ public class GameProcess {
 		// ADS
 		if (Globals.game.interstitialJustShown) {
 			Globals.game.interstitialJustShown = false;
-			// TODO +2
+			gameUI.catFI.update(catFood.interstitialShown());
 		}
 		if (Globals.game.rewardedJustShown) {
 			Globals.game.rewardedJustShown = false;
-			// TODO +10
+			gameUI.catFI.update(catFood.rewardedShown());
 		}
 		
 		gameBatch.setProjectionMatrix(CameraManager.camMat());
