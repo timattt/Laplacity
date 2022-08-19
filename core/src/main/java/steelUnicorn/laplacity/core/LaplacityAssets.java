@@ -49,8 +49,11 @@ public class LaplacityAssets {
 	public static Sound glassBumpSound;
 	public static Sound starSound;
 	public static Sound eraserSweepSound;
-	public static Sound eraserLoopSound;
 	public static Sound bumpParticleSound;
+
+	// Eraser sound is special
+	public static Music eraserLoopSound;
+	public static boolean shouldEraserLoopPlay = false;
 
 	// TILES
 	public static Texture BARRIER_TEXTURE;
@@ -148,8 +151,18 @@ public class LaplacityAssets {
 		glassBumpSound = assetManager.get("sounds/bump_glass.wav");
 		starSound = assetManager.get("sounds/star.wav");
 		eraserSweepSound = assetManager.get("sounds/eraser_sw.wav");
-		eraserLoopSound = assetManager.get("sounds/eraser_loop.wav");
 		bumpParticleSound = assetManager.get("sounds/bump_particle.wav");
+
+		// Eraser sound is special
+		eraserLoopSound = assetManager.get("music/eraser_loop.wav");
+		eraserLoopSound.setOnCompletionListener(
+				a -> {
+					if (shouldEraserLoopPlay) {
+						shouldEraserLoopPlay = false;
+						eraserLoopSound.play();
+					}
+				}
+		);
         
         // TILES
         TRAMPOLINE_TEXTURE = assetManager.get("textures/tiles/trampoline.png");
@@ -386,5 +399,18 @@ public class LaplacityAssets {
 			intro.setVolume(Settings.getMusicVolume());
 		if (music != null)
 			music.setVolume(Settings.getMusicVolume());
+	}
+
+	public static void pingEraserSound() {
+		if (Settings.getSoundVolume() != 0) {
+			if (!eraserLoopSound.isPlaying())
+				eraserLoopSound.play();
+			else
+				shouldEraserLoopPlay = true;
+		}
+	}
+
+	public static void stopEraserSound() {
+		eraserLoopSound.stop();
 	}
 }

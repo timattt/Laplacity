@@ -12,32 +12,28 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 
 public class ModeEraser extends GameMode {
 
-	boolean isSoundLooping = false;
-
 	public ModeEraser() {
 		super("Eraser");
 	}
 	
-	private void makeErase(float x, float y) {
-		LaplacityField.clearCircleDensity(x, y, BRUSH_RADIUS);
+	private boolean makeErase(float x, float y) {
+		boolean encounteredSpray = LaplacityField.clearCircleDensity(x, y, BRUSH_RADIUS);
 		TrajectoryRenderer.updateTrajectory();
+		return  encounteredSpray;
 	}
 	
 	@Override
 	public void tap(float x, float y) {
-		LaplacityAssets.playSound(LaplacityAssets.eraserSweepSound);
-		makeErase(x, y);
+		if (makeErase(x, y))
+			LaplacityAssets.playSound(LaplacityAssets.eraserSweepSound);
 		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 
 	@Override
 	public void pan(float x, float y, float dx, float dy) {
-		if (!isSoundLooping) {
-			LaplacityAssets.loopSound(LaplacityAssets.eraserLoopSound);
-			isSoundLooping = true;
-		}
-		makeErase(x, y);
+		if (makeErase(x, y))
+			LaplacityAssets.pingEraserSound();
 	}
 
 	@Override
@@ -52,16 +48,14 @@ public class ModeEraser extends GameMode {
 
 	@Override
 	public void touchUp(float x, float y) {
-		isSoundLooping = false;
-		LaplacityAssets.stopSound(LaplacityAssets.eraserLoopSound);
+		LaplacityAssets.stopEraserSound();
 		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 
 	@Override
 	public void panStop(float x, float y) {
-		isSoundLooping = false;
-		LaplacityAssets.stopSound(LaplacityAssets.eraserLoopSound);
+		LaplacityAssets.stopEraserSound();
 		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}

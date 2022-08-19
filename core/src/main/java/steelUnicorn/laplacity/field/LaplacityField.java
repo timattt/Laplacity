@@ -247,13 +247,13 @@ public class LaplacityField extends Group {
 		DensityRenderer.updateDensity();
 	}
 	
-	public static void clearCircleDensity(float x, float y, float r) {
+	public static boolean clearCircleDensity(float x, float y, float r) {
 		EmptyTile center = getTileFromWorldCoords(x, y);
 		
 		if (center == null) {
-			return;
+			return false;
 		}
-		
+		boolean encounteredSpray = false;
 		int i = center.getGridX();
 		int j = center.getGridY();
 		int side = (int) (r / tileSize + 1);
@@ -268,6 +268,8 @@ public class LaplacityField extends Group {
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
+					if (tile.getVisibleDensity() != 0)
+						encounteredSpray = true;
 					tile.setVisibleDensity(0);
 				}
 			}
@@ -285,6 +287,7 @@ public class LaplacityField extends Group {
 		}
 		
 		DensityRenderer.updateDensity();
+		return encounteredSpray;
 	}
 
 	/**
