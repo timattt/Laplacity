@@ -20,8 +20,8 @@ import com.badlogic.gdx.utils.Array;
  * Используется в классе LevelsTab для отображения уровней для выбора
  */
 public class LevelSection extends Table {
-    public static final float lvlBtnSize = UI_WORLD_WIDTH * 0.04f;
-    private static final int levelsRow = 4;
+    public static final float lvlBtnScale = 0.6f;
+    private static final int levelsRow = 5;
     public static float tabSpace = UI_WORLD_HEIGHT * 0.03f;
 
     private final int sectionNumber;  //section number greater than pathsSize by 1
@@ -41,16 +41,14 @@ public class LevelSection extends Table {
         if (sectionNumber - 1 < sectionLevels.size) {
             Array<Texture> lvlImages = sectionLevels.get(sectionNumber - 1);
 
-            defaults().size(lvlBtnSize)
-                    .space(tabSpace);
-
             for (int i = 1; i <= lvlImages.size; i++) {
-                LevelButton btn = new LevelButton(String.valueOf(i), skin, lvlImages.get(i - 1),
-                        i, sectionNumber);
+                LevelButton btn = new LevelButton(String.valueOf(i), skin, "Level",
+                        lvlImages.get(i - 1), i, sectionNumber);
                 btn.setName("level" + i);
                 btn.addListener(LevelButton.listener);
 
-                add(btn);
+                add(btn).space(tabSpace)
+                        .size(btn.getPrefWidth() * lvlBtnScale, btn.getPrefHeight() * lvlBtnScale);
                 //new Row
                 if (i % levelsRow == 0 && i != lvlImages.size) {
                     row();

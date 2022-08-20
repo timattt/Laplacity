@@ -4,7 +4,6 @@ import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
-import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.graphics.Color;
@@ -54,7 +53,7 @@ public class LevelsTab extends MainMenuTab {
         });
         //Description
         row();
-        addDescription("Levels:", skin);
+        addDescription("Levels", skin);
         //Sections
         row();
         sectionCell = addSections(skin);
@@ -91,7 +90,7 @@ public class LevelsTab extends MainMenuTab {
 
         public LevelsNav(Skin skin) {
             defaults().space(LevelsTab.tabSpace);
-            leftArrow = new ImageButton(TEXSKIN.get("leftarrow", ImageButton.ImageButtonStyle.class));
+            leftArrow = new ImageButton(skin.get("leftarrow", ImageButton.ImageButtonStyle.class));
             leftArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -104,13 +103,13 @@ public class LevelsTab extends MainMenuTab {
             });
             add(leftArrow).size(arrowSize);
 
-            sectionName = new Label("Section 00" + LevelsTab.this.currentSection, TEXSKIN);
+            sectionName = new Label("Section 00" + LevelsTab.this.currentSection, skin);
             sectionName.setColor(Color.WHITE);
             sectionName.setAlignment(Align.center);
             add(sectionName).size(sectionName.getPrefWidth(), sectionName.getPrefHeight());
             updateSectionName();
 
-            rightArrow = new ImageButton(TEXSKIN.get("rightarrow", ImageButton.ImageButtonStyle.class));
+            rightArrow = new ImageButton(skin.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {

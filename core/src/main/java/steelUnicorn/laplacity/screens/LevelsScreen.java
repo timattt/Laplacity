@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.screens;
 
 import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -44,7 +45,7 @@ public class LevelsScreen extends ManagedScreen {
         root.setFillParent(true);
         levelStage.addActor(root);
 
-        levelsTab = new LevelsTab(SKIN);
+        levelsTab = new LevelsTab(TEXSKIN);
 
         root.add(levelsTab).growY().padTop(MainMenu.menuTopPad);
     }

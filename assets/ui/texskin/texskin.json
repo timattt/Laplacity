@@ -17,11 +17,23 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0
 		a: 1
 	}
+	level_color: {
+		r: 0.63529414
+		g: 0.5019608
+		b: 0.39607844
+		a: 1
+	}
 	textcolor: {
 		r: 0.59607846
 		g: 0.5568628
 		b: 0.76862746
 		a: 1
+	}
+	transparent: {
+		r: 0
+		g: 0
+		b: 0
+		a: 0
 	}
 	white: {
 		r: 1
@@ -133,6 +145,16 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: RS_extrabold32
 		fontColor: textcolor
 		background: label_back_short
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	Level: {
+		font: RS_extrabold32
+		fontColor: level_color
+		disabledFontColor: transparent
+		up: level_opened
+		down: level_opened2
+		disabled: level_closed
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

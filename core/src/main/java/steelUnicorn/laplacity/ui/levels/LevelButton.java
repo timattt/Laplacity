@@ -41,9 +41,9 @@ public class LevelButton extends TextButton {
 		}
 	};
 
-	public LevelButton(String text, Skin skin, Texture lvlImg,
-					   int levelNumber, int sectionNumber) {
-		super(text, skin);
+	public LevelButton(String text, Skin skin, String styleName,
+					   Texture lvlImg, int levelNumber, int sectionNumber) {
+		super(text, skin, styleName);
 		this.lvlImg = lvlImg;
 		this.levelNumber = levelNumber;
 		this.sectionNumber = sectionNumber;
