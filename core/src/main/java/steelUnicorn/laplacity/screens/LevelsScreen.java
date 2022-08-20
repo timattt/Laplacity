@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.screens;
 
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
+import static steelUnicorn.laplacity.core.Globals.progress;
 import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
@@ -32,6 +34,9 @@ public class LevelsScreen extends ManagedScreen {
     public LevelsTab levelsTab;
 
     private Image background;
+
+    private Label starsCollected;
+    private static final float starsPad = 10;
 
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
@@ -68,7 +73,8 @@ public class LevelsScreen extends ManagedScreen {
 
         root.add(levelsTab).grow().top();
         //empty cell for aligning
-        root.add().expand().uniform();
+        starsCollected = new Label("Stars: " + progress.starsCollected, TEXSKIN);
+        root.add(starsCollected).expand().top().right().uniform().pad(starsPad);
     }
 
     @Override
@@ -87,6 +93,12 @@ public class LevelsScreen extends ManagedScreen {
 
     @Override
     public void hide() {
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        starsCollected.setText("Stars: " + progress.starsCollected);
     }
 
     public void resizeBackground() {

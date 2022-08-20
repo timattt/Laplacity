@@ -22,6 +22,8 @@ import com.badlogic.gdx.utils.Array;
  *
  */
 public class PlayerProgress {
+    public int starsCollected = 0;
+
     private final Preferences prefs;
     private Array<Array<Integer>> progress;
     private final Json json;
@@ -39,12 +41,14 @@ public class PlayerProgress {
     private void initProgress() {
         //Создаем массив исходя из текущих уровней (на случай если добавлены новые)
         progress = new Array<>();
+        boolean first = true;
 
         for (Array<Texture> lvls : sectionLevels) {
             //Каждое вхождение в sectionLevels это секция. entry.value - уровни
             Array<Integer> sectionProgress = new Array<>();
             for (int i = 0; i < lvls.size; i++) {
-                sectionProgress.add(0);
+                sectionProgress.add(first ? 0 : -1);
+                first = false;
             }
 
             progress.add(sectionProgress);
@@ -60,8 +64,12 @@ public class PlayerProgress {
                 for (int lvlNumber = 0; lvlNumber < previousProgress.get(secNumber).size; lvlNumber++) {
                     if (progress.size > secNumber) {
                         if (progress.get(secNumber).size > lvlNumber) {
+                            int starProgress = previousProgress.get(secNumber).get(lvlNumber);
                             progress.get(secNumber)
-                                    .set(lvlNumber, previousProgress.get(secNumber).get(lvlNumber));
+                                    .set(lvlNumber, starProgress);
+                            if (starProgress >= 0) {
+                                starsCollected += starProgress;
+                            }
                         }
                     }
                 }
@@ -77,6 +85,7 @@ public class PlayerProgress {
 
         //set new progress to current level
         if (progress.get(section - 1).get(level - 1) < stars) { //Если звезд собрано больше чем было
+            starsCollected += (stars - progress.get(section - 1).get(level - 1)); //добавляем доп звезды
             progress.get(section - 1).set(level - 1, stars);
         }
         //open next level
