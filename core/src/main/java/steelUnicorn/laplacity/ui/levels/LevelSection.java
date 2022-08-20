@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity.ui.levels;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
-import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.Gdx;
@@ -22,7 +21,7 @@ import com.badlogic.gdx.utils.Array;
 public class LevelSection extends Table {
     public static final float lvlBtnScale = 0.6f;
     private static final int levelsRow = 5;
-    public static float tabSpace = UI_WORLD_HEIGHT * 0.03f;
+    public static float levelSpace = UI_WORLD_HEIGHT * 0.05f;
 
     private final int sectionNumber;  //section number greater than pathsSize by 1
     public LevelSection(int sectionNumber, Skin skin) {
@@ -47,7 +46,7 @@ public class LevelSection extends Table {
                 btn.setName("level" + i);
                 btn.addListener(LevelButton.listener);
 
-                add(btn).space(tabSpace)
+                add(btn).space(levelSpace)
                         .size(btn.getPrefWidth() * lvlBtnScale, btn.getPrefHeight() * lvlBtnScale);
                 //new Row
                 if (i % levelsRow == 0 && i != lvlImages.size) {

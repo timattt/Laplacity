@@ -2,8 +2,6 @@ package steelUnicorn.laplacity.ui.levels;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
-import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
-import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.graphics.Color;
@@ -20,6 +18,8 @@ import com.badlogic.gdx.utils.Array;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
+import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 
 /**
@@ -36,6 +36,8 @@ public class LevelsTab extends MainMenuTab {
     private LevelsNav nav;
     private int currentSection;
 
+    private static final float levelsPad = UI_WORLD_HEIGHT * 0.2f;
+
     private Array<LevelSection> sections;
 
     private Cell<LevelSection> sectionCell;
@@ -44,18 +46,6 @@ public class LevelsTab extends MainMenuTab {
         super();
         currentSection = 1;
 
-        addReturnButton(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
-            }
-        });
-        //Description
-        row();
-        addDescription("Levels", skin);
-        //Sections
-        row();
         sectionCell = addSections(skin);
 
         row();
@@ -70,7 +60,7 @@ public class LevelsTab extends MainMenuTab {
             sections.add(new LevelSection(i + 1, skin));
         }
 
-        return add(sections.get(currentSection - 1));
+        return add(sections.get(currentSection - 1)).padTop(levelsPad);
     }
 
     private void updateSection() {
