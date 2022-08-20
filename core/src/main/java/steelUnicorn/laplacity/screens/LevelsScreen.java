@@ -29,7 +29,7 @@ import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
  */
 public class LevelsScreen extends ManagedScreen {
     private Stage levelStage;
-    private LevelsTab levelsTab;
+    public LevelsTab levelsTab;
 
     private Image background;
 

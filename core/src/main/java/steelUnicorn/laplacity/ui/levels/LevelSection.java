@@ -1,10 +1,13 @@
 package steelUnicorn.laplacity.ui.levels;
 
+import static steelUnicorn.laplacity.core.Globals.LEVEL_DEBUG;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
+import static steelUnicorn.laplacity.core.Globals.progress;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
@@ -19,6 +22,7 @@ import com.badlogic.gdx.utils.Array;
  * Используется в классе LevelsTab для отображения уровней для выбора
  */
 public class LevelSection extends Table {
+    public int secSize;
     public static final float lvlBtnScale = 0.6f;
     private static final int levelsRow = 5;
     public static float levelSpace = UI_WORLD_HEIGHT * 0.05f;
@@ -27,6 +31,7 @@ public class LevelSection extends Table {
     public LevelSection(int sectionNumber, Skin skin) {
         this.sectionNumber = sectionNumber;
         addLevels(skin);
+        secSize = getChildren().size;
     }
 
     /**
@@ -45,6 +50,7 @@ public class LevelSection extends Table {
                         lvlImages.get(i - 1), i, sectionNumber);
                 btn.setName("level" + i);
                 btn.addListener(LevelButton.listener);
+                btn.setDisabled(progress.getProgress(sectionNumber, i) == -1 && !LEVEL_DEBUG);
 
                 add(btn).space(levelSpace)
                         .size(btn.getPrefWidth() * lvlBtnScale, btn.getPrefHeight() * lvlBtnScale);
@@ -55,6 +61,13 @@ public class LevelSection extends Table {
             }
         } else {
             Gdx.app.log("section creation", "section number error");
+        }
+    }
+
+    public void openLevel(int level) {
+        Actor actor = findActor("level" + level);
+        if (actor != null) {
+            ((LevelButton) actor).setDisabled(false);
         }
     }
 }

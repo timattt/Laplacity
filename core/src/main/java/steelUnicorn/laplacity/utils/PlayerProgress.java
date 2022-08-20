@@ -14,6 +14,12 @@ import com.badlogic.gdx.utils.Array;
  *
  * Класс содержит функцию levelFinished которая принимает секцию уровень и количество звезд, и
  * сохраняет прогресс.
+ *
+ * Прогресс хранится в виде массива массивов чисел: (секции - уровни - количество звезд)
+ * -1 - уровень заблокирован
+ * 0 1 2 3 - количество собранных на уровне звезд
+ *
+ *
  */
 public class PlayerProgress {
     private final Preferences prefs;
@@ -64,21 +70,40 @@ public class PlayerProgress {
     }
 
     public void levelFinished(int section, int level, int stars) {
-        if (progress.size < section) {
-            Gdx.app.error("Progress", "Wrong section");
+        if (progress.size < section || progress.get(section - 1).size < level) {
+            Gdx.app.error("Progress", "Wrong section or level number");
             return;
         }
 
-        if (progress.get(section - 1).size < level) {
-            Gdx.app.error("Progress", "Wrong level");
-            return;
-        }
-
-        if (progress.get(section - 1).get(level - 1) < stars) {
+        //set new progress to current level
+        if (progress.get(section - 1).get(level - 1) < stars) { //Если звезд собрано больше чем было
             progress.get(section - 1).set(level - 1, stars);
         }
+        //open next level
+        openNextProgress(section, level);
 
         Gdx.app.log("Progress", progress.toString());
+    }
+
+    private void openNextProgress(int section, int level) {
+        if (level < progress.get(section - 1).size) {   //Если в секции есть следующий уровень
+            if (progress.get(section - 1).get(level) == -1) {   //Если закрыт
+                progress.get(section - 1).set(level, 0);
+            }
+        } else if (section < progress.size){    //Если есть следующая секция
+            if (progress.get(section).size > 0 && progress.get(section).get(0) == -1) {
+                progress.get(section).set(0, 0);
+            }
+        }
+    }
+
+    public int getProgress(int section, int level) {
+        if (progress.size < section || progress.get(section - 1).size < level) {
+            Gdx.app.error("Progress", "Wrong section or level number");
+            return -1;
+        }
+
+        return progress.get(section - 1).get(level - 1);
     }
 
     public void dispose() {

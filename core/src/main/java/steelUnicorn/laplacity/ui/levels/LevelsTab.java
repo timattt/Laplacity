@@ -15,11 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
-
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
-import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 
 /**
@@ -131,6 +127,19 @@ public class LevelsTab extends MainMenuTab {
 
         private void updateSectionName() {
             sectionName.setText("Section " + LevelsTab.this.currentSection);
+        }
+    }
+
+    /**
+     * Function that enable level button of next level
+     * @param section - current section
+     * @param level - current level
+     */
+    public void openNextLevel(int section, int level) {
+        if (section <= sections.size && level < sections.get(section - 1).secSize) {
+            sections.get(section - 1).openLevel(level + 1);
+        } else if (section < sections.size && sections.get(section).secSize > 0) {
+            sections.get(section).openLevel(0);
         }
     }
 }
