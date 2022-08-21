@@ -25,19 +25,16 @@ public class BackgroundRenderer {
 	private static int idSpace;
 	
 	public static void init() {
+		Texture tex = null;
+		float aspect = 0;
+		float w = 0;
+		float h = 0;
+		
 		gameCache.beginCache();
 		
 		int fieldHeight = LaplacityField.fieldHeight;
 		float sz = LaplacityField.tileSize;
-		
-		Texture tex = LaplacityAssets.SPACE_BACKGROUND;
-		float aspect = (float) tex.getWidth() / (float) tex.getHeight();
-		float h = fieldHeight * sz;
-		float w = aspect * h;
 
-		gameCache.add(new TextureRegion(tex), - w, 0, w, h);
-
-		
 		idSpace = gameCache.endCache();
 
 		float x = 0;
@@ -54,13 +51,6 @@ public class BackgroundRenderer {
 			x += w;
 			i++;
 		}		
-		
-		tex = LaplacityAssets.SPACE_BACKGROUND;
-		aspect = (float) tex.getWidth() / (float) tex.getHeight();
-		h = fieldHeight * sz;
-		w = aspect * h;
-		
-		gameCache.add(new TextureRegion(tex), x, 0, w, h);
 		
 		for (Hint hint : levelParams.getLevelHints()) {
 			tex = (LaplacityAssets.HINTS.get(hint.getHintId()));

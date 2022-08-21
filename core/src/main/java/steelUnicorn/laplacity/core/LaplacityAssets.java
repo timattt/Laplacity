@@ -75,7 +75,7 @@ public class LaplacityAssets {
 	public static Texture MAIN_MENU_BACKGROUND;
 	public static Texture EARTH_BACKGROUND;
 	public static Texture LOAD_BACKGROUND;
-
+	
 	//HINTS
 	public static Array<Texture> HINTS;
 
