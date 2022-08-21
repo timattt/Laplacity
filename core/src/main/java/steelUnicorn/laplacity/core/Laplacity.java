@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -112,7 +113,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		
 		// sounds
 		loadRec("sounds/", Sound.class);
-		
+		assetManager.load("music/eraser_loop.wav", Music.class);
+
 		// music
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
 

@@ -39,18 +39,24 @@ public class LaplacityAssets {
 	public static Sound placeSound; // звук размещения частицы
 	public static Sound hurtSound; // звук касания смертельной стены
 	public static Sound bumpStructureSound; // звук удара о структуру
-	public static Sound genStartSound;
-	public static Sound sprayStartSound;
-	public static Sound popupSound;
-	public static Sound annihilationSound;
-	public static Sound spraySound;
-	public static Sound trampolineSound;
-	public static Sound glassBreakingSound;
-	public static Sound glassBumpSound;
-	public static Sound starSound;
-	public static Sound eraserSweepSound;
-	public static Sound eraserLoopSound;
-	public static Sound bumpParticleSound;
+	public static Sound genStartSound; // Звук выбора генератора частиц
+	public static Sound sprayStartSound; // звук выбора спрея
+	public static Sound popupSound; // звук всплывающего окна (выход и настройки)
+	public static Sound annihilationSound; // звук уничтожения частицы
+	public static Sound spraySound; // звук распыления спрея
+	public static Sound trampolineSound; // звук столкновения с батутом
+	public static Sound glassBreakingSound; // звук разбивающегося стекла
+	public static Sound glassBumpSound; // звук столкновения со стеклом
+	public static Sound starSound; // звук получения звезды
+	public static Sound eraserSweepSound; // звук однократного взмаха при стирании спрея
+	public static Sound bumpParticleSound; // звук удара о частицу
+
+	/*
+	 * Звук, когда водишь пальцем по спрею и стираешь его
+	 * Это очень особенный звук, поэтому он музыка
+	 */
+	public static Music eraserLoopSound;
+	public static boolean shouldEraserLoopPlay = false;
 
 	// TILES
 	public static Texture BARRIER_TEXTURE;
@@ -148,8 +154,18 @@ public class LaplacityAssets {
 		glassBumpSound = assetManager.get("sounds/bump_glass.wav");
 		starSound = assetManager.get("sounds/star.wav");
 		eraserSweepSound = assetManager.get("sounds/eraser_sw.wav");
-		eraserLoopSound = assetManager.get("sounds/eraser_loop.wav");
 		bumpParticleSound = assetManager.get("sounds/bump_particle.wav");
+
+		// Звук стирания спрея очень особенный
+		eraserLoopSound = assetManager.get("music/eraser_loop.wav");
+		eraserLoopSound.setOnCompletionListener(
+				a -> {
+					if (shouldEraserLoopPlay) {
+						shouldEraserLoopPlay = false;
+						eraserLoopSound.play();
+					}
+				}
+		);
         
         // TILES
         TRAMPOLINE_TEXTURE = assetManager.get("textures/tiles/trampoline.png");
@@ -303,6 +319,11 @@ public class LaplacityAssets {
 				from.getHeight());
 	}
 
+	/**
+	 * Поставить фоном указанный трек (без интро, просто луп).
+	 * Трек ставится в очередь даже если громкость в настройках нулевая
+	 * @param name Полгый путь до трека в папке assets
+	 */
 	public static void changeTrack(String name) {
 		AssetManager assetManager = Globals.game.assetManager;
 		
@@ -319,6 +340,10 @@ public class LaplacityAssets {
 		music.play();
 	}
 
+	/**
+	 * Поставить фоном случайный трек из папки assets/levels
+	 * (вместе с соответствующим интро, если оно есть в папке (assets)
+	 */
 	public static void setLevelTrack() {
 		if (levelTracks == null) {
 			return;
@@ -336,7 +361,11 @@ public class LaplacityAssets {
 		}
 	}
 
-	// передавать просто name без префикса
+	/**
+	 * Поставить фоном указанный трек вместе с интро
+	 * (интро должно лежать в папке assets/intros под тем же именем)
+	 * @param name Имя трека (без учёта папки, т.е. не levels/lasers а lasers)
+	 */
 	public static void loopTrackWithIntro(String name) {
 		AssetManager assetManager = Globals.game.assetManager;
 		
@@ -350,7 +379,7 @@ public class LaplacityAssets {
 		intro.setVolume(Settings.getMusicVolume());
 		intro.play();
 
-		// асинхронно грузим и ставим в очередь дроп
+		// ставим в очередь дроп
 		if (currentMusic != null && assetManager.contains(currentMusic))
 			assetManager.unload(currentMusic);
 		currentMusic = "music/levels/" + name;
@@ -361,30 +390,63 @@ public class LaplacityAssets {
 		music.setVolume(Settings.getMusicVolume());
 		music.setLooping(true);
 		intro.setOnCompletionListener(fromIntroToDrop);
-		
-
 	}
 
+	/**
+	 * Проиграть указанный звук, если в настройках включены звуки
+	 * @param sound Instance звука
+	 */
 	public static void playSound(Sound sound) {
 		if (Settings.getSoundVolume() != 0) {
 			sound.play();
 		}
 	}
 
+	/**
+	 * Залупить указанный звук, если в настройках включены звуки
+	 * @param sound Instance звука
+	 */
 	public static void loopSound(Sound sound) {
 		if (Settings.getSoundVolume() != 0) {
 			sound.loop();
 		}
 	}
-	
+
+	/**
+	 * Остановить указанный звук, если он проигрывается или лупится
+	 * @param sound Instance звука
+	 */
 	public static void stopSound(Sound sound) {
 		sound.stop();
 	}
 
+	/**
+	 * Обновить громкость музыки. Вызывать при изменении настроек
+	 */
 	public static void syncMusicVolume() {
 		if (intro != null)
 			intro.setVolume(Settings.getMusicVolume());
 		if (music != null)
 			music.setVolume(Settings.getMusicVolume());
+	}
+
+	/**
+	 * Функция, вызывающаяся при стирании спрея и отвечающая за то, что звук не прекратит
+	 * играть раньше времени
+	 */
+	public static void pingEraserSound() {
+		if (Settings.getSoundVolume() != 0) {
+			if (!eraserLoopSound.isPlaying())
+				eraserLoopSound.play();
+			else
+				shouldEraserLoopPlay = true;
+		}
+	}
+
+	/**
+	 * Остановить звук стирания спрея
+	 */
+	public static void stopEraserSound() {
+		eraserLoopSound.stop();
 	}
 }
