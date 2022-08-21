@@ -18,6 +18,24 @@ back_to_menu_pressed
   orig: 614, 179
   offset: 0, 0
   index: -1
+btn
+  rotate: false
+  xy: 1281, 885
+  size: 150, 80
+  split: 40, 40, 39, 39
+  pad: 40, 40, 25, 25
+  orig: 150, 80
+  offset: 0, 0
+  index: -1
+btn_pressed
+  rotate: false
+  xy: 1467, 100
+  size: 150, 80
+  split: 40, 40, 39, 39
+  pad: 40, 40, 25, 25
+  orig: 150, 80
+  offset: 0, 0
+  index: -1
 clear
   rotate: false
   xy: 1593, 816
@@ -225,7 +243,7 @@ rightarrow_pressed
   index: -1
 settings
   rotate: false
-  xy: 1467, 34
+  xy: 1619, 188
   size: 148, 146
   orig: 148, 146
   offset: 0, 0
@@ -246,7 +264,7 @@ spray_pressed
   index: -1
 square_Dirichlet
   rotate: false
-  xy: 1623, 212
+  xy: 1769, 212
   size: 148, 174
   orig: 148, 174
   offset: 0, 0
@@ -260,21 +278,14 @@ square_Dirichlet_pressed
   index: -1
 square_Electrons
   rotate: false
-  xy: 1767, 36
-  size: 148, 174
-  orig: 148, 174
-  offset: 0, 0
-  index: -1
-square_Eraser
-  rotate: false
-  xy: 1773, 212
+  xy: 1769, 36
   size: 148, 174
   orig: 148, 174
   offset: 0, 0
   index: -1
 square_btn
   rotate: false
-  xy: 1617, 6
+  xy: 1619, 12
   size: 148, 174
   orig: 148, 174
   offset: 0, 0
@@ -357,49 +368,49 @@ filter: Linear, Linear
 repeat: none
 white-pixel
   rotate: false
-  xy: 1011, 1013
+  xy: 1011, 1015
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 clear_pressed
   rotate: false
-  xy: 301, 875
+  xy: 301, 877
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 credits
   rotate: false
-  xy: 1, 101
+  xy: 1, 77
   size: 144, 144
   orig: 144, 144
   offset: 0, 0
   index: -1
 electron
   rotate: false
-  xy: 443, 875
+  xy: 443, 877
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 eraser
   rotate: false
-  xy: 585, 875
+  xy: 585, 877
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 home
   rotate: false
-  xy: 727, 875
+  xy: 727, 877
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 label_back_short
   rotate: false
-  xy: 393, 393
+  xy: 299, 583
   size: 99, 84
   split: 35, 35, 35, 35
   pad: 25, 25, 25, 25
@@ -408,154 +419,161 @@ label_back_short
   index: -1
 leftarrow
   rotate: false
-  xy: 149, 300
+  xy: 149, 152
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 pause
   rotate: false
-  xy: 147, 18
+  xy: 293, 434
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 play
   rotate: false
-  xy: 869, 875
+  xy: 869, 877
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 proton
   rotate: false
-  xy: 151, 582
+  xy: 151, 434
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 refresh
   rotate: false
-  xy: 293, 582
+  xy: 291, 293
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 rightarrow
   rotate: false
-  xy: 149, 159
+  xy: 147, 11
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
 spray
   rotate: false
-  xy: 149, 441
+  xy: 149, 293
   size: 140, 139
   orig: 140, 139
   offset: 0, 0
   index: -1
+square_Eraser
+  rotate: false
+  xy: 1, 842
+  size: 148, 174
+  orig: 148, 174
+  offset: 0, 0
+  index: -1
 square_Protons
   rotate: false
-  xy: 1, 840
+  xy: 1, 666
   size: 148, 174
   orig: 148, 174
   offset: 0, 0
   index: -1
 star01
   rotate: false
-  xy: 1, 547
+  xy: 151, 725
   size: 146, 148
   orig: 146, 148
   offset: 0, 0
   index: -1
 star02
   rotate: false
-  xy: 1, 697
+  xy: 151, 875
   size: 148, 141
   orig: 148, 141
   offset: 0, 0
   index: -1
 star03
   rotate: false
-  xy: 151, 723
+  xy: 1, 373
   size: 146, 148
   orig: 146, 148
   offset: 0, 0
   index: -1
 star11
   rotate: false
-  xy: 1, 397
+  xy: 151, 575
   size: 146, 148
   orig: 146, 148
   offset: 0, 0
   index: -1
 star12
   rotate: false
-  xy: 151, 873
+  xy: 1, 523
   size: 148, 141
   orig: 148, 141
   offset: 0, 0
   index: -1
 star13
   rotate: false
-  xy: 1, 247
+  xy: 1, 223
   size: 146, 148
   orig: 146, 148
   offset: 0, 0
   index: -1
 level_achieve
   rotate: false
-  xy: 393, 317
+  xy: 1, 1
   size: 74, 74
   orig: 74, 74
   offset: 0, 0
   index: -1
 level_achieve2
   rotate: false
-  xy: 393, 241
+  xy: 289, 17
   size: 73, 74
   orig: 73, 74
   offset: 0, 0
   index: -1
 star_level
   rotate: false
-  xy: 291, 482
+  xy: 291, 193
   size: 102, 98
   orig: 102, 98
   offset: 0, 0
   index: -1
 star_level2
   rotate: false
-  xy: 291, 173
+  xy: 299, 772
   size: 100, 101
   orig: 100, 101
   offset: 0, 0
   index: -1
 star_level3
   rotate: false
-  xy: 395, 479
+  xy: 299, 669
   size: 100, 101
   orig: 100, 101
   offset: 0, 0
   index: -1
 star_level4
   rotate: false
-  xy: 1, 1
+  xy: 291, 93
   size: 102, 98
   orig: 102, 98
   offset: 0, 0
   index: -1
 star_level5
   rotate: false
-  xy: 291, 379
+  xy: 395, 190
   size: 100, 101
   orig: 100, 101
   offset: 0, 0
   index: -1
 star_level6
   rotate: false
-  xy: 291, 276
+  xy: 395, 87
   size: 100, 101
   orig: 100, 101
   offset: 0, 0

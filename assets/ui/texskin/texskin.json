@@ -148,6 +148,12 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		up: btn
+		down: btn_pressed
+	}
 	Level: {
 		font: RS_extrabold32
 		fontColor: level_color
