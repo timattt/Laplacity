@@ -69,7 +69,7 @@ public class PlayerProgress {
                     progress.get(section).copy(previousProgress.get(section));
                     starsCollected += progress.get(section).getStars();
                 }
-            } catch (SerializationException ex) {
+            } catch (Exception ex) {
                 Gdx.app.log("Progress", "Old progress not valid: " + ex.toString());
             }
         }
