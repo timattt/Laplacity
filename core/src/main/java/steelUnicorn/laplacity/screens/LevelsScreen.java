@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.screens;
 import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
 import static steelUnicorn.laplacity.core.Globals.progress;
+import static steelUnicorn.laplacity.core.LaplacityAssets.LEVEL_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
@@ -41,7 +42,7 @@ public class LevelsScreen extends ManagedScreen {
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
         //background
-        background = new Image(MAIN_MENU_BACKGROUND);
+        background = new Image(LEVEL_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * Globals.guiViewport.getWorldHeight(),
                 Globals.guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);

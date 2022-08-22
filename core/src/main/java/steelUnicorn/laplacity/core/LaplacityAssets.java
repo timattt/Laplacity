@@ -75,6 +75,7 @@ public class LaplacityAssets {
 	public static Texture MAIN_MENU_BACKGROUND;
 	public static Texture EARTH_BACKGROUND;
 	public static Texture LOAD_BACKGROUND;
+	public static Texture LEVEL_BACKGROUND;
 	
 	//HINTS
 	public static Array<Texture> HINTS;
@@ -265,6 +266,7 @@ public class LaplacityAssets {
 		MAIN_MENU_BACKGROUND = assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class);
 		EARTH_BACKGROUND = assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class);
 		LOAD_BACKGROUND = assetManager.get("textures/backgrounds/LOAD_BACKGROUND.png", Texture.class);
+		LEVEL_BACKGROUND = assetManager.get("textures/backgrounds/LEVEL_BACKGROUND.png", Texture.class);
 	}
 
 	private static void loadHints(AssetManager assetManager) {
