@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.guiViewport;
 import static steelUnicorn.laplacity.core.Globals.nameGameScreen;
 import static steelUnicorn.laplacity.core.LaplacityAssets.LOAD_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -49,7 +50,7 @@ public class LoadingScreen extends ManagedScreen {
         FpsCounter fpsCounter = new FpsCounter(SKIN);
         loadingStage.addActor(fpsCounter);
 
-        loadingLabel = new Label("Loading", SKIN);
+        loadingLabel = new Label("Loading", TEXSKIN, "noback");
         loadingLabel.setScale(scale);
         loadingLabel.setFontScale(scale);
         loadingLabel.setColor(Color.WHITE);

@@ -26,13 +26,11 @@ public class CreditsTab extends MainMenuTab {
             }
         });
         row();
-        addDescription("Credits:", skin);
-        row();
         addCredits(skin);
     }
 
     private void addCredits(Skin skin) {
-        Label label = new Label("Made by Steel Unicorn\n"
+        Label label = new Label("Credits\n\nMade by Steel Unicorn\n"
                 + "Steel-uni.com", skin);
         label.setAlignment(Align.center);
         label.setColor(Color.WHITE);

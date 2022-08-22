@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity.ui;
 
 
-import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.graphics.Color;
@@ -40,9 +39,9 @@ public class SettingsDialog extends Dialog {
         color.a = 0;
         setColor(color);
 
-        settingsTable = new SettingsTab(SKIN);
+        settingsTable = new SettingsTab(TEXSKIN);
         getCell(getContentTable()).padLeft(sidepad).padRight(sidepad);
-        getContentTable().add(settingsTable.settingsPane);
+        getContentTable().add(settingsTable.settings);
 
         Button exitBtn = new Button(TEXSKIN.get("ExitBtn", Button.ButtonStyle.class));
         Table buttonTable = getButtonTable();

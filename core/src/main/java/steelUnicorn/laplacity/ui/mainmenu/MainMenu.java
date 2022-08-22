@@ -64,8 +64,8 @@ public class MainMenu extends Stage {
         root.setFillParent(true);
         addActor(root);
 
-        settingsTab = new SettingsTab(SKIN);
-        creditsTab = new CreditsTab(SKIN);
+        settingsTab = new SettingsTab(TEXSKIN);
+        creditsTab = new CreditsTab(TEXSKIN);
 
         createMainMenu(root, SKIN);
 
