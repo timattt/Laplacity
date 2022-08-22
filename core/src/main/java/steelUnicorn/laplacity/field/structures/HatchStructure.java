@@ -40,23 +40,45 @@ public class HatchStructure extends FieldStructure {
 		
 		float len = TMP1.len2();
 		
-		float r = LaplacityField.tileSize * 15f;
-		
-		int i = 0;
-		
-		if (len < r * r) {
-			i = (int) (11f * (1f - len / (r * r)));
-		}
-		
 		float R = (bounds.width() * sz / 2);
 		
 		if (len < R * R && anim == null) {
 			anim = (CatFinishAnimation) cat.startAnimation(CatAnimationManager.FINISH);
-			anim.setFinishPos(centerX, centerY);
+			anim.setStartAndFinishPos(cat.getX(), cat.getY(), centerX, centerY);
 		}
 		
 		GameProcess.gameBatch.enableBlending();
-		gameBatch.draw(LaplacityAssets.HATCH_REGIONS[i % 5][i / 5], bounds.left * sz, bounds.bottom * sz, bounds.width() * sz, bounds.height() * sz);
+		gameBatch.draw(LaplacityAssets.HATCH1_REGIONS[1][0], bounds.left * sz, bounds.bottom * sz, bounds.width() * sz, bounds.height() * sz);
+		GameProcess.gameBatch.disableBlending();
+		
+		if (anim == null || !anim.isDrawForeground()) {
+			int i = 0;
+			
+			if (anim != null) {
+				i = anim.getAnimIndex();
+			}
+			
+			GameProcess.gameBatch.enableBlending();
+			gameBatch.draw(LaplacityAssets.HATCH2_REGIONS[i % 5][i / 5], bounds.left * sz, bounds.bottom * sz, bounds.width() * sz, bounds.height() * sz);
+			GameProcess.gameBatch.disableBlending();
+		}
+	}
+
+	@Override
+	public void renderBatchedForeground(float timeFromStart) {
+		if (anim == null || !anim.isDrawForeground()) {
+			return;
+		}
+		
+		int i = 0;
+		float sz = LaplacityField.tileSize;
+		
+		if (anim != null) {
+			i = anim.getAnimIndex();
+		}
+		
+		GameProcess.gameBatch.enableBlending();
+		gameBatch.draw(LaplacityAssets.HATCH2_REGIONS[i % 5][i / 5], bounds.left * sz, bounds.bottom * sz, bounds.width() * sz, bounds.height() * sz);
 		GameProcess.gameBatch.disableBlending();
 	}
 
