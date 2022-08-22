@@ -168,4 +168,10 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		adHandler.debugMessage("From game show rew OK!");
 	}
 	
+	public void sendLevelStats(int levelNumber, int starsCollected, int totalParticlesPlaced, int totalTry) {
+		if (analyticsCollector != null) {
+			analyticsCollector.levelFinished(levelNumber, starsCollected, totalParticlesPlaced, totalTry);
+		}
+	}
+	
 }

@@ -33,7 +33,7 @@ public class CreditsTab extends MainMenuTab {
 
     private void addCredits(Skin skin) {
         Label label = new Label("Made by Steel Unicorn\n"
-                + "steel-unicorn.org", skin);
+                + "Steel-uni.com", skin);
         label.setAlignment(Align.center);
         label.setColor(Color.WHITE);
         label.setName("credits_label");
