@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
+
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.utils.PlayerProgress.SectionProgress;
 
 
@@ -80,7 +82,7 @@ public class LevelSection extends Table {
     private Cell addLevels(Skin skin) {
         createLevelsTable(skin);
 
-        if (sectionProgress.isOpened()) {
+        if (sectionProgress.isOpened() || Globals.LEVEL_DEBUG) {
             return add(levelButtons);
         } else {
             lockButton = new TextButton("Open section " + progress.starsCollected +

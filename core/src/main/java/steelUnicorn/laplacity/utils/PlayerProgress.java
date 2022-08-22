@@ -6,6 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SerializationException;
+
+import steelUnicorn.laplacity.core.Globals;
 
 
 /**
@@ -58,12 +61,16 @@ public class PlayerProgress {
 
         //Переносим старый прогресс в новый
         if (prefs.contains("progress")) {
-            @SuppressWarnings("unchecked")
-			Array<SectionProgress> previousProgress =
-                    json.fromJson(Array.class, prefs.getString("progress"));
-            for (int section = 0; section < previousProgress.size && section < progress.size; section++) {
-                progress.get(section).copy(previousProgress.get(section));
-                starsCollected += progress.get(section).getStars();
+            try {
+                @SuppressWarnings("unchecked")
+                Array<SectionProgress> previousProgress =
+                        json.fromJson(Array.class, prefs.getString("progress"));
+                for (int section = 0; section < previousProgress.size && section < progress.size; section++) {
+                    progress.get(section).copy(previousProgress.get(section));
+                    starsCollected += progress.get(section).getStars();
+                }
+            } catch (SerializationException ex) {
+                Gdx.app.log("Progress", "Old progress not valid: " + ex.toString());
             }
         }
     }
@@ -111,8 +118,10 @@ public class PlayerProgress {
     }
 
     public void dispose() {
-        prefs.putString("progress", json.toJson(progress));
-        prefs.flush();
+        if (!Globals.LEVEL_DEBUG) { //прогресс не сохраняется в случае отладки уровней
+            prefs.putString("progress", json.toJson(progress));
+            prefs.flush();
+        }
     }
 
 
