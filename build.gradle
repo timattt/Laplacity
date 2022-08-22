@@ -11,6 +11,7 @@ buildscript {
 	dependencies {
 		classpath "com.android.tools.build:gradle:$androidPluginVersion"
 		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
+		classpath 'com.guardsquare:proguard-gradle:7.1.0'
 
 		// This follows advice from https://blog.gradle.org/log4j-vulnerability
 		constraints {
@@ -27,13 +28,11 @@ buildscript {
 
 allprojects {
 	repositories {
-        maven { 
-			url 'https://jitpack.io'
-			url 'https://android-sdk.is.com/'
-		}
+        maven { url 'https://jitpack.io' }
+		maven { url 'https://android-sdk.is.com/' }
         google()
         mavenCentral()
-    }
+	}
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
 }

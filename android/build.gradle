@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.guardsquare.proguard'
 
 
 android {
@@ -45,9 +46,18 @@ android {
 	
 	buildTypes {
 		release {
+			// Disable R8
 			minifyEnabled false
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 			signingConfig signingConfigs.debug
+		}
+	}
+
+	proguard {
+		configurations {
+			release {
+				defaultConfiguration 'proguard-android-optimize.txt'
+				configuration 'proguard-rules.pro'
+			}
 		}
 	}
 
@@ -106,7 +116,7 @@ dependencies {
 	}
 	
 	implementation 'com.google.android.gms:play-services-ads:20.0.0'
-	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.50'
+	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
 }
 
 // Called every time gradle gets executed, takes the native dependencies of
