@@ -60,6 +60,29 @@ public class BackgroundRenderer {
 			gameCache.add(new TextureRegion(tex), 0, 0, w, h);
 		}
 		
+		tex = LaplacityAssets.LEFT_BORDER;
+		aspect = (float) tex.getWidth() / (float) tex.getHeight();
+		h = fieldHeight * sz;
+		w = aspect * h;
+		gameCache.add(new TextureRegion(tex), -w, 0, w, h);
+		
+		tex = LaplacityAssets.RIGHT_BORDER;
+		aspect = (float) tex.getWidth() / (float) tex.getHeight();
+		h = fieldHeight * sz;
+		w = aspect * h;
+		gameCache.add(new TextureRegion(tex), sz * LaplacityField.fieldWidth, 0, w, h);
+		
+		for (int y = 0; y < fieldHeight; y++) {
+			int k = 0;
+			for (k = 0; k < 1; k++) {
+				gameCache.add(LaplacityAssets.BARRIER_REGIONS[3], - sz * (k + 1), y * sz, sz, sz);
+				gameCache.add(LaplacityAssets.BARRIER_REGIONS[3], sz * LaplacityField.fieldWidth + sz * (k), y * sz, sz, sz);
+			}
+			gameCache.add(LaplacityAssets.BARRIER_REGIONS[4], - sz * (k + 1), y * sz, sz/2, sz/2, sz, sz, 1, 1, 180);
+			gameCache.add(LaplacityAssets.BARRIER_REGIONS[4], sz * LaplacityField.fieldWidth + sz * (k), y * sz, sz, sz);
+	
+		}
+		
 		id = gameCache.endCache();
 	}
 	

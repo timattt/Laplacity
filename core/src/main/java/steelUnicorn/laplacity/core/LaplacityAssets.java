@@ -76,6 +76,9 @@ public class LaplacityAssets {
 	public static Texture EARTH_BACKGROUND;
 	public static Texture LOAD_BACKGROUND;
 	
+	public static Texture LEFT_BORDER;
+	public static Texture RIGHT_BORDER;
+	
 	//HINTS
 	public static Array<Texture> HINTS;
 
@@ -269,6 +272,9 @@ public class LaplacityAssets {
 		MAIN_MENU_BACKGROUND = assetManager.get("textures/backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class);
 		EARTH_BACKGROUND = assetManager.get("textures/backgrounds/EARTH_BACKGROUND.png", Texture.class);
 		LOAD_BACKGROUND = assetManager.get("textures/backgrounds/LOAD_BACKGROUND.png", Texture.class);
+		
+		LEFT_BORDER = assetManager.get("textures/backgrounds/leftBorder.png", Texture.class);
+		RIGHT_BORDER = assetManager.get("textures/backgrounds/rightBorder.png", Texture.class);
 	}
 
 	private static void loadHints(AssetManager assetManager) {
