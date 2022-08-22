@@ -9,7 +9,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -28,12 +30,14 @@ import steelUnicorn.laplacity.utils.PlayerProgress.SectionProgress;
  * Используется в классе LevelsTab для отображения уровней для выбора
  */
 public class LevelSection extends Table {
+    private Stack sectionStack;
     private Table levelButtons;
-
     private TextButton lockButton;
-    private static final float lockButtonTextScale = 2;
 
-    private Cell<Actor> mainCell;
+    private static final float lockButtonTextScale = 2;
+    private static final float lockPad = UI_WORLD_HEIGHT * 0.1f;
+    private static final float lockPadTop = UI_WORLD_HEIGHT * 0.15f;
+    private static final float lockLabelPad = UI_WORLD_HEIGHT * 0.05f;
 
     public int secSize;
     private static final int levelsRow = 5;
@@ -43,10 +47,11 @@ public class LevelSection extends Table {
     private SectionProgress sectionProgress;
 
 
+
     public LevelSection(int sectionNumber, Skin skin) {
         this.sectionNumber = sectionNumber;
         sectionProgress = progress.getSectionProgress(sectionNumber);
-        mainCell = addLevels(skin);
+        addLevels(skin);
         secSize = levelButtons.getChildren().size;
     }
 
@@ -80,26 +85,37 @@ public class LevelSection extends Table {
      * @param skin - ui skin
      */
     private Cell addLevels(Skin skin) {
+        sectionStack = new Stack();
+
         createLevelsTable(skin);
+        sectionStack.add(levelButtons);
 
-        if (sectionProgress.isOpened() || Globals.LEVEL_DEBUG) {
-            return add(levelButtons);
-        } else {
-            lockButton = new TextButton("Open section " + progress.starsCollected +
-                    "/" + sectionProgress.getStarsToOpen(), skin);
+        if (!sectionProgress.isOpened() && !Globals.LEVEL_DEBUG) {
+            lockButton = new TextButton(progress.starsCollected +
+                    "/" + sectionProgress.getStarsToOpen(), skin, "LockSection");
             lockButton.getLabel().setFontScale(lockButtonTextScale);
-
-            lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
             lockButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     sectionProgress.setOpened(true);
-                    mainCell.setActor(levelButtons);
+                    sectionStack.findActor("lock").setVisible(false);
                 }
             });
+            lockButton.getLabelCell().expand(false, true).padRight(lockLabelPad);
 
-            return add(lockButton).size(levelButtons.getPrefWidth(), levelButtons.getPrefHeight());
+            lockButton.add(new Image(TEXSKIN, "label_star"));
+
+
+            lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
+            Table overlay = new Table();
+            overlay.add(lockButton).grow().pad(lockPadTop,
+                    lockPad, lockPad, lockPad);
+            overlay.setName("lock");
+
+            sectionStack.add(overlay);
         }
+
+        return add(sectionStack);
     }
 
     public void openLevel(int level) {
@@ -120,9 +136,9 @@ public class LevelSection extends Table {
 
     public void show() {
         //в mainCell лежит levelButtons если секция открыта. Если закрыта, проверяем что надпись в порядке
-        if (mainCell.getActor() != levelButtons && lockButton != null) {
+        if (sectionStack.findActor("lock") != null) {
             lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
-            lockButton.setText("Open section " + progress.starsCollected +
+            lockButton.setText(progress.starsCollected +
                     "/" + sectionProgress.getStarsToOpen());
         }
     }

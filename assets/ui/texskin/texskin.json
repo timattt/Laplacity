@@ -184,6 +184,13 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		down: level_opened2
 		disabled: level_closed
 	}
+	LockSection: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		up: lock_section
+		down: lock_section_pressed
+		disabled: lock_section
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
