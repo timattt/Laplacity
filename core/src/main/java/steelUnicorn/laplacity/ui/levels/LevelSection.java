@@ -27,7 +27,10 @@ import steelUnicorn.laplacity.utils.PlayerProgress.SectionProgress;
  */
 public class LevelSection extends Table {
     private Table levelButtons;
+
     private TextButton lockButton;
+    private static final float lockButtonTextScale = 2;
+
     private Cell<Actor> mainCell;
 
     public int secSize;
@@ -35,8 +38,6 @@ public class LevelSection extends Table {
     public static float levelSpace = UI_WORLD_HEIGHT * 0.05f;
 
     private final int sectionNumber;
-
-
     private SectionProgress sectionProgress;
 
 
@@ -68,7 +69,6 @@ public class LevelSection extends Table {
         } else {
             Gdx.app.log("section creation", "section number error");
         }
-
     }
 
     /**
@@ -77,7 +77,7 @@ public class LevelSection extends Table {
      * В качестве кнопки используется класс LevelButton
      * @param skin - ui skin
      */
-    private Cell<Actor> addLevels(Skin skin) {
+    private Cell addLevels(Skin skin) {
         createLevelsTable(skin);
 
         if (sectionProgress.isOpened()) {
@@ -85,6 +85,7 @@ public class LevelSection extends Table {
         } else {
             lockButton = new TextButton("Open section " + progress.starsCollected +
                     "/" + sectionProgress.getStarsToOpen(), skin);
+            lockButton.getLabel().setFontScale(lockButtonTextScale);
 
             lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
             lockButton.addListener(new ChangeListener() {
@@ -95,7 +96,7 @@ public class LevelSection extends Table {
                 }
             });
 
-            return add(lockButton);
+            return add(lockButton).size(levelButtons.getPrefWidth(), levelButtons.getPrefHeight());
         }
     }
 

@@ -72,7 +72,7 @@ public class LevelsScreen extends ManagedScreen {
         levelsTab = new LevelsTab(TEXSKIN);
 
         root.add(levelsTab).grow().top();
-        //empty cell for aligning
+        //star collected label
         starsCollected = new Label("Stars: " + progress.starsCollected, TEXSKIN);
         root.add(starsCollected).expand().top().right().uniform().pad(starsPad);
     }
