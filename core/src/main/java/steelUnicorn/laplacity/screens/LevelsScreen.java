@@ -4,7 +4,6 @@ import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
 import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
 import static steelUnicorn.laplacity.core.Globals.progress;
 import static steelUnicorn.laplacity.core.LaplacityAssets.LEVEL_BACKGROUND;
-import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
@@ -38,6 +37,7 @@ public class LevelsScreen extends ManagedScreen {
 
     private Label starsCollected;
     private static final float starsPad = 10;
+    private static final float starImgScale = 0.5f;
 
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
@@ -74,8 +74,17 @@ public class LevelsScreen extends ManagedScreen {
 
         root.add(levelsTab).grow().top();
         //star collected label
-        starsCollected = new Label("Stars: " + progress.starsCollected, TEXSKIN);
-        root.add(starsCollected).expand().top().right().uniform().pad(starsPad);
+        Table starsWidget = new Table();
+        starsWidget.setBackground(TEXSKIN.getDrawable("label_back"));
+
+        starsCollected = new Label("" + progress.starsCollected, TEXSKIN, "noback");
+        starsWidget.add(starsCollected).padRight(starsPad);
+        Image starImg = new Image(TEXSKIN, "label_star");
+        starsWidget.add(starImg)
+                .size(starImg.getPrefWidth() * starImgScale, starImg.getPrefHeight() * starImgScale);
+
+        root.add(starsWidget).expand().top().right().uniform().pad(starsPad)
+                .width(starsWidget.getPrefWidth() * 0.7f);
     }
 
     @Override
@@ -99,7 +108,7 @@ public class LevelsScreen extends ManagedScreen {
     @Override
     public void show() {
         super.show();
-        starsCollected.setText("Stars: " + progress.starsCollected);
+        starsCollected.setText("" + progress.starsCollected);
     }
 
     public void resizeBackground() {
