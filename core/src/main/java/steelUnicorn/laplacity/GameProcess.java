@@ -129,7 +129,7 @@ public class GameProcess {
 	public static final float DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER = 1f;
 	public static final long PARTICLE_TEXTURES_UPDATE_DELTA = 80;
 	public static final long DEAD_ANIMATION_TIME = 1000;
-	public static final long FINISH_ANIMATION_TIME = 1500;
+	public static final long FINISH_ANIMATION_TIME = 1200;
 	
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;
@@ -278,6 +278,10 @@ public class GameProcess {
 		if (Settings.isLightingEnabled()) {
 			rayHandler.updateAndRender();
 		}
+		
+		gameBatch.begin();
+		LaplacityField.renderStructuresBatchedForeground(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
+		gameBatch.end();
 		
 		gameUI.draw();
 		//debugRend.render(levelWorld, CameraManager.camMat());

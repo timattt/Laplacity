@@ -191,6 +191,12 @@ public class LaplacityField extends Group {
 		}
 	}
 	
+	public static void renderStructuresBatchedForeground(float timeFromStart) {
+		for (FieldStructure fs : structures) {
+			fs.renderBatchedForeground(timeFromStart);
+		}
+	}
+	
 	public static void cleanupStructures() {
 		for (FieldStructure fs : structures) {
 			fs.cleanup();

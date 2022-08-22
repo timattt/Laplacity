@@ -95,8 +95,10 @@ public class LaplacityAssets {
 	public static TextureRegion[] BLADES_REGIONS;
 	public static Texture CELERATORS_TEXTURE;
 	public static TextureRegion[] CELERATORS_REGIONS;
-	public static Texture HATCH_TEXTURE;
-	public static TextureRegion[][] HATCH_REGIONS;
+	public static Texture HATCH1_TEXTURE;
+	public static TextureRegion[][] HATCH1_REGIONS;
+	public static Texture HATCH2_TEXTURE;
+	public static TextureRegion[][] HATCH2_REGIONS;
 	public static Texture MOVING_WALL_TEXTURE;
 	public static TextureRegion[] MOVING_WALL_STRUCTURE_REGIONS;
 	public static Texture GLASS_TEXTURE;
@@ -176,7 +178,8 @@ public class LaplacityAssets {
         // STRUCTURES
         BLADES_TEXTURE = assetManager.get("textures/structures/fan.png");
         CELERATORS_TEXTURE = assetManager.get("textures/structures/celerators.png");
-        HATCH_TEXTURE = assetManager.get("textures/structures/hatch.png");
+        HATCH1_TEXTURE = assetManager.get("textures/structures/hatch1.png");
+        HATCH2_TEXTURE = assetManager.get("textures/structures/hatch2.png");
         MOVING_WALL_TEXTURE = assetManager.get("textures/structures/moving.png");
         GLASS_TEXTURE = assetManager.get("textures/structures/glass.png");
         RED_LED_TEXTURE = assetManager.get("textures/structures/redLed.png");
@@ -207,7 +210,8 @@ public class LaplacityAssets {
         cut(WALL_TEXTURE, WALL_REGIONS = new TextureRegion[7]);
         cut_blades(BLADES_TEXTURE, BLADES_REGIONS = new TextureRegion[2]);
         cut(CELERATORS_TEXTURE, CELERATORS_REGIONS = new TextureRegion[1]);
-        cut(HATCH_TEXTURE, HATCH_REGIONS = new TextureRegion[5][3]);
+        cut(HATCH1_TEXTURE, HATCH1_REGIONS = new TextureRegion[5][3]);
+        cut(HATCH2_TEXTURE, HATCH2_REGIONS = new TextureRegion[5][3]);
         cut(MOVING_WALL_TEXTURE, MOVING_WALL_STRUCTURE_REGIONS = new TextureRegion[4]);
         cut(GLASS_TEXTURE, GLASS_REGIONS = new TextureRegion[5]);
         cut(RED_LED_TEXTURE, RED_RED_REGIONS = new TextureRegion[1]);
