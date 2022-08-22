@@ -66,6 +66,30 @@ public class LevelsTab extends MainMenuTab {
     }
 
     /**
+     * Функция обрабатывает прохождение уровня на интерфейсе
+     *
+     * @param section - секция
+     * @param level - уровень
+     */
+    public void levelFinished(int section, int level) {
+        openNextLevel(section, level);  //открытие следующего
+        sections.get(section - 1).updateLevel(level);   //обновление пройденного
+    }
+
+    /**
+     * Function that enable level button of next level
+     * @param section - current section
+     * @param level - current level
+     */
+    public void openNextLevel(int section, int level) {
+        if (section <= sections.size && level < sections.get(section - 1).secSize) {
+            sections.get(section - 1).openLevel(level + 1);
+        } else if (section < sections.size && sections.get(section).secSize > 0) {
+            sections.get(section).openLevel(1);
+        }
+    }
+
+    /**
      * Класс навигации снизу под таблицей для смены секций
      */
     public class LevelsNav extends Table {
@@ -129,19 +153,6 @@ public class LevelsTab extends MainMenuTab {
 
         private void updateSectionName() {
             sectionName.setText("Section " + LevelsTab.this.currentSection);
-        }
-    }
-
-    /**
-     * Function that enable level button of next level
-     * @param section - current section
-     * @param level - current level
-     */
-    public void openNextLevel(int section, int level) {
-        if (section <= sections.size && level < sections.get(section - 1).secSize) {
-            sections.get(section - 1).openLevel(level + 1);
-        } else if (section < sections.size && sections.get(section).secSize > 0) {
-            sections.get(section).openLevel(1);
         }
     }
 }

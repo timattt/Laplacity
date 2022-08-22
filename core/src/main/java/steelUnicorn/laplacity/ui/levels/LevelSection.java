@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.ui.levels;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.progress;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.Gdx;
@@ -101,7 +102,16 @@ public class LevelSection extends Table {
     public void openLevel(int level) {
         Actor actor = levelButtons.findActor("level" + level);
         if (actor != null) {
-            ((LevelWidget) actor).setDisabled(false);
+            LevelWidget wg = (LevelWidget) actor;
+            wg.setDisabled(false);
+            wg.updateStars(TEXSKIN, progress.getProgress(sectionNumber, level));
+        }
+    }
+
+    public void updateLevel(int level) {
+        Actor actor = levelButtons.findActor("level" + level);
+        if (actor != null) {
+            ((LevelWidget) actor).updateStars(TEXSKIN, progress.getProgress(sectionNumber, level));
         }
     }
 

@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.SnapshotArray;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.utils.LevelsParser;
@@ -25,6 +27,9 @@ public class LevelWidget extends Table {
     private LevelButton btn;
     private Table starsTable;
     private int stars;
+
+    private static final String[] imgNames = new String[]{"star_level00", "star_level01", "star_level02",
+            "star_level10", "star_level11", "star_level12"};
 
     public LevelWidget(Skin skin, int level, int section, int stars) {
         super();
@@ -45,26 +50,38 @@ public class LevelWidget extends Table {
         setDisabled(stars == -1 && !LEVEL_DEBUG);
     }
 
+    private String getImgName(int pos) {
+        return imgNames[(stars > pos ? 3 : 0) + pos];
+    }
+
     private void createStars(Skin skin) {
         starsTable = new Table();
-        Image starImg = new Image(skin, "star_level2");
+        Image starImg = new Image(skin, getImgName(0));
         starsTable.add(starImg)
                 .size(starImg.getPrefWidth() * widgetScale,
                         starImg.getPrefHeight() * widgetScale)
                 .padBottom(- starImg.getPrefHeight() * widgetScale * starPadRat);
 
-        starImg = new Image(skin, "star_level");
+        starImg = new Image(skin, getImgName(1));
         starsTable.add(starImg)
                 .size(starImg.getPrefWidth() * widgetScale,
                         starImg.getPrefHeight() * widgetScale)
                 .space(0, sideStarPadRat * starImg.getPrefWidth() * widgetScale,
                         0, sideStarPadRat * starImg.getPrefWidth() * widgetScale);
 
-        starImg = new Image(skin, "star_level3");
+        starImg = new Image(skin, getImgName(2));
         starsTable.add(starImg)
                 .size(starImg.getPrefWidth() * widgetScale,
                         starImg.getPrefHeight() * widgetScale)
                 .padBottom(- starImg.getPrefHeight() * widgetScale * starPadRat);
+    }
+
+    public void updateStars(Skin skin, int stars) {
+        this.stars = stars;
+        SnapshotArray<Actor> starImgs = starsTable.getChildren();
+        for (int i = 0; i < starImgs.size; i++) {
+            ((Image) starImgs.get(i)).setDrawable(skin, getImgName(i));
+        }
     }
 
 

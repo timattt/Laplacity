@@ -522,6 +522,48 @@ star13
   orig: 146, 148
   offset: 0, 0
   index: -1
+star_level00
+  rotate: false
+  xy: 395, 190
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: -1
+star_level01
+  rotate: false
+  xy: 291, 193
+  size: 102, 98
+  orig: 102, 98
+  offset: 0, 0
+  index: -1
+star_level02
+  rotate: false
+  xy: 395, 87
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: -1
+star_level10
+  rotate: false
+  xy: 299, 772
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: -1
+star_level11
+  rotate: false
+  xy: 291, 93
+  size: 102, 98
+  orig: 102, 98
+  offset: 0, 0
+  index: -1
+star_level12
+  rotate: false
+  xy: 299, 669
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: -1
 level_achieve
   rotate: false
   xy: 1, 1
@@ -534,47 +576,5 @@ level_achieve2
   xy: 289, 17
   size: 73, 74
   orig: 73, 74
-  offset: 0, 0
-  index: -1
-star_level
-  rotate: false
-  xy: 291, 193
-  size: 102, 98
-  orig: 102, 98
-  offset: 0, 0
-  index: -1
-star_level2
-  rotate: false
-  xy: 299, 772
-  size: 100, 101
-  orig: 100, 101
-  offset: 0, 0
-  index: -1
-star_level3
-  rotate: false
-  xy: 299, 669
-  size: 100, 101
-  orig: 100, 101
-  offset: 0, 0
-  index: -1
-star_level4
-  rotate: false
-  xy: 291, 93
-  size: 102, 98
-  orig: 102, 98
-  offset: 0, 0
-  index: -1
-star_level5
-  rotate: false
-  xy: 395, 190
-  size: 100, 101
-  orig: 100, 101
-  offset: 0, 0
-  index: -1
-star_level6
-  rotate: false
-  xy: 395, 87
-  size: 100, 101
-  orig: 100, 101
   offset: 0, 0
   index: -1
