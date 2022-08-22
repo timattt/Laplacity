@@ -84,11 +84,10 @@ public class WinInterface extends Stage {
         done.setName("doneLabel");
         root.add(done).space(spaceSize);
         //stars
-        if (score > 0) {
-            root.row();
-            Table stars = getStarRows(score);
-            root.add(stars);
-        }
+        root.row();
+        Table stars = getStarRows(score);
+        root.add(stars);
+
         root.row();
         //buttons
         Table buttons = new Table();
@@ -144,7 +143,8 @@ public class WinInterface extends Stage {
     private static boolean checkNextLevel() {
         return GameProcess.levelNumber < sectionLevels.get(GameProcess.sectionNumber - 1).size ||
                 (GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size &&
-                        GameProcess.sectionNumber < sectionLevels.size);
+                        GameProcess.sectionNumber < sectionLevels.size
+                        && Globals.progress.getSectionProgress(GameProcess.sectionNumber + 1).isOpened());
     }
 
     private Cell<Button> addButton(Table table, Skin skin,

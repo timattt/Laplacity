@@ -1,16 +1,25 @@
 package steelUnicorn.laplacity.screens;
 
+import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
+import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
+import static steelUnicorn.laplacity.core.Globals.progress;
 import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.levels.LevelsTab;
 import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
@@ -22,9 +31,12 @@ import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
  */
 public class LevelsScreen extends ManagedScreen {
     private Stage levelStage;
-    private LevelsTab levelsTab;
+    public LevelsTab levelsTab;
 
     private Image background;
+
+    private Label starsCollected;
+    private static final float starsPad = 10;
 
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
@@ -40,13 +52,29 @@ public class LevelsScreen extends ManagedScreen {
         FpsCounter fpsCounter = new FpsCounter(SKIN);
         levelStage.addActor(fpsCounter);
 
+        //root
         Table root = new Table();
         root.setFillParent(true);
         levelStage.addActor(root);
 
-        levelsTab = new LevelsTab(SKIN);
+        //return button
+        ImageButton btn = new ImageButton(TEXSKIN, "Home");
+        btn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
+            }
+        });
+        root.add(btn).expand().uniform().top().left().padLeft(MainMenu.menuLeftSpace);
 
-        root.add(levelsTab).growY().padTop(MainMenu.menuTopPad);
+        //Levels Tab
+        levelsTab = new LevelsTab(TEXSKIN);
+
+        root.add(levelsTab).grow().top();
+        //star collected label
+        starsCollected = new Label("Stars: " + progress.starsCollected, TEXSKIN);
+        root.add(starsCollected).expand().top().right().uniform().pad(starsPad);
     }
 
     @Override
@@ -65,6 +93,12 @@ public class LevelsScreen extends ManagedScreen {
 
     @Override
     public void hide() {
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        starsCollected.setText("Stars: " + progress.starsCollected);
     }
 
     public void resizeBackground() {

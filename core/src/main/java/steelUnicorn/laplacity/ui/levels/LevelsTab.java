@@ -2,9 +2,6 @@ package steelUnicorn.laplacity.ui.levels;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
-import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
-import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
-import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.graphics.Color;
@@ -18,8 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
-
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 
@@ -37,6 +32,8 @@ public class LevelsTab extends MainMenuTab {
     private LevelsNav nav;
     private int currentSection;
 
+    private static final float levelsPad = UI_WORLD_HEIGHT * 0.2f;
+
     private Array<LevelSection> sections;
 
     private Cell<LevelSection> sectionCell;
@@ -45,18 +42,6 @@ public class LevelsTab extends MainMenuTab {
         super();
         currentSection = 1;
 
-        addReturnButton(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
-            }
-        });
-        //Description
-        row();
-        addDescription("Levels:", skin);
-        //Sections
-        row();
         sectionCell = addSections(skin);
 
         row();
@@ -71,11 +56,37 @@ public class LevelsTab extends MainMenuTab {
             sections.add(new LevelSection(i + 1, skin));
         }
 
-        return add(sections.get(currentSection - 1));
+        return add(sections.get(currentSection - 1)).padTop(levelsPad);
     }
 
     private void updateSection() {
-        sectionCell.setActor(sections.get(currentSection - 1));
+        LevelSection section = sections.get(currentSection - 1);
+        section.show();
+        sectionCell.setActor(section);
+    }
+
+    /**
+     * Функция обрабатывает прохождение уровня на интерфейсе
+     *
+     * @param section - секция
+     * @param level - уровень
+     */
+    public void levelFinished(int section, int level) {
+        openNextLevel(section, level);  //открытие следующего
+        sections.get(section - 1).updateLevel(level);   //обновление пройденного
+    }
+
+    /**
+     * Function that enable level button of next level
+     * @param section - current section
+     * @param level - current level
+     */
+    public void openNextLevel(int section, int level) {
+        if (section <= sections.size && level < sections.get(section - 1).secSize) {
+            sections.get(section - 1).openLevel(level + 1);
+        } else if (section < sections.size && sections.get(section).secSize > 0) {
+            sections.get(section).openLevel(1);
+        }
     }
 
     /**
@@ -91,7 +102,7 @@ public class LevelsTab extends MainMenuTab {
 
         public LevelsNav(Skin skin) {
             defaults().space(LevelsTab.tabSpace);
-            leftArrow = new ImageButton(TEXSKIN.get("leftarrow", ImageButton.ImageButtonStyle.class));
+            leftArrow = new ImageButton(skin.get("leftarrow", ImageButton.ImageButtonStyle.class));
             leftArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -104,13 +115,13 @@ public class LevelsTab extends MainMenuTab {
             });
             add(leftArrow).size(arrowSize);
 
-            sectionName = new Label("Section 00" + LevelsTab.this.currentSection, TEXSKIN);
+            sectionName = new Label("Section 00" + LevelsTab.this.currentSection, skin);
             sectionName.setColor(Color.WHITE);
             sectionName.setAlignment(Align.center);
             add(sectionName).size(sectionName.getPrefWidth(), sectionName.getPrefHeight());
             updateSectionName();
 
-            rightArrow = new ImageButton(TEXSKIN.get("rightarrow", ImageButton.ImageButtonStyle.class));
+            rightArrow = new ImageButton(skin.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
