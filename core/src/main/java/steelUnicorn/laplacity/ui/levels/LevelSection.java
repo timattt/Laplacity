@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.ui.levels;
 
-import static steelUnicorn.laplacity.core.Globals.LEVEL_DEBUG;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.progress;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
@@ -31,7 +30,6 @@ public class LevelSection extends Table {
     private Cell<Actor> mainCell;
 
     public int secSize;
-    public static final float lvlBtnScale = 0.6f;
     private static final int levelsRow = 5;
     public static float levelSpace = UI_WORLD_HEIGHT * 0.05f;
 
@@ -57,14 +55,10 @@ public class LevelSection extends Table {
             Array<Texture> lvlImages = sectionLevels.get(sectionNumber - 1);
 
             for (int i = 1; i <= lvlImages.size; i++) {
-                LevelButton btn = new LevelButton(String.valueOf(i), skin, "Level",
-                        lvlImages.get(i - 1), i, sectionNumber);
-                btn.setName("level" + i);
-                btn.addListener(LevelButton.listener);
-                btn.setDisabled(progress.getProgress(sectionNumber, i) == -1 && !LEVEL_DEBUG);
+                LevelWidget lvlWidget = new LevelWidget(skin,
+                        i, sectionNumber, progress.getProgress(sectionNumber, i));
 
-                levelButtons.add(btn).space(levelSpace)
-                        .size(btn.getPrefWidth() * lvlBtnScale, btn.getPrefHeight() * lvlBtnScale);
+                levelButtons.add(lvlWidget).space(levelSpace);
                 //new Row
                 if (i % levelsRow == 0 && i != lvlImages.size) {
                     levelButtons.row();
@@ -107,7 +101,7 @@ public class LevelSection extends Table {
     public void openLevel(int level) {
         Actor actor = levelButtons.findActor("level" + level);
         if (actor != null) {
-            ((LevelButton) actor).setDisabled(false);
+            ((LevelWidget) actor).setDisabled(false);
         }
     }
 
