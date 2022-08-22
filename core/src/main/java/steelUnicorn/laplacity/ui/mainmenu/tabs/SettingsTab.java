@@ -130,12 +130,7 @@ public class SettingsTab extends MainMenuTab {
                              boolean isChecked, ChangeListener listener,
                              String name, Color color) {
         CheckBox checkBox = new CheckBox(label, skin);
-        //tmp sizing
-        checkBox.getImageCell().size(cbSize, cbSize).pad(cbPad);
-        checkBox.getStyle().checkboxOff.setMinHeight(cbSize);
-        checkBox.getStyle().checkboxOff.setMinWidth(cbSize);
-        checkBox.getStyle().checkboxOn.setMinHeight(cbSize);
-        checkBox.getStyle().checkboxOn.setMinWidth(cbSize);
+        checkBox.getImageCell().padRight(cbPad);
 
         checkBox.setName(name);
         checkBox.setChecked(isChecked);

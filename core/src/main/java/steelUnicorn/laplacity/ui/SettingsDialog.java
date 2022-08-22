@@ -4,13 +4,16 @@ package steelUnicorn.laplacity.ui;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 
 
@@ -44,6 +47,12 @@ public class SettingsDialog extends Dialog {
         getContentTable().add(settingsTable.settings);
 
         Button exitBtn = new Button(TEXSKIN.get("ExitBtn", Button.ButtonStyle.class));
+        exitBtn.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+            }
+        });
         Table buttonTable = getButtonTable();
         getButtonTable().add(exitBtn).size(buttonTable.getMinWidth() * 0.6f,
                 buttonTable.getMinHeight() * 0.6f);
