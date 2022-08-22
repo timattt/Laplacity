@@ -99,6 +99,8 @@ public class LevelSection extends Table {
                 public void changed(ChangeEvent event, Actor actor) {
                     sectionProgress.setOpened(true);
                     sectionStack.findActor("lock").setVisible(false);
+                    ((LevelWidget) levelButtons.findActor("level1"))
+                            .setDisabled(!sectionProgress.isLevelOpened(1));
                 }
             });
             lockButton.getLabelCell().expand(false, true).padRight(lockLabelPad);
@@ -122,7 +124,7 @@ public class LevelSection extends Table {
         Actor actor = levelButtons.findActor("level" + level);
         if (actor != null) {
             LevelWidget wg = (LevelWidget) actor;
-            wg.setDisabled(false);
+            wg.setDisabled(level == 1 && !sectionProgress.isOpened());
             wg.updateStars(TEXSKIN, progress.getProgress(sectionNumber, level));
         }
     }

@@ -17,7 +17,7 @@ import steelUnicorn.laplacity.ui.CatFoodInterface;
  * в котором он меняет
  */
 public class CatFoodTimer {
-    public static final int MAX_VALUE = 2; //seconds
+    public static final int MAX_VALUE = 60; //seconds
     private CatFoodInterface currentInterface;
 
     private int sec;
