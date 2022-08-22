@@ -4,9 +4,11 @@ package steelUnicorn.laplacity.ui.mainmenu.tabs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
 
 import steelUnicorn.laplacity.core.Globals;
@@ -38,14 +40,24 @@ public class SettingsTab extends MainMenuTab {
                 MainMenu stage = (MainMenu) SettingsTab.this.getStage();
                 stage.returnMainMenu();
             }
-        });
-        row();
-        addDescription("Settings:", skin);
-        row();
+        }).expand().uniform().left().top().padLeft(MainMenu.menuLeftSpace);
+
+        Table setTable = new Table();
+        setTable.setBackground(skin.getDrawable("label_back"));
+
+        Label description = new Label("Settings", skin, "noback");
+        description.setOrigin(Align.center);
+        description.setScale(descriptionScale);
+        description.setFontScale(descriptionScale);
+        setTable.add(description).pad(tabSpace);
+        setTable.row();
 
         createSettings(skin);
+        setTable.add(settings);
 
-        add(settings).space(tabSpace);
+        add(setTable).space(tabSpace).top().padTop(MainMenu.menuTopPad);
+
+        add().expand().uniform();
     }
 
     /**

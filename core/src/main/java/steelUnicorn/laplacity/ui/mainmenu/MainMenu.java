@@ -101,7 +101,6 @@ public class MainMenu extends Stage {
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 mainCell.setActor(creditsTab);
-                mainCell.fill(false).top().padTop(MainMenu.menuTopPad);
             }
         });
         icons.add(icon).top().expandY().size(iconSize);
@@ -114,7 +113,6 @@ public class MainMenu extends Stage {
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 mainCell.setActor(settingsTab);
-                mainCell.fill(false).top().padTop(MainMenu.menuTopPad);
             }
         });
 
@@ -137,7 +135,6 @@ public class MainMenu extends Stage {
 
     public void returnMainMenu() {
         mainCell.setActor(mainMenu);
-        mainCell.fill().center().padTop(0);
     }
 
     public void resizeBackground() {
