@@ -96,7 +96,7 @@ public class WinInterface extends Stage {
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 LaplacityAssets.changeTrack("music/main theme_drop.ogg");
-                Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.nameSlideIn);
+                Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.blendTransitionName);
             }
         });
 
