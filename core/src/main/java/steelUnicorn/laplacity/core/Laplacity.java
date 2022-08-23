@@ -142,7 +142,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		transitionBatch.dispose();
 		assetManager.dispose();
 		catFood.dispose();
-		progress.dispose();
 	}
 	
 	public void showInterstitial() {
