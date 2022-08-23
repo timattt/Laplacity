@@ -30,7 +30,7 @@ public class PlayerProgress {
     private Array<SectionProgress> progress;
     private boolean isNewUser;
 
-    private static final int[] starsToOpenSection = new int[]{0, 5, 25, 55, 85, 115, 145};
+    private static final int[] starsToOpenSection = new int[]{0, 4, 24, 44, 66, 88, 106};
 
     private final Json json;
 
