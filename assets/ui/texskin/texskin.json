@@ -153,9 +153,13 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: pause
 		imageDown: pause_pressed
 	}
-	Refresh: {
+	Replay: {
 		imageUp: refresh
 		imageDown: refresh_pressed
+	}
+	Next: {
+		imageUp: NextIcon
+		imageDown: NextIcon_On
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
