@@ -19,7 +19,9 @@
 #   public *;
 #}
 
--verbose
+#-verbose
+#-dontobfuscate
+#-ignorewarnings
 
 -dontwarn android.support.**
 -dontwarn com.badlogic.gdx.backends.android.AndroidFragmentApplication
@@ -45,4 +47,108 @@
    void    postSolve(long, long);
    boolean reportFixture(long);
    float   reportRayFixture(long, float, float, float, float, float);
+}
+
+### ACRA ProGuard rules###
+
+# Restore some Source file names and restore approximate line numbers in the stack traces,
+# otherwise the stack traces are pretty useless
+-keepattributes SourceFile,LineNumberTable
+
+# ACRA loads Plugins using reflection
+-keep class * implements org.acra.plugins.Plugin {*;}
+
+# ACRA uses enum fields in json
+-keep enum org.acra.** {*;}
+
+# autodsl accesses constructors using reflection
+-keepclassmembers class * implements org.acra.config.Configuration { <init>(...); }
+
+# ACRA creates a proxy for this interface
+-keep interface org.acra.ErrorReporter
+
+-dontwarn android.support.**
+
+-dontwarn com.faendir.kotlin.autodsl.DslInspect
+-dontwarn com.faendir.kotlin.autodsl.DslMandatory
+-dontwarn com.google.auto.service.AutoService
+
+
+### ironSource ProGuard rules ###
+-keepclassmembers class com.ironsource.sdk.controller.IronSourceWebView$JSInterface {
+    public *;
+}
+-keepclassmembers class * implements android.os.Parcelable {
+    public static final android.os.Parcelable$Creator *;
+}
+-keep public class com.google.android.gms.ads.** {
+   public *;
+}
+-keep class com.ironsource.adapters.** { *;
+}
+-dontwarn com.ironsource.mediationsdk.**
+-dontwarn com.ironsource.adapters.**
+-keepattributes JavascriptInterface
+-keepclassmembers class * {
+    @android.webkit.JavascriptInterface <methods>;
+}
+
+
+### devtodev ProGuard rules ###
+-keep class com.devtodev.** { *; }
+-dontwarn com.devtodev.**
+
+
+### Laplacity ProGuard rules ###
+-keep class org.acra.config.CoreConfiguration
+-keep class kotlin.jvm.internal.DefaultConstructorMarker
+-keep class kotlin.internal.**
+-keep class org.acra.builder.ReportBuilder
+-keep class org.acra.plugins.PluginLoader
+-keep class org.acra.data.CrashReportData
+-keep class org.acra.builder.LastActivityManager
+-keep class com.google.android.gms.internal.**
+-keep class com.google.android.gms.common.internal.**
+-keep class com.google.android.gms.common.api.internal.**
+-keep class com.google.firebase.components.ComponentContainer
+-keep class com.google.ads.AdSize
+-keep class com.badlogic.gdx.Application
+-keep class com.badlogic.gdx.ApplicationLogger
+-keep class com.badlogic.gdx.backends.android.**
+-keep class com.badlogic.gdx.ApplicationListener
+-keep class com.badlogic.gdx.LifecycleListener
+-keep class com.badlogic.gdx.backends.android.AndroidEventListener
+-keep class com.badlogic.gdx.files.FileHandle
+-keep class com.google.android.gms.dynamic.IObjectWrapper
+-keep class com.google.ads.mediation.**
+-keep class kotlin.jvm.functions.Function1
+-keep class com.ironsource.sdk.controller.**
+
+-keep class steelUnicorn.laplacity.BuildConfig
+-keepclassmembers class steelUnicorn.laplacity.BuildConfig {
+    public <fields>;
+}
+
+-keepclassmembers class com.google.android.gms.internal.appset.zzr {
+    *** getAppSetIdInfo();
+}
+
+-keep class com.badlogic.gdx.scenes.scene2d.ui.**
+-keepclassmembers class com.badlogic.gdx.scenes.scene2d.ui.** {
+    <fields>;
+}
+
+-keepclassmembers class steelUnicorn.laplacity.utils.LevelParams {
+    <fields>;
+}
+
+-keepclassmembers class steelUnicorn.laplacity.utils.LevelParams$Hint {
+    <fields>;
+}
+
+-keep class com.badlogic.gdx.graphics.Color
+-keep class com.badlogic.gdx.graphics.g2d.BitmapFont
+
+-keepclassmembers class com.google.android.gms.dynamic.ObjectWrapper {
+    <fields>;
 }
