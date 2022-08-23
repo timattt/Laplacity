@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.SerializationException;
 
 import steelUnicorn.laplacity.core.Globals;
 
@@ -43,6 +42,7 @@ public class PlayerProgress {
         initProgress();
 
         Gdx.app.log("Progress", progress.toString());
+        saveProgress();
     }
 
     private void initProgress() {
@@ -90,6 +90,7 @@ public class PlayerProgress {
         openNextProgress(section, level);
 
         Gdx.app.log("Progress", progress.toString());
+        saveProgress();
     }
 
     private void openNextProgress(int section, int level) {
@@ -113,13 +114,12 @@ public class PlayerProgress {
         return progress.get(section - 1);
     }
 
-    public void dispose() {
+    public void saveProgress() {
         if (!Globals.LEVEL_DEBUG) { //прогресс не сохраняется в случае отладки уровней
             prefs.putString("progress", json.toJson(progress));
             prefs.flush();
         }
     }
-
 
     public static class SectionProgress {
         private Array<Integer> levelStars;
@@ -140,6 +140,7 @@ public class PlayerProgress {
 
         public void setOpened(boolean opened) {
             isOpened = opened;
+            Globals.progress.saveProgress();
         }
 
         public int getStarsToOpen() {
@@ -152,6 +153,7 @@ public class PlayerProgress {
 
         public void setLevelStars(int level, int stars) {
             levelStars.set(level - 1, stars);
+            Globals.progress.saveProgress();
         }
 
         public int getStars() {
@@ -171,10 +173,11 @@ public class PlayerProgress {
         public void openLevel(int level) {
             if (levelStars.get(level - 1) < 0) {
                 levelStars.set(level - 1, 0);
+                Globals.progress.saveProgress();
             }
         }
 
-        public void copy(SectionProgress newProgress) {
+        private void copy(SectionProgress newProgress) {
             isOpened = newProgress.isOpened;
             for (int i = 0; i < levelStars.size && i < newProgress.levelStars.size; i++) {
                 levelStars.set(i, newProgress.levelStars.get(i));

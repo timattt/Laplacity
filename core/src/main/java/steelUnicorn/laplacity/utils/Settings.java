@@ -27,7 +27,6 @@ public class Settings {
 	//lighting
 	private static boolean lightingEnabled;
 
-
 	//fps
 	private static boolean showFps;
 
@@ -61,23 +60,13 @@ public class Settings {
 		}
 	}
 
-	/**
-	 * Функция сохраняющая настройки
-	 */
-	public static void saveSettings() {
-		prefs.putFloat("soundVolume", soundVolume);
-		prefs.putFloat("musicVolume", musicVolume);
-		prefs.putBoolean("lighting", lightingEnabled);
-		prefs.putBoolean("showFps", showFps);
-
-		prefs.flush();
-	}
-
 	public static float getSoundVolume() {
 		return soundVolume;
 	}
 	public static void setSoundVolume(float soundVolume) {
 		Settings.soundVolume = soundVolume;
+		prefs.putFloat("soundVolume", soundVolume);
+		prefs.flush();
 	}
 
 	public static float getMusicVolume() {
@@ -85,6 +74,8 @@ public class Settings {
 	}
 	public static void setMusicVolume(float musicVolume) {
 		Settings.musicVolume = musicVolume;
+		prefs.putFloat("musicVolume", musicVolume);
+		prefs.flush();
 	}
 
 	public static boolean isLightingEnabled() {
@@ -92,6 +83,8 @@ public class Settings {
 	}
 	public static void setLighting(boolean lighting) {
 		Settings.lightingEnabled = lighting;
+		prefs.putBoolean("lighting", lightingEnabled);
+		prefs.flush();
 	}
 
 	public static boolean isShowFps() {
@@ -99,5 +92,7 @@ public class Settings {
 	}
 	public static void setShowFps(boolean showFps) {
 		Settings.showFps = showFps;
+		prefs.putBoolean("showFps", showFps);
+		prefs.flush();
 	}
 }

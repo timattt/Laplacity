@@ -65,6 +65,8 @@ public class CatFood {
 
             timer.start();
         }
+
+        saveLaunches();
     }
 
     public int interstitialShown() {
@@ -92,7 +94,7 @@ public class CatFood {
         return totalLaunchesAvailable;
     }
 
-    public void dispose() {
+    public void saveLaunches() {
         foodPrefs.putInteger("totalLaunches", totalLaunchesAvailable);
         foodPrefs.flush();
     }
