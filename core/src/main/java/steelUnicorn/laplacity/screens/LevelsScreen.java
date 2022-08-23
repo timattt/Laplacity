@@ -1,11 +1,7 @@
 package steelUnicorn.laplacity.screens;
 
-import static steelUnicorn.laplacity.core.Globals.nameMainMenuScreen;
-import static steelUnicorn.laplacity.core.Globals.nameSlideOut;
-import static steelUnicorn.laplacity.core.Globals.progress;
-import static steelUnicorn.laplacity.core.LaplacityAssets.MAIN_MENU_BACKGROUND;
-import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
-import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.core.LaplacityAssets.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -63,7 +59,7 @@ public class LevelsScreen extends ManagedScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, nameSlideOut);
+                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, Globals.blendTransitionName);
             }
         });
         root.add(btn).expand().uniform().top().left().padLeft(MainMenu.menuLeftSpace);

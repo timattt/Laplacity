@@ -79,6 +79,9 @@ public class LaplacityAssets {
 	public static Texture LEFT_BORDER;
 	public static Texture RIGHT_BORDER;
 	
+	// STORY
+	public static Texture[] STORY;
+	
 	//HINTS
 	public static Array<Texture> HINTS;
 
@@ -141,6 +144,13 @@ public class LaplacityAssets {
 		PARTICLES_STARS2 = assetManager.get("textures/particles/particles4.png");
 		PARTICLES_EXPLOSION = assetManager.get("textures/particles/particles6.png");
 		PARTICLES_STEP = assetManager.get("textures/particles/particles5.png");
+		
+		// story
+		STORY = new Texture[4];
+		STORY[0] = assetManager.get("story/1.png");
+		STORY[1] = assetManager.get("story/2.png");
+		STORY[2] = assetManager.get("story/3.png");
+		STORY[3] = assetManager.get("story/4.png");
 		
     	// sounds
         clickSound = assetManager.get("sounds/click.wav");

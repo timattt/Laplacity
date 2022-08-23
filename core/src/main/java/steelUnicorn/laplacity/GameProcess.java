@@ -171,9 +171,14 @@ public class GameProcess {
 	// GAME LOOP
 	//========================================================================================	
 	public static void initLevel(Texture level) {
+		initLevel(level, true);
+	}
+	
+	public static void initLevel(Texture level, boolean showLoading) {
 		disposeLevel();
 		
-		game.getScreenManager().pushScreen(nameLoadingScreen, nameSlideIn);
+		if (showLoading)
+			game.getScreenManager().pushScreen(nameLoadingScreen, blendTransitionName);
 		
 		Gdx.app.log("gameProcess", "level init started: " + "section "+ sectionNumber + "; level " + levelNumber);
 		levelWorld = new World(Vector2.Zero, false);

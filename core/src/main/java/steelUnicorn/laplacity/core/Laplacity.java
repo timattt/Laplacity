@@ -24,6 +24,7 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
@@ -64,20 +65,30 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		winScreen = new WinScreen();
 		levelsScreen = new LevelsScreen();
 		loadingScreen = new LoadingScreen();
+		storyScreen = new StoryScreen[STORY_SIZE];
+		for (int i = 0; i < STORY_SIZE; i++) {
+			storyScreen[i] = new StoryScreen(i);
+		}
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
 		
+		
 		// transition
 		this.transitionBatch = new SpriteBatch();
-		BlendingTransition slideIn = new BlendingTransition(transitionBatch, 1f);
-		BlendingTransition slideOut = new BlendingTransition(transitionBatch, 1f);
+		BlendingTransition blend = new BlendingTransition(transitionBatch, 1f);
+		BlendingTransition story = new BlendingTransition(transitionBatch, 1f);
+
 		this.screenManager.addScreen(nameGameScreen, gameScreen);
 		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
 		this.screenManager.addScreen(nameWinScreen, winScreen);
 		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
 		this.screenManager.addScreen(nameLoadingScreen, loadingScreen);
-		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
-		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
+		
+		for (int i = 0; i < STORY_SIZE; i++)
+			this.screenManager.addScreen(nameStoryScreen + i, storyScreen[i]);
+		
+		this.screenManager.addScreenTransition(blendTransitionName, blend);
+		this.screenManager.addScreenTransition(storyTransitionName, story);
 
 		LaplacityAssets.changeTrack("music/main theme_drop.ogg");
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
@@ -99,6 +110,9 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 
 		// levels
 		loadRec("levels/", Texture.class);
+		
+		// story
+		loadRec("story/", Texture.class);
 
 		// ui
 		assetManager.load("ui/uiskin.json", Skin.class);

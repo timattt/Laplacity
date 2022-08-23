@@ -1,7 +1,7 @@
 package steelUnicorn.laplacity.ui.levels;
 
-import static steelUnicorn.laplacity.core.Globals.LEVEL_DEBUG;
-import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
+import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.core.LaplacityAssets.*;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -10,12 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.utils.LevelsParser;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.utils.LevelsParser;
 
 public class LevelWidget extends Table {
     private static final float widgetScale = 0.6f;
@@ -107,8 +106,13 @@ public class LevelWidget extends Table {
                 GameProcess.levelNumber = btn.levelNumber;
                 GameProcess.sectionNumber = btn.sectionNumber;
                 GameProcess.levelParams = LevelsParser.getParams(btn.sectionNumber, btn.levelNumber);
-                GameProcess.initLevel(btn.lvlImg);
-
+                
+                if (btn.levelNumber == 1 && btn.sectionNumber == 1) {
+                	game.getScreenManager().pushScreen(nameStoryScreen + "0", storyTransitionName);
+                } else {
+                	GameProcess.initLevel(btn.lvlImg);
+                }
+                
                 LaplacityAssets.setLevelTrack();;
             }
         };

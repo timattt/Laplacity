@@ -10,6 +10,7 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.PlayerProgress;
@@ -34,10 +35,11 @@ public class Globals {
 	public static final String nameWinScreen = "winScreen";
 	public static final String nameLevelsScreen = "levelsScreen";
 	public static final String nameLoadingScreen = "loadingScreen";
+	public static final String nameStoryScreen = "storyScreen";
 
 	// Tramsition names
-	public static final String nameSlideIn = "slideIn";
-	public static final String nameSlideOut = "slideOut";
+	public static final String blendTransitionName = "blend";
+	public static final String storyTransitionName = "story";
 
 	// UI Viewport. Default world parameters for 16:9 ratio
 	public static final float UI_WORLD_WIDTH = 1920;
@@ -62,6 +64,7 @@ public class Globals {
 	public static WinScreen winScreen;
 	public static LevelsScreen levelsScreen;
 	public static LoadingScreen loadingScreen;
+	public static StoryScreen[] storyScreen;
 
 	// TMP
 	public static final Vector2 TMP1 = new Vector2();
@@ -79,4 +82,6 @@ public class Globals {
 	public static CatFood catFood;
 	//PlayerProgress
 	public static PlayerProgress progress;
+	
+	public static final int STORY_SIZE = 4;
 }
