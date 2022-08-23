@@ -77,8 +77,8 @@ public class GameInterface extends Stage implements GestureListener {
 	private void createInterface() {
 		visibleActors = new Array<>();
 		//Dialogs initialize
-		returnDialog = new ReturnDialog(SKIN);
-		settingsDialog = new SettingsDialog(SKIN);
+		returnDialog = new ReturnDialog(TEXSKIN);
+		settingsDialog = new SettingsDialog(TEXSKIN);
 		//FpsCounter
 		FpsCounter fpsCounter = new FpsCounter(SKIN);
 		addActor(fpsCounter);

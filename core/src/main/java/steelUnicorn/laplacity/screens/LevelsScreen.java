@@ -33,11 +33,12 @@ public class LevelsScreen extends ManagedScreen {
 
     private Label starsCollected;
     private static final float starsPad = 10;
+    private static final float starImgScale = 0.5f;
 
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
         //background
-        background = new Image(MAIN_MENU_BACKGROUND);
+        background = new Image(LEVEL_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * Globals.guiViewport.getWorldHeight(),
                 Globals.guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);
@@ -69,8 +70,17 @@ public class LevelsScreen extends ManagedScreen {
 
         root.add(levelsTab).grow().top();
         //star collected label
-        starsCollected = new Label("Stars: " + progress.starsCollected, TEXSKIN);
-        root.add(starsCollected).expand().top().right().uniform().pad(starsPad);
+        Table starsWidget = new Table();
+        starsWidget.setBackground(TEXSKIN.getDrawable("label_back"));
+
+        starsCollected = new Label("" + progress.starsCollected, TEXSKIN, "noback");
+        starsWidget.add(starsCollected).padRight(starsPad);
+        Image starImg = new Image(TEXSKIN, "label_star");
+        starsWidget.add(starImg)
+                .size(starImg.getPrefWidth() * starImgScale, starImg.getPrefHeight() * starImgScale);
+
+        root.add(starsWidget).expand().top().right().uniform().pad(starsPad)
+                .width(starsWidget.getPrefWidth() * 0.7f);
     }
 
     @Override
@@ -94,7 +104,7 @@ public class LevelsScreen extends ManagedScreen {
     @Override
     public void show() {
         super.show();
-        starsCollected.setText("Stars: " + progress.starsCollected);
+        starsCollected.setText("" + progress.starsCollected);
     }
 
     public void resizeBackground() {

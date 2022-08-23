@@ -7,14 +7,12 @@ import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -31,15 +29,16 @@ import steelUnicorn.laplacity.utils.LevelsParser;
  */
 public class WinInterface extends Stage {
     //Константы размеров
-    private static final float spaceSize = Globals.UI_WORLD_HEIGHT * 0.03f;
-    private static final float btnScale = 0.8f;
+    private static final float btnSpace = Globals.UI_WORLD_WIDTH * 0.02f;
+    private static final float starSpace = Globals.UI_WORLD_HEIGHT * 0.03f;
+    private static final float starsSpace = Globals.UI_WORLD_HEIGHT * 0.07f;
+    private static final float btnScale = 1.5f;
     private static final float edgeStarPad = Globals.UI_WORLD_HEIGHT * 0.05f;
+    private static final float starScale = 1.5f;
 
     private Table root; //<< Корневая таблица для позиционирования
 
     private Image background;
-
-    private static final String[] msg = new String[]{"Done...", "Acceptable.", "Good !", "Excellent !!!"};
 
     public WinInterface(Viewport viewport) {
         super(viewport);
@@ -78,26 +77,21 @@ public class WinInterface extends Stage {
     public void buildStage(int score) {
         clearStage();
 
-        //label
-        Label done = new Label(msg[score], TEXSKIN);
-        done.setAlignment(Align.center);
-        done.setName("doneLabel");
-        root.add(done).space(spaceSize);
         //stars
         root.row();
         Table stars = getStarRows(score);
-        root.add(stars);
+        root.add(stars).padBottom(starsSpace);
 
         root.row();
         //buttons
         Table buttons = new Table();
         buttons.setName("buttonsTable");
-        root.add(buttons).space(spaceSize);
+        root.add(buttons);
 
         buttons.defaults()
-                .space(spaceSize);
+                .space(btnSpace);
 
-        addButton(buttons, TEXSKIN, "ExitBtn", new ChangeListener() {
+        addButton(buttons, TEXSKIN, "Home", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -106,7 +100,7 @@ public class WinInterface extends Stage {
             }
         });
 
-        addButton(buttons, TEXSKIN, "ReplayBtn", new ChangeListener() {
+        addButton(buttons, TEXSKIN, "Replay", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -117,7 +111,7 @@ public class WinInterface extends Stage {
 
         //Если текущий уровень максимален, кнопки max не будет
         if (checkNextLevel()) {
-            addButton(buttons, TEXSKIN, "NextBtn", new ChangeListener() {
+            addButton(buttons, TEXSKIN, "Next", new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -147,9 +141,10 @@ public class WinInterface extends Stage {
                         && Globals.progress.getSectionProgress(GameProcess.sectionNumber + 1).isOpened());
     }
 
-    private Cell<Button> addButton(Table table, Skin skin,
-                                   String name, ChangeListener listener) {
-        Button btn = new Button(skin, name);
+    private Cell<ImageButton> addButton(Table table, Skin skin,
+                                        String name, ChangeListener listener) {
+        ImageButton btn = new ImageButton(skin, name);
+        btn.getImageCell().grow();
         btn.setName(name);
         btn.addListener(listener);
 
@@ -177,7 +172,9 @@ public class WinInterface extends Stage {
 
             Image star = new Image(TEXSKIN, starName.toString());
             star.setName("star" + i);
-            stars.add(star).padTop(i != 2 ? edgeStarPad : 0);
+            stars.add(star).size(star.getPrefWidth() * starScale,
+                            star.getPrefHeight() * starScale)
+                    .space(starSpace).padTop(i != 2 ? edgeStarPad : 0).top();
         }
 
         return stars;
