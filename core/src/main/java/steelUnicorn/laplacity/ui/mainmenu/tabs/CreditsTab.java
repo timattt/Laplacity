@@ -1,10 +1,12 @@
 package steelUnicorn.laplacity.ui.mainmenu.tabs;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
@@ -43,10 +45,20 @@ public class CreditsTab extends MainMenuTab {
         creditsTable.add(description).pad(tabSpace);
 
         creditsTable.row();
-        Label info = new Label("Made by Steel Unicorn\n"
-                + "Steel-uni.com", skin, "noback");
+        Label info = new Label("Made by Steel Unicorn", skin, "noback");
         info.setAlignment(Align.center);
-        creditsTable.add(info).pad(infoPad, 0, infoPad, 0);
+        creditsTable.add(info).padTop(infoPad);
+
+        creditsTable.row();
+        TextButton btn = new TextButton("steel-uni.com", skin, "link");
+        btn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+                Gdx.net.openURI("http://steel-uni.com/");
+            }
+        });
+        creditsTable.add(btn).padBottom(infoPad);
 
         creditsTable.setName("credits_label");
         return add(creditsTable);

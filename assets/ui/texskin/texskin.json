@@ -23,6 +23,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0.39607844
 		a: 1
 	}
+	link_on: {
+		r: 0.76862746
+		g: 0.7254902
+		b: 1
+		a: 1
+	}
 	textcolor: {
 		r: 0.59607846
 		g: 0.5568628
@@ -194,6 +200,11 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		up: lock_section
 		down: lock_section_pressed
 		disabled: lock_section
+	}
+	link: {
+		font: RS_extrabold32
+		fontColor: link_on
+		downFontColor: textcolor
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
