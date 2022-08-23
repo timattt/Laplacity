@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -28,11 +29,12 @@ public class StoryScreen extends ManagedScreen {
 	private static float nextBtnPad = UI_WORLD_HEIGHT * 0.05f;
 	private static float nextScaleX = 2f;
 	private static float nextScaleY = 1.2f;
+	private static float nextFadeDur = 2f;
 
 	private boolean requestedChange = false;
 	private long start = 0;
 	
-	private static final long waitTime = 3000;
+	private static final long waitTime = 2000;
 
 	public StoryScreen(int index) {
 		this.storyIndex = index;
@@ -46,6 +48,7 @@ public class StoryScreen extends ManagedScreen {
 		loadingStage.addActor(storyImage);
 
 		nextBtn = new TextButton("Next", TEXSKIN);
+		nextBtn.getColor().a = 0;
 		nextBtn.setVisible(false);
 		nextBtn.addListener(new ChangeListener() {
 			@Override
@@ -87,6 +90,8 @@ public class StoryScreen extends ManagedScreen {
 	@Override
 	public void hide() {
 		nextBtn.setVisible(false);
+		nextBtn.getColor().a = 0;
+		nextBtn.clearActions();
 	}
 
 	@Override
@@ -99,6 +104,7 @@ public class StoryScreen extends ManagedScreen {
 		
 		if (TimeUtils.millis() - start > waitTime) {
 			nextBtn.setVisible(true);
+			nextBtn.addAction(Actions.fadeIn(nextFadeDur));
 		}
 	}
 
