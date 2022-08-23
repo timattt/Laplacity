@@ -273,11 +273,12 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	}
 	
 	@Override
-	public void levelFinished(int levelNumber, int starsCollected, int totalParticlesPlaced, int totalTry) {
+	public void levelFinished(int levelNumber, int sectionNumber, int starsCollected, int totalParticlesPlaced, int totalTry) {
 		HashMap<String, Integer> resources = new HashMap<>();
 		resources.put("starsFarmed", starsCollected);
 		resources.put("particlesUsed", totalParticlesPlaced);
 		resources.put("try", totalTry);
+		resources.put("section", sectionNumber);
 		DevToDev.levelUp(levelNumber, resources);
 		DevToDev.sendBufferedEvents();
 	}

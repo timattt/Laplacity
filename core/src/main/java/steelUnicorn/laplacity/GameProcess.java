@@ -495,7 +495,7 @@ public class GameProcess {
 	}
 	
 	public static void levelFinished() {
-		Globals.game.sendLevelStats(levelNumber, currentlyStarsCollected, particles.size, totalStarts);
+		Globals.game.sendLevelStats(levelNumber, sectionNumber, currentlyStarsCollected, particles.size, totalStarts);
 		changeGameMode(GameMode.NONE);
 		Gdx.app.log("game process", "Level finished");
 
