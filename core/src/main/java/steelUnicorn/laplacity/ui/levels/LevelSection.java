@@ -1,6 +1,7 @@
 package steelUnicorn.laplacity.ui.levels;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
+import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.Globals.progress;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -30,14 +30,16 @@ import steelUnicorn.laplacity.utils.PlayerProgress.SectionProgress;
  * Используется в классе LevelsTab для отображения уровней для выбора
  */
 public class LevelSection extends Table {
-    private Stack sectionStack;
+    private Table sectionLayout;
     private Table levelButtons;
     private TextButton lockButton;
 
-    private static final float lockButtonTextScale = 2;
-    private static final float lockPad = UI_WORLD_HEIGHT * 0.1f;
-    private static final float lockPadTop = UI_WORLD_HEIGHT * 0.15f;
+    private static final float lockBtnHeight = UI_WORLD_HEIGHT * 0.12f;
+    private static final float lockBtnWidth = UI_WORLD_WIDTH * 0.3f;
+    private static final float lockBtnPadTop = UI_WORLD_HEIGHT * 0.08f;
     private static final float lockLabelPad = UI_WORLD_HEIGHT * 0.05f;
+    private static final float lockFontScale = 1.3f;
+    private static final float starScale = 0.7f;
 
     public int secSize;
     private static final int levelsRow = 5;
@@ -85,39 +87,43 @@ public class LevelSection extends Table {
      * @param skin - ui skin
      */
     private Cell addLevels(Skin skin) {
-        sectionStack = new Stack();
+        sectionLayout = new Table();
 
         createLevelsTable(skin);
-        sectionStack.add(levelButtons);
 
         if (!sectionProgress.isOpened() && !Globals.LEVEL_DEBUG) {
             lockButton = new TextButton(progress.starsCollected +
-                    "/" + sectionProgress.getStarsToOpen(), skin, "LockSection");
-            lockButton.getLabel().setFontScale(lockButtonTextScale);
+                    "/" + sectionProgress.getStarsToOpen(), skin);
+            lockButton.setName("lock");
+            lockButton.getLabel().setFontScale(lockFontScale);
+
             lockButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     sectionProgress.setOpened(true);
-                    sectionStack.findActor("lock").setVisible(false);
+                    sectionLayout.findActor("lock").setVisible(false);
                     ((LevelWidget) levelButtons.findActor("level1"))
                             .setDisabled(!sectionProgress.isLevelOpened(1));
                 }
             });
-            lockButton.getLabelCell().expand(false, true).padRight(lockLabelPad);
 
-            lockButton.add(new Image(TEXSKIN, "label_star"));
+            lockButton.getLabelCell().expand(false, false).padRight(lockLabelPad);
 
+            Image starImg = new Image(TEXSKIN, "label_star");
+            lockButton.add(starImg).size(starImg.getHeight() * starScale,
+                    starImg.getHeight() * starScale);
 
             lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
-            Table overlay = new Table();
-            overlay.add(lockButton).grow().pad(lockPadTop,
-                    lockPad, lockPad, lockPad);
-            overlay.setName("lock");
 
-            sectionStack.add(overlay);
+            sectionLayout.add(lockButton).width(lockBtnWidth).height(lockBtnHeight).padTop(lockBtnPadTop);
+        } else {
+            sectionLayout.add().height(lockBtnHeight).padTop(lockBtnPadTop);
         }
 
-        return add(sectionStack);
+        sectionLayout.row();
+        sectionLayout.add(levelButtons);
+
+        return add(sectionLayout);
     }
 
     public void openLevel(int level) {
@@ -138,7 +144,7 @@ public class LevelSection extends Table {
 
     public void show() {
         //в mainCell лежит levelButtons если секция открыта. Если закрыта, проверяем что надпись в порядке
-        if (sectionStack.findActor("lock") != null) {
+        if (sectionLayout.findActor("lock") != null) {
             lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
             lockButton.setText(progress.starsCollected +
                     "/" + sectionProgress.getStarsToOpen());

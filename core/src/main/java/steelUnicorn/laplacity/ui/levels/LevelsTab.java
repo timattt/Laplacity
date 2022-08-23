@@ -32,8 +32,6 @@ public class LevelsTab extends MainMenuTab {
     private LevelsNav nav;
     private int currentSection;
 
-    private static final float levelsPad = UI_WORLD_HEIGHT * 0.2f;
-
     private Array<LevelSection> sections;
 
     private Cell<LevelSection> sectionCell;
@@ -56,7 +54,7 @@ public class LevelsTab extends MainMenuTab {
             sections.add(new LevelSection(i + 1, skin));
         }
 
-        return add(sections.get(currentSection - 1)).padTop(levelsPad);
+        return add(sections.get(currentSection - 1));
     }
 
     private void updateSection() {
