@@ -137,7 +137,7 @@ public class GameProcess {
 	public static final float BRUSH_DENSITY_POWER = 0.05f * MAX_DENSITY;
 	
 	// TRAJECTORY
-	public static final int TRAJECTORY_POINTS = 20;
+	public static final int TRAJECTORY_POINTS = 30;
 	public static final int STEPS_PER_POINT = 2;
 	public static final float TRAJECTORY_VELOCITY_MULTIPLIER = 3f;
 	public static final float SLINGSHOT_MAX_LENGTH = 22f;

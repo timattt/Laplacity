@@ -149,12 +149,12 @@ public class Cat implements CollisionListener {
 	
 	public void drawStartVelocityArrow() {
 		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(Color.YELLOW);
+		shapeRenderer.setColor(0.8f, 0.8f, 0, 1);
 		shapeRenderer.line(getX(), getY(), getX() + slingshotX, getY() + slingshotY);
 		shapeRenderer.end();
 		shapeRenderer.begin(ShapeType.Filled);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(getX() + slingshotX, getY() + slingshotY, PARTICLE_SIZE / 3);
+		shapeRenderer.circle(getX() + slingshotX, getY() + slingshotY, PARTICLE_SIZE / 2, 10);
 		shapeRenderer.end();
 	}
 
