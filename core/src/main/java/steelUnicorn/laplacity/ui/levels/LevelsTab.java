@@ -82,8 +82,6 @@ public class LevelsTab extends MainMenuTab {
     public void openNextLevel(int section, int level) {
         if (section <= sections.size && level < sections.get(section - 1).secSize) {
             sections.get(section - 1).openLevel(level + 1);
-        } else if (section < sections.size && sections.get(section).secSize > 0) {
-            sections.get(section).openLevel(1);
         }
     }
 

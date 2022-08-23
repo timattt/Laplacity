@@ -100,10 +100,13 @@ public class LevelSection extends Table {
             lockButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    //progress
                     sectionProgress.setOpened(true);
+                    sectionProgress.openLevel(1);
+                    //buttons
                     sectionLayout.findActor("lock").setVisible(false);
                     ((LevelWidget) levelButtons.findActor("level1"))
-                            .setDisabled(!sectionProgress.isLevelOpened(1));
+                            .setDisabled(false);
                 }
             });
 
