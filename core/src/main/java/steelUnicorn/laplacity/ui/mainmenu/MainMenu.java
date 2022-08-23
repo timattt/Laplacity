@@ -127,7 +127,12 @@ public class MainMenu extends Stage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                game.getScreenManager().pushScreen(nameLevelsScreen, blendTransitionName);
+                if (progress.isNewUser()) {
+                    game.getScreenManager().pushScreen(nameStoryScreen + "0", storyTransitionName);
+                    progress.setNewUser(false);
+                } else {
+                    game.getScreenManager().pushScreen(nameLevelsScreen, blendTransitionName);
+                }
             }
         });
         mainMenu.add(btn).expand().uniform();

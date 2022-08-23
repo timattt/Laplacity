@@ -29,6 +29,7 @@ public class PlayerProgress {
 
     private final Preferences prefs;
     private Array<SectionProgress> progress;
+    private boolean isNewUser;
 
     private static final int[] starsToOpenSection = new int[]{0, 5, 25, 55, 85, 115, 145};
 
@@ -42,7 +43,19 @@ public class PlayerProgress {
 
         initProgress();
 
+        isNewUser = prefs.getBoolean("isNewUser", true);
+
         Gdx.app.log("Progress", progress.toString());
+    }
+
+    public boolean isNewUser() {
+        return isNewUser;
+    }
+
+    public void setNewUser(boolean newUser) {
+        isNewUser = newUser;
+        prefs.putBoolean("isNewUser", isNewUser);
+        prefs.flush();
     }
 
     private void initProgress() {
