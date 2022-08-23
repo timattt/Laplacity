@@ -97,10 +97,6 @@ public class PlayerProgress {
             if (!progress.get(section - 1).isLevelOpened(level + 1)) {   //Если закрыт
                 progress.get(section - 1).openLevel(level + 1);
             }
-        } else if (section < progress.size){    //Если есть следующая секция
-            if (progress.get(section).levelStars.size > 0 && !progress.get(section).isLevelOpened(1)) {
-                progress.get(section).openLevel(1);
-            }
         }
     }
 

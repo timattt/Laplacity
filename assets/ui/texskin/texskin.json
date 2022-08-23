@@ -29,6 +29,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 0.76862746
 		a: 1
 	}
+	translucent: {
+		r: 0
+		g: 0
+		b: 0
+		a: 0.752809
+	}
 	transparent: {
 		r: 0
 		g: 0
@@ -46,6 +52,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 	black_pixel: {
 		name: white-pixel
 		color: black
+	}
+	translusent: {
+		name: white-pixel
+		color: translucent
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
@@ -84,6 +94,14 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	ReplayBtn: {
 		up: replay
 		down: replay_pressed
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: checkbox_checked
+		checkboxOff: checkbox
+		font: RS_extrabold32
+		fontColor: textcolor
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
@@ -135,9 +153,13 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: pause
 		imageDown: pause_pressed
 	}
-	Refresh: {
+	Replay: {
 		imageUp: refresh
 		imageDown: refresh_pressed
+	}
+	Next: {
+		imageUp: NextIcon
+		imageDown: NextIcon_On
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
@@ -145,6 +167,10 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 		font: RS_extrabold32
 		fontColor: textcolor
 		background: label_back_short
+	}
+	noback: {
+		font: RS_extrabold32
+		fontColor: textcolor
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
@@ -162,6 +188,13 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		down: level_opened2
 		disabled: level_closed
 	}
+	LockSection: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		up: lock_section
+		down: lock_section_pressed
+		disabled: lock_section
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
@@ -169,6 +202,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: dialogue
+		titleFont: RS_extrabold32
+		titleFontColor: textcolor
+		stageBackground: translusent
+	}
 	cat_hungry: {
 		background: hungy_cut
 		titleFont: RS_extrabold32

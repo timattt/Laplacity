@@ -4,10 +4,11 @@ package steelUnicorn.laplacity.ui.mainmenu.tabs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
 
 import steelUnicorn.laplacity.core.Globals;
@@ -25,8 +26,7 @@ import steelUnicorn.laplacity.utils.Settings;
  * Использует класс Settings подгружающий настройки и сохраняющий при закрытии игры.
  */
 public class SettingsTab extends MainMenuTab {
-    public ScrollPane settingsPane;
-    private Table settings;
+    public Table settings;
     private static float cbSize = Globals.UI_WORLD_HEIGHT * 0.04f;
     private static float cbPad = cbSize * 0.2f;
 
@@ -40,19 +40,24 @@ public class SettingsTab extends MainMenuTab {
                 MainMenu stage = (MainMenu) SettingsTab.this.getStage();
                 stage.returnMainMenu();
             }
-        });
-        row();
-        addDescription("Settings:", skin);
-        row();
+        }).expand().uniform().left().top().padLeft(MainMenu.menuLeftSpace);
+
+        Table setTable = new Table();
+        setTable.setBackground(skin.getDrawable("label_back"));
+
+        Label description = new Label("Settings", skin, "noback");
+        description.setOrigin(Align.center);
+        description.setScale(descriptionScale);
+        description.setFontScale(descriptionScale);
+        setTable.add(description).pad(tabSpace);
+        setTable.row();
 
         createSettings(skin);
+        setTable.add(settings);
 
-        settingsPane = new ScrollPane(settings);
-        settingsPane.validate();
-        settingsPane.setName("tab");
-        settingsPane.setFadeScrollBars(false);
+        add(setTable).space(tabSpace).top().padTop(MainMenu.menuTopPad);
 
-        add(settingsPane).space(tabSpace);
+        add().expand().uniform();
     }
 
     /**
@@ -125,12 +130,7 @@ public class SettingsTab extends MainMenuTab {
                              boolean isChecked, ChangeListener listener,
                              String name, Color color) {
         CheckBox checkBox = new CheckBox(label, skin);
-        //tmp sizing
-        checkBox.getImageCell().size(cbSize, cbSize).pad(cbPad);
-        checkBox.getStyle().checkboxOff.setMinHeight(cbSize);
-        checkBox.getStyle().checkboxOff.setMinWidth(cbSize);
-        checkBox.getStyle().checkboxOn.setMinHeight(cbSize);
-        checkBox.getStyle().checkboxOn.setMinWidth(cbSize);
+        checkBox.getImageCell().padRight(cbPad);
 
         checkBox.setName(name);
         checkBox.setChecked(isChecked);

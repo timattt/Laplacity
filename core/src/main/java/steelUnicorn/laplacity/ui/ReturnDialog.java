@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import steelUnicorn.laplacity.core.Globals;
@@ -14,22 +15,21 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
  * Yes No
  */
 public class ReturnDialog extends Dialog {
-	private static final String title = "Warning";
-	private static final float btnWidth = Globals.UI_WORLD_WIDTH * 0.1f;
-	private static final float btnHeight = Globals.UI_WORLD_HEIGHT * 0.08f;
+	private static final float btnWidth = Globals.UI_WORLD_WIDTH * 0.15f;
+	private static final float btnHeight = Globals.UI_WORLD_HEIGHT * 0.12f;
 	private static final float padSize = 30;
-
-	public ReturnDialog(String title, Skin skin) {
-		super(title, skin);
-	}
+	private static final float titleScale = 1.3f;
 
 	public ReturnDialog(Skin skin) {
-		this(title, skin);
+		super("", skin);
 		Color color = getColor();
 		color.a = 0;
 		setColor(color);
 		//initialize
-		text("Return to levels");
+		Label textLabel = new Label("Return to levels", skin, "noback");
+		textLabel.setScale(titleScale);
+		textLabel.setFontScale(titleScale);
+		text(textLabel);
 		getButtonTable().pad(padSize);
 		getButtonTable().pad(padSize).defaults()
 						.width(btnWidth)
