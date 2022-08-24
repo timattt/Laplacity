@@ -284,7 +284,7 @@ public class MovingWallStructure extends FieldStructure {
 		
 		// destroyer
 		bodydef = new BodyDef();
-		bodydef.type = BodyType.StaticBody;
+		bodydef.type = BodyType.KinematicBody;
 		
 		if (isHorizontal) {
 			bodydef.position.set(currentCoord, staticCoord);
@@ -295,7 +295,9 @@ public class MovingWallStructure extends FieldStructure {
 		destroyer = GameProcess.registerPhysicalObject(bodydef);
 
 		shape = new PolygonShape();
-		shape.setAsBox(blockWidth / 2f - LaplacityField.tileSize / 4, blockHeight / 2f - LaplacityField.tileSize / 4);
+		shape.setAsBox(
+				Math.max(blockWidth / 2f - LaplacityField.tileSize / 2, blockWidth * 0.1f), 
+				Math.max(blockHeight / 2f - LaplacityField.tileSize / 2, blockHeight * 0.1f));
 		
 		fxt = new FixtureDef();
 		fxt.shape = shape;
@@ -314,8 +316,10 @@ public class MovingWallStructure extends FieldStructure {
 		float psi = (float) Math.cos(phaseDelta + timeFromStart * omega);
 		if (isHorizontal) {
 			body.setLinearVelocity(omega*1000f*psi * (endCoord - startCoord - blockWidth) / 2f, 0f);
+			destroyer.setLinearVelocity(omega*1000f*psi * (endCoord - startCoord - blockWidth) / 2f, 0f);
 		} else {
 			body.setLinearVelocity(0f, omega*1000f*psi * (endCoord - startCoord - blockHeight) / 2f);
+			destroyer.setLinearVelocity(0f, omega*1000f*psi * (endCoord - startCoord - blockHeight) / 2f);
 		}
 	}
 
@@ -334,6 +338,7 @@ public class MovingWallStructure extends FieldStructure {
 		}
 		
 		body.setLinearVelocity(0, 0);
+		destroyer.setLinearVelocity(0, 0);
 	}
 
 	@Override
@@ -355,11 +360,9 @@ public class MovingWallStructure extends FieldStructure {
 		if (isHorizontal) {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockWidth) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(currentCoord - blockWidth / 2, staticCoord - blockHeight / 2, 0));
-			destroyer.setTransform(currentCoord, staticCoord, 0);
 		} else {
 			currentCoord = (startCoord + endCoord) / 2f + phi * (endCoord - startCoord - blockHeight) / 2f;
 			GameProcess.gameCache.setTransformMatrix(cacheMat.idt().translate(staticCoord - blockWidth / 2, currentCoord - blockHeight / 2, 0));
-			destroyer.setTransform(staticCoord, currentCoord, 0);
 		}
 
 		GameProcess.gameCache.begin();

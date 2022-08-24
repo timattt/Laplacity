@@ -190,7 +190,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	public static boolean isDebugEnabled() {
 		if (Globals.game.debugHandler == null) {
-			return false;
+			return true;
 		}
 		return Globals.game.debugHandler.isDebugModeEnabled();
 	}
