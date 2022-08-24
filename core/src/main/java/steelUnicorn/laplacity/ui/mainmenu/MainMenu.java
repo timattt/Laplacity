@@ -3,12 +3,14 @@ package steelUnicorn.laplacity.ui.mainmenu;
 import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.core.LaplacityAssets.*;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -36,6 +38,8 @@ public class MainMenu extends Stage {
     public static final float menuTopPad = UI_WORLD_HEIGHT * 0.28f; // << menu button height ratio
     public static final float menuLeftSpace = UI_WORLD_HEIGHT * 0.06f; // << space between elements
     public static final float iconSize = UI_WORLD_HEIGHT * 0.15f;
+
+    private static final float labelPad = UI_WORLD_HEIGHT * 0.05f;
 
     private SettingsTab settingsTab;
     private CreditsTab creditsTab;
@@ -137,7 +141,22 @@ public class MainMenu extends Stage {
         });
         mainMenu.add(btn).expand().uniform();
 
-        mainMenu.add().expand().uniform();
+        //debug and cheater label
+        Table labels = new Table();
+        if (Laplacity.isDebugEnabled()) {
+            Label label = new Label("Debug mode", TEXSKIN);
+            label.getColor().set(Color.RED);
+            labels.add(label).padBottom(labelPad);
+            labels.row();
+        }
+
+        if (Laplacity.isPlayerCheater()) {
+            Label label = new Label("CHEATER", TEXSKIN);
+            label.getColor().set(Color.RED);
+            labels.add(label);
+        }
+
+        mainMenu.add(labels).expand().top().right().pad(labelPad).uniform();
     }
 
     public void returnMainMenu() {
