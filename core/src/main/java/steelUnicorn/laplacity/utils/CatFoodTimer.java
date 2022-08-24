@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.utils;
 import static steelUnicorn.laplacity.core.Globals.catFood;
 import com.badlogic.gdx.utils.Timer;
 
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 
 /**
@@ -17,7 +18,7 @@ import steelUnicorn.laplacity.ui.CatFoodInterface;
  * в котором он меняет
  */
 public class CatFoodTimer {
-    public static final int MAX_VALUE = 60; //seconds
+    public static final int MAX_VALUE = Laplacity.isDebugEnabled() ? 5 : 60; //seconds
     private CatFoodInterface currentInterface;
 
     private int sec;
