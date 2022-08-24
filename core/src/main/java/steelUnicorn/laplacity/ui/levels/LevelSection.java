@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 
-import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.utils.PlayerProgress.SectionProgress;
 
 
@@ -91,7 +90,7 @@ public class LevelSection extends Table {
 
         createLevelsTable(skin);
 
-        if (!sectionProgress.isOpened() && !Globals.LEVEL_DEBUG) {
+        if (!sectionProgress.isOpened()) {
             lockButton = new TextButton(progress.starsCollected +
                     "/" + sectionProgress.getStarsToOpen(), skin);
             lockButton.setName("lock");
@@ -133,7 +132,7 @@ public class LevelSection extends Table {
         Actor actor = levelButtons.findActor("level" + level);
         if (actor != null) {
             LevelWidget wg = (LevelWidget) actor;
-            wg.setDisabled(level == 1 && !sectionProgress.isOpened());
+            wg.setDisabled(false);
             wg.updateStars(TEXSKIN, progress.getProgress(sectionNumber, level));
         }
     }
@@ -151,6 +150,12 @@ public class LevelSection extends Table {
             lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
             lockButton.setText(progress.starsCollected +
                     "/" + sectionProgress.getStarsToOpen());
+        }
+    }
+
+    public void openLevels() {
+        for (int level = 1; level <= secSize; level++) {
+            openLevel(level);
         }
     }
 }

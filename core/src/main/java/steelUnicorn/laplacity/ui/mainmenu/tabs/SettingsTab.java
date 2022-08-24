@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
-
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.Laplacity;
@@ -116,6 +116,17 @@ public class SettingsTab extends MainMenuTab {
                             Settings.setShowFps(box.isChecked());
                         }
                     }, "fpsCheckbox");
+
+            settings.row();
+            TextButton openLevels = new TextButton("Open levels", skin);
+            openLevels.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                    Globals.levelsScreen.levelsTab.openLevels();
+                }
+            });
+            settings.add(openLevels).center();
         }
     }
 

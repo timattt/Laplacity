@@ -1,7 +1,9 @@
 package steelUnicorn.laplacity.ui.levels;
 
-import static steelUnicorn.laplacity.core.Globals.*;
-import static steelUnicorn.laplacity.core.LaplacityAssets.*;
+import static steelUnicorn.laplacity.core.Globals.game;
+import static steelUnicorn.laplacity.core.Globals.nameStoryScreen;
+import static steelUnicorn.laplacity.core.Globals.storyTransitionName;
+import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -46,7 +48,7 @@ public class LevelWidget extends Table {
         row();
         add(btn).size(btn.getPrefWidth() * widgetScale, btn.getPrefHeight() * widgetScale);
 
-        setDisabled(stars == -1 && !LEVEL_DEBUG);
+        setDisabled(stars == -1);
     }
 
     private String getImgName(int pos) {

@@ -3,9 +3,9 @@ package steelUnicorn.laplacity.utils;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 
 import steelUnicorn.laplacity.core.Globals;
 
@@ -128,10 +128,8 @@ public class PlayerProgress {
     }
 
     public void saveProgress() {
-        if (!Globals.LEVEL_DEBUG) { //прогресс не сохраняется в случае отладки уровней
-            prefs.putString("progress", json.toJson(progress));
-            prefs.flush();
-        }
+        prefs.putString("progress", json.toJson(progress));
+        prefs.flush();
     }
 
     public static class SectionProgress {

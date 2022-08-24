@@ -85,6 +85,12 @@ public class LevelsTab extends MainMenuTab {
         }
     }
 
+    public void openLevels() {
+        for (LevelSection section : sections) {
+            section.openLevels();
+        }
+    }
+
     /**
      * Класс навигации снизу под таблицей для смены секций
      */
