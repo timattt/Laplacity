@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.chargedParticles;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.GameProcess;
@@ -13,7 +14,7 @@ public class Proton extends ChargedParticle {
 	private int currentTextureIndex = 0;
 	
 	public Proton(float x, float y) {
-		super(x, y, PARTICLE_SIZE, -PARTICLE_CHARGE);
+		super(x, y, PARTICLE_SIZE, -PARTICLE_CHARGE, true, Color.CYAN);
 		pointLight.setDistance(PARTICLE_LIGHT_DISTANCE);
 	}
 

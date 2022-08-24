@@ -14,8 +14,8 @@ public class Electron extends ChargedParticle {
 	private int currentTextureIndex = 0;
 	
 	public Electron(float x, float y) {
-		super(x, y, PARTICLE_SIZE, PARTICLE_CHARGE, true, Color.RED);
-		pointLight.setDistance(PARTICLE_LIGHT_DISTANCE);
+		super(x, y, PARTICLE_SIZE, PARTICLE_CHARGE, true, Color.MAGENTA);
+		pointLight.setDistance(ELECTRON_LIGHT_DISTANCE);
 	}
 
 	@Override
