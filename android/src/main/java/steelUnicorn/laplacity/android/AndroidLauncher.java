@@ -331,6 +331,11 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	}
 	
 	@Override
+	public boolean allLevelsOpened() {
+		return false;
+	}
+	
+	@Override
 	public boolean isDebugModeEnabled() {
 		return true;
 	}
