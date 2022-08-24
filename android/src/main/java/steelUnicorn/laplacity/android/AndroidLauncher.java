@@ -1,5 +1,7 @@
 package steelUnicorn.laplacity.android;
 
+import steelUnicorn.laplacity.BuildConfig;
+
 import com.devtodev.core.DevToDev;
 import java.util.*;
 import android.provider.Settings.Secure;
@@ -329,15 +331,10 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	public void debugMessage(String text) {
 		debug(text);
 	}
-	
-	@Override
-	public boolean allLevelsOpened() {
-		return false;
-	}
-	
+
 	@Override
 	public boolean isDebugModeEnabled() {
-		return true;
+		return BuildConfig.DEBUG;
 	}
 	
 	@Override

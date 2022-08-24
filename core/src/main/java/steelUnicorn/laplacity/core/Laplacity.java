@@ -197,13 +197,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		return Globals.game.debugHandler.isDebugModeEnabled();
 	}
 	
-	public static boolean allLevelsOpened() {
-		if (Globals.game.debugHandler == null) {
-			return false;
-		}
-		return Globals.game.debugHandler.allLevelsOpened();
-	}
-	
 	public static boolean isPlayerCheater() {
 		if (Globals.game.debugHandler == null) {
 			return false;
