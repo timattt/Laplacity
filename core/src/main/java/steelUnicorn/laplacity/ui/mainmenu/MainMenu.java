@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
@@ -69,9 +70,10 @@ public class MainMenu extends Stage {
 
         createMainMenu(root, SKIN);
 
-        //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(SKIN);
-        addActor(fpsCounter);
+        if (Laplacity.isDebugEnabled()) {
+            FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+            addActor(fpsCounter);
+        }
     }
 
     //Функция вызывается при открытии главного меню, чтобы обновить параметры!

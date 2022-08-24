@@ -84,8 +84,10 @@ public class GameInterface extends Stage implements GestureListener {
 		returnDialog = new ReturnDialog(TEXSKIN);
 		settingsDialog = new SettingsDialog(TEXSKIN);
 		//FpsCounter
-		FpsCounter fpsCounter = new FpsCounter(SKIN);
-		addActor(fpsCounter);
+		if (Laplacity.isDebugEnabled()) {
+			FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+			addActor(fpsCounter);
+		}
 
 		//interface intitialize
 		Table root = new Table();
@@ -134,6 +136,7 @@ public class GameInterface extends Stage implements GestureListener {
 					GameProcess.skipLevel();
 				}
 			});
+			visibleActors.add(skip);
 			centerLayout.row();
 			centerLayout.add(skip).padBottom(iconSpace);
 		}

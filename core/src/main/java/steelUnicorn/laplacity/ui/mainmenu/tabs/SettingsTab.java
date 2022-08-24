@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.Align;
 
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 import steelUnicorn.laplacity.utils.Settings;
@@ -104,16 +105,18 @@ public class SettingsTab extends MainMenuTab {
                     }
                 }, "lightingCheckbox");
 
-        settings.row();
-        addCheckbox(settings, "Show fps", skin, Settings.isShowFps(),
-                new ChangeListener() {
-                    @Override
-                    public void changed(ChangeEvent event, Actor actor) {
-                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                        CheckBox box = (CheckBox) actor;
-                        Settings.setShowFps(box.isChecked());
-                    }
-                }, "fpsCheckbox");
+        if (Laplacity.isDebugEnabled()) {
+            settings.row();
+            addCheckbox(settings, "Show fps", skin, Settings.isShowFps(),
+                    new ChangeListener() {
+                        @Override
+                        public void changed(ChangeEvent event, Actor actor) {
+                            LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                            CheckBox box = (CheckBox) actor;
+                            Settings.setShowFps(box.isChecked());
+                        }
+                    }, "fpsCheckbox");
+        }
     }
 
     /**
@@ -155,7 +158,9 @@ public class SettingsTab extends MainMenuTab {
                 .setChecked(Settings.getMusicVolume() == Settings.VOLUME.ON.ordinal());
         ((CheckBox)settings.findActor("lightingCheckbox"))
                 .setChecked(Settings.isLightingEnabled());
-        ((CheckBox)settings.findActor("fpsCheckbox"))
-                .setChecked(Settings.isShowFps());
+        if (Laplacity.isDebugEnabled()) {
+            ((CheckBox) settings.findActor("fpsCheckbox"))
+                    .setChecked(Settings.isShowFps());
+        }
     }
 }
