@@ -49,14 +49,8 @@ public class LaplacityAssets {
 	public static Sound glassBumpSound; // звук столкновения со стеклом
 	public static Sound starSound; // звук получения звезды
 	public static Sound eraserSweepSound; // звук однократного взмаха при стирании спрея
+	public static Sound eraserLoopSound; // звук, когда водишь пальцем по спрею и стираешь его
 	public static Sound bumpParticleSound; // звук удара о частицу
-
-	/*
-	 * Звук, когда водишь пальцем по спрею и стираешь его
-	 * Это очень особенный звук, поэтому он музыка
-	 */
-	public static Music eraserLoopSound;
-	public static boolean shouldEraserLoopPlay = false;
 
 	// TILES
 	public static Texture BARRIER_TEXTURE;
@@ -170,18 +164,8 @@ public class LaplacityAssets {
 		glassBumpSound = assetManager.get("sounds/bump_glass.wav");
 		starSound = assetManager.get("sounds/star.wav");
 		eraserSweepSound = assetManager.get("sounds/eraser_sw.wav");
+		eraserLoopSound = assetManager.get("sounds/eraser_loop.wav");
 		bumpParticleSound = assetManager.get("sounds/bump_particle.wav");
-
-		// Звук стирания спрея очень особенный
-		eraserLoopSound = assetManager.get("music/eraser_loop.wav");
-		eraserLoopSound.setOnCompletionListener(
-				a -> {
-					if (shouldEraserLoopPlay) {
-						shouldEraserLoopPlay = false;
-						eraserLoopSound.play();
-					}
-				}
-		);
         
         // TILES
         TRAMPOLINE_TEXTURE = assetManager.get("textures/tiles/trampoline.png");
@@ -452,23 +436,4 @@ public class LaplacityAssets {
 			music.setVolume(Settings.getMusicVolume());
 	}
 
-	/**
-	 * Функция, вызывающаяся при стирании спрея и отвечающая за то, что звук не прекратит
-	 * играть раньше времени
-	 */
-	public static void pingEraserSound() {
-		if (Settings.getSoundVolume() != 0) {
-			if (!eraserLoopSound.isPlaying())
-				eraserLoopSound.play();
-			else
-				shouldEraserLoopPlay = true;
-		}
-	}
-
-	/**
-	 * Остановить звук стирания спрея
-	 */
-	public static void stopEraserSound() {
-		eraserLoopSound.stop();
-	}
 }
