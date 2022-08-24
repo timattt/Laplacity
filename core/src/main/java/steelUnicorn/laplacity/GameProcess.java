@@ -501,6 +501,11 @@ public class GameProcess {
 		currentlyStarsCollected++;
 		LaplacityAssets.playSound(LaplacityAssets.starSound);
 	}
+
+	public static void skipLevel() {
+		currentlyStarsCollected = 3;
+		levelFinished();
+	}
 	
 	public static void levelFinished() {
 		Globals.game.sendLevelStats(levelNumber, sectionNumber, currentlyStarsCollected, particles.size, totalStarts);

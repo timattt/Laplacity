@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.clickSound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -18,12 +19,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;;
@@ -80,8 +84,10 @@ public class GameInterface extends Stage implements GestureListener {
 		returnDialog = new ReturnDialog(TEXSKIN);
 		settingsDialog = new SettingsDialog(TEXSKIN);
 		//FpsCounter
-		FpsCounter fpsCounter = new FpsCounter(SKIN);
-		addActor(fpsCounter);
+		if (Laplacity.isDebugEnabled()) {
+			FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+			addActor(fpsCounter);
+		}
 
 		//interface intitialize
 		Table root = new Table();
@@ -113,10 +119,28 @@ public class GameInterface extends Stage implements GestureListener {
 
 
 		//cat interface
+		Table centerLayout = new Table();
+		root.add(centerLayout).growY();
+
 		catFI = new CatFoodInterface(TEXSKIN);
-		root.add(catFI).expandY().top();
+		centerLayout.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
 		visibleActors.add(catFI);
+
+		if (Laplacity.isDebugEnabled()) {
+			TextButton skip = new TextButton("Skip", TEXSKIN);
+			skip.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					LaplacityAssets.playSound(clickSound);
+					GameProcess.skipLevel();
+				}
+			});
+			visibleActors.add(skip);
+			centerLayout.row();
+			centerLayout.add(skip).padBottom(iconSpace);
+		}
+
 
 		//Icons Table
 		guiTable = new Table();

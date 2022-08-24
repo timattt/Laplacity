@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.levels.LevelsTab;
@@ -46,8 +47,10 @@ public class LevelsScreen extends ManagedScreen {
 
 
         //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(SKIN);
-        levelStage.addActor(fpsCounter);
+        if (Laplacity.isDebugEnabled()) {
+            FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+            levelStage.addActor(fpsCounter);
+        }
 
         //root
         Table root = new Table();

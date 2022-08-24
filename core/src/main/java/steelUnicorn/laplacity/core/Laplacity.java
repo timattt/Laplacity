@@ -56,13 +56,13 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	@Override
 	public void create() {
 		super.create();
+		game = this;
 		loadAssets();
 		Settings.loadSettings();
 		catFood = new CatFood();
 		progress = new PlayerProgress();
 
 		CameraManager.init();
-		game = this;
 		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
 		gameViewport = CameraManager.createViewport();
 		gameScreen = new GameScreen();
