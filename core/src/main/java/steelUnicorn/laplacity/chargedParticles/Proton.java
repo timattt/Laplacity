@@ -13,7 +13,7 @@ public class Proton extends ChargedParticle {
 	private int currentTextureIndex = 0;
 	
 	public Proton(float x, float y) {
-		super(x, y, PARTICLE_SIZE, PARTICLE_CHARGE);
+		super(x, y, PARTICLE_SIZE, -PARTICLE_CHARGE);
 		pointLight.setDistance(PARTICLE_LIGHT_DISTANCE);
 	}
 
