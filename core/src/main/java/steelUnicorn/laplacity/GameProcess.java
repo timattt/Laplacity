@@ -161,9 +161,9 @@ public class GameProcess {
 	public static final long TILE_ANIMATION_DELAY = 100;
 	
 	// LIGHT
-	public static final float AMBIENT_INTENSITY = 0.9f;
-	public static final float CAT_LIGHT_DISTANCE = 2*CAT_SIZE;
-	public static final float PARTICLE_LIGHT_DISTANCE = 2*PARTICLE_SIZE;
+	public static final float AMBIENT_INTENSITY = 0.85f;
+	public static final float PARTICLE_LIGHT_DISTANCE = 2f * PARTICLE_SIZE;
+	public static final float ELECTRON_LIGHT_DISTANCE = 2.5f * PARTICLE_SIZE;
 	public static final float RED_LED_LIGHT_DISTANCE = 15f * PARTICLE_SIZE;
 	public static final float SOFTNESS_FACTOR = 0.5f;
 	//========================================================================================
@@ -387,7 +387,7 @@ public class GameProcess {
 			if (nowFlight) {
 				totalStarts++;
 				currentlyStarsCollected = 0;
-				FieldCalculator.finishCalculation();;
+				FieldCalculator.finishCalculation();
 				startTime = TimeUtils.millis();
 				currentTime = startTime;
 				cat.makeParticleMoveWithStartVelocity();
