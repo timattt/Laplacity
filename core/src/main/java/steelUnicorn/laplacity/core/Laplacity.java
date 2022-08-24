@@ -29,6 +29,7 @@ import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.AnalyticsCollector;
+import steelUnicorn.laplacity.utils.DebugHandler;
 import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -37,15 +38,19 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	public AssetManager assetManager;
 	private SpriteBatch transitionBatch;
-	private AdHandler adHandler;
+	
+	// android
+	public AdHandler adHandler;
 	public AnalyticsCollector analyticsCollector;
+	public DebugHandler debugHandler;
 	
 	public boolean interstitialJustShown = false;
 	public boolean rewardedJustShown = false;
 	
-	public Laplacity(AdHandler adHand, AnalyticsCollector ac) {
+	public Laplacity(AdHandler adHand, AnalyticsCollector ac, DebugHandler db) {
 		adHandler = adHand;
 		analyticsCollector = ac;
+		debugHandler = db;
 	}
 
 	@Override
@@ -171,18 +176,26 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	public void interstitialOk() {
 		interstitialJustShown = true;
-		adHandler.debugMessage("From game show int OK!");
+		debugHandler.debugMessage("From game show int OK!");
 	}
 	
 	public void rewardedOk() {
 		rewardedJustShown = true;
-		adHandler.debugMessage("From game show rew OK!");
+		debugHandler.debugMessage("From game show rew OK!");
 	}
 	
 	public void sendLevelStats(int levelNumber, int sectionNumber, int starsCollected, int totalParticlesPlaced, int totalTry) {
 		if (analyticsCollector != null) {
 			analyticsCollector.levelFinished(levelNumber, sectionNumber, starsCollected, totalParticlesPlaced, totalTry);
 		}
+	}
+	
+	public static boolean isDebugEnabled() {
+		return Globals.game.debugHandler.isDebugModeEnabled();
+	}
+	
+	public static boolean isPlayerCheater() {
+		return Globals.game.debugHandler.isPlayerCheater();
 	}
 	
 }

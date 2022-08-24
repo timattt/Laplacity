@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import barsoosayque.libgdxoboe.OboeAudio;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.utils.AdHandler;
+import steelUnicorn.laplacity.utils.DebugHandler;
 import steelUnicorn.laplacity.utils.AnalyticsCollector;
 import android.app.Dialog;
 import android.content.Context;
@@ -62,7 +63,7 @@ import com.ironsource.mediationsdk.sdk.RewardedVideoListener;
 import com.ironsource.mediationsdk.utils.IronSourceUtils;
 
 /** Launches the Android application. */
-public class AndroidLauncher extends AndroidApplication implements AdHandler, AnalyticsCollector {
+public class AndroidLauncher extends AndroidApplication implements AdHandler, AnalyticsCollector, DebugHandler {
 
 	private static final String AD_UNIT_ID_BANNER = "ca-app-pub-3299479021580908/9211056129";
 	private static final String AD_UNIT_ID_INTERSTITIAL = "ca-app-pub-3299479021580908/5567641319";
@@ -73,7 +74,6 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	private InterstitialAd interstitialAd;
 	private RewardedAd rewardedAd;
 
-	private static final boolean debugIsEnabled = false;
 	private static final boolean useIron = true;
 
 	private Laplacity gameInstance;
@@ -298,7 +298,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	}
 
 	private View createGameView(AndroidApplicationConfiguration cfg) {
-		gameView = initializeForView(gameInstance = new Laplacity(this, this), cfg);
+		gameView = initializeForView(gameInstance = new Laplacity(this, this, this), cfg);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.WRAP_CONTENT);
 		params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -318,7 +318,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	}
 	
 	private void debug(String text) {
-		if (debugIsEnabled) {
+		if (isDebugModeEnabled()) {
 			message(text);
 		} else {
 			Gdx.app.log("android debug", text);
@@ -328,6 +328,19 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	@Override
 	public void debugMessage(String text) {
 		debug(text);
+	}
+	
+	@Override
+	public boolean isDebugModeEnabled() {
+		return true;
+	}
+	
+	@Override
+	public boolean isPlayerCheater() {
+		if (DevToDev.getActivePlayer() == null) {
+			return false;
+		}
+		return DevToDev.getActivePlayer().isCheater();
 	}
 
 	@Override

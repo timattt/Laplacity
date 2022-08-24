@@ -24,6 +24,7 @@ import steelUnicorn.laplacity.cat.Cat;
 import steelUnicorn.laplacity.chargedParticles.ChargedParticle;
 import steelUnicorn.laplacity.chargedParticles.HitController;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.BackgroundRenderer;
@@ -289,7 +290,9 @@ public class GameProcess {
 		gameBatch.end();
 		
 		gameUI.draw();
-		//debugRend.render(levelWorld, CameraManager.camMat());
+		if (Laplacity.isDebugEnabled()) {
+			debugRend.render(levelWorld, CameraManager.camMat());
+		}
 		//---------------------------------------------
 
 		// hits
