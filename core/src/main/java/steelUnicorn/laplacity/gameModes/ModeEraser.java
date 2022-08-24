@@ -12,6 +12,8 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 
 public class ModeEraser extends GameMode {
 
+	private boolean isSoundLooping = false;
+
 	public ModeEraser() {
 		super("Eraser");
 	}
@@ -32,8 +34,10 @@ public class ModeEraser extends GameMode {
 
 	@Override
 	public void pan(float x, float y, float dx, float dy) {
-		if (makeErase(x, y))
-			LaplacityAssets.pingEraserSound();
+		if (makeErase(x, y) && (!isSoundLooping)) {
+			LaplacityAssets.loopSound(LaplacityAssets.eraserLoopSound);
+			isSoundLooping = true;
+		}
 	}
 
 	@Override
@@ -48,14 +52,16 @@ public class ModeEraser extends GameMode {
 
 	@Override
 	public void touchUp(float x, float y) {
-		LaplacityAssets.stopEraserSound();
+		LaplacityAssets.stopSound(LaplacityAssets.eraserLoopSound);
+		isSoundLooping = false;
 		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
 
 	@Override
 	public void panStop(float x, float y) {
-		LaplacityAssets.stopEraserSound();
+		LaplacityAssets.stopSound(LaplacityAssets.eraserLoopSound);
+		isSoundLooping = false;
 		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
