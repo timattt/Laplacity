@@ -167,6 +167,26 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageUp: NextIcon
 		imageDown: NextIcon_On
 	}
+	SquareNone: {
+		imageUp: square_btn
+		imageDown: square_btn_pressed
+	}
+	SquareProtons: {
+		imageUp: square_Protons
+		imageDown: square_protons_pressed
+	}
+	SquareElectrons: {
+		imageUp: square_Electrons
+		imageDown: square_electrons_pressed
+	}
+	SquareEraser: {
+		imageUp: square_Eraser
+		imageDown: square_eraser_pressed
+	}
+	SquareDirichlet: {
+		imageUp: square_Dirichlet
+		imageDown: square_Dirichlet_pressed
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
