@@ -39,9 +39,9 @@ public class CatFood {
             totalLaunchesAvailable = TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
         }
 
-        //TODO calculate right time
         //timer initialize
-        timer = new CatFoodTimer(CatFoodTimer.MAX_VALUE);
+        timer = new CatFoodTimer(foodPrefs.getInteger("timerValue", CatFoodTimer.MAX_VALUE),
+                foodPrefs.getLong("exitTime", TimeUtils.millis()));
         if (totalLaunchesAvailable < TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
             timer.start();
         } else {
@@ -93,6 +93,11 @@ public class CatFood {
         totalLaunchesAvailable++;
         checkBounds();
         return totalLaunchesAvailable;
+    }
+
+
+    public long getExitTime() {
+        return foodPrefs.getLong("exitTime", TimeUtils.millis());
     }
 
     /**

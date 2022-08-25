@@ -162,6 +162,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	@Override
 	public void resume() {
 		super.resume();
+		catFood.timer.entryUpdate(catFood.getExitTime());
 	}
 
 	@Override

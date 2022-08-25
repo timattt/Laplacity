@@ -19,6 +19,7 @@ import steelUnicorn.laplacity.ui.CatFoodInterface;
  */
 public class CatFoodTimer {
     public static final int MAX_VALUE = Laplacity.isDebugEnabled() ? 5 : 60; //seconds
+    private static final int SLOWDOWN = 10; //замедление таймера при выходе из игры
     private CatFoodInterface currentInterface;
 
     private int sec;
@@ -42,8 +43,9 @@ public class CatFoodTimer {
         }
     };
 
-    public CatFoodTimer(int seconds) {
+    public CatFoodTimer(int seconds, long exitTime) {
         setTime(seconds);
+        entryUpdate(exitTime);
     }
 
     public void start() {
@@ -108,5 +110,13 @@ public class CatFoodTimer {
             currentInterface.update(catFood.getTotalLaunchesAvailable());
         }
         checkLabelVisible();
+    }
+
+    /**
+     * Метод считающий разницу между входом и выходом и добавляющий нужное количество запусков
+     * @param exitTime - время выхода
+     */
+    public void entryUpdate(long exitTime) {
+
     }
 }
