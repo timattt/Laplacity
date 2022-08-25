@@ -4,6 +4,9 @@ import steelUnicorn.laplacity.BuildConfig;
 
 import com.devtodev.core.DevToDev;
 import java.util.*;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.provider.Settings.Secure;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -22,6 +25,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -325,6 +329,28 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 		} else {
 			Gdx.app.log("android debug", text);
 		}
+	}
+
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+			AlertDialog alertDialog = new AlertDialog.Builder(this)
+					.setMessage("Exit?")
+					.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialogInterface, int i) {
+							finish();
+							return;
+						}
+					})
+					.setNegativeButton("No", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialogInterface, int i) {
+							return;
+						}
+					})
+					.show();
+			return false;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 
 	@Override
