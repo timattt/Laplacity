@@ -68,6 +68,14 @@ public class CatFoodTimer {
         min = seconds / 60;
     }
 
+    /**
+     * Возвращает время в таймере
+     * @return время в секундах
+     */
+    public int getTime() {
+        return min * 60 + sec;
+    }
+
     //Функция устанавливает, каким интерфейсом управляет таймер.
     public void setCurrentInterface(CatFoodInterface foodInterface) {
         currentInterface = foodInterface;

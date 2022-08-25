@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.utils.CatFoodTimer;
 
@@ -94,8 +95,15 @@ public class CatFood {
         return totalLaunchesAvailable;
     }
 
+    /**
+     * Метод сохраняет количество запусков
+     * время таймера
+     * и системное время
+     */
     public void saveLaunches() {
         foodPrefs.putInteger("totalLaunches", totalLaunchesAvailable);
+        foodPrefs.putInteger("timerValue", timer.getTime());
+        foodPrefs.putLong("exitTime", TimeUtils.millis());
         foodPrefs.flush();
     }
 }
