@@ -1,9 +1,13 @@
 package steelUnicorn.laplacity.utils;
 
 import static steelUnicorn.laplacity.core.Globals.catFood;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.core.Laplacity;
+import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 
 /**
@@ -18,7 +22,10 @@ import steelUnicorn.laplacity.ui.CatFoodInterface;
  * в котором он меняет
  */
 public class CatFoodTimer {
+    private CatFood catFoodInstance;
+
     public static final int MAX_VALUE = Laplacity.isDebugEnabled() ? 5 : 60; //seconds
+    private static final int SLOWDOWN = 10; //замедление таймера при выходе из игры
     private CatFoodInterface currentInterface;
 
     private int sec;
@@ -27,23 +34,27 @@ public class CatFoodTimer {
     public Timer.Task task = new Timer.Task() {
         @Override
         public void run() {
-            sec--;
-
-            if (sec < 0) {
-                if (min <= 0) {
-                    updateTimer();
-                } else {
-                    min--;
-                    sec = 59;
-                }
-            }
-
+            reduceTimer(1);
             setLabelText();
         }
     };
 
-    public CatFoodTimer(int seconds) {
-        setTime(seconds);
+    public CatFoodTimer(CatFood instance) {
+        catFoodInstance = instance;
+        setTime(catFoodInstance.getTimerValue());
+    }
+
+    private void reduceTimer(int seconds) {
+        sec -= seconds;
+
+        if (sec < 0) {
+            if (min <= 0) {
+                updateTimer();
+            } else {
+                min--;
+                sec = 59;
+            }
+        }
     }
 
     public void start() {
@@ -60,12 +71,20 @@ public class CatFoodTimer {
         checkLabelVisible();
     }
 
-    private void setTime(int seconds) {
+    public void setTime(int seconds) {
         if (seconds > MAX_VALUE || seconds < 0) {
             seconds = MAX_VALUE;
         }
         sec = seconds % 60;
         min = seconds / 60;
+    }
+
+    /**
+     * Возвращает время в таймере
+     * @return время в секундах
+     */
+    public int getTime() {
+        return min * 60 + sec;
     }
 
     //Функция устанавливает, каким интерфейсом управляет таймер.
@@ -95,10 +114,35 @@ public class CatFoodTimer {
     //Функция вызывается когда таймер нужно обновить
     private void updateTimer() {
         setTime(MAX_VALUE);
-        catFood.reload();
+        catFoodInstance.reload();
         if (currentInterface != null) {
-            currentInterface.update(catFood.getTotalLaunchesAvailable());
+            currentInterface.update(catFoodInstance.getTotalLaunchesAvailable());
         }
         checkLabelVisible();
+    }
+
+    /**
+     * Метод считающий разницу между входом и выходом и добавляющий нужное количество запусков
+     * @param exitTime - системное время выхода в миллисекундах
+     */
+    public void entryUpdate(long exitTime) {
+        long curTime = TimeUtils.millis();
+        //При выходе время идет в 10 раз медленнее => делим на SLOWDOWN
+        int passedSeconds = (int)((curTime - exitTime) / 1000L / SLOWDOWN);
+
+        //Пока прошедшее время не обработано или таск не остановлен из за полной еды
+        while (passedSeconds > 0 &&
+                catFoodInstance.getTotalLaunchesAvailable() < CatFood.TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
+            if (sec == 0) {
+                reduceTimer(1);
+                passedSeconds--;
+            } else if (sec > passedSeconds){
+                reduceTimer(passedSeconds);
+                passedSeconds = 0;
+            } else {
+                passedSeconds -= sec;
+                reduceTimer(sec);
+            }
+        }
     }
 }

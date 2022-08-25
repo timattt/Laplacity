@@ -3,6 +3,7 @@ package steelUnicorn.laplacity.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.utils.CatFoodTimer;
 
@@ -38,14 +39,16 @@ public class CatFood {
             totalLaunchesAvailable = TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE;
         }
 
-        //TODO calculate right time
         //timer initialize
-        timer = new CatFoodTimer(CatFoodTimer.MAX_VALUE);
+        timer = new CatFoodTimer(this);
+        timer.entryUpdate(this.getExitTime());
+
         if (totalLaunchesAvailable < TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
             timer.start();
         } else {
             timer.stop();
         }
+
         checkBounds();
     }
 
@@ -94,8 +97,22 @@ public class CatFood {
         return totalLaunchesAvailable;
     }
 
+
+    public long getExitTime() {
+        return foodPrefs.getLong("exitTime", TimeUtils.millis());
+    }
+    public int getTimerValue() { return foodPrefs.getInteger("timerValue", CatFoodTimer.MAX_VALUE);
+    }
+
+    /**
+     * Метод сохраняет количество запусков
+     * время таймера
+     * и системное время
+     */
     public void saveLaunches() {
         foodPrefs.putInteger("totalLaunches", totalLaunchesAvailable);
+        foodPrefs.putInteger("timerValue", timer.getTime());
+        foodPrefs.putLong("exitTime", TimeUtils.millis());
         foodPrefs.flush();
     }
 }

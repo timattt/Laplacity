@@ -154,6 +154,19 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	}
 
 	@Override
+	public void pause() {
+		super.pause();
+		catFood.saveLaunches();
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		catFood.timer.setTime(catFood.getTimerValue());
+		catFood.timer.entryUpdate(catFood.getExitTime());
+	}
+
+	@Override
 	public void dispose () {
 		super.dispose();
 		transitionBatch.dispose();
