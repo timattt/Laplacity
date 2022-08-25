@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity.ui.mainmenu;
 
 import static steelUnicorn.laplacity.core.LaplacityAssets.EARTH_BACKGROUND;
-import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
@@ -99,7 +98,7 @@ public class WinInterface extends Stage {
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 LaplacityAssets.changeTrack("music/main theme_drop.ogg");
-                Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen, Globals.blendTransitionName);
+                Globals.game.getScreenManager().pushScreen(Globals.nameLevelsScreen, Globals.blendTransitionName);
             }
         });
 
@@ -109,39 +108,53 @@ public class WinInterface extends Stage {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
                 GameProcess.initLevel(sectionLevels.get(GameProcess.sectionNumber - 1)
                                 .get(GameProcess.levelNumber - 1));
+
             }
         });
 
-        //Если текущий уровень максимален, кнопки max не будет
-        if (checkNextLevel()) {
-            addButton(buttons, TEXSKIN, "Next", new ChangeListener() {
-                @Override
-                public void changed(ChangeEvent event, Actor actor) {
-                    LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                    int nextSection;
-                    int nextLevel;
-                    if (GameProcess.sectionNumber < sectionLevels.size &&
-                        GameProcess.levelNumber
-                                == sectionLevels.get(GameProcess.sectionNumber - 1).size) {
-                        nextSection = ++GameProcess.sectionNumber;
-                        nextLevel = GameProcess.levelNumber = 1;
-                    } else {
-                        nextSection = GameProcess.sectionNumber;
-                        nextLevel = ++GameProcess.levelNumber;
+        //В последнем уровне кнопку не надо отображать
+        if (!isLastLevel()) {
+            ChangeListener listener = null;
+            if (isLastSectionLevel()) {
+                //Открыть levelsScreen в следующей секции
+                listener = new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                        Globals.levelsScreen.levelsTab.nav.next();  //переключение на след секцию
+                        LaplacityAssets.changeTrack("music/main theme_drop.ogg");
+                        Globals.game.getScreenManager().pushScreen(Globals.nameLevelsScreen,
+                                Globals.blendTransitionName);
                     }
-                    GameProcess.levelParams = LevelsParser.getParams(nextSection, nextLevel);
-                    GameProcess.initLevel(sectionLevels.get(nextSection - 1).get(nextLevel - 1));
-                    LaplacityAssets.setLevelTrack();
-                }
-            });
+                };
+            } else {
+                //Следующий уровень в той же секции
+                listener = new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                        int section = GameProcess.sectionNumber;
+                        int level = ++GameProcess.levelNumber;
+
+                        GameProcess.levelParams = LevelsParser.getParams(section, level);
+                        GameProcess.initLevel(sectionLevels.get(section - 1).get(level - 1));
+                        LaplacityAssets.setLevelTrack();
+                    }
+                };
+            }
+
+            addButton(buttons, TEXSKIN, "Next", listener);
         }
     }
 
-    private static boolean checkNextLevel() {
-        return GameProcess.levelNumber < sectionLevels.get(GameProcess.sectionNumber - 1).size ||
-                (GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size &&
-                        GameProcess.sectionNumber < sectionLevels.size
-                        && Globals.progress.getSectionProgress(GameProcess.sectionNumber + 1).isOpened());
+    private static boolean isLastLevel() {
+        return GameProcess.sectionNumber == sectionLevels.size &&
+                GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size;
+    }
+
+    private static boolean isLastSectionLevel() {
+        return GameProcess.sectionNumber < sectionLevels.size &&
+                GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size;
     }
 
     private Cell<ImageButton> addButton(Table table, Skin skin,

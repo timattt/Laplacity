@@ -29,7 +29,7 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
  * Уровни подгружаются из папки /assets/levels/
  */
 public class LevelsTab extends MainMenuTab {
-    private LevelsNav nav;
+    public LevelsNav nav;
     private int currentSection;
 
     private Array<LevelSection> sections;
@@ -109,10 +109,7 @@ public class LevelsTab extends MainMenuTab {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                    LevelsTab.this.currentSection--;
-                    updateSectionName();
-                    LevelsTab.this.updateSection();
-                    checkVisible();
+                    prev();
                 }
             });
             add(leftArrow).size(arrowSize);
@@ -121,22 +118,35 @@ public class LevelsTab extends MainMenuTab {
             sectionName.setColor(Color.WHITE);
             sectionName.setAlignment(Align.center);
             add(sectionName).size(sectionName.getPrefWidth(), sectionName.getPrefHeight());
-            updateSectionName();
+            sectionName.setText("Section " + LevelsTab.this.currentSection);
 
             rightArrow = new ImageButton(skin.get("rightarrow", ImageButton.ImageButtonStyle.class));
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
                     LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                    LevelsTab.this.currentSection++;
-                    LevelsTab.this.updateSection();
-                    updateSectionName();
-                    checkVisible();
+                    next();
                 }
             });
             add(rightArrow).size(arrowSize);
 
             checkVisible();
+        }
+
+        private void update() {
+            sectionName.setText("Section " + LevelsTab.this.currentSection);
+            updateSection();
+            checkVisible();
+        }
+
+        public void next() {
+            currentSection++;
+            update();
+        }
+
+        public void prev() {
+            currentSection--;
+            update();
         }
 
         private void checkVisible() {
@@ -151,10 +161,6 @@ public class LevelsTab extends MainMenuTab {
             } else {
                 rightArrow.setVisible(true);
             }
-        }
-
-        private void updateSectionName() {
-            sectionName.setText("Section " + LevelsTab.this.currentSection);
         }
     }
 }
