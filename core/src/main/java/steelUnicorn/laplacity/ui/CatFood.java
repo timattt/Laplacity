@@ -40,13 +40,15 @@ public class CatFood {
         }
 
         //timer initialize
-        timer = new CatFoodTimer(foodPrefs.getInteger("timerValue", CatFoodTimer.MAX_VALUE),
-                foodPrefs.getLong("exitTime", TimeUtils.millis()));
+        timer = new CatFoodTimer(this);
+        timer.entryUpdate(this.getExitTime());
+
         if (totalLaunchesAvailable < TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
             timer.start();
         } else {
             timer.stop();
         }
+
         checkBounds();
     }
 
@@ -98,6 +100,8 @@ public class CatFood {
 
     public long getExitTime() {
         return foodPrefs.getLong("exitTime", TimeUtils.millis());
+    }
+    public int getTimerValue() { return foodPrefs.getInteger("timerValue", CatFoodTimer.MAX_VALUE);
     }
 
     /**
