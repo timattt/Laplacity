@@ -180,7 +180,6 @@ public class GameInterface extends Stage implements GestureListener {
 		visibleActors.add(selectedMode);
 		//modes table
 		modes = new Table();
-		modes.setVisible(false);
 		rightLayout.row();
 		rightLayout.add(modes).right().expandY().top().space(iconSpace);
 		modes.defaults().size(iconSize).space(iconSpace);
