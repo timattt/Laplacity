@@ -103,7 +103,16 @@ public class GameInterface extends Stage implements GestureListener {
 				updateCurMode();
 				returnDialog.show(GameInterface.this);
 			}
-		})).expandY().top().size(iconSize);
+		})).expandY().top().size(iconSize).space(iconSpace);
+
+		leftIcons.add(createIcon("Clear", new ClickListener(){
+			@Override
+			public void clicked (InputEvent event, float x, float y) {
+				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
+				GameProcess.clearLevel();
+			}
+		})).expandY().top().size(iconSize).space(iconSpace);
+
 		leftIcons.row();
 		leftIcons.add(createIcon("settings", new ClickListener(){
 			@Override
@@ -185,16 +194,6 @@ public class GameInterface extends Stage implements GestureListener {
 						/ TEXSKIN.getDrawable("square_Eraser").getMinWidth() * iconSize);
 		vertical.row();
 		vertical.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
-		vertical.row();
-		vertical.add(createIcon("Clear", new ClickListener(){
-			@Override
-			public void clicked (InputEvent event, float x, float y) {
-				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
-				GameProcess.clearLevel();
-			}
-		})).expandY().bottom();
-
-		Gdx.app.log("visible", visibleActors.toString());
 	}
 
 	/**
