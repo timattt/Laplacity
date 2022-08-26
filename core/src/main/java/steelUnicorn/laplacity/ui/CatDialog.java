@@ -46,8 +46,8 @@ public class CatDialog extends Dialog {
         //content
         content.row();
         Label label = new Label("Cat is hungry!\n\n\n" +
-                "Feed cat right now, or\n" +
-                "wait until food will restore.\n\n", getSkin());
+                "Feed the cat right now, or\n" +
+                "wait until the food will restore.\n\n", getSkin());
         label.setAlignment(Align.center);
         text(label);
 
