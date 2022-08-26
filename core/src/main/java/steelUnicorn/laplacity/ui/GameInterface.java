@@ -203,7 +203,7 @@ public class GameInterface extends Stage implements GestureListener {
 			selectedMode.setStyle(TEXSKIN.get("Square" + currentGameMode.getName(),
 					ImageButton.ImageButtonStyle.class));
 		}
-		modes.setVisible(false);	//при каждом изменении мода, моды невидимы
+		modes.setVisible(currentGameMode == GameMode.NONE);	//сразу видимы если не выбран мод
 
 		if (currentGameMode == GameMode.FLIGHT) {
 			flightCell.setActor(pauseBtn);

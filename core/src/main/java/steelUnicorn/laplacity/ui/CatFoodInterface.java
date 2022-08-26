@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 
 /**
  * Класс таблица хранящий верхнюю строку с количеством еды и кнопкой +5 +10 таймером
@@ -45,6 +46,7 @@ public class CatFoodInterface extends Table {
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
                 Globals.game.showInterstitial();
             }
         });
@@ -54,6 +56,7 @@ public class CatFoodInterface extends Table {
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
                 Globals.game.showRewarded();
             }
         });
