@@ -5,11 +5,10 @@ import com.badlogic.gdx.Preferences;
 
 /**
  * Класс с функциями для подгрузки и сохранения настроек.
- * Сохранения и загрузка происходит на основе Preferences
- *
+ * Сохранения и загрузка происходит на основе Preferences.
  * Функция loadSettings подгружает prefs и выставляет нужные значения статическим переменным
  * отвечающим за значения настроек.
- *
+ * <p>
  * Для каждой переменной настройки есть геттеры и сеттеры.
  * В сеттерах настройки сразу сохраняются в preferences
  */
@@ -38,6 +37,7 @@ public class Settings {
 		showFps = prefs.getBoolean("showFps", false);
 	}
 
+	//getters and setters
 	public static float getSoundVolume() {
 		return soundVolume;
 	}
