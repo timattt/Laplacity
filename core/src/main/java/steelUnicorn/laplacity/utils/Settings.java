@@ -10,9 +10,8 @@ import com.badlogic.gdx.Preferences;
  * Функция loadSettings подгружает prefs и выставляет нужные значения статическим переменным
  * отвечающим за значения настроек.
  *
- * Функция saveSettings должна вызываться по завершению приложения и сохранять настройки.
- *
  * Для каждой переменной настройки есть геттеры и сеттеры.
+ * В сеттерах настройки сразу сохраняются в preferences
  */
 public class Settings {
 	private static Preferences prefs;
@@ -20,14 +19,11 @@ public class Settings {
 
 	private static float soundVolume;
 	private static float musicVolume;
-	public static enum VOLUME {
+	public enum VOLUME {
 		OFF,
 		ON
 	}
-	//lighting
 	private static boolean lightingEnabled;
-
-	//fps
 	private static boolean showFps;
 
 	/**
@@ -35,29 +31,11 @@ public class Settings {
 	 */
 	public static void loadSettings() {
 		prefs = Gdx.app.getPreferences(prefsName);
-		if (prefs.contains("soundVolume")) {
-			soundVolume = prefs.getFloat("soundVolume");
-		} else {
-			soundVolume = 1;
-		}
 
-		if (prefs.contains("musicVolume")) {
-			musicVolume = prefs.getFloat("musicVolume");
-		} else {
-			musicVolume = 1;
-		}
-
-		if (prefs.contains("lighting")) {
-			lightingEnabled = prefs.getBoolean("lighting");
-		} else {
-			lightingEnabled = true;
-		}
-
-		if (prefs.contains("showFps")) {
-			showFps = prefs.getBoolean("showFps");
-		} else {
-			showFps = true;
-		}
+		soundVolume = prefs.getFloat("soundVolume", VOLUME.ON.ordinal());
+		musicVolume = prefs.getFloat("musicVolume", VOLUME.ON.ordinal());
+		lightingEnabled = prefs.getBoolean("lighting", true);
+		showFps = prefs.getBoolean("showFps", false);
 	}
 
 	public static float getSoundVolume() {
