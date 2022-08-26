@@ -205,6 +205,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		fontColor: textcolor
 		up: btn
 		down: btn_pressed
+		disabled: btn
 	}
 	Level: {
 		font: RS_extrabold32

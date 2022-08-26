@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.utils.PlayerProgress.SectionProgress;
 
 
@@ -99,6 +100,7 @@ public class LevelSection extends Table {
             lockButton.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
+                    LaplacityAssets.playSound(LaplacityAssets.clickSound);
                     //progress
                     sectionProgress.setOpened(true);
                     sectionProgress.openLevel(1);
