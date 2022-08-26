@@ -20,7 +20,7 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.FpsCounter;
-import steelUnicorn.laplacity.utils.LevelsParser;
+import steelUnicorn.laplacity.utils.LevelsParamsParser;
 
 /**
  * Класс сцена для победного экрана.
@@ -136,7 +136,7 @@ public class WinInterface extends Stage {
                         int section = GameProcess.sectionNumber;
                         int level = ++GameProcess.levelNumber;
 
-                        GameProcess.levelParams = LevelsParser.getParams(section, level);
+                        GameProcess.levelParams = LevelsParamsParser.getParams(section, level);
                         GameProcess.initLevel(sectionLevels.get(section - 1).get(level - 1));
                         LaplacityAssets.setLevelTrack();
                     }

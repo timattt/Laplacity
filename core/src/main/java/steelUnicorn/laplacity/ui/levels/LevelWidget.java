@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.utils.LevelsParser;
+import steelUnicorn.laplacity.utils.LevelsParamsParser;
 
 public class LevelWidget extends Table {
     private static final float widgetScale = 0.6f;
@@ -107,7 +107,7 @@ public class LevelWidget extends Table {
                 LevelButton btn = (LevelButton) actor;
                 GameProcess.levelNumber = btn.levelNumber;
                 GameProcess.sectionNumber = btn.sectionNumber;
-                GameProcess.levelParams = LevelsParser.getParams(btn.sectionNumber, btn.levelNumber);
+                GameProcess.levelParams = LevelsParamsParser.getParams(btn.sectionNumber, btn.levelNumber);
                 
                 if (btn.levelNumber == 1 && btn.sectionNumber == 1) {
                 	game.getScreenManager().pushScreen(nameStoryScreen + "0", storyTransitionName);
