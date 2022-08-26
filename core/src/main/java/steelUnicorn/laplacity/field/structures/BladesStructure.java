@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.field.LaplacityField;
 
 public class BladesStructure extends FieldStructure {
 
@@ -22,27 +21,12 @@ public class BladesStructure extends FieldStructure {
 	// Body
 	private Body body;
 	
-	// Size
-	private float size;
-	
-	// location
-	private float x;
-	private float y;
-	
 	public BladesStructure(int left, int bottom, Pixmap pm) {
 		super(left, bottom, pm, allCodes);
 		
-		float width = (bounds.right - bounds.left + 1) * LaplacityField.tileSize;
-		float height = (bounds.top - bounds.bottom + 1) * LaplacityField.tileSize;
-		
-		if (width != height) {
+		if (bounds.width() != bounds.height()) {
 			throw new RuntimeException("Blades structure is not quad!");
 		}
-		
-		size = width;
-		
-		x = (bounds.right + bounds.left + 1) * LaplacityField.tileSize / 2;
-		y = (bounds.top + bounds.bottom + 1) * LaplacityField.tileSize / 2;
 		
 		Gdx.app.log("new blades structure", "bounds: " + bounds);
 	}
@@ -50,19 +34,19 @@ public class BladesStructure extends FieldStructure {
 	@Override
 	public void register() {
 		BodyDef bodydef = new BodyDef();
-		bodydef.type = BodyType.StaticBody;
+		bodydef.type = BodyType.KinematicBody;
 		
 		body = GameProcess.registerPhysicalObject(bodydef);
 
 		// 1
 		PolygonShape shape = new PolygonShape();
 
-		shape.setAsBox(size / 2, size * BLADES_THICKNESS_FACTOR / 2);
+		shape.setAsBox(worldWidth / 2, worldWidth * BLADES_THICKNESS_FACTOR / 2);
 		
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = shape;
 		fxt.density = 1;
-		fxt.restitution = 1f;
+		fxt.restitution = 0.2f;
 		body.createFixture(fxt);
 		body.setUserData(this);
 		shape.dispose();
@@ -70,31 +54,35 @@ public class BladesStructure extends FieldStructure {
 		// 2
 		shape = new PolygonShape();
 
-		shape.setAsBox(size * BLADES_THICKNESS_FACTOR / 2, size / 2);
+		shape.setAsBox(worldWidth * BLADES_THICKNESS_FACTOR / 2, worldWidth / 2);
 		
 		fxt = new FixtureDef();
 		fxt.shape = shape;
 		fxt.density = 1;
-		fxt.restitution = 1f;
+		fxt.restitution = 0.2f;
 		body.createFixture(fxt);
 		body.setUserData(this);
+		body.setTransform(centerX, centerY, 0);
 		shape.dispose();
 	
 	}
 
 	@Override
+	public void updatePhysics(float timeFromStart) {
+		body.setAngularVelocity(2000f * (float) Math.PI / (float)BLADES_ROTATION_TIME);
+	}
+
+	@Override
 	public void renderBatched(float timeFromStart) {
 		float curAngle = (float) (360 * timeFromStart / (float)BLADES_ROTATION_TIME);
-		body.setTransform(x, y, (float) (2 * Math.PI * curAngle / 360f));
-		
-		float sz = size * BLADES_THICKNESS_FACTOR;
+		float sz = worldWidth * BLADES_THICKNESS_FACTOR;
 		
 		gameBatch.enableBlending();
 		
 		// center
-		gameBatch.draw(LaplacityAssets.BLADES_REGIONS[2],
-				x - sz / 2,
-				y - sz / 2,
+		gameBatch.draw(LaplacityAssets.BLADES_REGIONS[0],
+				centerX - sz / 2,
+				centerY - sz / 2,
 				sz / 2,
 				sz / 2,
 				sz,
@@ -107,34 +95,19 @@ public class BladesStructure extends FieldStructure {
 		
 		// borders
 		for (int i = 0; i < 4; i++) {
-			float x1 = MathUtils.cosDeg(curAngle) * size * (1 - BLADES_THICKNESS_FACTOR) / 2 + x;
-			float y1 = MathUtils.sinDeg(curAngle) * size * (1 - BLADES_THICKNESS_FACTOR) / 2 + y;
-			gameBatch.draw(LaplacityAssets.BLADES_REGIONS[0],
-					x1 - sz/2,
-					y1 - sz/2,
-					sz/2,
-					sz/2,
-					sz,
-					sz,
-					1f,
-					1f,
-					curAngle+90,
-					false
-					);
-			
-			float r = size / 4 + 1f * sz;
-			x1 = MathUtils.cosDeg(curAngle) * r + x;
-			y1 = MathUtils.sinDeg(curAngle) * r + y;
+			float r = (worldWidth  - sz) / 4f + sz / 2- 2f*sz;
+			float x1 = MathUtils.cosDeg(curAngle) * r + centerX;
+			float y1 = MathUtils.sinDeg(curAngle) * r + centerY;
 			gameBatch.draw(LaplacityAssets.BLADES_REGIONS[1],
 					x1 - sz/2,
 					y1 - sz/2,
 					sz/2,
 					sz/2,
 					sz,
-					size / 2f - 1.5f * sz,
+					worldWidth / 2f - 0.5f * sz + 0.5f * sz, // last is tmp
 					1f,
 					1f,
-					curAngle+90,
+					curAngle-90,
 					false
 					);
 			curAngle += 90;
@@ -146,6 +119,12 @@ public class BladesStructure extends FieldStructure {
 	@Override
 	public void cleanup() {
 		deletePhysicalObject(body);
+	}
+
+	@Override
+	public void reset() {
+		body.setAngularVelocity(0f);
+		body.setTransform(centerX, centerY, 0f);
 	}
 
 }

@@ -1,7 +1,6 @@
 package steelUnicorn.laplacity.core;
 
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -11,8 +10,10 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
+import steelUnicorn.laplacity.utils.PlayerProgress;
 
 /**
  * Класс, который содержит глобальные переменные для всей программы.
@@ -34,14 +35,15 @@ public class Globals {
 	public static final String nameWinScreen = "winScreen";
 	public static final String nameLevelsScreen = "levelsScreen";
 	public static final String nameLoadingScreen = "loadingScreen";
+	public static final String nameStoryScreen = "storyScreen";
 
 	// Tramsition names
-	public static final String nameSlideIn = "slideIn";
-	public static final String nameSlideOut = "slideOut";
+	public static final String blendTransitionName = "blend";
+	public static final String storyTransitionName = "story";
 
 	// UI Viewport. Default world parameters for 16:9 ratio
-	public static final float UI_WORLD_WIDTH = 1024/10*7;
-	public static final float UI_WORLD_HEIGHT = 576/10*7;
+	public static final float UI_WORLD_WIDTH = 1920;
+	public static final float UI_WORLD_HEIGHT = 1080;
 
 	// Ingame viewport
 	/**
@@ -53,27 +55,32 @@ public class Globals {
 	 */
 	public static final float SCREEN_WORLD_HEIGHT = 90;
 	
+	// epsilon
+	public static final float EPSILON_PRECISION = 0.0001f;
+	
 	// screens
 	public static GameScreen gameScreen;
 	public static MainMenuScreen mainMenuScreen;
 	public static WinScreen winScreen;
 	public static LevelsScreen levelsScreen;
 	public static LoadingScreen loadingScreen;
-
-	// Resource manager
-	public static AssetManager assetManager;
+	public static StoryScreen[] storyScreen;
 
 	// TMP
 	public static final Vector2 TMP1 = new Vector2();
 	public static final Vector2 TMP2 = new Vector2();
 	public static final Vector3 TMP3 = new Vector3();
 	public static final Vector3 TMP4 = new Vector3();
+	public static final Vector2 TMP5 = new Vector2();
 	
 	// Total levels loaded
 	public static int TOTAL_LEVELS_AVAILABLE;
-	public static final int TOTAL_SECTIONS = 1;
 	public static final int LEVELS_PER_SECTION = 10;
 
 	//cat Food
 	public static CatFood catFood;
+	//PlayerProgress
+	public static PlayerProgress progress;
+	
+	public static final int STORY_SIZE = 4;
 }

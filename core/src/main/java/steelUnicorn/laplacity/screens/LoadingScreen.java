@@ -1,23 +1,28 @@
 package steelUnicorn.laplacity.screens;
 
-import static steelUnicorn.laplacity.core.Globals.assetManager;
 import static steelUnicorn.laplacity.core.Globals.game;
 import static steelUnicorn.laplacity.core.Globals.guiViewport;
 import static steelUnicorn.laplacity.core.Globals.nameGameScreen;
+import static steelUnicorn.laplacity.core.LaplacityAssets.LOAD_BACKGROUND;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Timer;
 
 import de.eskalon.commons.screen.ManagedScreen;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.ui.FpsCounter;
 
+/**
+ * Экран загрузки. Используется при включении уровня. Отображает надпись Loading в течении
+ * loadingDuration секунд, с анимацией точек ./../... каждые loadingRate секунд
+ */
 public class LoadingScreen extends ManagedScreen {
     private Stage loadingStage;
     private Label loadingLabel;
@@ -36,19 +41,19 @@ public class LoadingScreen extends ManagedScreen {
     public LoadingScreen() {
         loadingStage = new Stage(guiViewport);
 
-        Skin skin = assetManager.get("ui/uiskin.json", Skin.class);
-
-        background = new Image(assetManager.get("backgrounds/EARTH_BACKGROUND.png", Texture.class));
+        background = new Image(LOAD_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * guiViewport.getWorldHeight(),
                 guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + guiViewport.getWorldWidth() / 2 , 0);
         loadingStage.addActor(background);
 
         //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(skin);
-        loadingStage.addActor(fpsCounter);
+        if (Laplacity.isDebugEnabled()) {
+            FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+            loadingStage.addActor(fpsCounter);
+        }
 
-        loadingLabel = new Label("Loading", skin);
+        loadingLabel = new Label("Loading", TEXSKIN, "noback");
         loadingLabel.setScale(scale);
         loadingLabel.setFontScale(scale);
         loadingLabel.setColor(Color.WHITE);

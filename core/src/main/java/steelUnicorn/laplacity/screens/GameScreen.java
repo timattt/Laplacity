@@ -1,7 +1,7 @@
 package steelUnicorn.laplacity.screens;
 
-import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.GameProcess.*;
+import static steelUnicorn.laplacity.core.Globals.*;
 
 import com.badlogic.gdx.graphics.Color;
 
@@ -36,9 +36,11 @@ public class GameScreen extends ManagedScreen {
 	public void resize(int width, int height){
 	}
 
+	private static final Color back = new Color(46f/255f, 46f/255f, 46f/255f, 1f);
+	
 	@Override
 	public Color getClearColor() {
-		return Color.WHITE;
+		return back;
 	}
 
 	@Override

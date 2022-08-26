@@ -24,6 +24,10 @@ public class SolidTile extends EmptyTile {
 	public TextureRegion getRegion(float[] angleDest) {
 		return null;
 	}
+	
+	public TextureRegion getAnimatedRegion(float[] angleDest) {
+		return null;
+	}
 
 	public float getRestitution() {
 		return restitution;

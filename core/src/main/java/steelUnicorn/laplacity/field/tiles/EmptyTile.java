@@ -22,7 +22,7 @@ public class EmptyTile {
 	protected float potential;
 	
 	// charge density
-	protected float chargeDensity = 0;
+	protected float visibleDensity = 0;
 	protected float invisibleDensity = 0;
 	
 	// Density change
@@ -40,34 +40,18 @@ public class EmptyTile {
 		setId(1);
 	}
 
-	public void addChargeDensity(float delta) {
+	public void addVisibleDensity(float delta) {
 		if (allowDensityChange) {
-			this.chargeDensity += delta;
-			chargeDensity = Math.min(MAX_DENSITY, chargeDensity);
-			DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
+			this.visibleDensity += delta;
+			visibleDensity = Math.min(MAX_DENSITY, visibleDensity);
+			DensityRenderer.setTileDensity(gridX, gridY, visibleDensity);
 		}
 	}
 
 	public void addInvisibleDensity(float delta) {
-		invisibleDensity += delta;
-	}
-
-	protected void drawIntensityArrow() {
-		/*
-		if (gridX % 1 == 0 && gridY % 1 == 0) {
-		float sz = LaplacityField.tileSize;
-		TMP1.set((gridX)*sz, (gridY)*sz);
-		FieldPotentialCalculator.calculateFieldIntensity(TMP1.x, TMP1.y, LaplacityField.tiles, TMP2);
-		TMP2.scl(0.03f);
-		TMP1.sub(sz*(- 0.5f), sz*(- 0.5f));
-		TMP2.add(TMP1);
-		
-		shapeRenderer.begin(ShapeType.Filled);
-		shapeRenderer.setColor(1f, 1f, 0, 1f);
-		shapeRenderer.line(TMP1, TMP2);
-		shapeRenderer.end();
-
-		}*/
+		if (allowDensityChange) {
+			invisibleDensity += delta;
+		}
 	}
 	
 	public int getGridX() {
@@ -86,12 +70,12 @@ public class EmptyTile {
 		return potential;
 	}
 
-	public float getChargeDensity() {
-		return chargeDensity;
+	public float getVisibleDensity() {
+		return visibleDensity;
 	}
 
 	public float getTotalChargeDensity() {
-		return chargeDensity + invisibleDensity;
+		return visibleDensity + invisibleDensity;
 	}
 
 	public boolean isAllowDensityChange() {
@@ -102,9 +86,9 @@ public class EmptyTile {
 		this.allowDensityChange = allowDensityChange;
 	}
 
-	public void setChargeDensity(float chargeDensity) {
+	public void setVisibleDensity(float chargeDensity) {
 		if (allowDensityChange) {
-			this.chargeDensity = chargeDensity;
+			this.visibleDensity = chargeDensity;
 			DensityRenderer.setTileDensity(gridX, gridY, chargeDensity);
 		}
 	}

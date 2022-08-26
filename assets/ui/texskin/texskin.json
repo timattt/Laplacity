@@ -1,0 +1,250 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	RS_extrabold32: {
+		file: RS_extrabold32.fnt
+	}
+	RS_extralight32: {
+		file: RS_extralight32.fnt
+	}
+	RS_regular32: {
+		file: RS_regular32.fnt
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	level_color: {
+		r: 0.63529414
+		g: 0.5019608
+		b: 0.39607844
+		a: 1
+	}
+	link_on: {
+		r: 0.76862746
+		g: 0.7254902
+		b: 1
+		a: 1
+	}
+	textcolor: {
+		r: 0.59607846
+		g: 0.5568628
+		b: 0.76862746
+		a: 1
+	}
+	translucent: {
+		r: 0
+		g: 0
+		b: 0
+		a: 0.752809
+	}
+	transparent: {
+		r: 0
+		g: 0
+		b: 0
+		a: 0
+	}
+	white: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	black_pixel: {
+		name: white-pixel
+		color: black
+	}
+	translusent: {
+		name: white-pixel
+		color: translucent
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	PlayBtn: {
+		up: play_btn
+		down: play_btn_pressed
+	}
+	BackMenuBtn: {
+		up: back_to_menu
+		down: back_to_menu_pressed
+	}
+	interstitial_meat: {
+		up: inter1
+		down: inter1_pressed
+	}
+	rewarded_meat: {
+		up: reward1
+		down: reward1_pressed
+	}
+	interstitial_bug: {
+		up: inter2
+		down: inter2pressed
+	}
+	rewarded_bug: {
+		up: reward2
+		down: reward2pressed
+	}
+	ExitBtn: {
+		up: exit
+		down: exit_pressed
+	}
+	NextBtn: {
+		up: next
+		down: next_pressed
+	}
+	ReplayBtn: {
+		up: replay
+		down: replay_pressed
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: checkbox_checked
+		checkboxOff: checkbox
+		font: RS_extrabold32
+		fontColor: textcolor
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	Home: {
+		imageUp: home
+		imageDown: home_pressed
+	}
+	Protons: {
+		imageUp: proton
+		imageDown: proton_pressed
+	}
+	Electrons: {
+		imageUp: electron
+		imageDown: electron_pressed
+	}
+	Flight: {
+		imageUp: play
+		imageDown: play_pressed
+	}
+	Eraser: {
+		imageUp: eraser
+		imageDown: eraser_pressed
+	}
+	Dirichlet: {
+		imageUp: spray
+		imageDown: spray_pressed
+	}
+	Clear: {
+		imageUp: clear_pressed
+		imageDown: clear
+	}
+	settings: {
+		imageUp: settings
+		imageDown: settings_pressed
+	}
+	credits: {
+		imageUp: credits
+		imageDown: credits_pressed
+	}
+	leftarrow: {
+		imageUp: leftarrow
+		imageDown: leftarrow_pressed
+	}
+	rightarrow: {
+		imageUp: rightarrow
+		imageDown: rightarrow_pressed
+	}
+	Pause: {
+		imageUp: pause
+		imageDown: pause_pressed
+	}
+	Replay: {
+		imageUp: refresh
+		imageDown: refresh_pressed
+	}
+	Next: {
+		imageUp: NextIcon
+		imageDown: NextIcon_On
+	}
+	SquareNone: {
+		imageUp: square_btn
+		imageDown: square_btn_pressed
+	}
+	SquareProtons: {
+		imageUp: square_Protons
+		imageDown: square_protons_pressed
+	}
+	SquareElectrons: {
+		imageUp: square_Electrons
+		imageDown: square_electrons_pressed
+	}
+	SquareEraser: {
+		imageUp: square_Eraser
+		imageDown: square_eraser_pressed
+	}
+	SquareDirichlet: {
+		imageUp: square_Dirichlet
+		imageDown: square_Dirichlet_pressed
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		background: label_back_short
+	}
+	noback: {
+		font: RS_extrabold32
+		fontColor: textcolor
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		up: btn
+		down: btn_pressed
+		disabled: btn
+	}
+	Level: {
+		font: RS_extrabold32
+		fontColor: level_color
+		disabledFontColor: transparent
+		up: level_opened
+		down: level_opened2
+		disabled: level_closed
+	}
+	LockSection: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		up: lock_section
+		down: lock_section_pressed
+		disabled: lock_section
+	}
+	link: {
+		font: RS_extrabold32
+		fontColor: link_on
+		downFontColor: textcolor
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: dialogue
+		titleFont: RS_extrabold32
+		titleFontColor: textcolor
+		stageBackground: translusent
+	}
+	cat_hungry: {
+		background: hungy_cut
+		titleFont: RS_extrabold32
+		titleFontColor: textcolor
+		stageBackground: black_pixel
+	}
+}
+}

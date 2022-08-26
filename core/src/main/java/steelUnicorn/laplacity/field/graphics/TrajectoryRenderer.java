@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
+import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.gameModes.GameMode;
 
 /**
@@ -26,7 +27,7 @@ public class TrajectoryRenderer {
 	
 	public static void init() {
 		for (int i = 0; i < TRAJECTORY_POINTS; i++) {
-			trajectory[i] = new Vector2();
+			trajectory[i] = new Vector2(-10000, -10000);
 		}
 	}
 	
@@ -38,17 +39,18 @@ public class TrajectoryRenderer {
 		for (int i = 1; i < TRAJECTORY_POINTS; i++) {
 			shapeRenderer.begin(ShapeType.Filled);
 			shapeRenderer.setColor(Color.CYAN);
-			shapeRenderer.point(trajectory[i].x, trajectory[i].y, 0);
+			shapeRenderer.circle(trajectory[i].x, trajectory[i].y,
+					LaplacityField.tileSize/3f * (float)(2*TRAJECTORY_POINTS - i) / (float)(2f*TRAJECTORY_POINTS), 12);
 			shapeRenderer.end();
 		}
 		
 		if (changingDir) {
-			mainParticle.drawStartVelocityArrow();
+			cat.drawStartVelocityArrow();
 		}
 	}
 	
 	public static void updateTrajectory() {
-		mainParticle.calculateTrajectory(trajectory);
+		cat.calculateTrajectory(trajectory);
 	}
 	
 	public static void cleanup() {

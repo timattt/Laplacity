@@ -4,12 +4,17 @@ package steelUnicorn.laplacity.ui.mainmenu.tabs;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 
+import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
@@ -22,27 +27,45 @@ import steelUnicorn.laplacity.utils.Settings;
  * Использует класс Settings подгружающий настройки и сохраняющий при закрытии игры.
  */
 public class SettingsTab extends MainMenuTab {
-    public ScrollPane settingsPane;
+    public Table settings;
+    private static float cbSize = Globals.UI_WORLD_HEIGHT * 0.04f;
+    private static float cbPad = cbSize * 0.2f;
 
     public SettingsTab(Skin skin) {
         super();
 
-        addDescription("Settings:", skin);
-        row();
-        addSettings(skin);
+        addReturnButton(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                MainMenu stage = (MainMenu) SettingsTab.this.getStage();
+                stage.returnMainMenu();
+            }
+        }).expand().uniform().left().top().padLeft(MainMenu.menuLeftSpace);
 
-        settingsPane = new ScrollPane(this);
-        settingsPane.validate();
-        settingsPane.setName("tab");
-        settingsPane.setFadeScrollBars(false);
+        Table setTable = new Table();
+        setTable.setBackground(skin.getDrawable("label_back"));
+
+        Label description = new Label("Settings", skin, "noback");
+        description.setOrigin(Align.center);
+        description.setScale(descriptionScale);
+        description.setFontScale(descriptionScale);
+        setTable.add(description).pad(tabSpace);
+        setTable.row();
+
+        createSettings(skin);
+        setTable.add(settings);
+
+        add(setTable).space(tabSpace).top().padTop(MainMenu.menuTopPad);
+
+        add().expand().uniform();
     }
 
     /**
      * Функция добавляет настройки во вкладку.
      */
-    private void addSettings(Skin skin) {
-        Table settings = new Table();
-        add(settings).space(tabSpace);
+    private void createSettings(Skin skin) {
+        settings = new Table();
         settings.defaults().left().space(tabSpace);
 
         //Sound and music
@@ -67,7 +90,7 @@ public class SettingsTab extends MainMenuTab {
                         LaplacityAssets.playSound(LaplacityAssets.clickSound);
                         CheckBox box = (CheckBox) actor;
                         Settings.setMusicVolume(box.isChecked() ? Settings.VOLUME.ON.ordinal() : Settings.VOLUME.OFF.ordinal());
-                        LaplacityAssets.music.setVolume(Settings.getMusicVolume());
+                        LaplacityAssets.syncMusicVolume();
                     }
                 }, "musicCheckbox");
 
@@ -82,16 +105,29 @@ public class SettingsTab extends MainMenuTab {
                     }
                 }, "lightingCheckbox");
 
-        settings.row();
-        addCheckbox(settings, "Show fps", skin, Settings.isShowFps(),
-                new ChangeListener() {
-                    @Override
-                    public void changed(ChangeEvent event, Actor actor) {
-                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
-                        CheckBox box = (CheckBox) actor;
-                        Settings.setShowFps(box.isChecked());
-                    }
-                }, "fpsCheckbox");
+        if (Laplacity.isDebugEnabled()) {
+            settings.row();
+            addCheckbox(settings, "Show fps", skin, Settings.isShowFps(),
+                    new ChangeListener() {
+                        @Override
+                        public void changed(ChangeEvent event, Actor actor) {
+                            LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                            CheckBox box = (CheckBox) actor;
+                            Settings.setShowFps(box.isChecked());
+                        }
+                    }, "fpsCheckbox");
+
+            settings.row();
+            TextButton openLevels = new TextButton("Open levels", skin);
+            openLevels.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor actor) {
+                    LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                    Globals.levelsScreen.levelsTab.openLevels();
+                }
+            });
+            settings.add(openLevels).center();
+        }
     }
 
     /**
@@ -108,6 +144,8 @@ public class SettingsTab extends MainMenuTab {
                              boolean isChecked, ChangeListener listener,
                              String name, Color color) {
         CheckBox checkBox = new CheckBox(label, skin);
+        checkBox.getImageCell().padRight(cbPad);
+
         checkBox.setName(name);
         checkBox.setChecked(isChecked);
         checkBox.getLabel().setColor(color);
@@ -121,5 +159,19 @@ public class SettingsTab extends MainMenuTab {
         addCheckbox(table, label, skin,
                 isChecked, listener,
                 name, Color.WHITE);
+    }
+
+    //Вызывается при показывании настроек, для синхронизации интерфейса
+    public void show() {
+        ((CheckBox)settings.findActor("soundCheckbox"))
+                .setChecked(Settings.getSoundVolume() == Settings.VOLUME.ON.ordinal());
+        ((CheckBox)settings.findActor("musicCheckbox"))
+                .setChecked(Settings.getMusicVolume() == Settings.VOLUME.ON.ordinal());
+        ((CheckBox)settings.findActor("lightingCheckbox"))
+                .setChecked(Settings.isLightingEnabled());
+        if (Laplacity.isDebugEnabled()) {
+            ((CheckBox) settings.findActor("fpsCheckbox"))
+                    .setChecked(Settings.isShowFps());
+        }
     }
 }

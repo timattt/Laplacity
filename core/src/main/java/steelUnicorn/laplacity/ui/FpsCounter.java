@@ -7,18 +7,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import steelUnicorn.laplacity.utils.Settings;
 
+/**
+ * Строчка fps которая обновляется каждый кадр. Позиция задается слева снизу с помощь padSize.
+ */
 public class FpsCounter extends Label {
-    public static float padSize = 10;
+    public static float padBottom = 20;
+    public static float padLeft = 100;
 
     public FpsCounter(Skin skin) {
-        super(String.valueOf(Gdx.graphics.getFramesPerSecond()) + " fps",  skin);
-        setPosition(padSize, padSize);
-        setColor(Color.PURPLE);
+        super(Gdx.graphics.getFramesPerSecond() + " fps",  skin);
+        initialize();
+    }
+
+    public FpsCounter(Skin skin, String styleName) {
+        super(Gdx.graphics.getFramesPerSecond() + " fps", skin, styleName);
+        initialize();
+    }
+
+    private void initialize() {
+        setPosition(padLeft, padBottom);
     }
 
     private void updateFps() {
         setVisible(Settings.isShowFps());
-        setText(String.valueOf(Gdx.graphics.getFramesPerSecond()) + " fps");
+        setText(Gdx.graphics.getFramesPerSecond() + " fps");
     }
 
     public void act(float delta) {

@@ -2,11 +2,13 @@ package steelUnicorn.laplacity.ui;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+import static steelUnicorn.laplacity.core.LaplacityAssets.clickSound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -18,15 +20,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
-import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;;
@@ -40,16 +42,19 @@ import steelUnicorn.laplacity.gameModes.GameMode;;
  */
 public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
-	private TextureAtlas icons;
-	private CatFoodInterface catFI;
-	private static final float iconSize = UI_WORLD_HEIGHT / 10;
-	private static final float iconSpace = iconSize * 0.1f;
+	private SettingsDialog settingsDialog;
+	public CatFoodInterface catFI;
+	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
+	private static final float settingsSize = iconSize * 0.9f;
+	private static final float iconSpace = iconSize * 0.08f;
 
-	Cell<Button> flightCell;
+	Cell<ImageButton> flightCell;
 	ImageButton flightBtn;
-	ImageButton editBtn;
-	Table guiTable;
-	Skin skin;
+	ImageButton pauseBtn;
+	Table modes;
+	Array<Actor> visibleActors;
+
+	ImageButton selectedMode;
 	/**
 	 * Конструктор создающий интерфейс
 	 * @param viewport
@@ -59,7 +64,7 @@ public class GameInterface extends Stage implements GestureListener {
 
 		createInterface();
 	}
-	
+
 	/**
 	 * @brief Функция создающая иконки кнопок.
 	 *
@@ -75,48 +80,79 @@ public class GameInterface extends Stage implements GestureListener {
 	 * </ol>
 	 */
 	private void createInterface() {
+		visibleActors = new Array<>();
 		//Dialogs initialize
-		skin = Globals.assetManager.get("ui/uiskin.json");
-		returnDialog = new ReturnDialog(skin);
-
+		returnDialog = new ReturnDialog(TEXSKIN);
+		settingsDialog = new SettingsDialog(TEXSKIN);
 		//FpsCounter
-		FpsCounter fpsCounter = new FpsCounter(skin);
-		addActor(fpsCounter);
+		if (Laplacity.isDebugEnabled()) {
+			FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+			addActor(fpsCounter);
+		}
 
 		//interface intitialize
 		Table root = new Table();
 		root.setFillParent(true);
 		addActor(root);
 
-		//for aligning
-		root.add().expand().uniform();
-
-		//cat interface
-		catFI = new CatFoodInterface(catFood.getTotalLaunchesAvailable(), skin);
-		root.add(catFI).expand().top().uniform();
-		catFood.timer.setCurrentInterface(catFI);
-		catFI.setBackground(skin.newDrawable("white", Color.valueOf("120A39FF")));
-
-		//Icons Table
-		guiTable = new Table();
-		root.add(guiTable).expand().right().pad(iconSpace).uniform();
-		guiTable.defaults()
-				.width(iconSize)
-				.height(iconSize)
-				.space(iconSpace);
-
-		icons = Globals.assetManager.get("ui/gameicons/icons.atlas", TextureAtlas.class);
-
-		//reload and return buttons
-		guiTable.add(createIcon("Return", new ClickListener(){
+		//return button
+		Table leftLayout = new Table();
+		leftLayout.add(createIcon("Home", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
 				returnDialog.show(GameInterface.this);
 			}
-		}));
-		guiTable.row();
+		})).expandY().top().size(iconSize).space(iconSpace);
+
+		leftLayout.add(createIcon("Clear", new ClickListener(){
+			@Override
+			public void clicked (InputEvent event, float x, float y) {
+				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
+				GameProcess.clearLevel();
+			}
+		})).expandY().top().size(iconSize).space(iconSpace);
+
+		leftLayout.row();
+		leftLayout.add(createIcon("settings", new ClickListener(){
+			@Override
+			public void clicked (InputEvent event, float x, float y) {
+				LaplacityAssets.playSound(LaplacityAssets.popupSound);
+				updateCurMode();
+				Gdx.app.log("GameInterface", "settings pressed");
+				settingsDialog.show(GameInterface.this);
+			}
+		})).expandY().bottom().size(settingsSize);
+
+		root.add(leftLayout).expand().fillY().left().pad(iconSpace).uniform();
+
+		//cat interface
+		Table centerLayout = new Table();
+		root.add(centerLayout).growY();
+
+		catFI = new CatFoodInterface(TEXSKIN);
+		centerLayout.add(catFI).expandY().top();
+		catFood.timer.setCurrentInterface(catFI);
+		visibleActors.add(catFI);
+
+		if (Laplacity.isDebugEnabled()) {
+			TextButton skip = new TextButton("Skip", TEXSKIN);
+			skip.addListener(new ChangeListener() {
+				@Override
+				public void changed(ChangeEvent event, Actor actor) {
+					LaplacityAssets.playSound(clickSound);
+					GameProcess.skipLevel();
+				}
+			});
+			visibleActors.add(skip);
+			centerLayout.row();
+			centerLayout.add(skip).padBottom(iconSpace);
+		}
+
+		//Icons Table
+		Table rightLayout = new Table();
+		root.add(rightLayout).expandX().growY().right().uniform().pad(iconSpace);
 
 		//modes
 		flightBtn = createIcon("Flight", new ClickListener(){
@@ -124,34 +160,38 @@ public class GameInterface extends Stage implements GestureListener {
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
 				if (catFood.getTotalLaunchesAvailable() > 0) {
-					changeGameMode(GameMode.FLIGHT);    //no need in NONE because of editBtn
+					changeGameMode(GameMode.FLIGHT);
 
 					catFI.update(catFood.launch());
 				} else {
-					CatFoodInterface.showHungry(GameInterface.this);
+					catFI.showHungry(GameInterface.this);
+					changeGameMode(GameMode.NONE);
 				}
 			}
 		});
-		editBtn = createModeIcon("Edit", GameMode.NONE, LaplacityAssets.lightClickSound);
-		flightCell = guiTable.add(flightBtn);
-		guiTable.row();
+		pauseBtn = createModeIcon("Pause", GameMode.NONE, LaplacityAssets.lightClickSound);
+		flightCell = rightLayout.add(flightBtn)
+				.size(iconSize).space(iconSpace);
 
-		guiTable.add(createIcon("Clear", new ClickListener(){
-			@Override
-			public void clicked (InputEvent event, float x, float y) {
-				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
-				GameProcess.clearLevel();
-			}
-		}));
-		guiTable.row();
+		rightLayout.row();
+		rightLayout.add(createModeSelector(TEXSKIN, "SquareNone")).width(iconSize)
+				.height(TEXSKIN.getDrawable("square_btn").getMinHeight()
+						/ TEXSKIN.getDrawable("square_btn").getMinWidth() * iconSize);
+		visibleActors.add(selectedMode);
+		//modes table
+		modes = new Table();
+		rightLayout.row();
+		rightLayout.add(modes).right().expandY().top().space(iconSpace);
+		modes.defaults().size(iconSize).space(iconSpace);
 
-		guiTable.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
-		guiTable.row();
-		guiTable.add(createModeIcon("Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
-		guiTable.row();
-		guiTable.add(createModeIcon("Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
-		guiTable.row();
-		guiTable.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
+		modes.row();
+		modes.add(createModeIcon("Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
+		modes.row();
+		modes.add(createModeIcon("Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
+		modes.row();
+		modes.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
+		modes.row();
+		modes.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
 	}
 
 	/**
@@ -159,21 +199,23 @@ public class GameInterface extends Stage implements GestureListener {
 	 * для изменения вида gui
 	 */
 	public void updateCurMode() {
-		Array<Actor> btns = guiTable.getChildren();
-		for (Actor btn : btns) {
-			ImageButton icon = (ImageButton) btn;
-			Gdx.app.log("Icons checked", currentGameMode.getName() + " " + icon.getName());
-			if (!icon.getName().equals(currentGameMode.getName())) {
-				icon.setChecked(false);
-			}
+		if (currentGameMode != GameMode.FLIGHT) {
+			selectedMode.setStyle(TEXSKIN.get("Square" + currentGameMode.getName(),
+					ImageButton.ImageButtonStyle.class));
 		}
+		modes.setVisible(currentGameMode == GameMode.NONE);	//сразу видимы если не выбран мод
 
 		if (currentGameMode == GameMode.FLIGHT) {
-			flightCell.setActor(editBtn);
+			flightCell.setActor(pauseBtn);
+			for (Actor actor : visibleActors) {
+				actor.setVisible(false);
+			}
 		} else {
 			flightCell.setActor(flightBtn);
+			for (Actor actor : visibleActors) {
+				actor.setVisible(true);
+			}
 		}
-		flightCell.getActor().setChecked(false);
 	}
 	/**
 	 * Функция для создания кнопки иконки
@@ -182,14 +224,14 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param listener - обработчик события
 	 */
 	private ImageButton createIcon(String name, ClickListener listener) {
-		ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(
-				skin.newDrawable("white", Color.valueOf("837d7eff")),
-				skin.newDrawable("white", Color.valueOf("505251ff")),
-				skin.newDrawable("white", Color.GREEN),
-				new TextureRegionDrawable(icons.findRegion(name)),
-				null,
-				null);
-		ImageButton btn = new ImageButton(style);
+		ImageButton btn = new ImageButton(TEXSKIN.get(name, ImageButton.ImageButtonStyle.class));
+		if (!name.equals("Flight") && !name.equals("Pause")) {
+			Gdx.app.log("visible", "added " + name);
+
+			visibleActors.add(btn);
+		}
+
+		btn.getImageCell().grow();
 		btn.setColor(Color.WHITE);
 		btn.setName(name);
 		btn.addListener(listener);
@@ -215,7 +257,23 @@ public class GameInterface extends Stage implements GestureListener {
 			}
 		});
 	}
-	
+
+	private ImageButton createModeSelector(Skin skin, String name) {
+		selectedMode = new ImageButton(skin, name);
+		selectedMode.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(clickSound);
+				if (modes.isVisible()) {
+					modes.setVisible(false);
+				} else  {
+					modes.setVisible(true);
+				}
+			}
+		});
+		return selectedMode;
+	}
+
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
 		return false;
@@ -253,7 +311,7 @@ public class GameInterface extends Stage implements GestureListener {
 		//
 		CameraManager.getCameraWorldPos(x, y, TMP1);
 		
-		currentGameMode.pan(TMP1.x, TMP1.y, deltaX / Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH, deltaY / Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH);
+		currentGameMode.pan(TMP1.x, TMP1.y, deltaX * CameraManager.getCamera().zoom / Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH, deltaY * CameraManager.getCamera().zoom/ Gdx.graphics.getWidth() * SCREEN_WORLD_WIDTH);
 		
 		return true;
 	}
@@ -275,7 +333,7 @@ public class GameInterface extends Stage implements GestureListener {
 
 	private float getlen2ToMainParticle(float scX, float scY) {
 		CameraManager.getCameraWorldPos(scX, scY, TMP1);
-		TMP1.sub(mainParticle.getX(), mainParticle.getY());
+		TMP1.sub(cat.getX(), cat.getY());
 		return TMP1.len2();
 	}
 	
@@ -314,7 +372,7 @@ public class GameInterface extends Stage implements GestureListener {
 		}
 		if (TrajectoryRenderer.changingDir) {
 			getlen2ToMainParticle(screenX, screenY);
-			mainParticle.setSlingshot(TMP1.x, TMP1.y);
+			cat.setSlingshot(TMP1.x, TMP1.y);
 			TrajectoryRenderer.updateTrajectory();
 			return true;
 		}
@@ -325,31 +383,18 @@ public class GameInterface extends Stage implements GestureListener {
 		return super.touchDragged(screenX, screenY, pointer);
 	}
 
-	private final Vector2 prevPtr1 = new Vector2();
-	private final Vector2 prevPtr2 = new Vector2();
-	
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
-		float dx1 = 0;
-		float dx2 = 0;
-		if (initialPointer1.x == pointer1.x && initialPointer1.y == pointer1.y && initialPointer2.x == pointer2.x && initialPointer2.y == pointer2.y) {
-			dx1 = 0;
-			dx2 = 0;
-		} else {
-			dx1 = pointer1.x - prevPtr1.x;
-			dx2 = pointer2.x - prevPtr2.x;
-		}
-		
-		prevPtr1.set(pointer1);
-		prevPtr2.set(pointer2);
-		
-		currentGameMode.pinch(dx1, dx2);
-		
+		currentGameMode.pinch(initialPointer1, initialPointer2, pointer1, pointer2);
 		return false;
 	}
 
 	@Override
 	public void pinchStop() {
+		currentGameMode.pinchStop();
 	}
 	
+	public void setPauseButtonEnabled(boolean val) {
+		pauseBtn.setVisible(val);
+	}
 }

@@ -1,12 +1,14 @@
 package steelUnicorn.laplacity.field.physics;
 
+/**
+ * Интерфейс, который передается в userData любого тела на карте.
+ * @author timat
+ *
+ */
 public interface CollisionListener {
 
 	public boolean isDeadly();
 	public void collidedWithDeadly();
-	
-	public boolean isFinish();
-	public void collidedWithFinish();
 	
 	public boolean isMainParticle();
 	public void collidedWithMainParticle();
@@ -16,5 +18,11 @@ public interface CollisionListener {
 	
 	public boolean isTile();
 	public void collidedWithTile();
+	
+	public boolean isTrampoline();
+	public void collidedWithTrampoline();
+
+	public boolean isParticle();
+	public  void  collidedWithParticle();
 	
 }

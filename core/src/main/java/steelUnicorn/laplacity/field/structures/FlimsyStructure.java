@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.field.LaplacityField;
 
 public class FlimsyStructure extends FieldStructure {
 
@@ -19,27 +18,14 @@ public class FlimsyStructure extends FieldStructure {
 	// Body
 	private Body body;
 	
-	private float x;
-	private float y;
-	
-	private float width;
-	private float height;
-	
 	// durability
 	private int durability;
 	private boolean justBroken;
 	
 	public FlimsyStructure(int left, int bottom, Pixmap pm) {
 		super(left, bottom, pm, codes);
-		float sz = LaplacityField.tileSize;
-		x = (bounds.left + bounds.right + 1) * sz / 2;
-		y = (bounds.bottom + bounds.top + 1) * sz / 2;
-		
-		width = (bounds.right - bounds.left + 1) * sz;
-		height = (bounds.top - bounds.bottom + 1) * sz;
 		
 		durability = GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;
-		
 		justBroken = false;
 		
 		Gdx.app.log("new flimsy structure", "bounds: " + bounds);
@@ -50,12 +36,12 @@ public class FlimsyStructure extends FieldStructure {
 		BodyDef bodydef = new BodyDef();
 		bodydef.type = BodyType.StaticBody;
 		
-		bodydef.position.set(x, y);
+		bodydef.position.set(centerX, centerY);
 		
 		body = GameProcess.registerPhysicalObject(bodydef);
 
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(width / 2, height / 2);
+		shape.setAsBox(worldWidth / 2, worldHeight / 2);
 		
 		FixtureDef fxt = new FixtureDef();
 		fxt.shape = shape;
@@ -67,19 +53,23 @@ public class FlimsyStructure extends FieldStructure {
 	}
 
 	@Override
-	public void renderBatched(float timeFromStart) {
+	public void updatePhysics(float timeFromStart) {
 		if (justBroken) {
 			body.setTransform(100000, 100000, 0);
 			justBroken = false;
 		}
+	}
+
+	@Override
+	public void renderBatched(float timeFromStart) {
 		GameProcess.gameBatch.enableBlending();
 		if (durability > 0) {
-			int index = 3*(GameProcess.FLIMSY_STRUCTURE_START_DURABILITY - durability) / GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;
+			int index = 2* durability / GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;
 			index = index % LaplacityAssets.GLASS_REGIONS.length;
-			if (width < height) {
-				GameProcess.gameBatch.draw(LaplacityAssets.GLASS_REGIONS[index], x - width/2, y -height/2, width, height);
+			if (worldWidth < worldHeight) {
+				GameProcess.gameBatch.draw(LaplacityAssets.GLASS_REGIONS[index], centerX - worldWidth/2, centerY - worldHeight/2, worldWidth, worldHeight);
 			} else {
-				GameProcess.gameBatch.draw(LaplacityAssets.GLASS_REGIONS[index], x - height/2, y -width/2, height / 2, width / 2, height, width, 1, 1, 90);
+				GameProcess.gameBatch.draw(LaplacityAssets.GLASS_REGIONS[index], centerX - worldHeight/2, centerY - worldWidth/2, worldHeight / 2, worldWidth / 2, worldHeight, worldWidth, 1, 1, 90);
 			}
 		}
 		GameProcess.gameBatch.disableBlending();
@@ -88,7 +78,7 @@ public class FlimsyStructure extends FieldStructure {
 	@Override
 	public void reset() {
 		durability = GameProcess.FLIMSY_STRUCTURE_START_DURABILITY;
-		body.setTransform(x, y, 0);
+		body.setTransform(centerX, centerY, 0);
 	}
 
 	@Override
@@ -97,6 +87,10 @@ public class FlimsyStructure extends FieldStructure {
 		
 		if (durability == 0) {
 			justBroken = true;
+			
+			LaplacityAssets.playSound(LaplacityAssets.glassBreakingSound);
+		} else {
+			LaplacityAssets.playSound(LaplacityAssets.glassBumpSound);
 		}
 	}
 

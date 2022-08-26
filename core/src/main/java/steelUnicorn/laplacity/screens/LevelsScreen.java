@@ -1,19 +1,25 @@
 package steelUnicorn.laplacity.screens;
 
-import static steelUnicorn.laplacity.core.Globals.assetManager;
+import static steelUnicorn.laplacity.core.Globals.*;
+import static steelUnicorn.laplacity.core.LaplacityAssets.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.Laplacity;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.ui.levels.LevelsTab;
+import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 
 /**
  * Класс LevelsScreen
@@ -22,32 +28,62 @@ import steelUnicorn.laplacity.ui.levels.LevelsTab;
  */
 public class LevelsScreen extends ManagedScreen {
     private Stage levelStage;
-    private LevelsTab levelsTab;
+    public LevelsTab levelsTab;
 
     private Image background;
+
+    private Label starsCollected;
+    private static final float starsPad = 10;
+    private static final float starImgScale = 0.5f;
 
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
         //background
-        background = new Image(assetManager.get("backgrounds/MAIN_MENU_BACKGROUND.png", Texture.class));
+        background = new Image(LEVEL_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * Globals.guiViewport.getWorldHeight(),
                 Globals.guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);
         levelStage.addActor(background);
 
-        Skin skin = Globals.assetManager.get("ui/uiskin.json", Skin.class);
 
         //fpsCounter
-        FpsCounter fpsCounter = new FpsCounter(skin);
-        levelStage.addActor(fpsCounter);
+        if (Laplacity.isDebugEnabled()) {
+            FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+            levelStage.addActor(fpsCounter);
+        }
 
+        //root
         Table root = new Table();
         root.setFillParent(true);
         levelStage.addActor(root);
 
-        levelsTab = new LevelsTab(skin);
+        //return button
+        ImageButton btn = new ImageButton(TEXSKIN, "Home");
+        btn.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                Globals.game.getScreenManager().pushScreen(nameMainMenuScreen, Globals.blendTransitionName);
+            }
+        });
+        root.add(btn).expand().uniform().top().left().padLeft(MainMenu.menuLeftSpace);
 
-        root.add(levelsTab);
+        //Levels Tab
+        levelsTab = new LevelsTab(TEXSKIN);
+
+        root.add(levelsTab).grow().top();
+        //star collected label
+        Table starsWidget = new Table();
+        starsWidget.setBackground(TEXSKIN.getDrawable("label_back"));
+
+        starsCollected = new Label("" + progress.starsCollected, TEXSKIN, "noback");
+        starsWidget.add(starsCollected).padRight(starsPad);
+        Image starImg = new Image(TEXSKIN, "label_star");
+        starsWidget.add(starImg)
+                .size(starImg.getPrefWidth() * starImgScale, starImg.getPrefHeight() * starImgScale);
+
+        root.add(starsWidget).expand().top().right().uniform().pad(starsPad)
+                .width(starsWidget.getPrefWidth() * 0.7f);
     }
 
     @Override
@@ -66,6 +102,12 @@ public class LevelsScreen extends ManagedScreen {
 
     @Override
     public void hide() {
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        starsCollected.setText("" + progress.starsCollected);
     }
 
     public void resizeBackground() {

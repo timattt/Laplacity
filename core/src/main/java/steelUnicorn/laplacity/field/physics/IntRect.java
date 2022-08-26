@@ -1,5 +1,9 @@
 package steelUnicorn.laplacity.field.physics;
 
+import com.badlogic.gdx.math.Vector2;
+
+import steelUnicorn.laplacity.field.LaplacityField;
+
 /**
  * Прямоугольник с целочисленными координатами и целочисленным полем данных
  */
@@ -36,6 +40,11 @@ public class IntRect {
         this.right = that.right;
         this.top = that.top;
         this.bottom = that.bottom;
+    }
+    
+    public void getCenterInWorldCoords(Vector2 dest) {
+    	dest.x = (left + right + 1f) * LaplacityField.tileSize / 2f;
+    	dest.y = (top + bottom + 1f) * LaplacityField.tileSize / 2f;
     }
 
     /**

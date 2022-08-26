@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 
+import steelUnicorn.laplacity.chargedParticles.ChargedParticle;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.DensityRenderer;
 import steelUnicorn.laplacity.field.physics.TilesBodyHandler;
@@ -21,15 +22,13 @@ import steelUnicorn.laplacity.field.structures.HatchStructure;
 import steelUnicorn.laplacity.field.structures.HingeStructure;
 import steelUnicorn.laplacity.field.structures.MovingWallStructure;
 import steelUnicorn.laplacity.field.structures.RedLed;
+import steelUnicorn.laplacity.field.structures.Star;
 import steelUnicorn.laplacity.field.structures.rigid.Gift;
-import steelUnicorn.laplacity.field.tiles.BarrierTile;
 import steelUnicorn.laplacity.field.tiles.DeadlyTile;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
-import steelUnicorn.laplacity.field.tiles.FinishTile;
 import steelUnicorn.laplacity.field.tiles.StructureTile;
 import steelUnicorn.laplacity.field.tiles.TrampolineTile;
 import steelUnicorn.laplacity.field.tiles.WallTile;
-import steelUnicorn.laplacity.particles.ChargedParticle;
 
 /**
  * Класс со статическими полями и функциями, связанными с tilemap. Тут есть размеры поля, массив тайлов,
@@ -82,17 +81,9 @@ public class LaplacityField extends Group {
 					continue;
 				}
 				
-				// black
-				if (c == 255) {
+				// black or blue
+				if (c == 255 || c == 65535) {
 					tiles[i][j] = new WallTile(i, j);
-				} else
-				// green
-				if (c == 16711935) {
-					tiles[i][j] = new FinishTile(i, j);
-				} else
-				// blue
-				if (c == 65535) {
-					tiles[i][j] = new BarrierTile(i, j);
 				} else
 				// red
 				if (c == -16776961) {
@@ -111,7 +102,7 @@ public class LaplacityField extends Group {
 					tiles[i][j] = new StructureTile(i, j, str);
 				} else
 				// accelerator and moderator
-				if (c == 1677721855 || c == 6553855) {
+				if (c == 1677721855 || c == 51455) {
 					AcceleratorStructure str = new AcceleratorStructure(i, j, pxmap, c);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
@@ -149,12 +140,19 @@ public class LaplacityField extends Group {
 					RedLed str = new RedLed(i, j, pxmap);
 					structures.add(str);
 					tiles[i][j] = new StructureTile(i, j, str);
+				} else
+				// star
+				if (c == -757989121) {
+					Star str = new Star(i, j, pxmap);
+					structures.add(str);
+					tiles[i][j] = new StructureTile(i, j, str);
 				}
 				
 				// empty
 				else {
-					if (c != -1 && c != -65281)
+					if (c != -1 && c != -65281) {
 						Gdx.app.log("unknown tile color", c + "");
+					}
 					tiles[i][j] = new EmptyTile(i, j);
 				}
 				
@@ -181,9 +179,21 @@ public class LaplacityField extends Group {
 		}
 	}
 	
+	public static void updateStructuresPhysics(float timeFromStart) {
+		for (FieldStructure fs : structures) {
+			fs.updatePhysics(timeFromStart);
+		}
+	}
+	
 	public static void renderStructuresBatched(float timeFromStart) {
 		for (FieldStructure fs : structures) {
 			fs.renderBatched(timeFromStart);
+		}
+	}
+	
+	public static void renderStructuresBatchedForeground(float timeFromStart) {
+		for (FieldStructure fs : structures) {
+			fs.renderBatchedForeground(timeFromStart);
 		}
 	}
 	
@@ -233,9 +243,9 @@ public class LaplacityField extends Group {
 				fromGridToWorldCoords(u, v, TMP1);
 				TMP1.sub(center.getCenterX(), center.getCenterY());
 				
-				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r && Math.random() < DIRICHLET_SPRAY_TILE_PROBABILITY) {
+				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
-					tile.addChargeDensity((float) (Math.random() * val));
+					tile.addVisibleDensity((float) ((1 - TMP1.len() / (r)) * val));
 				}
 			}
 		}
@@ -243,13 +253,13 @@ public class LaplacityField extends Group {
 		DensityRenderer.updateDensity();
 	}
 	
-	public static void clearCircleDensity(float x, float y, float r) {
+	public static boolean clearCircleDensity(float x, float y, float r) {
 		EmptyTile center = getTileFromWorldCoords(x, y);
 		
 		if (center == null) {
-			return;
+			return false;
 		}
-		
+		boolean encounteredSpray = false;
 		int i = center.getGridX();
 		int j = center.getGridY();
 		int side = (int) (r / tileSize + 1);
@@ -264,7 +274,9 @@ public class LaplacityField extends Group {
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
-					tile.setChargeDensity(0);
+					if (tile.getVisibleDensity() != 0)
+						encounteredSpray = true;
+					tile.setVisibleDensity(0);
 				}
 			}
 		}
@@ -275,13 +287,13 @@ public class LaplacityField extends Group {
 			TMP1.sub(pt.getX(), pt.getY());
 			if (TMP1.len2() < r * r) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
-				// TODO очень не нравится вызывать звук отсюда
 				deleteStaticParticle(pt);
 				k--;
 			}
 		}
 		
 		DensityRenderer.updateDensity();
+		return encounteredSpray;
 	}
 
 	/**
@@ -292,9 +304,20 @@ public class LaplacityField extends Group {
 	public static void clearElectricField() {
 		for (int i = 0; i < fieldWidth; i++)
 			for (int j = 0; j < fieldHeight; j++) {
-				tiles[i][j].setChargeDensity(0.0f);
+				tiles[i][j].setVisibleDensity(0.0f);
 				tiles[i][j].setInvisibleDensity(0.0f);
 				tiles[i][j].setPotential(0.0f);
 			}
+	}
+
+	/**
+	 * Сохраняет физические состояния всех структур, обладающих памятью.
+	 * Этот метод будет вызван перед обновлением физического состояния в
+	 * {@linkplain com.badlogic.gdx.physics.box2d.Box2D} и должен быть
+	 * использован только для интерполяции при прорисовке структур на экране.
+	 */
+	public static void saveStructuresState() {
+		for (FieldStructure fs : structures)
+			fs.savePosition();
 	}
 }

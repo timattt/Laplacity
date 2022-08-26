@@ -23,31 +23,45 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
-import steelUnicorn.laplacity.utils.LevelsParser;
+import steelUnicorn.laplacity.utils.AnalyticsCollector;
+import steelUnicorn.laplacity.utils.DebugHandler;
+import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
 
 /** Класс запуска игры. Инициализируем поля из класса Globals. Загружаем assets. */
 public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
+	public AssetManager assetManager;
 	private SpriteBatch transitionBatch;
-	private AdHandler adHandler;
 	
-	public Laplacity(AdHandler adHand) {
+	// android
+	public AdHandler adHandler;
+	public AnalyticsCollector analyticsCollector;
+	public DebugHandler debugHandler;
+	
+	public boolean interstitialJustShown = false;
+	public boolean rewardedJustShown = false;
+	
+	public Laplacity(AdHandler adHand, AnalyticsCollector ac, DebugHandler db) {
 		adHandler = adHand;
+		analyticsCollector = ac;
+		debugHandler = db;
 	}
 
 	@Override
 	public void create() {
 		super.create();
+		game = this;
 		loadAssets();
 		Settings.loadSettings();
 		catFood = new CatFood();
+		progress = new PlayerProgress();
 
 		CameraManager.init();
-		game = this;
 		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
 		gameViewport = CameraManager.createViewport();
 		gameScreen = new GameScreen();
@@ -55,74 +69,75 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		winScreen = new WinScreen();
 		levelsScreen = new LevelsScreen();
 		loadingScreen = new LoadingScreen();
+		storyScreen = new StoryScreen[STORY_SIZE];
+		for (int i = 0; i < STORY_SIZE; i++) {
+			storyScreen[i] = new StoryScreen(i);
+		}
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
 		
+		
 		// transition
 		this.transitionBatch = new SpriteBatch();
-		BlendingTransition slideIn = new BlendingTransition(transitionBatch, 1f);
-		BlendingTransition slideOut = new BlendingTransition(transitionBatch, 1f);
+		BlendingTransition blend = new BlendingTransition(transitionBatch, 1f);
+		BlendingTransition story = new BlendingTransition(transitionBatch, 1f);
+
 		this.screenManager.addScreen(nameGameScreen, gameScreen);
 		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
 		this.screenManager.addScreen(nameWinScreen, winScreen);
 		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
 		this.screenManager.addScreen(nameLoadingScreen, loadingScreen);
-		this.screenManager.addScreenTransition(nameSlideIn, slideIn);
-		this.screenManager.addScreenTransition(nameSlideOut, slideOut);
+		
+		for (int i = 0; i < STORY_SIZE; i++)
+			this.screenManager.addScreen(nameStoryScreen + i, storyScreen[i]);
+		
+		this.screenManager.addScreenTransition(blendTransitionName, blend);
+		this.screenManager.addScreenTransition(storyTransitionName, story);
 
-		LaplacityAssets.changeTrack("music/main_menu.mp3");
+		LaplacityAssets.changeTrack("music/main theme_drop.ogg");
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
+	}
+
+	private void loadRec(String path, Class<?> cl) {
+		FileHandle[] sections = Gdx.files.internal(path).list();
+		for (FileHandle fh : sections) {
+			if (fh.isDirectory()) {
+				loadRec(fh.path(), cl);
+			} else {
+				assetManager.load(fh.path(), cl);
+			}
+		}
 	}
 	
 	private void loadAssets() {
 		assetManager = new AssetManager();
 
 		// levels
-		//Создаем мапу где ключи - номер секции, а значения - пути до уровней
-		LevelsParser.loadAssets(assetManager);
+		loadRec("levels/", Texture.class);
+		
+		// story
+		loadRec("story/", Texture.class);
 
 		// ui
 		assetManager.load("ui/uiskin.json", Skin.class);
+		assetManager.load("ui/texskin/texskin.json", Skin.class);
 		assetManager.load("ui/gameicons/icons.atlas", TextureAtlas.class);
 		
 		// textures
-		FileHandle[] sections = Gdx.files.internal("textures/").list();
-		for (FileHandle section : sections) {
-			FileHandle[] backs = section.list();
-			for (FileHandle back : backs) {
-				assetManager.load(back.path(), Texture.class);
-			}
-		}
+		loadRec("textures/", Texture.class);
 		
-		// objects
+		// rigid objects
 		assetManager.load("rigidObjects/gift.png", Texture.class);
 		
 		// sounds
-		FileHandle[] snds = Gdx.files.internal("sounds/").list();
-		for (FileHandle snd : snds) {
-			assetManager.load(snd.path(), Sound.class);
-		}
-		
+		loadRec("sounds/", Sound.class);
+
 		// music
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
-		
-		// backgrounds
-		sections = Gdx.files.internal("backgrounds/").list();
-		for (FileHandle section : sections) {
-			//Если дирректория с фонами секции, то парсит
-			if (section.isDirectory()) {
-				FileHandle[] backs = section.list();
-				for (FileHandle back : backs) {
-					assetManager.load(back.path(), Texture.class);
-				}
-			} else { //если просто файл - загружает
-				assetManager.load(section.path(), Texture.class);
-			}
-		}
 
 		// finish loading
 		assetManager.finishLoading();
-		LaplacityAssets.getAssets();
+		LaplacityAssets.repackAssets(assetManager);
 	}
 	
 	@Override
@@ -139,12 +154,23 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	}
 
 	@Override
+	public void pause() {
+		super.pause();
+		catFood.saveLaunches();
+	}
+
+	@Override
+	public void resume() {
+		super.resume();
+		catFood.timer.setTime(catFood.getTimerValue());
+		catFood.timer.entryUpdate(catFood.getExitTime());
+	}
+
+	@Override
 	public void dispose () {
 		super.dispose();
 		transitionBatch.dispose();
 		assetManager.dispose();
-		Settings.saveSettings();
-		catFood.dispose();
 	}
 	
 	public void showInterstitial() {
@@ -157,6 +183,36 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		if (adHandler != null) {
 			adHandler.showOrLoadRewarded();
 		}
+	}
+	
+	public void interstitialOk() {
+		interstitialJustShown = true;
+		debugHandler.debugMessage("From game show int OK!");
+	}
+	
+	public void rewardedOk() {
+		rewardedJustShown = true;
+		debugHandler.debugMessage("From game show rew OK!");
+	}
+	
+	public void sendLevelStats(int levelNumber, int sectionNumber, int starsCollected, int totalParticlesPlaced, int totalTry) {
+		if (analyticsCollector != null) {
+			analyticsCollector.levelFinished(levelNumber, sectionNumber, starsCollected, totalParticlesPlaced, totalTry);
+		}
+	}
+	
+	public static boolean isDebugEnabled() {
+		if (Globals.game.debugHandler == null) {
+			return true;
+		}
+		return Globals.game.debugHandler.isDebugModeEnabled();
+	}
+	
+	public static boolean isPlayerCheater() {
+		if (Globals.game.debugHandler == null) {
+			return false;
+		}
+		return Globals.game.debugHandler.isPlayerCheater();
 	}
 	
 }
