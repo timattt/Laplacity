@@ -25,7 +25,7 @@ import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
-import steelUnicorn.laplacity.ui.CatFood;
+import steelUnicorn.laplacity.utils.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.AnalyticsCollector;
 import steelUnicorn.laplacity.utils.DebugHandler;
@@ -156,7 +156,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	@Override
 	public void pause() {
 		super.pause();
-		catFood.saveLaunches();
+		catFood.saveFoodPrefs();
 	}
 
 	@Override

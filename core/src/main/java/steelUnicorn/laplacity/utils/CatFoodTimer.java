@@ -4,7 +4,6 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.core.Laplacity;
-import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 
 /**
@@ -149,7 +148,7 @@ public class CatFoodTimer {
         setTime(MAX_VALUE);
         catFoodInstance.reload();
         if (currentInterface != null) {
-            currentInterface.update(catFoodInstance.getTotalLaunchesAvailable());
+            currentInterface.update(catFoodInstance.getLaunches());
         }
         checkLabelVisible();
     }
@@ -167,7 +166,7 @@ public class CatFoodTimer {
 
         //Пока прошедшее время не обработано или таск не остановлен из за полной еды
         while (passedSeconds > 0 &&
-                catFoodInstance.getTotalLaunchesAvailable() < CatFood.TOTAL_LAUNCHES_AVAILABLE_DEFAULT_VALUE) {
+                catFoodInstance.getLaunches() < CatFood.MAX_LAUNCHES) {
             if (sec == 0) {
                 reduceTimer(1);
                 passedSeconds--;

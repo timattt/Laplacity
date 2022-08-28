@@ -12,7 +12,7 @@ import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
-import steelUnicorn.laplacity.ui.CatFood;
+import steelUnicorn.laplacity.utils.CatFood;
 import steelUnicorn.laplacity.utils.PlayerProgress;
 
 /**

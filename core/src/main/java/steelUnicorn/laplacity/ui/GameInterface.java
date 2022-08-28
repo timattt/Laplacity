@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.ui;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
-import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.clickSound;
 
@@ -14,9 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -159,7 +156,7 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
-				if (catFood.getTotalLaunchesAvailable() > 0) {
+				if (catFood.getLaunches() > 0) {
 					changeGameMode(GameMode.FLIGHT);
 
 					catFI.update(catFood.launch());

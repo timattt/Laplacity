@@ -70,7 +70,7 @@ public class CatFoodInterface extends Table {
             hungryDialog = new CatDialog(this, skin);
         }
 
-        update(Globals.catFood.getTotalLaunchesAvailable());
+        update(Globals.catFood.getLaunches());
     }
 
     public void update(int launches) {
