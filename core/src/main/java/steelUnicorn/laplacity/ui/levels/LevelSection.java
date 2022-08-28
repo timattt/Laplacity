@@ -103,7 +103,6 @@ public class LevelSection extends Table {
                     LaplacityAssets.playSound(LaplacityAssets.clickSound);
                     //progress
                     sectionProgress.setOpened(true);
-                    sectionProgress.openLevel(1);
                     //buttons
                     sectionLayout.findActor("lock").setVisible(false);
                     ((LevelWidget) levelButtons.findActor("level1"))

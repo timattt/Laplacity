@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.utils;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -34,16 +33,9 @@ public class CatFood {
      */
     public CatFood() {
         foodPrefs = Gdx.app.getPreferences("CatFood");
+        launches = foodPrefs.getInteger("totalLaunches", MAX_LAUNCHES);
 
-        if (foodPrefs.contains("totalLaunches")) {
-            launches = foodPrefs.getInteger("totalLaunches");
-        } else {
-            launches = MAX_LAUNCHES;
-        }
-
-        //timer initialize
         timer = new CatFoodTimer(this);
-        timer.entryUpdate(this.getExitTime());
 
         checkBounds();
     }

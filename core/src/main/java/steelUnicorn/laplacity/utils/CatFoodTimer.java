@@ -14,6 +14,7 @@ import steelUnicorn.laplacity.ui.CatFoodInterface;
  *
  * @see CatFood
  * @see CatFoodInterface
+ * TODO entryUpdate and reduceTimer refactoring
  */
 public class CatFoodTimer {
     private final CatFood catFoodInstance;
@@ -27,6 +28,8 @@ public class CatFoodTimer {
     /**
      * Таск уменьшающий таймер на 1 секунду и меняющий текст на лейбле таймера.
      * @see Timer.Task
+     * @see #reduceTimer(int)
+     * @see #setLabelTime()
      */
     public Timer.Task task = new Timer.Task() {
         @Override
@@ -38,17 +41,22 @@ public class CatFoodTimer {
 
     /**
      * Сохраняет ссылку на объект CatFood и записывает время таймера.
+     * Вызывает entryUpdate для обновления запусков при открытии игры.
+     *
      * @param instance объект класса CatFood
      * @see #setTime(int)
      * @see CatFood#getTimerValue()
+     * @see #entryUpdate(long)
      */
     public CatFoodTimer(CatFood instance) {
         catFoodInstance = instance;
         setTime(catFoodInstance.getTimerValue());
+        entryUpdate(catFoodInstance.getExitTime());
     }
 
     /**
      * Уменьшает значение таймера на переданное количество секунд и обновляет таймер.
+     *
      * @param seconds количество секунд
      * @see #updateTimer()
      */
@@ -131,13 +139,9 @@ public class CatFoodTimer {
     /**
      * Скрывает и отображет время в интерфейсе в зависимости от работы таймера.
      */
-    public void checkLabelVisible() {
+    private void checkLabelVisible() {
         if (currentInterface != null) {
-            if (task.isScheduled()) {
-                currentInterface.getTimerLabel().setVisible(true);
-            } else {
-                currentInterface.getTimerLabel().setVisible(false);
-            }
+            currentInterface.getTimerLabel().setVisible(task.isScheduled());
         }
     }
 

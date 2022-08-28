@@ -117,12 +117,12 @@ public class PlayerProgress {
      *
      * @param section номер секции
      * @param level номер уровня. Открывается следующий!
+     *
+     * @see SectionProgress#openLevel(int)
      */
     private void openNextProgress(int section, int level) {
         if (level < progress.get(section - 1).levelStars.size) {
-            if (!progress.get(section - 1).isLevelOpened(level + 1)) {
-                progress.get(section - 1).openLevel(level + 1);
-            }
+            progress.get(section - 1).openLevel(level + 1);
         }
     }
 
@@ -193,8 +193,15 @@ public class PlayerProgress {
             return isOpened;
         }
 
+        /**
+         * Открывает секцию и первый уровень.
+         * @param opened открыть ли секцию?
+         */
         public void setOpened(boolean opened) {
             isOpened = opened;
+            if (isOpened) {
+                openLevel(1);
+            }
             Globals.progress.saveProgress();
         }
 
@@ -202,11 +209,11 @@ public class PlayerProgress {
             return starsToOpen;
         }
 
-        public int getLevelStars(int level) {
+        private int getLevelStars(int level) {
             return levelStars.get(level - 1);
         }
 
-        public void setLevelStars(int level, int stars) {
+        private void setLevelStars(int level, int stars) {
             levelStars.set(level - 1, stars);
             Globals.progress.saveProgress();
         }
@@ -215,7 +222,7 @@ public class PlayerProgress {
          * Считает количество звезд собранных в секции.
          * @return количество звезд в секции.
          */
-        public int getStars() {
+        private int getStars() {
             int result = 0;
             for (int stars : levelStars) {
                 if (stars > 0) {
@@ -225,11 +232,11 @@ public class PlayerProgress {
             return result;
         }
 
-        public boolean isLevelOpened(int level) {
-            return !(levelStars.get(level - 1) == -1);
-        }
-
-        public void openLevel(int level) {
+        /**
+         * Открывает уровень если он закрыт.
+         * @param level номер уровня
+         */
+        private void openLevel(int level) {
             if (levelStars.get(level - 1) < 0) {
                 levelStars.set(level - 1, 0);
                 Globals.progress.saveProgress();
