@@ -5,11 +5,10 @@ import com.badlogic.gdx.utils.Array;
 /**
  * Хранение параметров уровня.
  * Массив параметров по секциям и уровням хранится в классе LevelsParamsParser.
- *
- * Параметры:
- * backIds - массив id бекграундов
- * levelHints - массив подсказок на уровне
- *
+ * <ul>Параметры:
+ *  <li>backIds - массив id бекграундов</li>
+ *  <li>levelHints - массив подсказок на уровне</li>
+ * </ul>
  * @see LevelsParamsParser
  */
 public class LevelParams {

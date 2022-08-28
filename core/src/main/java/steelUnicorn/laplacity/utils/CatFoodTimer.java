@@ -1,8 +1,5 @@
 package steelUnicorn.laplacity.utils;
 
-import static steelUnicorn.laplacity.core.Globals.catFood;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 
@@ -11,39 +8,51 @@ import steelUnicorn.laplacity.ui.CatFood;
 import steelUnicorn.laplacity.ui.CatFoodInterface;
 
 /**
- * Класс таймер для еды кота.
- * Создает таск который каждую секунду уменьшаяет таймер
- * и записывает в нужный label
+ * Таймер для подгрузки еды для кота.
+ * Создает Timer.Task который каждую секунду уменьшаяет таймер и записывает в label.
+ * <p>
+ * Хранит ссылку на объект CatFood и CatFoodInterface.
  *
- * Класс содержит функции start() и stop() для запуска и остановки таймера. Таймера останавливается
- * только когда еда у кота полная. При этом с помощью функции checkVisible label скрывается.
- *
- * Класс хранит у себя ссылку на текущий интерфейс currentInterface, визуальный таймер
- * в котором он меняет
+ * @see CatFood
+ * @see CatFoodInterface
  */
 public class CatFoodTimer {
-    private CatFood catFoodInstance;
-
-    public static final int MAX_VALUE = Laplacity.isDebugEnabled() ? 5 : 60; //seconds
-    private static final int SLOWDOWN = 10; //замедление таймера при выходе из игры
+    private final CatFood catFoodInstance;
     private CatFoodInterface currentInterface;
+
+    public static final int MAX_VALUE = Laplacity.isDebugEnabled() ? 5 : 60; //max значение таймера
+    private static final int SLOWDOWN = 10; //замедление таймера при выходе из игры
 
     private int sec;
     private int min;
-    //Таск который уменьшает таймер на 1 секунду
+    /**
+     * Таск уменьшающий таймер на 1 секунду и меняющий текст на лейбле таймера.
+     * @see Timer.Task
+     */
     public Timer.Task task = new Timer.Task() {
         @Override
         public void run() {
             reduceTimer(1);
-            setLabelText();
+            setLabelTime();
         }
     };
 
+    /**
+     * Сохраняет ссылку на объект CatFood и записывает время таймера.
+     * @param instance объект класса CatFood
+     * @see #setTime(int)
+     * @see CatFood#getTimerValue()
+     */
     public CatFoodTimer(CatFood instance) {
         catFoodInstance = instance;
         setTime(catFoodInstance.getTimerValue());
     }
 
+    /**
+     * Уменьшает значение таймера на переданное количество секунд и обновляет таймер.
+     * @param seconds количество секунд
+     * @see #updateTimer()
+     */
     private void reduceTimer(int seconds) {
         sec -= seconds;
 
@@ -57,6 +66,9 @@ public class CatFoodTimer {
         }
     }
 
+    /**
+     * Запускает таймер.
+     */
     public void start() {
         if (!task.isScheduled()) {
             Timer.schedule(task, 0, 1);
@@ -64,6 +76,9 @@ public class CatFoodTimer {
         checkLabelVisible();
     }
 
+    /**
+     * Останавливает таймер.
+     */
     public void stop() {
         if (task.isScheduled()) {
             task.cancel();
@@ -71,6 +86,10 @@ public class CatFoodTimer {
         checkLabelVisible();
     }
 
+    /**
+     * Устанавливает время таймера, пересчитывая переданные секунды в минуты:секунды.
+     * @param seconds количество секунд
+     */
     public void setTime(int seconds) {
         if (seconds > MAX_VALUE || seconds < 0) {
             seconds = MAX_VALUE;
@@ -80,21 +99,29 @@ public class CatFoodTimer {
     }
 
     /**
-     * Возвращает время в таймере
+     * Возвращает время в таймере в секундах.
      * @return время в секундах
      */
     public int getTime() {
         return min * 60 + sec;
     }
 
-    //Функция устанавливает, каким интерфейсом управляет таймер.
+    /**
+     * Устанавливает интерфейс с таймером для изменения отображаемого времени и количества запусков.
+     *
+     * @param foodInterface интерфейс CatFoodInterface.
+     * @see CatFoodInterface
+     */
     public void setCurrentInterface(CatFoodInterface foodInterface) {
         currentInterface = foodInterface;
-        setLabelText(); //для обновления надписи
+        setLabelTime();
     }
 
-    //Устанавливает текст формата mm:ss в поле timerLabel  класса CatFoodInterface
-    private void setLabelText() {
+    /**
+     * Меняет отображаемое время в текущем отображаемом интерфейсе.
+     * @see #setCurrentInterface(CatFoodInterface)
+     */
+    private void setLabelTime() {
         if (currentInterface != null) {
             currentInterface.getTimerLabel()
                     .setText(String.format("%02d:%02d", min, sec));
@@ -102,6 +129,9 @@ public class CatFoodTimer {
         }
     }
 
+    /**
+     * Скрывает и отображет время в интерфейсе в зависимости от работы таймера.
+     */
     public void checkLabelVisible() {
         if (currentInterface != null) {
             if (task.isScheduled()) {
@@ -111,7 +141,10 @@ public class CatFoodTimer {
             }
         }
     }
-    //Функция вызывается когда таймер нужно обновить
+
+    /**
+     * Восстанавливает запуск по истечению таймера и меняет надпись с количеством запусков.
+     */
     private void updateTimer() {
         setTime(MAX_VALUE);
         catFoodInstance.reload();
@@ -122,8 +155,10 @@ public class CatFoodTimer {
     }
 
     /**
-     * Метод считающий разницу между входом и выходом и добавляющий нужное количество запусков
+     * Считает разницу между входом и выходом и добавляющий нужное количество запусков.
+     * Когда приложение свернуто или выключено время уменьшается в {@link #SLOWDOWN} раз.
      * @param exitTime - системное время выхода в миллисекундах
+     * @see #SLOWDOWN
      */
     public void entryUpdate(long exitTime) {
         long curTime = TimeUtils.millis();
