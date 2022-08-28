@@ -19,36 +19,44 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.ui.FpsCounter;
 import steelUnicorn.laplacity.utils.LevelsParamsParser;
 
 /**
- * Класс сцена для победного экрана.
- * Создает сцену из сообщения о победе с подсчетом очков
- * и 3х навигационных кнопок: Menu Replay Next
+ * Сцена для победного экрана.
+ * Создает интерфейс с заработанными звездами и навигационными кнопками:
+ * menu, replay, next.
  */
 public class WinInterface extends Stage {
     //Константы размеров
     private static final float btnSpace = Globals.UI_WORLD_WIDTH * 0.02f;
     private static final float starSpace = Globals.UI_WORLD_HEIGHT * 0.03f;
     private static final float starsSpace = Globals.UI_WORLD_HEIGHT * 0.07f;
-    private static final float btnScale = 1.5f;
     private static final float edgeStarPad = Globals.UI_WORLD_HEIGHT * 0.05f;
     private static final float starScale = 1.5f;
+    private static final float btnScale = 1.5f;
 
-    private Table root; //<< Корневая таблица для позиционирования
+    private final Table root;
+    private final Image background;
 
-    private Image background;
-
+    /**
+     * Создает интерфейс победного экрана.
+     * <ul>Добавляет на экран:
+     *  <li>Фон EARTH_BACKGROUND</li>
+     *  <li>Счетчик фпс, если включен режим debug</li>
+     *  <li>Сам интерфейс</li>
+     * </ul>
+     * @param viewport вьюпорт сцены
+     * @see FpsCounter
+     */
     public WinInterface(Viewport viewport) {
         super(viewport);
-
+        //back
         background = new Image(EARTH_BACKGROUND);
         background.setSize(background.getPrefWidth() / background.getPrefHeight() * viewport.getWorldHeight(),
                 viewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
         addActor(background);
-        //fpsCounter
+        //fps
         if (Laplacity.isDebugEnabled()) {
             FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
             addActor(fpsCounter);
@@ -61,7 +69,8 @@ public class WinInterface extends Stage {
     }
 
     /**
-     * Функция очищающая корневую таблицу
+     * Очищает интерфейс перед его сборкой.
+     * @see #buildStage(int, Skin)
      */
     private void clearStage() {
         if (root.hasChildren()) {
@@ -72,17 +81,20 @@ public class WinInterface extends Stage {
     }
 
     /**
-     * Функция собирающая описание и кнопки вместе
+     * Собирает интерфейс на победном экране.
+     * На интерфейсе отображается 3 звезды, заполненные в зависимости от того сколько их собрано
+     * с помощью {@link #getStarRows(int, Skin)}.
+     * И под ними навигационные кнопки menu, replay, next.
      *
-     * @param score - количество заработанных очков
+     * @param starsScored - количество заработанных звезд.
+     * @see #getStarRows(int, Skin)
      */
-    public void buildStage(int score) {
+    public void buildStage(int starsScored, Skin skin) {
         clearStage();
 
         //stars
         root.row();
-        Table stars = getStarRows(score);
-        root.add(stars).padBottom(starsSpace);
+        root.add(getStarRows(starsScored, skin)).padBottom(starsSpace);
 
         root.row();
         //buttons
@@ -90,10 +102,9 @@ public class WinInterface extends Stage {
         buttons.setName("buttonsTable");
         root.add(buttons);
 
-        buttons.defaults()
-                .space(btnSpace);
+        buttons.defaults().space(btnSpace);
 
-        addButton(buttons, TEXSKIN, "Home", new ChangeListener() {
+        addButton(buttons, skin, "Home", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -102,7 +113,7 @@ public class WinInterface extends Stage {
             }
         });
 
-        addButton(buttons, TEXSKIN, "Replay", new ChangeListener() {
+        addButton(buttons, skin, "Replay", new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
@@ -113,9 +124,11 @@ public class WinInterface extends Stage {
         });
 
         //В последнем уровне кнопку не надо отображать
-        if (!isLastLevel()) {
-            ChangeListener listener = null;
-            if (isLastSectionLevel()) {
+        if (!(GameProcess.sectionNumber == sectionLevels.size &&
+                GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size)) {
+            ChangeListener listener;
+            if (GameProcess.sectionNumber < sectionLevels.size &&
+                    GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size) {
                 //Открыть levelsScreen в следующей секции
                 listener = new ChangeListener() {
                     @Override
@@ -143,30 +156,30 @@ public class WinInterface extends Stage {
                 };
             }
 
-            addButton(buttons, TEXSKIN, "Next", listener);
+            addButton(buttons, skin, "Next", listener);
         }
     }
 
-    private static boolean isLastLevel() {
-        return GameProcess.sectionNumber == sectionLevels.size &&
-                GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size;
-    }
-
-    private static boolean isLastSectionLevel() {
-        return GameProcess.sectionNumber < sectionLevels.size &&
-                GameProcess.levelNumber == sectionLevels.get(GameProcess.sectionNumber - 1).size;
-    }
-
+    /**
+     * Создает и добавляет кнопку к таблице.
+     * @param table таблица
+     * @param skin скин с текстурами и стилями кнопок
+     * @param styleName название стиля кнопки
+     * @param listener обработчик событий
+     * @return клетку в таблице с элементом
+     */
     private Cell<ImageButton> addButton(Table table, Skin skin,
-                                        String name, ChangeListener listener) {
-        ImageButton btn = new ImageButton(skin, name);
+                                        String styleName, ChangeListener listener) {
+        ImageButton btn = new ImageButton(skin, styleName);
         btn.getImageCell().grow();
-        btn.setName(name);
         btn.addListener(listener);
 
         return table.add(btn).size(btn.getPrefWidth() * btnScale, btn.getPrefHeight() * btnScale);
     }
 
+    /**
+     * Меняет размеры фона при изменении размеров приложения.
+     */
     public void resizeBackground() {
         background.setSize(background.getPrefWidth() / background.getPrefHeight()
                         * this.getViewport().getWorldHeight(),
@@ -175,19 +188,19 @@ public class WinInterface extends Stage {
     }
 
     /**
-     * функция создания пирамиды
-     * @param score - количество очков
-     * @return - таблица с пирамидой
+     * Создает таблицу с собранными на уровне звездами для отображения в интерфейсе.
+     * @param starsScored количество собранных звезд
+     * @return виджет со звездами
      */
-    private Table getStarRows(int score) {
+    private Table getStarRows(int starsScored, Skin skin) {
         Table stars = new Table();
         StringBuilder starName = new StringBuilder("star00");
+
         for (int i = 1; i <= GameProcess.MAX_STAR; i++) {
-            starName.setCharAt(4, score >= i ? '1' : '0');
+            starName.setCharAt(4, starsScored >= i ? '1' : '0');
             starName.setCharAt(5, Character.forDigit(i , 10));
 
-            Image star = new Image(TEXSKIN, starName.toString());
-            star.setName("star" + i);
+            Image star = new Image(skin, starName.toString());
             stars.add(star).size(star.getPrefWidth() * starScale,
                             star.getPrefHeight() * starScale)
                     .space(starSpace).padTop(i != 2 ? edgeStarPad : 0).top();
