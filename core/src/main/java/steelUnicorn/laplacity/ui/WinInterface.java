@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.ui.mainmenu;
+package steelUnicorn.laplacity.ui;
 
 import static steelUnicorn.laplacity.core.LaplacityAssets.EARTH_BACKGROUND;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;

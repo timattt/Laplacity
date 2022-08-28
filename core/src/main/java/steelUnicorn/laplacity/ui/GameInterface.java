@@ -28,7 +28,9 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.gameModes.GameMode;;
+import steelUnicorn.laplacity.gameModes.GameMode;
+import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
+import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
 
 
 /**

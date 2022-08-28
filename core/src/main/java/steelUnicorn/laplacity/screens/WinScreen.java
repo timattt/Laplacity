@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.ui.mainmenu.WinInterface;
+import steelUnicorn.laplacity.ui.WinInterface;
 
 /**
  * Победный экран. Открывается при прохождении уровня и отображает

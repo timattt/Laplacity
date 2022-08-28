@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.ui;
+package steelUnicorn.laplacity.ui.dialogs;
 
 
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;

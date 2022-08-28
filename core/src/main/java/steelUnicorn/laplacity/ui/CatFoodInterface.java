@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Align;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.dialogs.CatDialog;
 
 /**
  * Класс таблица хранящий верхнюю строку с количеством еды и кнопкой +5 +10 таймером

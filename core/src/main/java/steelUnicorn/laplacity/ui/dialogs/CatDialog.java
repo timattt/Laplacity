@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.ui;
+package steelUnicorn.laplacity.ui.dialogs;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Align;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.CatFoodInterface;
 
 public class CatDialog extends Dialog {
     private static final String wsName = "cat_hungry";
