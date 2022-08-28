@@ -135,7 +135,7 @@ public class GameProcess {
 	// BRUSHES
 	public static final float BRUSH_RADIUS = 5f;
 	public static final float MAX_DENSITY = 5f;
-	public static final float BRUSH_DENSITY_POWER = 0.05f * MAX_DENSITY;
+	public static final float BRUSH_DENSITY_POWER = 0.25f * MAX_DENSITY;
 	
 	// TRAJECTORY
 	public static final int TRAJECTORY_POINTS = 30;

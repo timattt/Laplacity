@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.LaplacityAssets;
 
 public class CatDialog extends Dialog {
     private static final String wsName = "cat_hungry";
@@ -45,8 +46,8 @@ public class CatDialog extends Dialog {
         //content
         content.row();
         Label label = new Label("Cat is hungry!\n\n\n" +
-                "Feed cat right now, or\n" +
-                "wait until food will restore.\n\n", getSkin());
+                "Feed the cat right now or\n" +
+                "wait until the food is restored.\n\n", getSkin());
         label.setAlignment(Align.center);
         text(label);
 
@@ -72,6 +73,7 @@ public class CatDialog extends Dialog {
     @Override
     protected void result(Object object) {
         if (object instanceof HungryResult) {
+            LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
             switch ((HungryResult) object) {
                 case INTER:
                     Globals.game.showInterstitial();
@@ -80,6 +82,8 @@ public class CatDialog extends Dialog {
                     Globals.game.showRewarded();
                     break;
             }
+        } else {
+            LaplacityAssets.playSound(LaplacityAssets.clickSound);
         }
     }
 }

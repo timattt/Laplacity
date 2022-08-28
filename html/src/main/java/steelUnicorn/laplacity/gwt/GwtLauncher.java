@@ -22,6 +22,6 @@ public class GwtLauncher extends GwtApplication {
 
 		@Override
 		public ApplicationListener createApplicationListener () {
-			return new Laplacity(null, null);
+			return new Laplacity(null, null, null);
 		}
 }
