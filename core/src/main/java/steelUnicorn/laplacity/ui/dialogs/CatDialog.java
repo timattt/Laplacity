@@ -11,9 +11,13 @@ import com.badlogic.gdx.utils.Align;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 
+/**
+ * Всплывающее окно при запуске без еды. Показывает надпись о том что кот голоден и кнопки для
+ * пополнения через просмотр рекламы.
+ *
+ * @see Dialog
+ */
 public class CatDialog extends Dialog {
-    private static final String wsName = "cat_hungry";
-
     private static final float exitSize = 0.6f;
     private static final float buttonsPad = Globals.UI_WORLD_WIDTH * 0.03f;
 
@@ -22,7 +26,12 @@ public class CatDialog extends Dialog {
         REWARD
     }
 
-    public CatDialog(Skin skin) {
+    /**
+     * Инициализирует диалог.
+     * @param skin скин с текстурами для диалога.
+     * @param wsName название стиля диалога.
+     */
+    public CatDialog(Skin skin, String wsName) {
         super("", skin, wsName);
         initializeCatDialog();
 
@@ -31,6 +40,11 @@ public class CatDialog extends Dialog {
         setColor(color);
     }
 
+    /**
+     * Инициализирует интерфейс диалога.
+     * При создании очищает от форматирования стандартный класс Dialog.
+     * т.к. layout другой.
+     */
     public void initializeCatDialog() {
         getCells().clear();
         clearChildren();
@@ -47,8 +61,6 @@ public class CatDialog extends Dialog {
                 "wait until the food is restored.\n\n", getSkin());
         label.setAlignment(Align.center);
         text(label);
-
-
 
         //buttons
         content.row();

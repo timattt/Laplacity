@@ -84,7 +84,7 @@ public class GameInterface extends Stage implements GestureListener {
 		//Dialogs initialize
 		returnDialog = new ReturnDialog(skin);
 		settingsDialog = new SettingsDialog(skin);
-		catDialog = new CatDialog(skin);
+		catDialog = new CatDialog(skin, "cat_hungry");
 		//FpsCounter
 		if (Laplacity.isDebugEnabled()) {
 			FpsCounter fpsCounter = new FpsCounter(skin, "noback");
