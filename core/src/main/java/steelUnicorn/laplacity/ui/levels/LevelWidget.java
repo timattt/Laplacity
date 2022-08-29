@@ -18,21 +18,31 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.utils.LevelsParamsParser;
 
+/**
+ * Виджет выбора уровня.
+ * Над кнопкой отображаются звезды набранные в уровне, с названиями {@link #imgNames}.
+ */
 public class LevelWidget extends Table {
     private static final float widgetScale = 0.6f;
     private static final float starPadRat = 0.6f;
     private static final float sideStarPadRat = 0.13f;
-
     private static final float starsPadRat = 0.2f;
 
-    private LevelButton btn;
+    private LevelButton levelButton;
     private Table starsTable;
     private int stars;
-
+    /** Имена текстур звезд в скине. */
     private static final String[] imgNames = new String[]{"star_level00", "star_level01", "star_level02",
             "star_level10", "star_level11", "star_level12"};
 
-    public LevelWidget(Skin skin, int level, int section, int stars) {
+    /**
+     * Создает кнопку для уровня level секции section с количеством набранных звезд stars.
+     * @param skin скин с текстурами кнопок и звезд.
+     * @param level номер уровня
+     * @param section номер секции
+     * @param stars количество звезд
+     */
+    public LevelWidget(Skin skin, int section, int level, int stars) {
         super();
         setName("level" + level);
         this.stars = stars;
@@ -40,13 +50,13 @@ public class LevelWidget extends Table {
         //creation of stars Table
         createStars(skin);
         //creation of btn
-        btn = new LevelButton(String.valueOf(level), skin, "Level",
+        levelButton = new LevelButton(String.valueOf(level), skin, "Level",
                 sectionLevels.get(section - 1).get(level - 1), level, section);
-        btn.addListener(LevelButton.listener);
+        levelButton.addListener(LevelButton.listener);
         //add to table
         add(starsTable).padBottom(starsTable.getPrefHeight() * starsPadRat);
         row();
-        add(btn).size(btn.getPrefWidth() * widgetScale, btn.getPrefHeight() * widgetScale);
+        add(levelButton).size(levelButton.getPrefWidth() * widgetScale, levelButton.getPrefHeight() * widgetScale);
 
         setDisabled(stars == -1);
     }
@@ -55,6 +65,11 @@ public class LevelWidget extends Table {
         return imgNames[(stars > pos ? 3 : 0) + pos];
     }
 
+    /**
+     * Строит таблицу со звездами над уровнем.
+     * @param skin скин с текстурами звезд
+     * @see #imgNames
+     */
     private void createStars(Skin skin) {
         starsTable = new Table();
         Image starImg = new Image(skin, getImgName(0));
@@ -85,12 +100,19 @@ public class LevelWidget extends Table {
         }
     }
 
-
+    /**
+     * Устанавливает свойство disabled для кнопки. Если кнопка выключена, то звезды над ней не
+     * отображаются
+     * @param isDisabled условие для выключения.
+     */
     public void setDisabled(boolean isDisabled) {
-        btn.setDisabled(isDisabled);
+        levelButton.setDisabled(isDisabled);
         starsTable.setVisible(!isDisabled);
     }
 
+    /**
+     * Кнопка выбора уровней. Содержит текстуру уровня, номер секции и уровня.
+     */
     public static class LevelButton extends TextButton {
         private final Texture lvlImg;
         private final int levelNumber;
