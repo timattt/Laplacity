@@ -51,7 +51,6 @@ public class CatFoodTimer {
     public CatFoodTimer(CatFood instance) {
         catFoodInstance = instance;
         setTime(catFoodInstance.getTimerValue());
-        entryUpdate(catFoodInstance.getExitTime());
     }
 
     /**

@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.Align;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.ui.CatFoodInterface;
 
 public class CatDialog extends Dialog {
     private static final String wsName = "cat_hungry";
@@ -23,11 +22,8 @@ public class CatDialog extends Dialog {
         REWARD
     }
 
-    private CatFoodInterface catFI;
-
-    public CatDialog(CatFoodInterface catFI, Skin skin) {
+    public CatDialog(Skin skin) {
         super("", skin, wsName);
-        this.catFI = catFI;
         initializeCatDialog();
 
         Color color = getColor();

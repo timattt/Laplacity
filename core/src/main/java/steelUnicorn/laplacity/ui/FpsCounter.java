@@ -1,24 +1,28 @@
 package steelUnicorn.laplacity.ui;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
- * Строчка fps которая обновляется каждый кадр. Позиция задается слева снизу с помощь padSize.
+ * Label счетчик фпс. Позиция задается левого нижнего угла с помощью {@link #padBottom} и {@link #padLeft}
+ * отступов.
+ * Обновляется каждый кадр.
+ * Показ fps настраивается в debug режиме.
+ * @see Label
+ * @see Settings#isShowFps()
  */
 public class FpsCounter extends Label {
     public static float padBottom = 20;
     public static float padLeft = 100;
 
-    public FpsCounter(Skin skin) {
-        super(Gdx.graphics.getFramesPerSecond() + " fps",  skin);
-        initialize();
-    }
-
+    /**
+     * Инициализирует счетчик.
+     * @param skin скин с текстурами интерфейса
+     * @param styleName название стиля
+     */
     public FpsCounter(Skin skin, String styleName) {
         super(Gdx.graphics.getFramesPerSecond() + " fps", skin, styleName);
         initialize();

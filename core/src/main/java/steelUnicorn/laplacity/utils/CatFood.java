@@ -36,7 +36,7 @@ public class CatFood {
         launches = foodPrefs.getInteger("totalLaunches", MAX_LAUNCHES);
 
         timer = new CatFoodTimer(this);
-
+        timer.entryUpdate(getExitTime());
         checkBounds();
     }
 
