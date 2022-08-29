@@ -43,7 +43,7 @@ public class LevelWidget extends Table {
      * @param stars количество звезд
      */
     public LevelWidget(Skin skin, int section, int level, int stars) {
-        super();
+        super(skin);
         setName("level" + level);
         this.stars = stars;
 

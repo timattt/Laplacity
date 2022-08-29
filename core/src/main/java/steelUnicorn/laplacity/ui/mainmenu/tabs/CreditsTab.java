@@ -15,7 +15,9 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 
 /**
- * Класс с описанием компании в главном меню.
+ * Вкладка с описанием компании в главном меню.
+ *
+ * Содержит ссылку на сайт http://steel-uni.com/
  */
 public class CreditsTab extends MainMenuTab {
     private static final float infoPad = Globals.UI_WORLD_HEIGHT * 0.05f;
