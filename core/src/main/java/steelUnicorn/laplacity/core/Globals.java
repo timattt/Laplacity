@@ -42,18 +42,18 @@ public class Globals {
 	public static final String storyTransitionName = "story";
 
 	// UI Viewport. Default world parameters for 16:9 ratio
-	public static final float UI_WORLD_WIDTH = 1920;
-	public static final float UI_WORLD_HEIGHT = 1080;
+	public static final float UI_WORLD_WIDTH = 1080;
+	public static final float UI_WORLD_HEIGHT = 1920;
 
 	// Ingame viewport
 	/**
 	 * Сколько приходится игровых единиц на ширину экрана
 	 */
-	public static final float SCREEN_WORLD_WIDTH = 160;
+	public static final float SCREEN_WORLD_WIDTH = 90;
 	/**
 	 * Сколько приходится игровых единиц на высоту экрана
 	 */
-	public static final float SCREEN_WORLD_HEIGHT = 90;
+	public static final float SCREEN_WORLD_HEIGHT = 160;
 	
 	// epsilon
 	public static final float EPSILON_PRECISION = 0.0001f;

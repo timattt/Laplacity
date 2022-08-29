@@ -136,7 +136,7 @@ public class GameInterface extends Stage implements GestureListener {
 		catFood.timer.setCurrentInterface(catFI);
 		visibleActors.add(catFI);
 
-		if (Laplacity.isDebugEnabled()) {
+		if (Laplacity.isDebugEnabled() && false) {
 			TextButton skip = new TextButton("Skip", TEXSKIN);
 			skip.addListener(new ChangeListener() {
 				@Override

@@ -172,6 +172,6 @@ public class SettingsTab extends MainMenuTab {
         if (Laplacity.isDebugEnabled()) {
             ((CheckBox) settings.findActor("fpsCheckbox"))
                     .setChecked(Settings.isShowFps());
-        }
+        }Globals.levelsScreen.levelsTab.openLevels();
     }
 }
