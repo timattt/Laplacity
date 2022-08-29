@@ -30,7 +30,7 @@ public class ModeNone extends GameMode {
 
 	@Override
 	public void touchDown(float x, float y) {
-		ParticleMover.tryToStartMoving(x, y);
+		
 	}
 
 	@Override

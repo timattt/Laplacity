@@ -427,7 +427,7 @@ public class GameProcess {
 	private static boolean isParticleTooClose(ChargedParticle part) {
 		for (ChargedParticle p : particles) {
 			TMP1.set(p.getX(), p.getY()).sub(part.getX(), part.getY());
-			if (TMP1.len2() < (p.getRadius() + part.getRadius()) * (p.getRadius() + part.getRadius())) {
+			if (TMP1.len2() < 0.04f * (p.getRadius() + part.getRadius()) * (p.getRadius() + part.getRadius())) {
 				return true;
 			}
 		}
