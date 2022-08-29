@@ -368,6 +368,7 @@ public class GameProcess {
 		
 		LaplacityField.clearElectricField();
 		FieldCalculator.resetPotential();
+		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		DensityRenderer.updateDensity();
 		TrajectoryRenderer.updateTrajectory();
 		Gdx.app.log("gameProcess", "level cleared!");
