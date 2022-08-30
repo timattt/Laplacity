@@ -2,21 +2,17 @@ package steelUnicorn.laplacity.ui;
 
 import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
-import static steelUnicorn.laplacity.core.LaplacityAssets.SKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.clickSound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -31,73 +27,78 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
-import steelUnicorn.laplacity.gameModes.GameMode;;
+import steelUnicorn.laplacity.gameModes.GameMode;
+import steelUnicorn.laplacity.ui.dialogs.CatDialog;
+import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
+import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
 
 
 /**
- * @brief Класс создающий ui и обработчик жество на экране
- *
- * При нажатии на иконку мода, нужный мод устанавливается в GameProcess.currentGameMode
+ * Сцена для игрового интерфейса.
+ * Создает кнопки для управления игровым процессом.
  * @author Elveg, timat
  */
 public class GameInterface extends Stage implements GestureListener {
-	private ReturnDialog returnDialog;
-	private SettingsDialog settingsDialog;
-	public CatFoodInterface catFI;
 	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
 	private static final float settingsSize = iconSize * 0.9f;
 	private static final float iconSpace = iconSize * 0.08f;
 
-	Cell<ImageButton> flightCell;
-	ImageButton flightBtn;
-	ImageButton pauseBtn;
-	Table modes;
-	Array<Actor> visibleActors;
+	private ReturnDialog returnDialog;
+	private SettingsDialog settingsDialog;
+	private CatDialog catDialog;
 
-	ImageButton selectedMode;
+	public CatFoodInterface catFI;
+
+	private Table modes;
+	/** Кнопка для выбора мода. */
+	private ImageButton selectedMode;
+
+	private Cell<ImageButton> flightCell;
+	private ImageButton flightBtn;
+	private ImageButton pauseBtn;
+	/** Массив с скрываемыми элементами при запуске. */
+	private Array<Actor> visibleActors;
 	/**
-	 * Конструктор создающий интерфейс
-	 * @param viewport
+	 * Создает сцену и интерфейс.
+	 * @param viewport вьюпорт сцены.
 	 */
 	public GameInterface(Viewport viewport) {
 		super(viewport);
 
-		createInterface();
+		createInterface(TEXSKIN);
 	}
 
 	/**
-	 * @brief Функция создающая иконки кнопок.
+	 * Инициализирует игровой интерфейс. Создает кнопки для изменения инструментов, запуска и
+	 * остановки полета, пополнение еды.
+	 * Кнопки выхода и настроек открывают соответствующие диалоговые окна.
+	 * При попытке запуска без еды, открывается диалоговое окно предлагающее посмотреть рекламу.
 	 *
-	 * Порядок кнопок
-	 * <ol>
-	 * 	<li>return</li>
-	 * 	<li>reload</li>
-	 * 	<li>flight</li>
-	 * 	<li>eraser</li>
-	 * 	<li>electrons</li>
-	 * 	<li>protons</li>
-	 * 	<li>dirichlet</li>
-	 * </ol>
+	 * @param skin скин с текстурами виджетов.
+	 * @see SettingsDialog
+	 * @see CatDialog
+	 * @see ReturnDialog
 	 */
-	private void createInterface() {
+	private void createInterface(Skin skin) {
 		visibleActors = new Array<>();
 		//Dialogs initialize
-		returnDialog = new ReturnDialog(TEXSKIN);
-		settingsDialog = new SettingsDialog(TEXSKIN);
+		returnDialog = new ReturnDialog(skin);
+		settingsDialog = new SettingsDialog(skin);
+		catDialog = new CatDialog(skin, "cat_hungry");
 		//FpsCounter
 		if (Laplacity.isDebugEnabled()) {
-			FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
+			FpsCounter fpsCounter = new FpsCounter(skin, "noback");
 			addActor(fpsCounter);
 		}
 
-		//interface intitialize
+		//interface initialize
 		Table root = new Table();
 		root.setFillParent(true);
 		addActor(root);
 
-		//return button
+		//left layout
 		Table leftLayout = new Table();
-		leftLayout.add(createIcon("Home", new ClickListener(){
+		leftLayout.add(createIcon(skin, "Home", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
@@ -106,7 +107,7 @@ public class GameInterface extends Stage implements GestureListener {
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
 
-		leftLayout.add(createIcon("Clear", new ClickListener(){
+		leftLayout.add(createIcon(skin, "Clear", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
@@ -115,7 +116,7 @@ public class GameInterface extends Stage implements GestureListener {
 		})).expandY().top().size(iconSize).space(iconSpace);
 
 		leftLayout.row();
-		leftLayout.add(createIcon("settings", new ClickListener(){
+		leftLayout.add(createIcon(skin, "settings", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
@@ -127,17 +128,17 @@ public class GameInterface extends Stage implements GestureListener {
 
 		root.add(leftLayout).expand().fillY().left().pad(iconSpace).uniform();
 
-		//cat interface
+		//center layout
 		Table centerLayout = new Table();
 		root.add(centerLayout).growY();
 
-		catFI = new CatFoodInterface(TEXSKIN);
+		catFI = new CatFoodInterface(skin);
 		centerLayout.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
 		visibleActors.add(catFI);
 
 		if (Laplacity.isDebugEnabled()) {
-			TextButton skip = new TextButton("Skip", TEXSKIN);
+			TextButton skip = new TextButton("Skip", skin);
 			skip.addListener(new ChangeListener() {
 				@Override
 				public void changed(ChangeEvent event, Actor actor) {
@@ -150,33 +151,41 @@ public class GameInterface extends Stage implements GestureListener {
 			centerLayout.add(skip).padBottom(iconSpace);
 		}
 
-		//Icons Table
+		//right layout
 		Table rightLayout = new Table();
 		root.add(rightLayout).expandX().growY().right().uniform().pad(iconSpace);
 
-		//modes
-		flightBtn = createIcon("Flight", new ClickListener(){
+		//flight and pause buttons
+		flightBtn = createIcon(skin, "Flight", new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
-				if (catFood.getTotalLaunchesAvailable() > 0) {
+				if (catFood.getLaunches() > 0) {
 					changeGameMode(GameMode.FLIGHT);
-
 					catFI.update(catFood.launch());
 				} else {
-					catFI.showHungry(GameInterface.this);
+					catDialog.show(GameInterface.this);
 					changeGameMode(GameMode.NONE);
 				}
 			}
 		});
-		pauseBtn = createModeIcon("Pause", GameMode.NONE, LaplacityAssets.lightClickSound);
+		pauseBtn = createModeIcon(skin, "Pause", GameMode.NONE, LaplacityAssets.lightClickSound);
 		flightCell = rightLayout.add(flightBtn)
 				.size(iconSize).space(iconSpace);
 
+
 		rightLayout.row();
-		rightLayout.add(createModeSelector(TEXSKIN, "SquareNone")).width(iconSize)
-				.height(TEXSKIN.getDrawable("square_btn").getMinHeight()
-						/ TEXSKIN.getDrawable("square_btn").getMinWidth() * iconSize);
+		selectedMode = new ImageButton(skin, "SquareNone");
+		selectedMode.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(clickSound);
+				modes.setVisible(!modes.isVisible());
+			}
+		});
+		rightLayout.add(selectedMode).width(iconSize)
+				.height(skin.getDrawable("square_btn").getMinHeight()
+						/ skin.getDrawable("square_btn").getMinWidth() * iconSize);
 		visibleActors.add(selectedMode);
 		//modes table
 		modes = new Table();
@@ -185,22 +194,26 @@ public class GameInterface extends Stage implements GestureListener {
 		modes.defaults().size(iconSize).space(iconSpace);
 
 		modes.row();
-		modes.add(createModeIcon("Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
+		modes.add(createModeIcon(skin, "Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
 		modes.row();
-		modes.add(createModeIcon("Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
+		modes.add(createModeIcon(skin, "Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
 		modes.row();
-		modes.add(createModeIcon("Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
+		modes.add(createModeIcon(skin, "Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 		modes.row();
-		modes.add(createModeIcon("Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
+		modes.add(createModeIcon(skin, "Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
 	}
 
 	/**
-	 * Функция вызывается в GameProcess.changeGameMode при изменении мода
-	 * для изменения вида gui
+	 * Обновляет интерфейс при изменении мода.
+	 * Меняет кнопку запуска на паузу, скрывая остальные элементы, и наоборот.
+	 * Меняет вид кнопки выбора мода, и открывает выбор, если мод не выбран.
+	 *
+	 * @see #selectedMode
+	 * @see #visibleActors
 	 */
 	public void updateCurMode() {
 		if (currentGameMode != GameMode.FLIGHT) {
-			selectedMode.setStyle(TEXSKIN.get("Square" + currentGameMode.getName(),
+			selectedMode.setStyle(selectedMode.getSkin().get("Square" + currentGameMode.getName(),
 					ImageButton.ImageButtonStyle.class));
 		}
 		modes.setVisible(currentGameMode == GameMode.NONE);	//сразу видимы если не выбран мод
@@ -218,34 +231,35 @@ public class GameInterface extends Stage implements GestureListener {
 		}
 	}
 	/**
-	 * Функция для создания кнопки иконки
+	 * Создает иконку ImageButtons с заданным обработчиком событий.
 	 *
-	 * @param name - название мода
-	 * @param listener - обработчик события
+	 * @param skin скин с текстурой кнопки.
+	 * @param styleName название стиля в скине.
+	 * @param listener обработчик событий.
+	 * @see ImageButton
 	 */
-	private ImageButton createIcon(String name, ClickListener listener) {
-		ImageButton btn = new ImageButton(TEXSKIN.get(name, ImageButton.ImageButtonStyle.class));
-		if (!name.equals("Flight") && !name.equals("Pause")) {
-			Gdx.app.log("visible", "added " + name);
-
+	private ImageButton createIcon(Skin skin, String styleName, ClickListener listener) {
+		ImageButton btn = new ImageButton(skin, styleName);
+		if (!styleName.equals("Flight") && !styleName.equals("Pause")) {
 			visibleActors.add(btn);
 		}
 
 		btn.getImageCell().grow();
-		btn.setColor(Color.WHITE);
-		btn.setName(name);
 		btn.addListener(listener);
 		return btn;
 	}
 
 	/**
-	 * Функция создающая иконку мода
+	 * Создает иконку мода по переданному моду.
 	 *
-	 * @param name - название мода
-	 * @param mode - включаемый мод
+	 * @param skin скин с текстурами кнопки.
+	 * @param styleName название стиля кнопки в скине
+	 * @param mode мод для кнопки
+	 * @param sound звук, проигрываемый при нажатии на кнопку.
+	 * @see #createIcon(Skin, String, ClickListener)
 	 */
-	private ImageButton createModeIcon(String name, GameMode mode, Sound sound) {
-		return createIcon(name, new ClickListener(){
+	private ImageButton createModeIcon(Skin skin, String styleName, GameMode mode, Sound sound) {
+		return createIcon(skin, styleName, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(sound);
@@ -256,22 +270,6 @@ public class GameInterface extends Stage implements GestureListener {
 				}
 			}
 		});
-	}
-
-	private ImageButton createModeSelector(Skin skin, String name) {
-		selectedMode = new ImageButton(skin, name);
-		selectedMode.addListener(new ChangeListener() {
-			@Override
-			public void changed(ChangeEvent event, Actor actor) {
-				LaplacityAssets.playSound(clickSound);
-				if (modes.isVisible()) {
-					modes.setVisible(false);
-				} else  {
-					modes.setVisible(true);
-				}
-			}
-		});
-		return selectedMode;
 	}
 
 	@Override

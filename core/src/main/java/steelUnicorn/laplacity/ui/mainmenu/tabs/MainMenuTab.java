@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 /**
- * Класс родитель вкладок в главном меню.
- * Во вкладке сверху добавляется название с помощью метода addDescription
+ * Вкладка главного меню
+ * Во вкладке сверху добавляется кнопка вызода в главное меню с помощью addReturnButton
  */
 public class MainMenuTab  extends Table {
     protected static float tabSpace = UI_WORLD_HEIGHT * 0.03f;
@@ -21,6 +21,11 @@ public class MainMenuTab  extends Table {
         setName("menuTab");
     }
 
+    /**
+     * Метод добавляющий кнопку выхода в главное меню
+     * @param listener обработчик событий
+     * @return клетку с кнопкой
+     */
     protected Cell<ImageButton> addReturnButton(ChangeListener listener) {
         ImageButton btn = new ImageButton(TEXSKIN, "Home");
         btn.addListener(listener);

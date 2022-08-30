@@ -4,7 +4,6 @@ import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -19,23 +18,27 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.MainMenuTab;
 
 /**
- * Класс создает интерфейс выбора уровней.
- * Сверху интерфейса: кнопк возврата в меню и описание Levels:
- * Далее идут уровни секции, по 4 в ряд
- * И снизу навигационная панель для переключения секций
+ * Интерфейс выбора уровней.
+ * Отображает уровни секции LevelSection и навигацию по секциям LevelsNav.
  *
- * Секции хранятся в массиве sections.
+ * Уровни подгружаются из папки /assets/levels/ и хранятся в переменной
+ * {@link LaplacityAssets#sectionLevels}.
  *
- * Уровни подгружаются из папки /assets/levels/
+ * @see LevelSection
+ * @see LevelsNav
  */
 public class LevelsTab extends MainMenuTab {
+    private Array<LevelSection> sections;
+    /** Клетка секции для навигации по секциям */
+    private final Cell<LevelSection> sectionCell;
+
     public LevelsNav nav;
     private int currentSection;
 
-    private Array<LevelSection> sections;
-
-    private Cell<LevelSection> sectionCell;
-
+    /**
+     * Создает интерфейс экранав выбора уровней
+     * @param skin скин с текстурами кнопок
+     */
     public LevelsTab(Skin skin) {
         super();
         currentSection = 1;
@@ -47,6 +50,11 @@ public class LevelsTab extends MainMenuTab {
         add(nav).expandY().bottom().padTop(nav.navPad).padBottom(nav.navPad);
     }
 
+    /**
+     * Создает массив объектов LevelSection, каждый из которых содержит таблицу с уровнями.
+     * @param skin скин с текстурами кнопок.
+     * @return клетка таблицы для изменения секций.
+     */
     private Cell<LevelSection> addSections(Skin skin) {
         sections = new Array<>(sectionLevels.size);
 
@@ -57,6 +65,10 @@ public class LevelsTab extends MainMenuTab {
         return add(sections.get(currentSection - 1));
     }
 
+    /**
+     * Меняет секцию в клетке.
+     * @see #sectionCell
+     */
     private void updateSection() {
         LevelSection section = sections.get(currentSection - 1);
         section.show();
@@ -64,27 +76,32 @@ public class LevelsTab extends MainMenuTab {
     }
 
     /**
-     * Функция обрабатывает прохождение уровня на интерфейсе
+     * Обрабатывает прохождение уровня на интерфейсе.
+     * Открывает следующий уровень и одновляет текущий (звезды над уровнем).
      *
-     * @param section - секция
-     * @param level - уровень
+     * @param section номер секции.
+     * @param level номер пройденного уровня
      */
     public void levelFinished(int section, int level) {
-        openNextLevel(section, level);  //открытие следующего
-        sections.get(section - 1).updateLevel(level);   //обновление пройденного
+        openNextLevel(section, level);
+        sections.get(section - 1).updateLevel(level);
     }
 
     /**
-     * Function that enable level button of next level
-     * @param section - current section
-     * @param level - current level
+     * Открывает кнопку выбора следующего уровня.
+     * @param section текущая секция
+     * @param level текущий уровень
+     * @see LevelSection#openLevel(int)
      */
-    public void openNextLevel(int section, int level) {
+    private void openNextLevel(int section, int level) {
         if (section <= sections.size && level < sections.get(section - 1).secSize) {
             sections.get(section - 1).openLevel(level + 1);
         }
     }
 
+    /**
+     * Открывает все уровни. Вспомогательная функция для дебага.
+     */
     public void openLevels() {
         for (LevelSection section : sections) {
             section.openLevels();
@@ -92,19 +109,23 @@ public class LevelsTab extends MainMenuTab {
     }
 
     /**
-     * Класс навигации снизу под таблицей для смены секций
+     * Навигация смены секций.
      */
     public class LevelsNav extends Table {
-        private Label sectionName;
-        private ImageButton leftArrow;
-        private ImageButton rightArrow;
+        private static final float navPad = UI_WORLD_HEIGHT * 0.06f;
+        private static final float arrowSize = UI_WORLD_WIDTH * 0.06f;
 
-        private float navPad = UI_WORLD_HEIGHT * 0.06f;
-        private float arrowSize = UI_WORLD_WIDTH * 0.06f;
+        private final Label sectionName;
+        private final ImageButton leftArrow;
+        private final ImageButton rightArrow;
 
+        /**
+         * Создает интерфейс навигации.
+         * @param skin скин с текстурами кнопок и надписей.
+         */
         public LevelsNav(Skin skin) {
             defaults().space(LevelsTab.tabSpace);
-            leftArrow = new ImageButton(skin.get("leftarrow", ImageButton.ImageButtonStyle.class));
+            leftArrow = new ImageButton(skin, "leftarrow");
             leftArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -115,12 +136,11 @@ public class LevelsTab extends MainMenuTab {
             add(leftArrow).size(arrowSize);
 
             sectionName = new Label("Section 00" + LevelsTab.this.currentSection, skin);
-            sectionName.setColor(Color.WHITE);
             sectionName.setAlignment(Align.center);
             add(sectionName).size(sectionName.getPrefWidth(), sectionName.getPrefHeight());
             sectionName.setText("Section " + LevelsTab.this.currentSection);
 
-            rightArrow = new ImageButton(skin.get("rightarrow", ImageButton.ImageButtonStyle.class));
+            rightArrow = new ImageButton(skin, "rightarrow");
             rightArrow.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
@@ -133,34 +153,37 @@ public class LevelsTab extends MainMenuTab {
             checkVisible();
         }
 
+        /**
+         * Меняет надпись на текущую секцию.
+         */
         private void update() {
             sectionName.setText("Section " + LevelsTab.this.currentSection);
             updateSection();
             checkVisible();
         }
 
+        /**
+         * Переключает секцию вперед.
+         */
         public void next() {
             currentSection++;
             update();
         }
 
+        /**
+         * Переключает секцию назад.
+         */
         public void prev() {
             currentSection--;
             update();
         }
 
+        /**
+         * Убирает кнопку leftArrow на первой секции и rightArrow на последней.
+         */
         private void checkVisible() {
-            if (currentSection == 1) {
-                leftArrow.setVisible(false);
-            } else {
-                leftArrow.setVisible(true);
-            }
-
-            if (currentSection == sectionLevels.size) {
-                rightArrow.setVisible(false);
-            } else {
-                rightArrow.setVisible(true);
-            }
+            leftArrow.setVisible(currentSection != 1);
+            rightArrow.setVisible(currentSection != sectionLevels.size);
         }
     }
 }

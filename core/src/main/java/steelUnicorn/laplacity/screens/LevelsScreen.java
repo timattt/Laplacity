@@ -22,9 +22,7 @@ import steelUnicorn.laplacity.ui.levels.LevelsTab;
 import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 
 /**
- * Класс LevelsScreen
- * Подгружает LevelsTab для отображения уровней
- * 
+ * Экран выбора уровней, подгружающий {@link LevelsTab} в качестве интерфейса.
  */
 public class LevelsScreen extends ManagedScreen {
     private Stage levelStage;
@@ -36,6 +34,10 @@ public class LevelsScreen extends ManagedScreen {
     private static final float starsPad = 10;
     private static final float starImgScale = 0.5f;
 
+    /**
+     * Создает экран выбора уровней.
+     * Задает сцену, фон на ней, счетчик фпс, вкладку с выбором уровня и лейбл с набранными звездами.
+     */
     public LevelsScreen() {
         levelStage = new Stage(Globals.guiViewport);
         //background
@@ -44,7 +46,6 @@ public class LevelsScreen extends ManagedScreen {
                 Globals.guiViewport.getWorldHeight());
         background.setPosition(- background.getWidth() / 2 + Globals.guiViewport.getWorldWidth() / 2 , 0);
         levelStage.addActor(background);
-
 
         //fpsCounter
         if (Laplacity.isDebugEnabled()) {
@@ -110,6 +111,9 @@ public class LevelsScreen extends ManagedScreen {
         starsCollected.setText("" + progress.starsCollected);
     }
 
+    /**
+     * Меняет размеры фона при изменении размеров приложения.
+     */
     public void resizeBackground() {
         background.setSize(background.getPrefWidth() / background.getPrefHeight()
                         * levelStage.getViewport().getWorldHeight(),

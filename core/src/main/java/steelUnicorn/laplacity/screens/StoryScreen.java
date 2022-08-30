@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.utils.LevelsParser;
+import steelUnicorn.laplacity.utils.LevelsParamsParser;
 
 public class StoryScreen extends ManagedScreen {
 	
@@ -82,7 +82,7 @@ public class StoryScreen extends ManagedScreen {
 		} else {
             GameProcess.levelNumber = 1;
             GameProcess.sectionNumber = 1;
-            GameProcess.levelParams = LevelsParser.getParams(1, 1);
+            GameProcess.levelParams = LevelsParamsParser.getParams(1, 1);
             GameProcess.initLevel(sectionLevels.get(0).get(0));
 		}
 	}

@@ -1,4 +1,4 @@
-package steelUnicorn.laplacity.ui;
+package steelUnicorn.laplacity.ui.dialogs;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -9,10 +9,9 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 
 /**
- * Диалоговое всплывающее окно подтверждения выхода на главное меню.
+ * Вспылвающее окно подтверждения выхода на главное меню.
  *
- * Окно содержит описание и кнопки
- * Yes No
+ * Окно содержит предупреждающую надпись и кнопки Yes No.
  */
 public class ReturnDialog extends Dialog {
 	private static final float btnWidth = Globals.UI_WORLD_WIDTH * 0.15f;
@@ -20,6 +19,10 @@ public class ReturnDialog extends Dialog {
 	private static final float padSize = 30;
 	private static final float titleScale = 1.3f;
 
+	/**
+	 * Инициализирует диалог.
+	 * @param skin скин с текстурами кнопок и окна.
+	 */
 	public ReturnDialog(Skin skin) {
 		super("", skin);
 		Color color = getColor();

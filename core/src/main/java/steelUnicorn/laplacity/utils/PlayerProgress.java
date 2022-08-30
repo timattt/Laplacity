@@ -11,65 +11,64 @@ import steelUnicorn.laplacity.core.Globals;
 
 
 /**
- * Класс для оперирования прогрессом игрока. Сохраняет прогресс в preferences в виде json объекта
- * Подгружает оттуда же. Если прогресса в Preferences нету, то создается массив нулей.
- *
- * Класс содержит функцию levelFinished которая принимает секцию уровень и количество звезд, и
- * сохраняет прогресс.
- *
- * Прогресс хранится в виде массива массивов чисел: (секции - уровни - количество звезд)
- * -1 - уровень заблокирован
- * 0 1 2 3 - количество собранных на уровне звезд
- *
- *
+ * Класс для обработки прогресса игрока.
+ * Сохраняет и загружает прогресс в виде json строки, используя Preferences.
+ * <ul>
+ *  <li>Считает количество собранных звезд игроком и количество звезд для открытия секций.</li>
+ *  <li>Хранит прогресс в массиве объектов SectionProgress.</li>
+ *  <li>Хранит флаг isNewUser для показа комикса при нажатии на play.</li>
+ * </ul>
+ * @see Preferences
  */
 public class PlayerProgress {
+    private final Json json;
+    private final Preferences prefs;
+
+    private static final int[] starsToOpenSection = new int[]{0, 4, 24, 44, 66, 88, 106};
     public int starsCollected = 0;
 
-    private final Preferences prefs;
     private Array<SectionProgress> progress;
     private boolean isNewUser;
 
-    private static final int[] starsToOpenSection = new int[]{0, 4, 24, 44, 66, 88, 106};
-
-    private final Json json;
-
-
+    /**
+     * Создание полей, подгрузка и сохранение прогресса
+     */
     public PlayerProgress() {
         json = new Json();
-
         prefs = Gdx.app.getPreferences("player_progress");
 
         initProgress();
-
         isNewUser = prefs.getBoolean("isNewUser", true);
 
-        Gdx.app.log("Progress", progress.toString());
         saveProgress();
     }
 
     public boolean isNewUser() {
         return isNewUser;
     }
-
     public void setNewUser(boolean newUser) {
         isNewUser = newUser;
         prefs.putBoolean("isNewUser", isNewUser);
         prefs.flush();
     }
 
+    /**
+     * Создает и заполняет прогресс.
+     * Изначально создается массив закрытых уровней на основе размеров sectionLevels
+     * (т.е. по текстурам уровней). Далее старый прогресс из Preferences переносится в созданный.
+     */
     private void initProgress() {
-        //Создаем массив исходя из текущих уровней (на случай если добавлены новые)
         progress = new Array<>();
 
-        for (int i = 0; i < sectionLevels.size; i++) {
-            //Каждое вхождение в sectionLevels это секция. entry.value - уровни
+        for (int sec = 1; sec <= sectionLevels.size; sec++) {
+            //Создаем количество звезд собранных в каждом уровне
             Array<Integer> levelStars = new Array<>();
-            for (int j = 0; j < sectionLevels.get(i).size; j++) {
-                levelStars.add((i == 0 && j == 0) ? 0 : -1);
+            for (int lvl = 1; lvl <= sectionLevels.get(sec - 1).size; lvl++) {
+                levelStars.add((sec == 1 && lvl == 1) ? 0 : -1);
             }
             //первая секция всегда открыта
-            progress.add(new SectionProgress(levelStars, i == 0, starsToOpenSection[i]));
+            progress.add(new SectionProgress(
+                    levelStars, sec == 1, starsToOpenSection[sec - 1]));
         }
 
         //Переносим старый прогресс в новый
@@ -78,16 +77,24 @@ public class PlayerProgress {
                 @SuppressWarnings("unchecked")
                 Array<SectionProgress> previousProgress =
                         json.fromJson(Array.class, prefs.getString("progress"));
-                for (int section = 0; section < previousProgress.size && section < progress.size; section++) {
-                    progress.get(section).copy(previousProgress.get(section));
-                    starsCollected += progress.get(section).getStars();
+                for (int sec = 1; sec <= previousProgress.size && sec <= progress.size; sec++) {
+                    progress.get(sec - 1).copy(previousProgress.get(sec - 1));
+                    starsCollected += progress.get(sec - 1).getStars();
                 }
             } catch (Exception ex) {
-                Gdx.app.log("Progress", "Old progress not valid: " + ex.toString());
+                Gdx.app.error("Progress", "Old progress not valid: " + ex);
             }
         }
     }
 
+    /**
+     * Обрабатывает прохождение уровня, сохраняя новое количество звезд и открывая следующий
+     * уровень в прогрессе. Звезды сохраняются если их собрано больше чем в предыдущем уровне.
+     *
+     * @param section номер секции пройденного уровня
+     * @param level номер пройденного уровня
+     * @param stars количество звезд собранных на уровне
+     */
     public void levelFinished(int section, int level, int stars) {
         if (progress.size < section || progress.get(section - 1).levelStars.size < level) {
             Gdx.app.error("Progress", "Wrong section or level number");
@@ -102,18 +109,29 @@ public class PlayerProgress {
         //open next level
         openNextProgress(section, level);
 
-        Gdx.app.log("Progress", progress.toString());
         saveProgress();
     }
 
+    /**
+     * Открывает следующий уровень в секции.
+     *
+     * @param section номер секции
+     * @param level номер уровня. Открывается следующий!
+     *
+     * @see SectionProgress#openLevel(int)
+     */
     private void openNextProgress(int section, int level) {
-        if (level < progress.get(section - 1).levelStars.size) {   //Если в секции есть следующий уровень
-            if (!progress.get(section - 1).isLevelOpened(level + 1)) {   //Если закрыт
-                progress.get(section - 1).openLevel(level + 1);
-            }
+        if (level < progress.get(section - 1).levelStars.size) {
+            progress.get(section - 1).openLevel(level + 1);
         }
     }
 
+    /**
+     * Возвращает количество звезд в уровне.
+     * @param section номер секция
+     * @param level номер уровня
+     * @return количество собранных звезд на уровне
+     */
     public int getProgress(int section, int level) {
         if (progress.size < section || progress.get(section - 1).levelStars.size < level) {
             Gdx.app.error("Progress", "Wrong section or level number");
@@ -123,22 +141,48 @@ public class PlayerProgress {
         return progress.get(section - 1).getLevelStars(level);
     }
 
+    /**
+     * Возвращает прогресс в секции объектом SectionProgress.
+     * @param section номер секции
+     * @return объект прогресса секции
+     * @see SectionProgress
+     */
     public SectionProgress getSectionProgress(int section) {
         return progress.get(section - 1);
     }
 
+    /**
+     * Записывает json строку с объектом прогресса в Preferences.
+     */
     public void saveProgress() {
         prefs.putString("progress", json.toJson(progress));
         prefs.flush();
     }
 
+    /**
+     * Оперирование прогрессом секции. Объект прогресса хранит в себе:
+     * <ul>
+     *     <li>Массив чисел со звездами в каждом уровне</li>
+     *     <li>Открыта ли секция</li>
+     *     <li>Количество звезд для открытия секции</li>
+     * </ul>
+     */
     public static class SectionProgress {
         private Array<Integer> levelStars;
         private boolean isOpened;
         private int starsToOpen;
 
+        /**
+         * По умолчанию нужен для чтения json формата.
+         */
         public SectionProgress() {}
 
+        /**
+         * Конструктор принимающий поля класса.
+         * @param levelStars количество собранных звезд в каджом уровне
+         * @param isOpened открыта ли секция
+         * @param starsToOpen количество звезд для открытия секции
+         */
         public SectionProgress(Array<Integer> levelStars, boolean isOpened, int starsToOpen) {
             this.levelStars = levelStars;
             this.isOpened = isOpened;
@@ -149,8 +193,15 @@ public class PlayerProgress {
             return isOpened;
         }
 
+        /**
+         * Открывает секцию и первый уровень.
+         * @param opened открыть ли секцию?
+         */
         public void setOpened(boolean opened) {
             isOpened = opened;
+            if (isOpened) {
+                openLevel(1);
+            }
             Globals.progress.saveProgress();
         }
 
@@ -158,16 +209,20 @@ public class PlayerProgress {
             return starsToOpen;
         }
 
-        public int getLevelStars(int level) {
+        private int getLevelStars(int level) {
             return levelStars.get(level - 1);
         }
 
-        public void setLevelStars(int level, int stars) {
+        private void setLevelStars(int level, int stars) {
             levelStars.set(level - 1, stars);
             Globals.progress.saveProgress();
         }
 
-        public int getStars() {
+        /**
+         * Считает количество звезд собранных в секции.
+         * @return количество звезд в секции.
+         */
+        private int getStars() {
             int result = 0;
             for (int stars : levelStars) {
                 if (stars > 0) {
@@ -177,21 +232,25 @@ public class PlayerProgress {
             return result;
         }
 
-        public boolean isLevelOpened(int level) {
-            return !(levelStars.get(level - 1) == -1);
-        }
-
-        public void openLevel(int level) {
+        /**
+         * Открывает уровень если он закрыт.
+         * @param level номер уровня
+         */
+        private void openLevel(int level) {
             if (levelStars.get(level - 1) < 0) {
                 levelStars.set(level - 1, 0);
                 Globals.progress.saveProgress();
             }
         }
 
-        private void copy(SectionProgress newProgress) {
-            isOpened = newProgress.isOpened;
-            for (int i = 0; i < levelStars.size && i < newProgress.levelStars.size; i++) {
-                levelStars.set(i, newProgress.levelStars.get(i));
+        /**
+         * Переносит старый прогресс в новый
+         * @param oldProgress старый прогресс
+         */
+        private void copy(SectionProgress oldProgress) {
+            isOpened = oldProgress.isOpened;
+            for (int i = 0; i < levelStars.size && i < oldProgress.levelStars.size; i++) {
+                levelStars.set(i, oldProgress.levelStars.get(i));
             }
         }
 
