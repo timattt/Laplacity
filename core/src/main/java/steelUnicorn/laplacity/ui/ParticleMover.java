@@ -23,7 +23,11 @@ public class ParticleMover {
 		return null;
 	}
 	
-	public static void tryToStartMoving(float x, float y) {
+	private static void tryToStartMoving(float x, float y) {
+		if (current != null) {
+			return;
+		}
+		
 		ChargedParticle p = findNear(x, y);
 		
 		if (p != null && !TrajectoryRenderer.changingDir) {
@@ -33,6 +37,8 @@ public class ParticleMover {
 	}
 	
 	public static void tryToMove(float x, float y) {
+		tryToStartMoving(x, y);
+		
 		if (current != null) {
 			TMP1.set(cat.getX(), cat.getY());
 			TMP1.sub(x, y);

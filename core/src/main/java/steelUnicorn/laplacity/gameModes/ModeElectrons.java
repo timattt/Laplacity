@@ -43,7 +43,7 @@ public class ModeElectrons extends GameMode {
 
 	@Override
 	public void touchDown(float x, float y) {
-		ParticleMover.tryToStartMoving(x, y);
+		
 	}
 
 	@Override
