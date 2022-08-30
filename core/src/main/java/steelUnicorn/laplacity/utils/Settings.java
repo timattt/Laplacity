@@ -24,6 +24,8 @@ public class Settings {
 	}
 	private static boolean lightingEnabled;
 	private static boolean showFps;
+	private static boolean showSkip;
+	private static boolean showGrid;
 
 	/**
 	 * Функция загружающая настройки используя prefs
@@ -35,6 +37,8 @@ public class Settings {
 		musicVolume = prefs.getFloat("musicVolume", VOLUME.ON.ordinal());
 		lightingEnabled = prefs.getBoolean("lighting", true);
 		showFps = prefs.getBoolean("showFps", false);
+		showSkip = prefs.getBoolean("showSkip", false);
+		showGrid = prefs.getBoolean("showGrid", false);
 	}
 
 	//getters and setters
@@ -71,6 +75,24 @@ public class Settings {
 	public static void setShowFps(boolean showFps) {
 		Settings.showFps = showFps;
 		prefs.putBoolean("showFps", showFps);
+		prefs.flush();
+	}
+
+	public static boolean isShowSkip() {
+		return showSkip;
+	}
+	public static void setShowSkip(boolean showSkip) {
+		Settings.showSkip = showSkip;
+		prefs.putBoolean("showSkip", showSkip);
+		prefs.flush();
+	}
+
+	public static boolean isShowGrid() {
+		return showGrid;
+	}
+	public static void setShowGrid(boolean showGrid) {
+		Settings.showGrid = showGrid;
+		prefs.putBoolean("showGrid", showGrid);
 		prefs.flush();
 	}
 }

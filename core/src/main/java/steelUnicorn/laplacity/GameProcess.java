@@ -290,7 +290,7 @@ public class GameProcess {
 		gameBatch.end();
 		
 		gameUI.draw();
-		if (Laplacity.isDebugEnabled()) {
+		if (Laplacity.isDebugEnabled() && Settings.isShowGrid()) {
 			debugRend.render(levelWorld, CameraManager.camMat());
 		}
 		//---------------------------------------------

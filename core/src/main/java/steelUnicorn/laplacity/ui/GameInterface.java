@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -31,6 +32,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.dialogs.CatDialog;
 import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
 import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
+import steelUnicorn.laplacity.utils.Settings;
 
 
 /**
