@@ -4,6 +4,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.clickSound;
+import static steelUnicorn.laplacity.core.LaplacityAssets.lightClickSound;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -201,6 +202,18 @@ public class GameInterface extends Stage implements GestureListener {
 		modes.add(createModeIcon(skin, "Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 		modes.row();
 		modes.add(createModeIcon(skin, "Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
+
+		rightLayout.row();
+		TextButton speedUpBtn = new TextButton("x2", skin, "checked");
+		speedUpBtn.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				LaplacityAssets.playSound(lightClickSound);
+				TextButton speedUpBtn = (TextButton) actor;
+				timeSpeedUp = speedUpBtn.isChecked() ? 2 : 1;
+			}
+		});
+		rightLayout.add(speedUpBtn).expandY().bottom();
 	}
 
 	/**
