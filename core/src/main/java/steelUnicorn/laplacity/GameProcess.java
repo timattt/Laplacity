@@ -93,6 +93,7 @@ public class GameProcess {
 	// Time
 	public static long startTime = 0;
 	private static float frameAccumulator = 0f;
+	public static float timeSpeedUp = 1;
 	/*
 	 * Время, используемое для физических расчётов
 	 * При запуске полёта, который происходит в 
@@ -203,7 +204,8 @@ public class GameProcess {
 		
 		cat = new Cat();
 		totalStarts = 0;
-		
+
+		timeSpeedUp = 1;
 		/*
 		 * При инициализации уровня установить коэффициент в 1f
 		 * во избежание интерференции начального положения тел в Box2D.World
@@ -227,7 +229,7 @@ public class GameProcess {
 		gameUI.act(delta);
 		if (currentGameMode == GameMode.FLIGHT) {
 			long newTime = TimeUtils.millis();
-			float frameTime = ((float) (newTime - currentTime)) / 1000f;
+			float frameTime = ((float) (newTime - currentTime)) / 1000f * timeSpeedUp;
 			currentTime = newTime;
 			frameAccumulator += frameTime;
 			while (frameAccumulator >= 0) {

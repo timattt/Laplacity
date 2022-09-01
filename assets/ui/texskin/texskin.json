@@ -227,6 +227,13 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		fontColor: link_on
 		downFontColor: textcolor
 	}
+	checked: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		up: btn
+		checked: btn_pressed
+		pressedOffsetY: -2
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 	default: {
