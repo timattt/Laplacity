@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,6 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
+import java.util.Objects;
 
 import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
@@ -32,6 +35,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.dialogs.CatDialog;
 import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
 import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
+import steelUnicorn.laplacity.utils.Settings;
 
 
 /**
@@ -43,6 +47,8 @@ public class GameInterface extends Stage implements GestureListener {
 	private static final float iconSize = UI_WORLD_WIDTH * 0.075f;
 	private static final float settingsSize = iconSize * 0.9f;
 	private static final float iconSpace = iconSize * 0.08f;
+
+	private Table centerLayout;
 
 	private ReturnDialog returnDialog;
 	private SettingsDialog settingsDialog;
@@ -85,6 +91,20 @@ public class GameInterface extends Stage implements GestureListener {
 		//Dialogs initialize
 		returnDialog = new ReturnDialog(skin);
 		settingsDialog = new SettingsDialog(skin);
+		settingsDialog.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if (actor instanceof CheckBox) {
+					CheckBox box = (CheckBox) actor;
+					if (Objects.equals(box.getName(), "skipCheckbox")) {
+						Actor skip = centerLayout.findActor("skipBtn");
+						if (skip != null) {
+							skip.setVisible(box.isChecked());
+						}
+					}
+				}
+			}
+		});
 		catDialog = new CatDialog(skin, "cat_hungry");
 		//FpsCounter
 		if (Laplacity.isDebugEnabled()) {
@@ -130,7 +150,7 @@ public class GameInterface extends Stage implements GestureListener {
 		root.add(leftLayout).expand().fillY().left().pad(iconSpace).uniform();
 
 		//center layout
-		Table centerLayout = new Table();
+		centerLayout = new Table();
 		root.add(centerLayout).growY();
 
 		catFI = new CatFoodInterface(skin);
@@ -147,6 +167,8 @@ public class GameInterface extends Stage implements GestureListener {
 					GameProcess.skipLevel();
 				}
 			});
+			skip.setName("skipBtn");
+			skip.setVisible(Settings.isShowSkip());
 			visibleActors.add(skip);
 			centerLayout.row();
 			centerLayout.add(skip).padBottom(iconSpace);
@@ -239,7 +261,7 @@ public class GameInterface extends Stage implements GestureListener {
 		} else {
 			flightCell.setActor(flightBtn);
 			for (Actor actor : visibleActors) {
-				actor.setVisible(true);
+				actor.setVisible(actor.getName() != "skipBtn" || Settings.isShowSkip());
 			}
 		}
 	}
