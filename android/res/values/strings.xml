@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cataway</string>
+    <string name="food_notification_title">Food is restored</string>
+    <string name="food_notification_text">Help cat to get away from station</string>
+    <string name="food_channel_name">Food notifications</string>
+    <string name="food_channel_description">Notifications about food restoring</string>
 </resources>
