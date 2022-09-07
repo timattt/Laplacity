@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.utils.CatFoodTimer;
 
 /**
@@ -86,7 +87,9 @@ public class CatFood {
 
     //Вызывается при запуске
     public int launch() {
-        totalLaunchesAvailable--;
+        if (GameProcess.sectionNumber > 1) {
+            totalLaunchesAvailable--;
+        }
         checkBounds();
         return totalLaunchesAvailable;
     }
