@@ -29,11 +29,26 @@ android {
 		exclude 'META-INF/DEPENDENCIES'
 		exclude 'META-INF/dependencies.txt'
 	}
+	
+	def versionPropsFile = file('version.properties')
+
+	def code = 5
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        code = versionProps['VERSION_CODE'].toInteger() + 1
+
+        versionProps['VERSION_CODE']=code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+	}
 	defaultConfig {
 		applicationId 'steelUnicorn.laplacity'
 		minSdkVersion 19
 		targetSdkVersion 31
-		versionCode 2
+		versionCode code
 		versionName "1.0"
 		multiDexEnabled true
 	}
@@ -163,7 +178,7 @@ dependencies {
 	implementation 'com.ironsource.adapters:mytargetadapter:4.1.14'
 	implementation 'com.my.target:mytarget-sdk:5.15.3'
 	implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
-	implementation 'com.my.tracker:mytracker-sdk:3.0.0'
+//	implementation 'com.my.tracker:mytracker-sdk:3.0.0'
 // Add Pangle Network
 	implementation 'com.ironsource.adapters:pangleadapter:4.3.14'
 	implementation 'com.pangle.global:ads-sdk:4.5.0.4'
