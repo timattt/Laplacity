@@ -1,8 +1,19 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'com.github.triplet.play' version '2.1.0'
+}
 
 
 android {
 	compileSdkVersion 31
+	signingConfigs {
+       release {
+         keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
+         keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+         storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+         storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+       }
+   }
 	sourceSets {
 		main {
 			manifest.srcFile 'AndroidManifest.xml'
@@ -60,10 +71,10 @@ android {
 	
 	buildTypes {
 		release {
+			signingConfig signingConfigs.release
 			minifyEnabled true
 			shrinkResources true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			signingConfig signingConfigs.debug
 		}
 	}
 
@@ -172,8 +183,8 @@ dependencies {
 	implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.31'
 // Add Maio Network
-	implementation 'com.ironsource.adapters:maioadapter:4.1.10'
-	implementation 'com.maio:android-sdk:1.1.15'
+	//implementation 'com.ironsource.adapters:maioadapter:4.1.10'
+	//implementation 'com.maio:android-sdk:1.1.15'
 // Add myTarget Network
 	implementation 'com.ironsource.adapters:mytargetadapter:4.1.14'
 	implementation 'com.my.target:mytarget-sdk:5.15.3'
