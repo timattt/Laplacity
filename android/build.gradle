@@ -2,16 +2,16 @@ apply plugin: 'com.android.application'
 
 android {
 	compileSdkVersion 31
-	signingConfigs {
-       release {
-         keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
-         keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-		 if (System.getenv("ANDROID_KEYSTORE_PATH") != null) {
-			storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
-		 }
-         storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-       }
-   }
+	//signingConfigs {
+    //   release {
+    //     keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
+    //     keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+	//	 if (System.getenv("ANDROID_KEYSTORE_PATH") != null) {
+	//		storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+	//	 }
+    //     storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+    //   }
+   //}
 	sourceSets {
 		main {
 			manifest.srcFile 'AndroidManifest.xml'
@@ -58,7 +58,7 @@ android {
 		minSdkVersion 19
 		targetSdkVersion 31
 		versionCode code
-		versionName "1.0"
+		versionName "1.1"
 		multiDexEnabled true
 	}
 	compileOptions {
@@ -69,7 +69,7 @@ android {
 	
 	buildTypes {
 		release {
-			signingConfig signingConfigs.release
+			//signingConfig signingConfigs.release
 			minifyEnabled true
 			shrinkResources true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
