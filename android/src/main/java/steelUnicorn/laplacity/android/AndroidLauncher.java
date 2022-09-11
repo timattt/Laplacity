@@ -25,6 +25,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -79,6 +80,8 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	protected View gameView;
 	private InterstitialAd interstitialAd;
 	private RewardedAd rewardedAd;
+
+	private AndroidNotificationHandler notificationHandler;
 
 	private static final boolean useIron = true;
 
@@ -311,6 +314,10 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 		params.addRule(RelativeLayout.CENTER_HORIZONTAL, RelativeLayout.TRUE);
 		params.addRule(RelativeLayout.BELOW, adView.getId());
 		gameView.setLayoutParams(params);
+
+		notificationHandler = new AndroidNotificationHandler(this);
+		gameInstance.setNotificationHandler(notificationHandler);
+
 		return gameView;
 	}
 
@@ -450,6 +457,9 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
 	protected void onResume() {
         super.onResume();
         IronSource.onResume(this);
+		if (notificationHandler != null) {
+			notificationHandler.cancelAlarms();
+		}
     }
 	
 	@Override
@@ -458,4 +468,11 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler, An
         IronSource.onPause(this);
     }
 
+	@Override
+	protected void onStop() {
+		super.onStop();
+		if (notificationHandler != null) {
+			notificationHandler.setFoodAlarm();
+		}
+	}
 }

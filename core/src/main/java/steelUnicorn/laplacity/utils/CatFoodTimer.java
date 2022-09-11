@@ -113,6 +113,19 @@ public class CatFoodTimer {
     }
 
     /**
+     * Возвращает время для восстановления еды, когда приложение свернуто или выключено.
+     * @return Количество секунд для восстановления еды.
+     * @see #SLOWDOWN
+     */
+    public int getRestoreTime() {
+        int result = (CatFood.MAX_LAUNCHES - catFoodInstance.getLaunches() - 1) * MAX_VALUE +
+                getTime();
+        result = Math.max(result, 0);
+
+        return result * SLOWDOWN;
+    }
+
+    /**
      * Устанавливает интерфейс с таймером для изменения отображаемого времени и количества запусков.
      *
      * @param foodInterface интерфейс CatFoodInterface.

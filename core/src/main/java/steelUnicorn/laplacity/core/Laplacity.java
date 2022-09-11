@@ -29,6 +29,7 @@ import steelUnicorn.laplacity.utils.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.AnalyticsCollector;
 import steelUnicorn.laplacity.utils.DebugHandler;
+import steelUnicorn.laplacity.utils.NotificationHandler;
 import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -42,6 +43,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	public AdHandler adHandler;
 	public AnalyticsCollector analyticsCollector;
 	public DebugHandler debugHandler;
+	private NotificationHandler notificationHandler;
 	
 	public boolean interstitialJustShown = false;
 	public boolean rewardedJustShown = false;
@@ -157,6 +159,13 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	public void pause() {
 		super.pause();
 		catFood.saveFoodPrefs();
+
+		if (notificationHandler != null) {
+			Gdx.app.log("Notifications",
+					"Food remains: " + catFood.getLaunches() +
+					"\nTimer value: " + catFood.timer.getTime());
+			notificationHandler.setRestoreTime(catFood.timer.getRestoreTime());
+		}
 	}
 
 	@Override
@@ -214,5 +223,12 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		}
 		return Globals.game.debugHandler.isPlayerCheater();
 	}
-	
+
+	/**
+	 * Сохранение обработчика уведомлений в классе.
+	 * @param notificationHandler обработчик уведомлений.
+	 */
+	public void setNotificationHandler(NotificationHandler notificationHandler) {
+		this.notificationHandler = notificationHandler;
+	}
 }
