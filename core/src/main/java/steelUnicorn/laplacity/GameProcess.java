@@ -91,7 +91,7 @@ public class GameProcess {
 	private static final HitController hitController = new HitController();
 	
 	// Time
-	public static long startTime = 0;
+	private static long startTime = 0;
 	private static float frameAccumulator = 0f;
 	public static float timeSpeedUp = 1;
 	/*
@@ -108,6 +108,11 @@ public class GameProcess {
 	 * физики.
 	 */
 	private static long currentTime = 0;
+	/*
+	 * Колличество времени прошедшее в мире физики с момента начала полета.
+	 * Если включено ускорение, то времени пройдет в мире физики больше, чем для игрока.
+	 */
+	private static float flightPhysicsTime = 0;
 	/*
 	 * Интерполяционный коэффициент показывает, насколько близко
 	 * состояние на экране к текущему физическому состоянию.
@@ -234,9 +239,10 @@ public class GameProcess {
 			frameAccumulator += frameTime;
 			while (frameAccumulator >= 0) {
 				saveCurrentState();
-				cat.updatePhysics(frameTime);
-				LaplacityField.updateStructuresPhysics(currentTime - startTime);
+				cat.updatePhysics();
+				LaplacityField.updateStructuresPhysics(flightPhysicsTime * 1000f);
 				levelWorld.step(SIMULATION_TIME_STEP, VELOCITY_STEPS, POSITION_STEPS);
+				flightPhysicsTime += SIMULATION_TIME_STEP;
 				frameAccumulator -= SIMULATION_TIME_STEP;
 			}
 			interpCoeff = 1 + (frameAccumulator / SIMULATION_TIME_STEP);
@@ -268,10 +274,10 @@ public class GameProcess {
 		BackgroundRenderer.render();
 		TilesRenderer.render();
 		DensityRenderer.render();
-		LaplacityField.renderStructuresCached(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
+		LaplacityField.renderStructuresCached(flightPhysicsTime * 1000f);
 		
 		gameBatch.begin();
-		LaplacityField.renderStructuresBatched(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
+		LaplacityField.renderStructuresBatched(flightPhysicsTime * 1000f);
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
 		
@@ -288,7 +294,7 @@ public class GameProcess {
 		}
 		
 		gameBatch.begin();
-		LaplacityField.renderStructuresBatchedForeground(currentGameMode == GameMode.FLIGHT ? currentTime - startTime : 0);
+		LaplacityField.renderStructuresBatchedForeground(flightPhysicsTime * 1000f);
 		gameBatch.end();
 		
 		gameUI.draw();
@@ -380,6 +386,8 @@ public class GameProcess {
 	public static void changeGameMode(GameMode mode) {
 		boolean nowFlight = mode == GameMode.FLIGHT;
 		boolean wasFlight = currentGameMode == GameMode.FLIGHT;
+		
+		flightPhysicsTime = 0;
 		
 		if ((nowFlight) && (wasFlight)) {
 			LaplacityField.resetStructures();
