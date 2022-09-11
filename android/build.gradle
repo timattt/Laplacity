@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
 
-
 android {
 	compileSdkVersion 31
+	signingConfigs {
+       release {
+         keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
+         keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
+         storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+         storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+       }
+   }
 	sourceSets {
 		main {
 			manifest.srcFile 'AndroidManifest.xml'
@@ -29,11 +36,26 @@ android {
 		exclude 'META-INF/DEPENDENCIES'
 		exclude 'META-INF/dependencies.txt'
 	}
+	
+	def versionPropsFile = file('version.properties')
+
+	def code = 5
+
+    if (versionPropsFile.canRead()) {
+        def Properties versionProps = new Properties()
+
+        versionProps.load(new FileInputStream(versionPropsFile))
+
+        code = versionProps['VERSION_CODE'].toInteger() + 1
+
+        versionProps['VERSION_CODE']=code.toString()
+        versionProps.store(versionPropsFile.newWriter(), null)
+	}
 	defaultConfig {
 		applicationId 'steelUnicorn.laplacity'
 		minSdkVersion 19
 		targetSdkVersion 31
-		versionCode 2
+		versionCode code
 		versionName "1.0"
 		multiDexEnabled true
 	}
@@ -45,10 +67,10 @@ android {
 	
 	buildTypes {
 		release {
+			signingConfig signingConfigs.release
 			minifyEnabled true
 			shrinkResources true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-			signingConfig signingConfigs.debug
 		}
 	}
 
@@ -57,6 +79,14 @@ android {
 repositories {
 	// needed for AAPT2, may be needed for other tools
 	google()
+
+	maven {url 'https://android-sdk.is.com/'}
+
+	maven{ url "https://imobile-maio.github.io/maven" }
+	maven {url 'https://artifact.bytedance.com/repository/pangle'}
+	maven { url "https://aa-sdk.s3-eu-west-1.amazonaws.com/android_repo" }
+	maven { url "https://sdk.tapjoy.com/"}
+	maven { url 'https://artifactory.yahooinc.com/artifactory/maven/'}
 }
 
 configurations { natives }
@@ -110,6 +140,73 @@ dependencies {
 	
 	implementation 'com.google.android.gms:play-services-ads:20.0.0'
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.7.10'
+
+	// Add AdColony Network
+	implementation 'com.ironsource.adapters:adcolonyadapter:4.3.12'
+	implementation 'com.adcolony:sdk:4.7.1'
+// Add AdMob and Ad Manager Network
+	implementation 'com.google.android.gms:play-services-ads:21.0.0'
+	implementation 'com.ironsource.adapters:admobadapter:4.3.30'
+// Add Applovin Network
+	implementation 'com.ironsource.adapters:applovinadapter:4.3.33'
+	implementation 'com.applovin:applovin-sdk:11.4.4'
+	implementation ('com.amazon.android:aps-sdk:+')
+	implementation ('com.ironsource.adapters:apsadapter:4.3.4')
+// Add Chartboost Network
+	implementation 'com.ironsource.adapters:chartboostadapter:4.3.9'
+	implementation 'com.chartboost:chartboost-sdk:9.0.0'
+// Add Facebook Network
+	implementation 'com.ironsource.adapters:facebookadapter:4.3.37'
+	implementation 'com.facebook.android:audience-network-sdk:6.11.0'
+// Add Fyber Network (Adapter only)
+	implementation 'com.ironsource.adapters:fyberadapter:4.3.22'
+	implementation "com.fyber:marketplace-sdk:8.2.0"
+// Add HyprMX Network
+	implementation 'com.ironsource.adapters:hyprmxadapter:4.3.1'
+	implementation 'com.hyprmx.android:HyprMX-SDK:6.0.3'
+	implementation 'com.ironsource.adapters:inmobiadapter:4.3.15'
+	implementation 'com.inmobi.monetization:inmobi-ads:10.0.8'
+	implementation 'com.google.android.gms:play-services-location:17.1.0'//optional dependency for better targeting
+	implementation 'com.ironsource.adapters:liftoffadapter:4.3.4'
+	implementation 'io.liftoff:liftoffads:1.9.1'
+	implementation 'androidx.appcompat:appcompat:1.2.0'
+	implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+	implementation 'androidx.core:core-ktx:1.3.2'
+	implementation 'androidx.media2:media2-session:1.1.2'
+	implementation 'androidx.media2:media2-widget:1.1.2'
+	implementation 'androidx.media2:media2-player:1.1.2'
+	implementation 'androidx.multidex:multidex:2.0.1'
+	implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+	implementation 'org.jetbrains.kotlin:kotlin-stdlib:1.4.31'
+// Add Maio Network
+	//implementation 'com.ironsource.adapters:maioadapter:4.1.10'
+	//implementation 'com.maio:android-sdk:1.1.15'
+// Add myTarget Network
+	implementation 'com.ironsource.adapters:mytargetadapter:4.1.14'
+	implementation 'com.my.target:mytarget-sdk:5.15.3'
+	implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
+//	implementation 'com.my.tracker:mytracker-sdk:3.0.0'
+// Add Pangle Network
+	implementation 'com.ironsource.adapters:pangleadapter:4.3.14'
+	implementation 'com.pangle.global:ads-sdk:4.5.0.4'
+// Add SuperAwesome Network
+	implementation 'com.ironsource.adapters:superawesomeadapter:4.1.2'
+	implementation 'tv.superawesome.sdk.publisher:superawesome:8.2.1'
+// Add Tapjoy Network
+	implementation 'com.ironsource.adapters:tapjoyadapter:4.1.21'
+	implementation 'com.tapjoy:tapjoy-android-sdk:12.10.0'
+// Add Vungle Network
+	implementation 'com.ironsource.adapters:vungleadapter:4.3.18'
+	implementation 'com.vungle:publisher-sdk-android:6.12.0'
+// Add Yahoo Network
+	implementation 'com.ironsource.adapters:yahooadapter:4.3.1'
+	implementation 'com.yahoo.mobile.ads:android-yahoo-mobile-sdk:1.1.1'
+	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30'
+	implementation 'com.google.android.gms:play-services-ads-identifier:17.1.0'
+	implementation 'androidx.browser:browser:1.3.0'
+
+
+	implementation platform('com.google.firebase:firebase-bom:30.1.0')
 }
 
 // Called every time gradle gets executed, takes the native dependencies of

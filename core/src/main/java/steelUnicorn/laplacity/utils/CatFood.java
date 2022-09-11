@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import steelUnicorn.laplacity.GameProcess;
+
 /**
  * Класс для управления запусками кота.
  * Хранит количество запусков и меняет количество через запуск, восстановление и показ рекламы.
@@ -94,7 +96,9 @@ public class CatFood {
      * @return количество запусков
      */
     public int launch() {
-        launches--;
+        if (GameProcess.sectionNumber > 1) {
+            launches--;
+        }
         checkBounds();
         return launches;
     }
