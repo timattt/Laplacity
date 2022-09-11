@@ -6,7 +6,9 @@ android {
        release {
          keyAlias System.getenv("ANDROID_KEYSTORE_ALIAS")
          keyPassword System.getenv("ANDROID_KEYSTORE_PRIVATE_KEY_PASSWORD")
-         storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+		 if (System.getenv("ANDROID_KEYSTORE_PATH") != null) {
+			storeFile file(System.getenv("ANDROID_KEYSTORE_PATH"))
+		 }
          storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
        }
    }
