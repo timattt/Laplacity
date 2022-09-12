@@ -65,6 +65,10 @@ public class GameInterface extends Stage implements GestureListener {
 	private ImageButton pauseBtn;
 	/** Массив с скрываемыми элементами при запуске. */
 	private Array<Actor> visibleActors;
+
+	/** кнопка ускорения времени в режиме полета */
+	private TextButton speedUpBtn;
+
 	/**
 	 * Создает сцену и интерфейс.
 	 * @param viewport вьюпорт сцены.
@@ -226,12 +230,13 @@ public class GameInterface extends Stage implements GestureListener {
 		modes.add(createModeIcon(skin, "Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
 
 		rightLayout.row();
-		TextButton speedUpBtn = new TextButton("x2", skin, "checked");
-		speedUpBtn.addListener(new ChangeListener() {
+		speedUpBtn = new TextButton("x2", skin, "checked");
+		speedUpBtn.setVisible(false);
+		speedUpBtn.addListener(new ClickListener() {
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
 				LaplacityAssets.playSound(lightClickSound);
-				TextButton speedUpBtn = (TextButton) actor;
 				timeSpeedUp = speedUpBtn.isChecked() ? 2 : 1;
 			}
 		});
@@ -258,11 +263,16 @@ public class GameInterface extends Stage implements GestureListener {
 			for (Actor actor : visibleActors) {
 				actor.setVisible(false);
 			}
+			speedUpBtn.setVisible(true);
 		} else {
 			flightCell.setActor(flightBtn);
 			for (Actor actor : visibleActors) {
 				actor.setVisible(actor.getName() != "skipBtn" || Settings.isShowSkip());
 			}
+
+			speedUpBtn.setVisible(false);
+			speedUpBtn.setChecked(false);
+			timeSpeedUp = 1;
 		}
 	}
 	/**
