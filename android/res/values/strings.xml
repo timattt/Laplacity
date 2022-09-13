@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Cataway</string>
     <string name="food_notification_title">Food is restored</string>
-    <string name="food_notification_text">Help cat to get away from station</string>
+    <string name="food_notification_text">Help the cat to get away from the station</string>
     <string name="food_channel_name">Food notifications</string>
     <string name="food_channel_description">Notifications about food restoring</string>
 </resources>
