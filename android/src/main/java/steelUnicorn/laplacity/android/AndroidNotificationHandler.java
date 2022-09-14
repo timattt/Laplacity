@@ -44,7 +44,7 @@ public class AndroidNotificationHandler implements NotificationHandler {
         Log.i("Notification", "set food alarm was called for notifications" +
                 "\nRestore time is: " + restoreTime +
                 "\nSystem time is: " + System.currentTimeMillis());
-        if (restoreTime > 0) {
+        if (restoreTime > RESTORE_LOWER_BOUND) {
 
             long signalTime = SystemClock.elapsedRealtime() + restoreTime * 1000L;
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
