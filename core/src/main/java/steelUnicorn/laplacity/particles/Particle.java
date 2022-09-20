@@ -1,6 +1,7 @@
 package steelUnicorn.laplacity.particles;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class Particle {
@@ -22,7 +23,13 @@ public class Particle {
 	
 	private float scale = 1f;
 	
+	private Vector3 color;
+	
 	public Particle() {
+	}
+	
+	public void generateRandomColor() {
+		color = new Vector3((float) Math.random(), (float) Math.random(), (float) Math.random());
 	}
 	
 	public void update(float dt) {
@@ -107,6 +114,10 @@ public class Particle {
 
 	public void setAlive(boolean alive) {
 		this.alive = alive;
+	}
+
+	public Vector3 getColor() {
+		return color;
 	}
 
 }

@@ -201,6 +201,7 @@ public class GameProcess {
 		rayHandler.setAmbientLight(AMBIENT_INTENSITY, AMBIENT_INTENSITY, AMBIENT_INTENSITY, 1f);
 		levelWorld.setContactListener(hitController);
 		
+		ParticlesManager.init();
 		LaplacityField.initField(level);
 		DensityRenderer.init();
 		TrajectoryRenderer.init();
@@ -335,6 +336,7 @@ public class GameProcess {
 		TrajectoryRenderer.cleanup();
 		DensityRenderer.cleanup();
 		TilesRenderer.cleanup();
+		ParticlesManager.cleanup();
 		if (rayHandler != null) {
 			rayHandler.dispose();
 			rayHandler = null;
