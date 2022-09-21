@@ -273,13 +273,14 @@ public class GameProcess {
 		//---------------------------------------------
 		BackgroundRenderer.render();
 		TilesRenderer.render();
-		DensityRenderer.render();
 		LaplacityField.renderStructuresCached(flightPhysicsTime * 1000f);
 		
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatched(flightPhysicsTime * 1000f);
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
+		
+		DensityRenderer.render();
 		
 		TrajectoryRenderer.render();
 		
