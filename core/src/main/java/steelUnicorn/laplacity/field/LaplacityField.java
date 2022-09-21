@@ -44,7 +44,8 @@ public class LaplacityField extends Group {
 	
 	// Structures
 	public static final Array<FieldStructure> structures = new Array<FieldStructure>();
-
+	private static HatchStructure hatch;
+	
 	// Sizes
 	public static int fieldWidth;
 	public static int fieldHeight;
@@ -171,6 +172,20 @@ public class LaplacityField extends Group {
 		TilesBodyHandler.createBodies(tiles);
 		Gdx.app.log("field", "bodies created");
 		tileMap.getTextureData().disposePixmap();
+		
+		findStructures();
+	}
+	
+	private static void findStructures() {
+		for (FieldStructure str : structures) {
+			if (str instanceof HatchStructure) {
+				hatch = (HatchStructure) str;
+			}
+		}
+		
+		if (hatch == null) {
+			Gdx.app.error("map loader", "No hatch is found!");
+		}
 	}
 	
 	public static void renderStructuresCached(float timeFromStart) {
@@ -208,6 +223,20 @@ public class LaplacityField extends Group {
 		for (FieldStructure fs : structures) {
 			fs.reset();
 		}
+	}
+	
+	public static boolean canPlaceParticle(float x, float y) {
+		if (hatch == null) {
+			return true;
+		} else {
+			float dx = hatch.getCenterX() - x;
+			float dy = hatch.getCenterY() - y;
+			float r = hatch.getWorldWidth() / 2;
+			if (dx * dx + dy * dy < r * r) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public static void fromGridToWorldCoords(int gridX, int gridY, Vector2 res) {
