@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.ui.mainmenu.tabs;
 
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
@@ -18,19 +17,25 @@ import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
- * Класс вкладки настроек в главном меню.
- * На данный момент есть:
- * - Включение звуков
- * - Включение музыки
- * - Включение освещения
- *
+ * Вкладка настроек в главном меню.
  * Использует класс Settings подгружающий настройки и сохраняющий при закрытии игры.
+ *
+ * Таблица с настройками {@link #settings} так же используется в
+ * {@link steelUnicorn.laplacity.ui.dialogs.SettingsDialog}.
+ *
+ * @see Settings
  */
 public class SettingsTab extends MainMenuTab {
-    public Table settings;
-    private static float cbSize = Globals.UI_WORLD_HEIGHT * 0.04f;
-    private static float cbPad = cbSize * 0.2f;
+    private static final float cbSize = Globals.UI_WORLD_HEIGHT * 0.04f;
+    private static final float cbPad = cbSize * 0.2f;
 
+    public Table settings;
+
+    /**
+     * Создает интерфейс вкладки с настройками.
+     *
+     * @param skin скин с текстурами кнопок и чекбоксов.
+     */
     public SettingsTab(Skin skin) {
         super();
 
@@ -62,7 +67,16 @@ public class SettingsTab extends MainMenuTab {
     }
 
     /**
-     * Функция добавляет настройки во вкладку.
+     * Создает виджеты с настройками.
+     * Содержит
+     * <ul>
+     *     <li>звуковые эффекты</li>
+     *     <li>музыка</li>
+     *     <li>освещение</li>
+     *     <li>счетчик фпс - в дебаг режиме</li>
+     *     <li>кнопку открытия всех уровней - в дебаг режиме</li>
+     * </ul>
+     * @param skin скин с текстурами кнопок и чекбоксов.
      */
     private void createSettings(Skin skin) {
         settings = new Table();
@@ -118,6 +132,28 @@ public class SettingsTab extends MainMenuTab {
                     }, "fpsCheckbox");
 
             settings.row();
+            addCheckbox(settings, "Show grid", skin, Settings.isShowGrid(),
+                    new ChangeListener() {
+                        @Override
+                        public void changed(ChangeEvent event, Actor actor) {
+                            LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                            CheckBox box = (CheckBox) actor;
+                            Settings.setShowGrid(box.isChecked());
+                        }
+                    }, "gridCheckbox");
+            settings.row();
+            addCheckbox(settings, "Show skip button", skin, Settings.isShowSkip(),
+                    new ChangeListener() {
+                        @Override
+                        public void changed(ChangeEvent event, Actor actor) {
+                            LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                            CheckBox box = (CheckBox) actor;
+                            Settings.setShowSkip(box.isChecked());
+                        }
+                    }, "skipCheckbox");
+
+
+            settings.row();
             TextButton openLevels = new TextButton("Open levels", skin);
             openLevels.addListener(new ChangeListener() {
                 @Override
@@ -131,34 +167,24 @@ public class SettingsTab extends MainMenuTab {
     }
 
     /**
-     * Функция для добавлегния чекбокса
-     * @param table - таблица куда добавляется чекбокс
-     * @param label - надпись рядом с чекбоксом
-     * @param skin - скин
-     * @param isChecked - логическое выражения для установки режима чекбокса
-     * @param listener - действия при нажатии
-     * @param name - имя чекбокса в таблице
-     * @param color - цвет текста
+     * Добавление чекбокса в настройки.
+     * @param table таблица куда добавляется чекбокс
+     * @param label надпись рядом с чекбоксом
+     * @param skin скин
+     * @param isChecked логическое выражения для установки режима чекбокса
+     * @param listener действия при нажатии
+     * @param name имя чекбокса в таблице
      */
     private void addCheckbox(Table table, String label, Skin skin,
                              boolean isChecked, ChangeListener listener,
-                             String name, Color color) {
+                             String name) {
         CheckBox checkBox = new CheckBox(label, skin);
         checkBox.getImageCell().padRight(cbPad);
 
         checkBox.setName(name);
         checkBox.setChecked(isChecked);
-        checkBox.getLabel().setColor(color);
         checkBox.addListener(listener);
         table.add(checkBox);
-    }
-
-    private void addCheckbox(Table table, String label, Skin skin,
-                             boolean isChecked, ChangeListener listener,
-                             String name) {
-        addCheckbox(table, label, skin,
-                isChecked, listener,
-                name, Color.WHITE);
     }
 
     //Вызывается при показывании настроек, для синхронизации интерфейса
@@ -172,6 +198,10 @@ public class SettingsTab extends MainMenuTab {
         if (Laplacity.isDebugEnabled()) {
             ((CheckBox) settings.findActor("fpsCheckbox"))
                     .setChecked(Settings.isShowFps());
+            ((CheckBox) settings.findActor("gridCheckbox"))
+                    .setChecked(Settings.isShowGrid());
+            ((CheckBox) settings.findActor("skipCheckbox"))
+                    .setChecked(Settings.isShowSkip());
         }
     }
 }

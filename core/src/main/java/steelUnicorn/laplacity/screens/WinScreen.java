@@ -2,22 +2,27 @@ package steelUnicorn.laplacity.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.eskalon.commons.screen.ManagedScreen;
 import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.ui.mainmenu.WinInterface;
+import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.WinInterface;
 
 /**
- * Победный экран. Открывается при прохождении уровня и отображает
- * победную надпись
- * количество очков
- * навигационные кнопки menu replay next
+ * Победный экран, который открывается при прохождении уровня.
+ * Отображает интерфес, создаваемый классом WinInterface
  *
- * При создании используется функция loadWinScreen, принимающая количество заработанных очков.
+ * При создании используется функция loadWinScreen, принимающая количество собранных звезд.
+ *
+ * @see WinInterface
  */
 public class WinScreen extends ManagedScreen {
-	private WinInterface winStage;
+	private final WinInterface winStage;
 
+	/**
+	 * Инициализирует winStage.
+	 */
 	public WinScreen() {
 		super();
 		winStage = new WinInterface(Globals.guiViewport);
@@ -29,11 +34,12 @@ public class WinScreen extends ManagedScreen {
 	}
 
 	/**
-	 * Функция перестраивающая winStage, под пройденный уровень (поведение кнопок и количество очков)
-	 * @param score
+	 * Собирает интерфейс для отображения на экране.
+	 * @param starsScored количество собранных звезд
+	 * @see WinInterface#buildStage(int, Skin)
 	 */
-	public void loadWinScreen(int score) {
-		winStage.buildStage(score);
+	public void loadWinScreen(int starsScored) {
+		winStage.buildStage(starsScored, LaplacityAssets.TEXSKIN);
 	}
 
 	@Override

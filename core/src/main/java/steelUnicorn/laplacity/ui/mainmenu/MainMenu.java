@@ -23,22 +23,13 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.CreditsTab;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 
 /**
- * Класс MainMenu наследуется от Stage.
- * Меню состоит из 2 таблиц, слева отображаются главные кнопки
- * Play
- * Options
- * Credits
- * Каждая кнопка отображает справа соответсвующую вкладку
- * Levels - список уровней
- * Options - настройки, по типу включения, отключения звука, музыки
- * Credits - описание команды разработчиков
+ * Главное меню игры. Содержит кнопку Play по середине экрана и 2 иконки settings и credits
+ * слева сверху и снизу.
  */
 public class MainMenu extends Stage {
-
     public static final float menuTopPad = UI_WORLD_HEIGHT * 0.28f; // << menu button height ratio
     public static final float menuLeftSpace = UI_WORLD_HEIGHT * 0.06f; // << space between elements
     public static final float iconSize = UI_WORLD_HEIGHT * 0.15f;
-
     private static final float labelPad = UI_WORLD_HEIGHT * 0.05f;
 
     private SettingsTab settingsTab;
@@ -49,10 +40,9 @@ public class MainMenu extends Stage {
 
     private Image background;
     /**
-     * Конструктор главного меню.
-     * Собирает каждую вкладку и главное меню.
+     * Собирает каждую вкладку и главное меню. Добавляет фон.
      *
-     * @param viewport - вьюпорт сцены
+     * @param viewport вьюпорт сцены
      */
     public MainMenu(Viewport viewport) {
         super(viewport);
@@ -72,7 +62,7 @@ public class MainMenu extends Stage {
         settingsTab = new SettingsTab(TEXSKIN);
         creditsTab = new CreditsTab(TEXSKIN);
 
-        createMainMenu(root, SKIN);
+        createMainMenu(root, TEXSKIN);
 
         if (Laplacity.isDebugEnabled()) {
             FpsCounter fpsCounter = new FpsCounter(TEXSKIN, "noback");
@@ -80,17 +70,11 @@ public class MainMenu extends Stage {
         }
     }
 
-    //Функция вызывается при открытии главного меню, чтобы обновить параметры!
-    public void show() {
-        mainCell.setActor(mainMenu);
-        settingsTab.show();
-    }
-
     /**
-     * Функция создающая кнопки главного меню и их поведение (переключение нужных вкладок)
+     * Создает кнопки главного меню и задает их поведение (переключение нужных вкладок).
      *
-     * @param root - корневая таблица сцены
-     * @param skin - скин
+     * @param root корневая таблица сцены.
+     * @param skin скин с текстурами кнопок.
      */
 	private void createMainMenu(Table root, Skin skin) {
         mainMenu = new Table();
@@ -100,8 +84,7 @@ public class MainMenu extends Stage {
         mainMenu.add(icons).expand().fillY()
                 .left().padLeft(menuLeftSpace).uniform();
         //options
-        ImageButton icon = new ImageButton(TEXSKIN.get("credits", ImageButton.ImageButtonStyle.class));
-        icon.setName("credits");
+        ImageButton icon = new ImageButton(skin, "credits");
         icon.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -109,15 +92,16 @@ public class MainMenu extends Stage {
                 mainCell.setActor(creditsTab);
             }
         });
+
         icons.add(icon).top().expandY().size(iconSize);
         //credits
         icons.row();
-        icon = new ImageButton(TEXSKIN.get("settings", ImageButton.ImageButtonStyle.class));
-        icon.setName("settings");
+        icon = new ImageButton(skin, "settings");
         icon.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                settingsTab.show();
                 mainCell.setActor(settingsTab);
             }
         });
@@ -125,8 +109,7 @@ public class MainMenu extends Stage {
         icons.add(icon).expandY().bottom().size(iconSize);
 
         //play
-        Button btn = new Button(TEXSKIN.get("PlayBtn", Button.ButtonStyle.class));
-        btn.setName("play");
+        Button btn = new Button(skin, "PlayBtn");
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -159,10 +142,16 @@ public class MainMenu extends Stage {
         mainMenu.add(labels).expand().top().right().pad(labelPad).uniform();
     }
 
+    /**
+     * Возвращает главное меню на экран. Используется с других вкладок.
+     */
     public void returnMainMenu() {
         mainCell.setActor(mainMenu);
     }
 
+    /**
+     * Меняет размеры фона при изменении размеров приложения.
+     */
     public void resizeBackground() {
         background.setSize(background.getPrefWidth() / background.getPrefHeight()
                         * this.getViewport().getWorldHeight(),

@@ -1,7 +1,4 @@
-package steelUnicorn.laplacity.ui;
-
-
-import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
+package steelUnicorn.laplacity.ui.dialogs;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -16,37 +13,38 @@ import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
 
-
+/**
+ * Всплывающее окно для регулирования настроек во время игрового процесса.
+ */
 public class SettingsDialog extends Dialog {
     private SettingsTab settingsTable;
 
-    private static final float sidepad = Globals.UI_WORLD_WIDTH * 0.05f;
+    private static final float sidePad = Globals.UI_WORLD_WIDTH * 0.05f;
 
-    public SettingsDialog(WindowStyle ws) {
-        super("", ws);
-        initializeSettings();
-    }
-
+    /**
+     * Инициализирует класс SettingsDialog.
+     * @param skin скин с текстурами фона диалоги и кнопок.
+     */
     public SettingsDialog(Skin skin) {
-        this(skin.get(WindowStyle.class));
+        super("", skin);
+        initializeSettings(skin);
 
-    }
-
-    public SettingsDialog(Skin skin, String wsName) {
-        this(skin.get(wsName, WindowStyle.class));
-    }
-
-    private void initializeSettings() {
-        //flickering bug fix
         Color color = getColor();
         color.a = 0;
         setColor(color);
+    }
 
-        settingsTable = new SettingsTab(TEXSKIN);
-        getCell(getContentTable()).padLeft(sidepad).padRight(sidepad);
+    /**
+     * Инициализирует интерфейс диалога. Создает SettingsTab, чтобы взять настройки оттуда.
+     * @param skin скин с текстурами виджетов.
+     * @see SettingsTab
+     */
+    private void initializeSettings(Skin skin) {
+        settingsTable = new SettingsTab(skin);
+        getCell(getContentTable()).padLeft(sidePad).padRight(sidePad);
         getContentTable().add(settingsTable.settings);
 
-        Button exitBtn = new Button(TEXSKIN.get("ExitBtn", Button.ButtonStyle.class));
+        Button exitBtn = new Button(skin, "ExitBtn");
         exitBtn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

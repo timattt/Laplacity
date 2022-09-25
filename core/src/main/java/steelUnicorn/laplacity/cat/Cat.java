@@ -114,7 +114,7 @@ public class Cat implements CollisionListener {
 		return true;
 	}
 
-	public void updatePhysics(float delta) {
+	public void updatePhysics() {
 		if (currentGameMode == GameMode.FLIGHT && !CatAnimationManager.isPlayingSomeAnimation()) {
 			FieldCalculator.calculateFieldIntensity(getX(), getY(), LaplacityField.tiles, TMP1);
 			body.applyForceToCenter(TMP1.scl(-PARTICLE_CHARGE / body.getMass()), false);

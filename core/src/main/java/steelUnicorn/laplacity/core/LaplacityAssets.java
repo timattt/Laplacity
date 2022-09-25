@@ -14,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 
-import steelUnicorn.laplacity.utils.LevelsParser;
+import steelUnicorn.laplacity.utils.LevelsParamsParser;
 import steelUnicorn.laplacity.utils.Settings;
 
 public class LaplacityAssets {
@@ -227,8 +227,8 @@ public class LaplacityAssets {
     }
 
 	private static void repackLevels(AssetManager assetManager) {
-		if (LevelsParser.levelParams == null) {
-			LevelsParser.parseParams();
+		if (LevelsParamsParser.levelsParams == null) {
+			LevelsParamsParser.parseParams();
 		}
 
 		sectionLevels = new Array<>();

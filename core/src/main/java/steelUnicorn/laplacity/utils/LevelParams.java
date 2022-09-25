@@ -3,15 +3,16 @@ package steelUnicorn.laplacity.utils;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Класс хранения параметров уровня. Массив параметров по секциям хранится в классе LevelParser
- * где он подгружается из папки levelparams из json файлов.
- *
- * Параметры:
- * backIds - массив id бекграундов
- * levelHints - массив подсказок
+ * Хранение параметров уровня.
+ * Массив параметров по секциям и уровням хранится в классе LevelsParamsParser.
+ * <ul>Параметры:
+ *  <li>backIds - массив id бекграундов</li>
+ *  <li>levelHints - массив подсказок на уровне</li>
+ * </ul>
+ * @see LevelsParamsParser
  */
 public class LevelParams {
-    private Array<Integer> backIds; //массив фонов
+    private Array<Integer> backIds;
     private Array<Hint> levelHints;
 
     public Array<Integer> getBackIds() {
@@ -39,8 +40,9 @@ public class LevelParams {
     }
 
     /**
-     * Класс подсказки, хранит в себе координаты и id подсказки в массиве
-     * HINTS в LaplacityAssets.
+     * Хранение подсказок в виде координат и id подсказки в HINTS в LaplacityAssets
+     *
+     * @see steelUnicorn.laplacity.core.LaplacityAssets
      */
     public static class Hint {
         private float x;
