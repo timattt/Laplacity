@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -35,6 +36,7 @@ import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.dialogs.CatDialog;
 import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
 import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
+import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 import steelUnicorn.laplacity.utils.Settings;
 
 
@@ -69,13 +71,18 @@ public class GameInterface extends Stage implements GestureListener {
 	/** кнопка ускорения времени в режиме полета */
 	private TextButton speedUpBtn;
 
+
+	/** Управление интерфейсом (флаги) */
+	public GameInterfaceHandler guiHandler;
+
+
 	/**
 	 * Создает сцену и интерфейс.
 	 * @param viewport вьюпорт сцены.
 	 */
 	public GameInterface(Viewport viewport) {
 		super(viewport);
-
+		guiHandler = new GameInterfaceHandler();
 		createInterface(TEXSKIN);
 	}
 
@@ -128,6 +135,7 @@ public class GameInterface extends Stage implements GestureListener {
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
+				guiHandler.pressButton("Home");
 				returnDialog.show(GameInterface.this);
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
@@ -136,6 +144,7 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
+				guiHandler.pressButton("Clear");
 				GameProcess.clearLevel();
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
@@ -146,7 +155,7 @@ public class GameInterface extends Stage implements GestureListener {
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
-				Gdx.app.log("GameInterface", "settings pressed");
+				guiHandler.pressButton("settings");
 				settingsDialog.show(GameInterface.this);
 			}
 		})).expandY().bottom().size(settingsSize);
@@ -194,6 +203,7 @@ public class GameInterface extends Stage implements GestureListener {
 					catDialog.show(GameInterface.this);
 					changeGameMode(GameMode.NONE);
 				}
+				guiHandler.pressButton("Flight");
 			}
 		});
 		pauseBtn = createModeIcon(skin, "Pause", GameMode.NONE, LaplacityAssets.lightClickSound);
@@ -203,13 +213,17 @@ public class GameInterface extends Stage implements GestureListener {
 
 		rightLayout.row();
 		selectedMode = new ImageButton(skin, "SquareNone");
+		selectedMode.setName("SelectModeBtn");
+		guiHandler.putButton(selectedMode);
 		selectedMode.addListener(new ChangeListener() {
 			@Override
 			public void changed(ChangeEvent event, Actor actor) {
 				LaplacityAssets.playSound(clickSound);
 				modes.setVisible(!modes.isVisible());
+				guiHandler.pressButton("SelectModeBtn");
 			}
 		});
+
 		rightLayout.add(selectedMode).width(iconSize)
 				.height(skin.getDrawable("square_btn").getMinHeight()
 						/ skin.getDrawable("square_btn").getMinWidth() * iconSize);
@@ -232,14 +246,19 @@ public class GameInterface extends Stage implements GestureListener {
 		rightLayout.row();
 		speedUpBtn = new TextButton("x2", skin, "checked");
 		speedUpBtn.setVisible(false);
+		speedUpBtn.setName("speedUpBtn");
+		guiHandler.putButton(speedUpBtn);
 		speedUpBtn.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				LaplacityAssets.playSound(lightClickSound);
 				timeSpeedUp = speedUpBtn.isChecked() ? 2 : 1;
+				guiHandler.pressButton(speedUpBtn.getName());
 			}
 		});
+
+
 		rightLayout.add(speedUpBtn).expandY().bottom();
 	}
 
@@ -289,6 +308,9 @@ public class GameInterface extends Stage implements GestureListener {
 			visibleActors.add(btn);
 		}
 
+		btn.setName(styleName);
+		guiHandler.putButton(btn);
+
 		btn.getImageCell().grow();
 		btn.addListener(listener);
 		return btn;
@@ -308,6 +330,12 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(sound);
+
+				Actor targetActor = event.getTarget();
+				Button targetBtn = targetActor instanceof Button ? (Button) targetActor :
+						targetActor.getParent() instanceof Button ? ((Button) targetActor.getParent()) : null;
+				guiHandler.pressButton(targetBtn == null ? null : targetBtn.getName());
+
 				if (currentGameMode == mode) {
 					changeGameMode(GameMode.NONE);
 				} else {
