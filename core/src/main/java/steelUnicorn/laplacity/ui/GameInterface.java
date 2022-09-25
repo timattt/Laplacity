@@ -33,6 +33,7 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.dialogs.CatDialog;
+import steelUnicorn.laplacity.ui.dialogs.ClearDialog;
 import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
 import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
 import steelUnicorn.laplacity.utils.Settings;
@@ -53,6 +54,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private SettingsDialog settingsDialog;
 	private CatDialog catDialog;
+	private ClearDialog clearDialog;
 
 	public CatFoodInterface catFI;
 
@@ -110,6 +112,7 @@ public class GameInterface extends Stage implements GestureListener {
 			}
 		});
 		catDialog = new CatDialog(skin, "cat_hungry");
+		clearDialog = new ClearDialog(skin);
 		//FpsCounter
 		if (Laplacity.isDebugEnabled()) {
 			FpsCounter fpsCounter = new FpsCounter(skin, "noback");
@@ -136,7 +139,7 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
-				GameProcess.clearLevel();
+				clearDialog.show(GameInterface.this);
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
 
