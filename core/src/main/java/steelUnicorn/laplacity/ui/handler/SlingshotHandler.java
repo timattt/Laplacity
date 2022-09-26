@@ -1,15 +1,18 @@
 package steelUnicorn.laplacity.ui.handler;
 
 import steelUnicorn.laplacity.cat.Cat;
+import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 
 public class SlingshotHandler {
     private Cat cat;
     private float slingshotX;
     private float slingshotY;
     private boolean wasSet;
+    private boolean isLocked;
 
     public SlingshotHandler() {
         wasSet = false;
+        isLocked = false;
     }
 
     public void setSlingshot(Cat cat, float slingshotX, float slingshotY) {
@@ -21,6 +24,7 @@ public class SlingshotHandler {
 
     public void changeSlingshot(float x, float y) {
         cat.setSlingshot(x, y);
+        TrajectoryRenderer.updateTrajectory();
     }
 
     public boolean wasSlingshotSet() {
@@ -30,6 +34,14 @@ public class SlingshotHandler {
         }
 
         return false;
+    }
+
+    public void setLocked(boolean isLocked) {
+        this.isLocked = isLocked;
+    }
+
+    public boolean getLocked() {
+        return isLocked;
     }
 
     @Override

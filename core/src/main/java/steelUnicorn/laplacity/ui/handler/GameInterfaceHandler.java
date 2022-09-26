@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.ui.handler;
 
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.OrderedMap;
 
 /**
@@ -71,6 +72,18 @@ public class GameInterfaceHandler {
             btn.setTouchable(Touchable.disabled);
         }
     }
+
+    /**
+     * Отключает все кнопки
+     */
+    public void lockAllButtons() {
+        ObjectMap.Values<ButtonHandler> handlers = buttonHandlers.values();
+        for (ButtonHandler handler : handlers) {
+            handler.btn.setDisabled(true);
+            handler.btn.setTouchable(Touchable.disabled);
+        }
+    }
+
     /**
      * Включает кнопку по имени.
      * @param btnName имя кнопки.
@@ -112,6 +125,7 @@ public class GameInterfaceHandler {
         //debugging comments
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.D)) {
 //            debugPrint();
+//            slingshotHandler.wasSlingshotSet();
 //        }
 //
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
@@ -120,6 +134,14 @@ public class GameInterfaceHandler {
 //
 //        if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
 //            startFlashing("Protons", 0, 1, 10);
+//        }
+//
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+//            lockAllButtons();
+//        }
+//
+//        if (Gdx.input.isKeyJustPressed(Input.Keys.R)) {
+//            slingshotHandler.setLocked(Gdx.input.isKeyPressed(Input.Keys.ALT_LEFT));
 //        }
     }
 
