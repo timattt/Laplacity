@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import steelUnicorn.laplacity.CameraManager;
 import steelUnicorn.laplacity.GameProcess;
 
 public class ParticlesManager {
@@ -76,9 +75,8 @@ public class ParticlesManager {
 	
 	public static void renderAllParticles() {
 		GameProcess.gameBatch.enableBlending();
-		shader.bind();
-		GameProcess.gameBatch.setShader(shader);
 		for (Particle p : particles) {
+			GameProcess.gameBatch.setShader(shader);
 			if (p.getColor() != null) {
 				shader.setUniformf("color", p.getColor());
 			} else {

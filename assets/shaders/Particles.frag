@@ -9,11 +9,12 @@ uniform sampler2D u_texture;
 uniform vec3 color;
 
 void main() {
-	gl_FragColor = v_color * texture2D(u_texture, v_texCoords);
-	float val = (gl_FragColor.x + gl_FragColor.y + gl_FragColor.z) / 3.0;
-	if (gl_FragColor.w > 0.01) {
-		gl_FragColor = vec4(color.xyz * val, min(gl_FragColor.w * 2, 1));
+	vec4 res = v_color * texture2D(u_texture, v_texCoords);
+	float val = (res.x + res.y + res.z) / 3.0;
+	if (res.w > 0.01) {
+		res = vec4(color * val, 0.6);
 	} else {
-		gl_FragColor = vec4(0, 0, 0, 0);
+		res = vec4(0, 0, 0, 0);
 	}
+	gl_FragColor = res;
 }
