@@ -113,78 +113,97 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 	Home: {
 		imageUp: home
+		imageDisabled: home
 		imageDown: home_pressed
 	}
 	Protons: {
 		imageUp: proton
+		imageDisabled: proton
 		imageDown: proton_pressed
 	}
 	Electrons: {
 		imageUp: electron
+		imageDisabled: electron
 		imageDown: electron_pressed
 	}
 	Flight: {
 		imageUp: play
+		imageDisabled: play
 		imageDown: play_pressed
 	}
 	Eraser: {
 		imageUp: eraser
+		imageDisabled: eraser
 		imageDown: eraser_pressed
 	}
 	Dirichlet: {
 		imageUp: spray
+		imageDisabled: spray
 		imageDown: spray_pressed
 	}
 	Clear: {
 		imageUp: clear_pressed
+		imageDisabled: clear_pressed
 		imageDown: clear
 	}
 	settings: {
 		imageUp: settings
+		imageDisabled: settings
 		imageDown: settings_pressed
 	}
 	credits: {
 		imageUp: credits
+		imageDisabled: credits
 		imageDown: credits_pressed
 	}
 	leftarrow: {
 		imageUp: leftarrow
+		imageDisabled: leftarrow
 		imageDown: leftarrow_pressed
 	}
 	rightarrow: {
 		imageUp: rightarrow
+		imageDisabled: rightarrow
 		imageDown: rightarrow_pressed
 	}
 	Pause: {
 		imageUp: pause
+		imageDisabled: pause
 		imageDown: pause_pressed
 	}
 	Replay: {
 		imageUp: refresh
+		imageDisabled: refresh
 		imageDown: refresh_pressed
 	}
 	Next: {
 		imageUp: NextIcon
+		imageDisabled: NextIcon
 		imageDown: NextIcon_On
 	}
 	SquareNone: {
 		imageUp: square_btn
+		imageDisabled: square_btn
 		imageDown: square_btn_pressed
 	}
 	SquareProtons: {
 		imageUp: square_Protons
+		imageDisabled: square_Protons
 		imageDown: square_protons_pressed
 	}
 	SquareElectrons: {
 		imageUp: square_Electrons
+		imageDisabled: square_Electrons
 		imageDown: square_electrons_pressed
 	}
 	SquareEraser: {
 		imageUp: square_Eraser
+		imageDisabled: square_Eraser
 		imageDown: square_eraser_pressed
 	}
 	SquareDirichlet: {
 		imageUp: square_Dirichlet
+		imageDisabled: square_Dirichlet
 		imageDown: square_Dirichlet_pressed
 	}
 }

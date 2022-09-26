@@ -215,9 +215,10 @@ public class GameInterface extends Stage implements GestureListener {
 		selectedMode = new ImageButton(skin, "SquareNone");
 		selectedMode.setName("SelectModeBtn");
 		guiHandler.putButton(selectedMode);
-		selectedMode.addListener(new ChangeListener() {
+		selectedMode.addListener(new ClickListener() {
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
 				LaplacityAssets.playSound(clickSound);
 				modes.setVisible(!modes.isVisible());
 				guiHandler.pressButton("SelectModeBtn");
