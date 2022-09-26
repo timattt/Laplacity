@@ -276,9 +276,10 @@ public class LaplacityField extends Group {
 				
 				if (u >= 0 && v >= 0 && u < fieldWidth && v < fieldHeight && TMP1.len2() < r * r) {
 					EmptyTile tile = tiles[u][v];
+					float before = tile.getVisibleDensity();
 					float delta = (1 - TMP1.len() / (r)) * val;
 					tile.addVisibleDensity(delta);
-					total += Math.abs(delta);
+					total += Math.abs(tile.getVisibleDensity() - before);
 				}
 			}
 		}
