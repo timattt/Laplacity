@@ -314,6 +314,8 @@ public class GameProcess {
 			justFinished = false;
 		}
 		//---------------------------------------------
+
+		gameUI.guiHandler.render();
 	}
 
 	/**

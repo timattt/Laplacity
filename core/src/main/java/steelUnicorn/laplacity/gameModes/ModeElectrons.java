@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.GameProcess.*;
 import com.badlogic.gdx.math.Vector2;
 
 import steelUnicorn.laplacity.CameraManager;
+import steelUnicorn.laplacity.chargedParticles.ChargedParticle;
 import steelUnicorn.laplacity.chargedParticles.Electron;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
@@ -19,7 +20,10 @@ public class ModeElectrons extends GameMode {
 
 	@Override
 	public void tap(float x, float y) {
-		tryToAddStaticParticle(new Electron(x, y));
+		ChargedParticle particle = new Electron(x, y);
+		if (tryToAddStaticParticle(particle)) {
+			gameUI.guiHandler.particleHandler.placeParticle(particle);
+		}
 		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
