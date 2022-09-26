@@ -25,6 +25,7 @@ public class Tutorial1 extends Tutorial {
 		hand.lockBtn(ButtonNames.FLIGHT);
 		hand.lockBtn(ButtonNames.ERASER);
 		hand.lockBtn(ButtonNames.MODE_SELECTOR);
+		hand.lockBtn(ButtonNames.PAUSE);
 	}
 	
 	@Override
@@ -34,14 +35,18 @@ public class Tutorial1 extends Tutorial {
 		switch (currentStatus) {
 		case drag_sling:
 			if (hand.slingshotHandler.wasSlingshotSet()) {
-				currentStatus = Status.drag_sling;
+				currentStatus = Status.press_flight;
+				hand.unlockBtn(ButtonNames.FLIGHT);
+				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 10000);
+				hand.slingshotHandler.changeSlingshot(10, 0);
 			}
 			break;
 		case press_flight:
-			
+			if (hand.wasButtonPressed(ButtonNames.FLIGHT)) {
+				currentStatus = Status.flight;
+			}
 			break;
 		case flight:
-			
 			break;
 		}
 	}

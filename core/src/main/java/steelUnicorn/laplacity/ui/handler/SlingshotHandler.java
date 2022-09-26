@@ -1,6 +1,7 @@
 package steelUnicorn.laplacity.ui.handler;
 
 import steelUnicorn.laplacity.cat.Cat;
+import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 
 public class SlingshotHandler {
     private Cat cat;
@@ -21,6 +22,7 @@ public class SlingshotHandler {
 
     public void changeSlingshot(float x, float y) {
         cat.setSlingshot(x, y);
+        TrajectoryRenderer.updateTrajectory();
     }
 
     public boolean wasSlingshotSet() {
