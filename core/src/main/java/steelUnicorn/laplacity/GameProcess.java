@@ -36,6 +36,7 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.particles.ParticlesManager;
+import steelUnicorn.laplacity.tutorial.TutorialManager;
 import steelUnicorn.laplacity.ui.GameInterface;
 import steelUnicorn.laplacity.utils.LevelParams;
 import steelUnicorn.laplacity.utils.Settings;
@@ -220,6 +221,8 @@ public class GameProcess {
 		interpCoeff = 1f;
 		FieldCalculator.resetPotential();
 		CameraManager.setToMainParticle();
+		
+		TutorialManager.initLevel();
 	}
 	
 	public static void updateLevel(float delta) {
@@ -254,6 +257,7 @@ public class GameProcess {
 				TrajectoryRenderer.updateTrajectory();
 			}
 		}
+		TutorialManager.update();
 		//---------------------------------------------
 		
 		// ADS
@@ -337,6 +341,7 @@ public class GameProcess {
 		TrajectoryRenderer.cleanup();
 		DensityRenderer.cleanup();
 		TilesRenderer.cleanup();
+		TutorialManager.cleanup();
 		if (rayHandler != null) {
 			rayHandler.dispose();
 			rayHandler = null;
