@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.clickSound;
 import static steelUnicorn.laplacity.core.LaplacityAssets.lightClickSound;
+import static steelUnicorn.laplacity.ui.handler.ButtonNames.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -130,32 +131,32 @@ public class GameInterface extends Stage implements GestureListener {
 
 		//left layout
 		Table leftLayout = new Table();
-		leftLayout.add(createIcon(skin, "Home", new ClickListener(){
+		leftLayout.add(createIcon(skin, HOME, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
-				guiHandler.pressButton("Home");
+				guiHandler.pressButton(HOME);
 				returnDialog.show(GameInterface.this);
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
 
-		leftLayout.add(createIcon(skin, "Clear", new ClickListener(){
+		leftLayout.add(createIcon(skin, CLEAR, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
-				guiHandler.pressButton("Clear");
+				guiHandler.pressButton(CLEAR);
 				GameProcess.clearLevel();
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
 
 		leftLayout.row();
-		leftLayout.add(createIcon(skin, "settings", new ClickListener(){
+		leftLayout.add(createIcon(skin, SETTINGS, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
-				guiHandler.pressButton("settings");
+				guiHandler.pressButton(SETTINGS);
 				settingsDialog.show(GameInterface.this);
 			}
 		})).expandY().bottom().size(settingsSize);
@@ -192,7 +193,7 @@ public class GameInterface extends Stage implements GestureListener {
 		root.add(rightLayout).expandX().growY().right().uniform().pad(iconSpace);
 
 		//flight and pause buttons
-		flightBtn = createIcon(skin, "Flight", new ClickListener(){
+		flightBtn = createIcon(skin, FLIGHT, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
@@ -203,17 +204,17 @@ public class GameInterface extends Stage implements GestureListener {
 					catDialog.show(GameInterface.this);
 					changeGameMode(GameMode.NONE);
 				}
-				guiHandler.pressButton("Flight");
+				guiHandler.pressButton(FLIGHT);
 			}
 		});
-		pauseBtn = createModeIcon(skin, "Pause", GameMode.NONE, LaplacityAssets.lightClickSound);
+		pauseBtn = createModeIcon(skin, PAUSE, GameMode.NONE, LaplacityAssets.lightClickSound);
 		flightCell = rightLayout.add(flightBtn)
 				.size(iconSize).space(iconSpace);
 
 
 		rightLayout.row();
 		selectedMode = new ImageButton(skin, "SquareNone");
-		selectedMode.setName("SelectModeBtn");
+		selectedMode.setName(MODE_SELECTOR);
 		guiHandler.putButton(selectedMode);
 		selectedMode.addListener(new ClickListener() {
 			@Override
@@ -221,7 +222,7 @@ public class GameInterface extends Stage implements GestureListener {
 				super.clicked(event, x, y);
 				LaplacityAssets.playSound(clickSound);
 				modes.setVisible(!modes.isVisible());
-				guiHandler.pressButton("SelectModeBtn");
+				guiHandler.pressButton(MODE_SELECTOR);
 			}
 		});
 
@@ -236,18 +237,18 @@ public class GameInterface extends Stage implements GestureListener {
 		modes.defaults().size(iconSize).space(iconSpace);
 
 		modes.row();
-		modes.add(createModeIcon(skin, "Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
+		modes.add(createModeIcon(skin, PROTONS, GameMode.PROTONS, LaplacityAssets.genStartSound));
 		modes.row();
-		modes.add(createModeIcon(skin, "Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
+		modes.add(createModeIcon(skin, ELECTRONS, GameMode.ELECTRONS, LaplacityAssets.genStartSound));
 		modes.row();
-		modes.add(createModeIcon(skin, "Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
+		modes.add(createModeIcon(skin, DIRICHLET, GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 		modes.row();
-		modes.add(createModeIcon(skin, "Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
+		modes.add(createModeIcon(skin, ERASER, GameMode.ERASER, LaplacityAssets.lightClickSound));
 
 		rightLayout.row();
 		speedUpBtn = new TextButton("x2", skin, "checked");
 		speedUpBtn.setVisible(false);
-		speedUpBtn.setName("speedUpBtn");
+		speedUpBtn.setName(SPEED_UP);
 		guiHandler.putButton(speedUpBtn);
 		speedUpBtn.addListener(new ClickListener() {
 			@Override
@@ -255,7 +256,7 @@ public class GameInterface extends Stage implements GestureListener {
 				super.clicked(event, x, y);
 				LaplacityAssets.playSound(lightClickSound);
 				timeSpeedUp = speedUpBtn.isChecked() ? 2 : 1;
-				guiHandler.pressButton(speedUpBtn.getName());
+				guiHandler.pressButton(SPEED_UP);
 			}
 		});
 
@@ -305,7 +306,7 @@ public class GameInterface extends Stage implements GestureListener {
 	 */
 	private ImageButton createIcon(Skin skin, String styleName, ClickListener listener) {
 		ImageButton btn = new ImageButton(skin, styleName);
-		if (!styleName.equals("Flight") && !styleName.equals("Pause")) {
+		if (!styleName.equals(FLIGHT) && !styleName.equals(PAUSE)) {
 			visibleActors.add(btn);
 		}
 
