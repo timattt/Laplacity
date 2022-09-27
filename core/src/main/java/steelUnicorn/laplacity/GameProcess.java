@@ -458,6 +458,7 @@ public class GameProcess {
 			LaplacityAssets.playSound(LaplacityAssets.placeSound);
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
+			System.out.println(part.getX() + " " + part.getY());
 			return true;
 		} else {
 			deletePhysicalObject(part.getBody());

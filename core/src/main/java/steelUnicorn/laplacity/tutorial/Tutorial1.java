@@ -14,9 +14,6 @@ public class Tutorial1 extends Tutorial {
 	
 	private Status currentStatus = null;
 	
-	public Tutorial1() {
-	}
-	
 	@Override
 	public void init() {
 		currentStatus = Status.drag_sling;
