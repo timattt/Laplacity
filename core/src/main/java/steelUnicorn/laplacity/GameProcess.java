@@ -299,6 +299,7 @@ public class GameProcess {
 		
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatchedForeground(flightPhysicsTime * 1000f);
+		TutorialManager.draw();
 		gameBatch.end();
 		
 		gameUI.draw();

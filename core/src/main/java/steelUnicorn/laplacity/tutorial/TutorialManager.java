@@ -5,6 +5,7 @@ import steelUnicorn.laplacity.GameProcess;
 public class TutorialManager {
 
 	private static Tutorial currentTutorial;
+	public static Pointer pointer = new Pointer();
 	
 	public static void initLevel() {
 		// SELECT
@@ -18,7 +19,12 @@ public class TutorialManager {
 		}
 	}
 	
+	public static void draw() {
+		pointer.draw();
+	}
+	
 	public static void update() {
+		pointer.update();
 		if (currentTutorial != null) {
 			currentTutorial.update();
 		}

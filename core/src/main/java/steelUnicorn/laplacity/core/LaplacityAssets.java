@@ -79,6 +79,7 @@ public class LaplacityAssets {
 	
 	//HINTS
 	public static Array<Texture> HINTS;
+	public static Texture HINT_POINTER;
 
 	// CHARGED PARTICLES
 	public static Texture ELECTRON_TEXTURE;
@@ -283,6 +284,8 @@ public class LaplacityAssets {
 		}
 
 		Gdx.app.log("Hints loaded", HINTS.toString());
+		
+		HINT_POINTER = assetManager.get("textures/hints/pointer.png", Texture.class);
 	}
 	
 	private static void cut(Texture from, TextureRegion[] result) {

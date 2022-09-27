@@ -12,22 +12,22 @@ public class Tutorial1 extends Tutorial {
 		flight
 	};
 	
-	private Status currentStatus;
+	private Status currentStatus = null;
 	
 	public Tutorial1() {
-		currentStatus = Status.drag_sling;
-		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-		
-		hand.lockBtn(ButtonNames.CLEAR);
-		hand.lockBtn(ButtonNames.DIRICHLET);
-		hand.lockBtn(ButtonNames.ELECTRONS);
-		hand.lockBtn(ButtonNames.PROTONS);
-		hand.lockBtn(ButtonNames.FLIGHT);
-		hand.lockBtn(ButtonNames.ERASER);
-		hand.lockBtn(ButtonNames.MODE_SELECTOR);
-		hand.lockBtn(ButtonNames.PAUSE);
 	}
 	
+	@Override
+	public void init() {
+		currentStatus = Status.drag_sling;
+		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
+
+		hand.lockAllButtons();
+		hand.unlockBtn(ButtonNames.HOME);
+		hand.slingshotHandler.setLocked(false);
+		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX() + 3f, GameProcess.cat.getY(), GameProcess.cat.getX() + 22f, GameProcess.cat.getY(), 2000);
+	}
+
 	@Override
 	public void update() {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
@@ -38,7 +38,9 @@ public class Tutorial1 extends Tutorial {
 				currentStatus = Status.press_flight;
 				hand.unlockBtn(ButtonNames.FLIGHT);
 				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 10000);
-				hand.slingshotHandler.changeSlingshot(10, 0);
+				hand.slingshotHandler.changeSlingshot(20, 0);
+				hand.slingshotHandler.setLocked(true);
+				TutorialManager.pointer.hide();
 			}
 			break;
 		case press_flight:
@@ -49,6 +51,10 @@ public class Tutorial1 extends Tutorial {
 		case flight:
 			break;
 		}
+	}
+
+	@Override
+	public void cleanup() {
 	}
 
 }
