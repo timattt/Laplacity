@@ -273,13 +273,14 @@ public class GameProcess {
 		//---------------------------------------------
 		BackgroundRenderer.render();
 		TilesRenderer.render();
-		DensityRenderer.render();
 		LaplacityField.renderStructuresCached(flightPhysicsTime * 1000f);
 		
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatched(flightPhysicsTime * 1000f);
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
+		
+		DensityRenderer.render();
 		
 		TrajectoryRenderer.render();
 		
@@ -446,7 +447,7 @@ public class GameProcess {
 	
 	public static boolean tryToAddStaticParticle(ChargedParticle part) {
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
-		if (tl != null && tl.isAllowDensityChange() && !isParticleTooClose(part)) {
+		if (tl != null && tl.isAllowDensityChange() && !isParticleTooClose(part) && LaplacityField.canPlaceParticle(part.getX(), part.getY())) {
 			LaplacityAssets.playSound(LaplacityAssets.placeSound);
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
@@ -474,7 +475,7 @@ public class GameProcess {
 		EmptyTile from = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		EmptyTile to = LaplacityField.getTileFromWorldCoords(x, y);
 		
-		if (to == null || from == null || !to.isAllowDensityChange()) {
+		if (to == null || from == null || !to.isAllowDensityChange() || !LaplacityField.canPlaceParticle(x, y)) {
 			return false;
 		}
 		
