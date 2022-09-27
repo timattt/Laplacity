@@ -8,9 +8,11 @@ public class SlingshotHandler {
     private float slingshotX;
     private float slingshotY;
     private boolean wasSet;
+    private boolean isLocked;
 
     public SlingshotHandler() {
         wasSet = false;
+        isLocked = false;
     }
 
     public void setSlingshot(Cat cat, float slingshotX, float slingshotY) {
@@ -32,6 +34,14 @@ public class SlingshotHandler {
         }
 
         return false;
+    }
+
+    public void setLocked(boolean isLocked) {
+        this.isLocked = isLocked;
+    }
+
+    public boolean getLocked() {
+        return isLocked;
     }
 
     @Override

@@ -133,8 +133,14 @@ public class Cat implements CollisionListener {
 			slingshotX = x;
 			slingshotY = y;
 		}
-		gameUI.guiHandler.slingshotHandler.setSlingshot(this, slingshotX, slingshotY);
+	}
 
+	public float getSlingshotX() {
+		return slingshotX;
+	}
+
+	public float getSlingshotY() {
+		return slingshotY;
 	}
 	
 	public void makeParticleMoveWithStartVelocity() {

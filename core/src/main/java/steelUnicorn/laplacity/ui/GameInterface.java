@@ -417,9 +417,8 @@ public class GameInterface extends Stage implements GestureListener {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		float len2 = getlen2ToMainParticle(screenX, screenY);
 
-		if (len2 < 4 * PARTICLE_SIZE * PARTICLE_SIZE) {
+		if (len2 < 4 * PARTICLE_SIZE * PARTICLE_SIZE && !guiHandler.slingshotHandler.getLocked()) {
 			TrajectoryRenderer.changingDir = true;
-			touchDragged(screenX, screenY, pointer);
 			return true;
 		} else {
 			TrajectoryRenderer.changingDir = false;
@@ -433,7 +432,10 @@ public class GameInterface extends Stage implements GestureListener {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		TrajectoryRenderer.changingDir = false;
+		if (TrajectoryRenderer.changingDir) {
+			guiHandler.slingshotHandler.setSlingshot(cat, cat.getSlingshotX(), cat.getSlingshotY());
+			TrajectoryRenderer.changingDir = false;
+		}
 		
 		//
 		CameraManager.getCameraWorldPos(screenX, screenY, TMP1);
