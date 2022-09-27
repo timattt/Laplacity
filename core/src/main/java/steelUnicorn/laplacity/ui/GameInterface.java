@@ -36,6 +36,7 @@ import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.dialogs.CatDialog;
 import steelUnicorn.laplacity.ui.dialogs.ClearDialog;
+import steelUnicorn.laplacity.ui.dialogs.MessageBoxDialog;
 import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
 import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
@@ -58,6 +59,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private SettingsDialog settingsDialog;
 	private CatDialog catDialog;
 	private ClearDialog clearDialog;
+	private MessageBoxDialog msgBox;
 
 	public CatFoodInterface catFI;
 
@@ -121,6 +123,7 @@ public class GameInterface extends Stage implements GestureListener {
 		});
 		catDialog = new CatDialog(skin, "cat_hungry");
 		clearDialog = new ClearDialog(skin);
+		msgBox = new MessageBoxDialog(skin, "MessageBox");
 		//FpsCounter
 		if (Laplacity.isDebugEnabled()) {
 			FpsCounter fpsCounter = new FpsCounter(skin, "noback");
@@ -348,6 +351,40 @@ public class GameInterface extends Stage implements GestureListener {
 				}
 			}
 		});
+	}
+
+	/**
+	 * Показывает сообщение с текстом text.
+	 * @param text текст сообщения
+	 */
+	public void showMessage(String text) {
+		msgBox.show(this, text);
+	}
+	/**
+	 * Показывает сообщение с текстом text на showTime секунд.
+	 * @param text текст сообщения
+	 * @param showTime время показа
+	 */
+	public void showMessage(String text, float showTime) {
+		msgBox.show(this, text, showTime);
+	}
+
+	/**
+	 * Меняет текст сообщения.
+	 * @param text новый текст сообщения
+	 */
+	public void changeMessageText(String text) {
+		msgBox.setLabelText(text);
+	}
+	/**
+	 * Скрывает сообщение.
+	 */
+	public void hideMessage() {
+		msgBox.hide();
+	}
+
+	public void resize() {
+		msgBox.stageResized(this);
 	}
 
 	@Override
