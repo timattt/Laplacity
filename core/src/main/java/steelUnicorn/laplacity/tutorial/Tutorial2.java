@@ -29,6 +29,8 @@ public class Tutorial2 extends Tutorial {
 		hand.unlockBtn(ButtonNames.PROTONS);
 		hand.slingshotHandler.setLocked(true);
 		hand.startFlashing(ButtonNames.PROTONS, 0, 0.25f, 100000);
+		
+		GameProcess.gameUI.showMessage("Press the flashing button\nselect particle placer mode!");
 	}
 
 	@Override
@@ -42,6 +44,7 @@ public class Tutorial2 extends Tutorial {
 				hand.lockBtn(ButtonNames.PROTONS);
 				hand.stopFlashing();
 				TutorialManager.pointer.linearAnimation(100, 44, 110, 54, 1000);
+				GameProcess.gameUI.changeMessageText("Now put the particle in the specified place\nso that the cat reaches the exit!");
 			}
 			break;
 		case place_particle:
@@ -54,6 +57,7 @@ public class Tutorial2 extends Tutorial {
 				TutorialManager.pointer.hide();
 				TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
 						GameProcess.cat.getX() - 10, GameProcess.cat.getY() + 10, 1000);
+				GameProcess.gameUI.changeMessageText("Drag the sling to set cat's\nstart flight direction!");
 			}
 			break;
 		case drag_sling:
@@ -65,6 +69,7 @@ public class Tutorial2 extends Tutorial {
 				
 				hand.unlockBtn(ButtonNames.FLIGHT);	
 				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 100000);
+				GameProcess.gameUI.changeMessageText("Press the flight button to start flight!");
 			}
 			break;
 		case press_flight:
@@ -72,6 +77,7 @@ public class Tutorial2 extends Tutorial {
 				hand.lockBtn(ButtonNames.FLIGHT);
 				hand.stopFlashing();
 				currentStatus = Status.flight;
+				GameProcess.gameUI.hideMessage();
 			}
 			break;
 		case flight:
@@ -79,6 +85,11 @@ public class Tutorial2 extends Tutorial {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void cleanup() {
+		GameProcess.gameUI.hideMessage();
 	}
 
 }
