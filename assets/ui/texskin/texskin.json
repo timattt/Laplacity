@@ -226,6 +226,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	MessageBoxLabel: {
 		font: RS_extrabold32
 		fontColor: messageboxred
+		background: label_back_short
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
@@ -281,11 +282,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 		titleFont: RS_extrabold32
 		titleFontColor: textcolor
 		stageBackground: black_pixel
-	}
-	MessageBox: {
-		background: label_back_short
-		titleFont: RS_extrabold32
-		titleFontColor: messageboxred
 	}
 }
 }
