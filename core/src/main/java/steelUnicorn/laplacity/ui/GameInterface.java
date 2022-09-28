@@ -36,7 +36,6 @@ import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.dialogs.CatDialog;
 import steelUnicorn.laplacity.ui.dialogs.ClearDialog;
-import steelUnicorn.laplacity.ui.dialogs.MessageBoxDialog;
 import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
 import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
@@ -59,7 +58,7 @@ public class GameInterface extends Stage implements GestureListener {
 	private SettingsDialog settingsDialog;
 	private CatDialog catDialog;
 	private ClearDialog clearDialog;
-	private MessageBoxDialog msgBox;
+	private MessageBox msgBox;
 
 	public CatFoodInterface catFI;
 
@@ -123,7 +122,7 @@ public class GameInterface extends Stage implements GestureListener {
 		});
 		catDialog = new CatDialog(skin, "cat_hungry");
 		clearDialog = new ClearDialog(skin);
-		msgBox = new MessageBoxDialog(skin, "MessageBox");
+		msgBox = new MessageBox("", skin, "MessageBoxLabel");
 		//FpsCounter
 		if (Laplacity.isDebugEnabled()) {
 			FpsCounter fpsCounter = new FpsCounter(skin, "noback");
@@ -374,7 +373,7 @@ public class GameInterface extends Stage implements GestureListener {
 	 * @param text новый текст сообщения
 	 */
 	public void changeMessageText(String text) {
-		msgBox.setLabelText(text);
+		msgBox.setText(text);
 	}
 	/**
 	 * Скрывает сообщение.
