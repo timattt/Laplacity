@@ -14,10 +14,8 @@ public class PathDragManager {
 	private static int completedNumber;
 	
 	private static final Vector2 tmp = new Vector2();
-	private static final float REACTION_RAD = 5f;
+	private static final float REACTION_RAD = 10f;
 
-	private static RequestedPoint currentTarget = null;
-	
 	public static void update() {
 		if (requested == null) {
 			return;
@@ -43,12 +41,9 @@ public class PathDragManager {
 		}
 
 		if (pointerTarget != null) {
-			if (currentTarget != pointerTarget) {
-				currentTarget = pointerTarget;
-				TutorialManager.pointer.linearAnimation(pointerTarget.x, pointerTarget.y, pointerTarget.x + 2f, pointerTarget.y + 2f, 1000);
-
-			}
+			TutorialManager.pointer.moveTo(pointerTarget.x, pointerTarget.y, 1000);
 		}
+		
 	}
 
 	public static void newTask(float[][] targets) {

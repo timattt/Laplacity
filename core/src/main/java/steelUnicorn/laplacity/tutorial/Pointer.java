@@ -28,9 +28,6 @@ public class Pointer {
 	
 	private boolean linearAnimation = false;
 	
-	public Pointer() {
-	}
-	
 	public void pointTo(float x, float y) {
 		this.x = x;
 		this.y = y;
@@ -55,6 +52,17 @@ public class Pointer {
 		linearAnimation = true;
 	}
 	
+	public void moveTo(float endX, float endY, long cycle) {
+		linearAnimation = false;
+		if (x > 10000f) {
+			x = endX;
+			y = endY;
+			return;
+		}
+		
+		linearAnimation(x, y, endX, endY, cycle);
+	}
+	
 	public void draw() {
 		GameProcess.gameBatch.enableBlending();
 		GameProcess.gameBatch.draw(LaplacityAssets.HINT_POINTER, x - width * 0.4f, y, width, height);
@@ -67,7 +75,8 @@ public class Pointer {
 
 			long delta = cur - startTime;
 
-			float coef = (1f + (float) Math.sin(2 * 3.1415f * (float) delta / (float) cycleTime)) / 2f;
+			float arg = 2 * 3.1415f * (float) delta / (float) cycleTime;
+			float coef = (1f + (float) Math.sin(arg)) / 2f;
 
 			x = startX + coef * (endX - startX);
 			y = startY + coef * (endY - startY);

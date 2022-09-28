@@ -39,6 +39,7 @@ public class TutorialManager {
 	}
 	
 	public static void cleanup() {
+		pointer.hide();
 		if (currentTutorial != null) {
 			currentTutorial.cleanup();
 			currentTutorial = null;
