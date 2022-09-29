@@ -21,11 +21,11 @@ public class CatFood {
     private final Preferences foodPrefs;
     public CatFoodTimer timer;
 
-    public static final int MAX_LAUNCHES = 20;
+    public static final int MAX_LAUNCHES = 25;
     private int launches;
 
     private static final int REWARDED_LAUNCHES = 10;
-    private static final int INTERSTITIAL_LAUNCHES = 2;
+    private static final int INTERSTITIAL_LAUNCHES = 3;
 
     /**
      * Подгружает из Preferences количество еды, создает таймер и вызывает {@link #checkBounds()}
