@@ -225,7 +225,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	}
 	MessageBoxLabel: {
 		font: RS_extrabold32
-		fontColor: messageboxred
+		fontColor: textcolor
 		background: label_back_short
 	}
 }
