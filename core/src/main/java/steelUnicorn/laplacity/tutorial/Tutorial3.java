@@ -31,7 +31,7 @@ public class Tutorial3 extends Tutorial {
 		hand.slingshotHandler.setLocked(true);
 		hand.startFlashing(ButtonNames.DIRICHLET, 0, 0.25f, 100000);
 		
-		GameProcess.gameUI.showMessage("Press the flashing button\nto select spray spreading mode!");
+		GameProcess.gameUI.showMessage("Press the flashing button\nto select spray spreading mode!\nIt will create a continuous attracting cloud.");
 	}	
 	
 	private static float[][] targets = new float[][] {

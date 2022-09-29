@@ -32,7 +32,7 @@ public class Tutorial2 extends Tutorial {
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
 				GameProcess.cat.getX() - 10, GameProcess.cat.getY() + 10, 1000);
-		GameProcess.gameUI.showMessage("What are those strange red things down there?\nLets check. Drag the slingshot to fly!");
+		GameProcess.gameUI.showMessage("What are those strange red things?\nLets check. Drag the slingshot to fly!");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class Tutorial2 extends Tutorial {
 				
 				hand.unlockBtn(ButtonNames.FLIGHT);	
 				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 100000);
-				GameProcess.gameUI.changeMessageText("Press the flight button to start flight!");
+				GameProcess.gameUI.changeMessageText("Press the flight button to start flying!");
 			}
 			break;
 		case press_flight1:
@@ -66,7 +66,7 @@ public class Tutorial2 extends Tutorial {
 				hand.unlockBtn(ButtonNames.PROTONS);
 				hand.slingshotHandler.setLocked(true);
 				hand.startFlashing(ButtonNames.PROTONS, 0, 0.25f, 100000);
-				GameProcess.gameUI.showMessage("As you can see you died.\nYou have to overlap it. Press the flashing button\nto select particle placer mode!");
+				GameProcess.gameUI.showMessage("As you can see they are deadly.\nLet's fly around them.\nPress the flashing button\nto select particle placer mode!");
 			}
 			break;
 		case select_particle:

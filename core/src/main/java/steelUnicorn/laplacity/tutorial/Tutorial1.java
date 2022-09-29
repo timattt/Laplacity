@@ -23,7 +23,7 @@ public class Tutorial1 extends Tutorial {
 		hand.unlockBtn(ButtonNames.HOME);
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX() + 3f, GameProcess.cat.getY(), GameProcess.cat.getX() + 22f, GameProcess.cat.getY(), 2000);
-		GameProcess.gameUI.showMessage("Drag the slingshot!");
+		GameProcess.gameUI.showMessage("Drag the slingshot\nto set start direction!");
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class Tutorial1 extends Tutorial {
 				hand.slingshotHandler.changeSlingshot(20, 0);
 				hand.slingshotHandler.setLocked(true);
 				TutorialManager.pointer.hide();
-				GameProcess.gameUI.changeMessageText("Press the flashing button to start flight");
+				GameProcess.gameUI.changeMessageText("Press the flashing button to start flying!");
 			}
 			break;
 		case press_flight:
