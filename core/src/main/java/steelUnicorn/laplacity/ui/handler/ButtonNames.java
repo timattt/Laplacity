@@ -12,4 +12,6 @@ public class ButtonNames {
     public static String DIRICHLET = "Dirichlet";
     public static String ERASER = "Eraser";
     public static String SPEED_UP = "speedUpBtn";
+    public static String INTER = "interBtn";
+    public static String REWARD = "rewardBtn";
 }
