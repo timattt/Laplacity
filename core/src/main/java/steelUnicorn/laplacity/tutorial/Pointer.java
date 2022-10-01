@@ -28,9 +28,16 @@ public class Pointer {
 	
 	private boolean linearAnimation = false;
 	
+	// draw
+	private boolean flipped = false;
+	
 	public void pointTo(float x, float y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	public void setFlipped(boolean val) {
+		flipped = val;
 	}
 	
 	public void hide() {
@@ -50,6 +57,7 @@ public class Pointer {
 		startTime = TimeUtils.millis();
 		
 		linearAnimation = true;
+		flipped = false;
 	}
 	
 	public void moveTo(float endX, float endY, long cycle) {
@@ -65,7 +73,11 @@ public class Pointer {
 	
 	public void draw() {
 		GameProcess.gameBatch.enableBlending();
-		GameProcess.gameBatch.draw(LaplacityAssets.HINT_POINTER, x - width * 0.4f, y, width, height);
+		if (flipped) {
+			GameProcess.gameBatch.draw(LaplacityAssets.HINT_POINTER, x + width * 0.4f, y, -width, -height);
+		} else {
+			GameProcess.gameBatch.draw(LaplacityAssets.HINT_POINTER, x - width * 0.4f, y, width, height);
+		}
 		GameProcess.gameBatch.disableBlending();
 	}
 

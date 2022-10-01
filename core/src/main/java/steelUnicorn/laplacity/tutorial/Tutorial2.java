@@ -34,7 +34,7 @@ public class Tutorial2 extends Tutorial {
 				GameProcess.cat.getX() - 10, GameProcess.cat.getY() + 10, 1000);
 		GameProcess.gameUI.showMessage("What are those strange red things?\nLets check. Drag the slingshot to fly!");
 	}
-
+	
 	@Override
 	public void update() {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;

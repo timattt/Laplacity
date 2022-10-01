@@ -21,6 +21,14 @@ public class TutorialManager {
 		if (GameProcess.levelNumber == 3 && GameProcess.sectionNumber == 1) {
 			currentTutorial = new Tutorial3();
 		}
+		// forth
+		if (GameProcess.levelNumber == 4 && GameProcess.sectionNumber == 1) {
+			currentTutorial = new Tutorial4();
+		}
+		// fifth
+		if (GameProcess.levelNumber == 5 && GameProcess.sectionNumber == 1) {
+			currentTutorial = new Tutorial5();
+		}
 		
 		if (currentTutorial != null) {
 			currentTutorial.init();
