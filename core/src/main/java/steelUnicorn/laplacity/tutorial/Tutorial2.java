@@ -61,12 +61,14 @@ public class Tutorial2 extends Tutorial {
 			}
 			break;
 		case flight1:
+			GameProcess.timeSpeedUp = 2;
 			if (GameProcess.currentGameMode != GameMode.FLIGHT) {
 				currentStatus = Status.select_particle;
 				hand.unlockBtn(ButtonNames.PROTONS);
 				hand.slingshotHandler.setLocked(true);
 				hand.startFlashing(ButtonNames.PROTONS, 0, 0.25f, 100000);
 				GameProcess.gameUI.showMessage("As you can see they are deadly.\nLet's fly around them.\nPress the flashing button\nto select particle placer mode!");
+				GameProcess.timeSpeedUp = 1;
 			}
 			break;
 		case select_particle:
@@ -87,19 +89,20 @@ public class Tutorial2 extends Tutorial {
 				GameProcess.changeGameMode(GameMode.NONE);
 				hand.unlockBtn(ButtonNames.FLIGHT);	
 				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 100000);
-				GameProcess.gameUI.changeMessageText("Flying trajectory has changed!\nPress the flight button to start flight!");
+				GameProcess.gameUI.changeMessageText("Flying trajectory has changed!\nPress the flight button to start flying!");
 			}
 			break;
 		case press_flight2:
+			
 			if (hand.wasButtonPressed(ButtonNames.FLIGHT)) {
 				hand.lockBtn(ButtonNames.FLIGHT);
 				hand.stopFlashing();
 				currentStatus = Status.flight2;
 				GameProcess.gameUI.hideMessage();
-				
 			}
 			break;
 		case flight2:
+			GameProcess.timeSpeedUp = 2;
 			break;
 		default:
 			break;
@@ -109,6 +112,7 @@ public class Tutorial2 extends Tutorial {
 	@Override
 	public void cleanup() {
 		GameProcess.gameUI.hideMessage();
+		GameProcess.timeSpeedUp = 1;
 	}
 
 }

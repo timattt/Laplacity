@@ -115,7 +115,8 @@ public class Tutorial5 extends Tutorial {
 				hand.slingshotHandler.setLocked(false);
 				TutorialManager.pointer.hide();
 				TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
-						GameProcess.cat.getX() - 10, GameProcess.cat.getY() - 20, 1000);
+						GameProcess.cat.getX() - 5, GameProcess.cat.getY() - 10, 1000);
+				TutorialManager.pointer.setFlipped(true);
 				GameProcess.gameUI.showMessage("Drag the sling to set cat's\nstart flight direction!");
 			}
 			break;
