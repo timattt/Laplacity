@@ -27,8 +27,10 @@ public class Tutorial4 extends Tutorial {
 		// TODO ELVEG -4 FOOD HERE
 		//
 		
-		
-		
+		hand.unlockBtn(ButtonNames.REWARD);
+		hand.startFlashing(ButtonNames.REWARD, 0, 0.25f, 10000);
+		hand.unlockBtn(ButtonNames.REWARD);
+		GameProcess.gameUI.showMessage("Every flight consumes food.\nPress flashing button to refill it.");
 	}
 
 	@Override
@@ -37,11 +39,12 @@ public class Tutorial4 extends Tutorial {
 		
 		switch (currentStatus) {
 		case press_food:
-			if (true) {
+			if (hand.wasButtonPressed(ButtonNames.INTER) || hand.wasButtonPressed(ButtonNames.REWARD)) {
 				currentStatus = Status.drag_sling;
+				hand.stopFlashing();
 				hand.slingshotHandler.setLocked(false);
 				TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(), GameProcess.cat.getX() - 17f, GameProcess.cat.getY() - 10f, 2000);
-				GameProcess.gameUI.showMessage("Drag the slingshot\nto set start direction!");
+				GameProcess.gameUI.changeMessageText("As you can see the food restores!\nNow drag the slingshot\nto set start direction!");
 			}
 			break;
 		case drag_sling:
