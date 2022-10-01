@@ -176,6 +176,9 @@ public class GameInterface extends Stage implements GestureListener {
 		centerLayout.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
 		visibleActors.add(catFI);
+		guiHandler.putButton(catFI.interstitialBtn);
+		guiHandler.putButton(catFI.rewardedBtn);
+
 
 		if (Laplacity.isDebugEnabled()) {
 			TextButton skip = new TextButton("Skip", skin);
