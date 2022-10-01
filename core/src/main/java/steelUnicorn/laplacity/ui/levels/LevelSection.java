@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.ui.handler.FlashingBtnHandler;
 import steelUnicorn.laplacity.utils.PlayerProgress.SectionProgress;
 
 
@@ -42,10 +43,15 @@ public class LevelSection extends Table {
     private Table sectionLayout;
     private Table levelButtons;
     private TextButton lockButton;
+    private static final float lockFlashingInterval = 0.5f;
+    private static final int lockFlashingRepeat = (int) (10 / lockFlashingInterval);
+
 
 
     private final int sectionNumber;
     private final SectionProgress sectionProgress;
+
+    private FlashingBtnHandler flashingBtnHandler;
 
     /**
      * Инициализирует секцию.
@@ -168,6 +174,15 @@ public class LevelSection extends Table {
             lockButton.setDisabled(progress.starsCollected < sectionProgress.getStarsToOpen());
             lockButton.setText(progress.starsCollected +
                     "/" + sectionProgress.getStarsToOpen());
+        }
+
+        if (!sectionProgress.isOpened() &&
+                progress.starsCollected >= sectionProgress.getStarsToOpen()) {
+            if (flashingBtnHandler == null) {
+                flashingBtnHandler = new FlashingBtnHandler();
+            }
+            flashingBtnHandler.setBtn(lockButton);
+            flashingBtnHandler.startFlashing(0, lockFlashingInterval, lockFlashingRepeat);
         }
     }
 
