@@ -1,6 +1,7 @@
 package steelUnicorn.laplacity.tutorial;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -23,10 +24,8 @@ public class Tutorial4 extends Tutorial {
 		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.HOME);
 		
-		//
-		// TODO ELVEG -4 FOOD HERE
-		//
-		
+		Globals.catFood.addLaunches(-4);
+
 		hand.unlockBtn(ButtonNames.REWARD);
 		hand.startFlashing(ButtonNames.REWARD, 0, 0.25f, 10000);
 		hand.unlockBtn(ButtonNames.REWARD);

@@ -24,7 +24,7 @@ public class PlayerProgress {
     private final Json json;
     private final Preferences prefs;
 
-    private static final int[] starsToOpenSection = new int[]{0, 4, 24, 44, 66, 88, 106};
+    private static final int[] starsToOpenSection = new int[]{0, 9, 30, 52, 74, 96, 120};
     public int starsCollected = 0;
 
     private Array<SectionProgress> progress;
