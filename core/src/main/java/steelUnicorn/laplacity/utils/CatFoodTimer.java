@@ -20,7 +20,7 @@ public class CatFoodTimer {
     private final CatFood catFoodInstance;
     private CatFoodInterface currentInterface;
 
-    public static final int MAX_VALUE = Laplacity.isDebugEnabled() ? 5 : 60; //max значение таймера
+    public static final int MAX_VALUE = Laplacity.isDebugEnabled() ? 15 : 60; //max значение таймера
     private static final int SLOWDOWN = 10; //замедление таймера при выходе из игры
 
     private int sec;
@@ -36,6 +36,16 @@ public class CatFoodTimer {
         public void run() {
             reduceTimer(1);
             setLabelTime();
+
+            if (min == 0 && sec == CatFoodInterface.toReload) {
+                if (currentInterface != null) {
+                    currentInterface.show();
+                }
+            } else if (getTime() == MAX_VALUE - CatFoodInterface.toReload) {
+                if (currentInterface != null) {
+                    currentInterface.hide();
+                }
+            }
         }
     };
 
@@ -165,6 +175,9 @@ public class CatFoodTimer {
         catFoodInstance.reload();
         if (currentInterface != null) {
             currentInterface.update(catFoodInstance.getLaunches());
+            if (catFoodInstance.getLaunches() == CatFood.MAX_LAUNCHES) {
+                currentInterface.hide();
+            }
         }
         checkLabelVisible();
     }

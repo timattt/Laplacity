@@ -1,12 +1,15 @@
 package steelUnicorn.laplacity.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
@@ -29,11 +32,28 @@ public class CatFoodInterface extends Table {
     private final Label text;
     private final Label timerLabel;
 
+    private static final float firstDur = 10f;
+    private static final float fadeOutDur = 0.5f;
+    private static final float fadeInDur = 0.5f;
+    public static final float toReload = 3f;
+
+    private boolean isShown;
+
+    Timer.Task openLevel = new Timer.Task() {
+        @Override
+        public void run() {
+            CatFoodInterface.this.addAction(Actions.sequence(Actions.fadeOut(fadeOutDur),
+                                                            Actions.visible(false),
+                                                            Actions.touchable(Touchable.disabled)));
+        }
+    };
+
     /**
      * Создает надписи с количеством еды и временем таймера и кнопки для пополнения еды.
      * @param skin скин с текстурами кнопок и лейблов.
      */
     public CatFoodInterface(Skin skin) {
+        isShown = true;
         defaults().pad(padSize);
 
         text = new Label("Food: 00", skin);
@@ -66,6 +86,8 @@ public class CatFoodInterface extends Table {
         add(timerLabel).size(timerLabel.getPrefWidth(), timerLabel.getPrefHeight());
 
         update(Globals.catFood.getLaunches());
+
+        onShow();
     }
 
     /**
@@ -78,5 +100,39 @@ public class CatFoodInterface extends Table {
 
     public Label getTimerLabel() {
         return timerLabel;
+    }
+
+
+    public void show() {
+        clearActions();
+        if (openLevel.isScheduled()) {
+            openLevel.cancel();
+        }
+        if (!isShown) {
+            this.addAction(Actions.sequence(Actions.visible(true),
+                    Actions.touchable(Touchable.enabled),
+                    Actions.fadeIn(fadeInDur)));
+            isShown = true;
+        }
+    }
+
+    public void hide() {
+        clearActions();
+        if (isShown) {
+            this.addAction(Actions.sequence(Actions.fadeOut(fadeOutDur),
+                    Actions.visible(false),
+                    Actions.touchable(Touchable.disabled)));
+            isShown = false;
+        }
+    }
+
+    public void onShow() {
+        clearActions();
+        this.getColor().a = 1;
+        if (openLevel.isScheduled()) {
+            openLevel.cancel();
+        }
+
+        Timer.schedule(openLevel, firstDur);
     }
 }
