@@ -258,6 +258,11 @@ public class GameInterface extends Stage implements GestureListener {
 		if (currentGameMode != GameMode.FLIGHT) {
 			selectedMode.setStyle(selectedMode.getSkin().get("Square" + currentGameMode.getName(),
 					ImageButton.ImageButtonStyle.class));
+
+			if (isPreviousFlight) {
+				catFI.showHide();
+				isPreviousFlight = false;
+			}
 		}
 		modes.setVisible(currentGameMode == GameMode.NONE);	//сразу видимы если не выбран мод
 
@@ -267,6 +272,7 @@ public class GameInterface extends Stage implements GestureListener {
 				actor.setVisible(false);
 			}
 			speedUpBtn.setVisible(true);
+			isPreviousFlight = true;
 		} else {
 			flightCell.setActor(flightBtn);
 			for (Actor actor : visibleActors) {

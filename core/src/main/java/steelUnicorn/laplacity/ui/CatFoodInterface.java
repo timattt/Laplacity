@@ -32,19 +32,39 @@ public class CatFoodInterface extends Table {
     private final Label text;
     private final Label timerLabel;
 
-    private static final float firstDur = 10f;
-    private static final float fadeOutDur = 0.5f;
-    private static final float fadeInDur = 0.5f;
-    public static final float toReload = 3f;
+    public static final float showHideDur = 10f;
+    private static final float fadeOutDur = 0.1f;
+    private static final float fadeInDur = 0.1f;
 
     private boolean isShown;
 
-    Timer.Task openLevel = new Timer.Task() {
+    private final Timer.Task hideTask = new Timer.Task() {
         @Override
         public void run() {
-            CatFoodInterface.this.addAction(Actions.sequence(Actions.fadeOut(fadeOutDur),
-                                                            Actions.visible(false),
-                                                            Actions.touchable(Touchable.disabled)));
+            if (isShown) {
+                CatFoodInterface.this.addAction(
+                        Actions.sequence(
+                                Actions.fadeOut(fadeOutDur),
+                                Actions.visible(false),
+                                Actions.touchable(Touchable.disabled)
+                        ));
+                isShown = false;
+            }
+        }
+    };
+
+    private final Timer.Task showTask = new Timer.Task() {
+        @Override
+        public void run() {
+            if (!isShown) {
+                CatFoodInterface.this.addAction(
+                        Actions.sequence(
+                                Actions.visible(true),
+                                Actions.touchable(Touchable.enabled),
+                                Actions.fadeIn(fadeInDur)
+                        ));
+                isShown = true;
+            }
         }
     };
 
@@ -86,8 +106,7 @@ public class CatFoodInterface extends Table {
         add(timerLabel).size(timerLabel.getPrefWidth(), timerLabel.getPrefHeight());
 
         update(Globals.catFood.getLaunches());
-
-        onShow();
+        showHide();
     }
 
     /**
@@ -102,37 +121,17 @@ public class CatFoodInterface extends Table {
         return timerLabel;
     }
 
-
-    public void show() {
+    /**
+     * Показывает еду сразу и после {@link #showHideDur} скрывает блок.
+     *
+     * @see #showHideDur
+     */
+    public void showHide() {
         clearActions();
-        if (openLevel.isScheduled()) {
-            openLevel.cancel();
-        }
-        if (!isShown) {
-            this.addAction(Actions.sequence(Actions.visible(true),
-                    Actions.touchable(Touchable.enabled),
-                    Actions.fadeIn(fadeInDur)));
-            isShown = true;
-        }
-    }
+        showTask.cancel();
+        hideTask.cancel();
 
-    public void hide() {
-        clearActions();
-        if (isShown) {
-            this.addAction(Actions.sequence(Actions.fadeOut(fadeOutDur),
-                    Actions.visible(false),
-                    Actions.touchable(Touchable.disabled)));
-            isShown = false;
-        }
-    }
-
-    public void onShow() {
-        clearActions();
-        this.getColor().a = 1;
-        if (openLevel.isScheduled()) {
-            openLevel.cancel();
-        }
-
-        Timer.schedule(openLevel, firstDur);
+        Timer.schedule(showTask, 0);
+        Timer.schedule(hideTask, showHideDur);
     }
 }

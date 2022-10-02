@@ -53,6 +53,7 @@ public class GameProcess {
 	//========================================================================================
 	public static int levelNumber;
 	public static int sectionNumber;
+	public static boolean isPreviousFlight = false;
 	public static GameMode currentGameMode;
 	private static int totalStarts = 0;
 
