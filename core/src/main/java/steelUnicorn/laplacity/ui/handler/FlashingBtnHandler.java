@@ -68,9 +68,7 @@ public class FlashingBtnHandler {
     }
 
     public void startFlashing(float delay, float interval, int repeatCount) {
-        if (flashingTask.isScheduled()) {
-            flashingTask.cancel();
-        }
+        stopFlashing();
 
         countNum = repeatCount + 1;
         Timer.schedule(flashingTask, delay, interval, repeatCount);
