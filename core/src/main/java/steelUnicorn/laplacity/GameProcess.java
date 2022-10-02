@@ -226,6 +226,12 @@ public class GameProcess {
 		if (levelWorld == null) {
 			return;
 		}
+		LaplacityAssets.elapsedTime += delta;
+		if (LaplacityAssets.elapsedTime > LaplacityAssets.changeDur) {
+			if (LaplacityAssets.music != null && LaplacityAssets.music.isLooping()) {
+				LaplacityAssets.music.setLooping(false);
+			}
+		}
 		
 		// update
 		//---------------------------------------------
