@@ -179,9 +179,10 @@ public class LevelSection extends Table {
         if (!sectionProgress.isOpened() &&
                 progress.starsCollected >= sectionProgress.getStarsToOpen()) {
             if (flashingBtnHandler == null) {
+                //Each section has only 1 lockButton so need to setBtn only once.
                 flashingBtnHandler = new FlashingBtnHandler();
+                flashingBtnHandler.setBtn(lockButton);
             }
-            flashingBtnHandler.setBtn(lockButton);
             flashingBtnHandler.startFlashing(0, lockFlashingInterval, lockFlashingRepeat);
         }
     }
