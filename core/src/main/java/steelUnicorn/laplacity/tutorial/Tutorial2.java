@@ -38,7 +38,7 @@ public class Tutorial2 extends Tutorial {
 	@Override
 	public void update() {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-		
+				
 		switch (currentStatus) {
 		case drag_sling:
 			if (hand.slingshotHandler.wasSlingshotSet()) {
@@ -57,18 +57,22 @@ public class Tutorial2 extends Tutorial {
 				hand.lockBtn(ButtonNames.FLIGHT);
 				hand.stopFlashing();
 				currentStatus = Status.flight1;
-				GameProcess.gameUI.hideMessage();
+				
+				// TODO ELVEG ???
+				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 1f);
+				hand.unlockBtn(ButtonNames.SPEED_UP);
+				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
+				//
 			}
 			break;
 		case flight1:
-			GameProcess.timeSpeedUp = 2;
 			if (GameProcess.currentGameMode != GameMode.FLIGHT) {
+				hand.stopFlashing();
 				currentStatus = Status.select_particle;
 				hand.unlockBtn(ButtonNames.PROTONS);
 				hand.slingshotHandler.setLocked(true);
 				hand.startFlashing(ButtonNames.PROTONS, 0, 0.25f, 100000);
 				GameProcess.gameUI.showMessage("As you can see they are deadly.\nLet's fly around them.\nPress the flashing button\nto select particle placer mode!");
-				GameProcess.timeSpeedUp = 1;
 			}
 			break;
 		case select_particle:
@@ -93,16 +97,20 @@ public class Tutorial2 extends Tutorial {
 			}
 			break;
 		case press_flight2:
-			
 			if (hand.wasButtonPressed(ButtonNames.FLIGHT)) {
 				hand.lockBtn(ButtonNames.FLIGHT);
 				hand.stopFlashing();
 				currentStatus = Status.flight2;
-				GameProcess.gameUI.hideMessage();
+				
+				// TODO ELVEG ???
+				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 1f);
+				hand.unlockBtn(ButtonNames.SPEED_UP);
+				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
+				//
 			}
 			break;
 		case flight2:
-			GameProcess.timeSpeedUp = 2;
+			hand.stopFlashing();
 			break;
 		default:
 			break;
@@ -112,7 +120,7 @@ public class Tutorial2 extends Tutorial {
 	@Override
 	public void cleanup() {
 		GameProcess.gameUI.hideMessage();
-		GameProcess.timeSpeedUp = 1;
+		//GameProcess.timeSpeedUp = 1;
 	}
 
 }
