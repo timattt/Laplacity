@@ -235,7 +235,7 @@ public class Cat implements CollisionListener {
 	}
 
 	private void genHitParts() {
-		ParticlesManager.createParticleInRandomCircle(interpX(), interpY(), CAT_SIZE, CAT_SIZE, 4*CAT_SIZE, 1000, LaplacityAssets.PARTICLES_BOOM_REGIONS, 90);
+		ParticlesManager.createParticleInRandomCircle(interpX(), interpY(), CAT_SIZE, CAT_SIZE, 4*CAT_SIZE, 1000, LaplacityAssets.PARTICLES_BOOM_REGIONS, 90).generateRandomToken();
 	}
 	
 	@Override
