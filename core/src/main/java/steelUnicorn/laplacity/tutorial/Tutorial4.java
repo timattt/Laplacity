@@ -29,7 +29,7 @@ public class Tutorial4 extends Tutorial {
 		hand.unlockBtn(ButtonNames.REWARD);
 		hand.startFlashing(ButtonNames.REWARD, 0, 0.25f, 10000);
 		hand.unlockBtn(ButtonNames.REWARD);
-		GameProcess.gameUI.showMessage("Every flight consumes food.\nPress flashing button to refill it.");
+		GameProcess.gameUI.showMessage("Every flight consumes food.\nPress the flashing button to refill it.");
 	}
 
 	@Override
