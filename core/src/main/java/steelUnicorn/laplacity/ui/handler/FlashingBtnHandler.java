@@ -54,16 +54,25 @@ public class FlashingBtnHandler {
             usualImgStyle = ((ImageButton) btn).getStyle();
             flashedImgStyle.imageUp = ((ImageButton)btn).getStyle().imageDown;
             flashedImgStyle.imageDown = ((ImageButton)btn).getStyle().imageUp;
+            if (usualImgStyle.checked != null) {
+                flashedImgStyle.checked = ((ImageButton)btn).getStyle().imageUp;
+            }
         } else if (btn instanceof TextButton){
             usualTextBtnStyle = ((TextButton) btn).getStyle();
             flashedTextBtnStyle.up = ((TextButton)btn).getStyle().down;
             flashedTextBtnStyle.down = ((TextButton)btn).getStyle().up;
             flashedTextBtnStyle.font = usualTextBtnStyle.font;
             flashedTextBtnStyle.fontColor = usualTextBtnStyle.fontColor;
+            if (usualTextBtnStyle.checked != null) {
+                flashedTextBtnStyle.checked = ((TextButton)btn).getStyle().up;
+            }
         } else {
             usualBtnStyle = btn.getStyle();
             flashedBtnStyle.up = btn.getStyle().down;
             flashedBtnStyle.down = btn.getStyle().up;
+            if (usualBtnStyle.checked != null) {
+                flashedBtnStyle.checked = btn.getStyle().up;
+            }
         }
     }
 
