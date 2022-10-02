@@ -3,7 +3,6 @@ package steelUnicorn.laplacity.particles;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -62,7 +61,8 @@ public class ParticlesManager {
 		shader = new ShaderProgram(Gdx.files.internal("shaders/Particles.vert"), Gdx.files.internal("shaders/Particles.frag"));
 	
 		if (!shader.isCompiled()) {
-			Gdx.app.log("shader compile", shader.getLog());
+			throw new RuntimeException("[[" + shader.getLog() + "]]");
+			//Gdx.app.log("shader compile", shader.getLog());
 		}
 	}
 	
@@ -77,11 +77,7 @@ public class ParticlesManager {
 		GameProcess.gameBatch.enableBlending();
 		for (Particle p : particles) {
 			GameProcess.gameBatch.setShader(shader);
-			if (p.getColor() != null) {
-				shader.setUniformf("color", p.getColor());
-			} else {
-				shader.setUniformf("color", Vector3.Zero);
-			}
+			shader.setUniformi("token", p.getRandomToken());
 			GameProcess.gameBatch.draw(p.getTextureRegion(), p.getX()-p.getWidth()/2, p.getY()-p.getHeight()/2, p.getWidth()/2, p.getHeight()/2, p.getWidth(), p.getHeight(), p.getScale(), p.getScale(), p.getAngle());
 		}
 		GameProcess.gameBatch.disableBlending();
