@@ -61,8 +61,7 @@ public class ParticlesManager {
 		shader = new ShaderProgram(Gdx.files.internal("shaders/Particles.vert"), Gdx.files.internal("shaders/Particles.frag"));
 	
 		if (!shader.isCompiled()) {
-			throw new RuntimeException("[[" + shader.getLog() + "]]");
-			//Gdx.app.log("shader compile", shader.getLog());
+			Gdx.app.log("shader compile", shader.getLog());
 		}
 	}
 	
