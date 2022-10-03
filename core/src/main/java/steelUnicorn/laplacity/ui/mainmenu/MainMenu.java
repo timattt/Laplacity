@@ -27,7 +27,7 @@ import steelUnicorn.laplacity.ui.mainmenu.tabs.SettingsTab;
  * слева сверху и снизу.
  */
 public class MainMenu extends Stage {
-    public static final float menuTopPad = UI_WORLD_HEIGHT * 0.28f; // << menu button height ratio
+    public static final float menuTopPad = UI_WORLD_HEIGHT * 0.25f; // << menu button height ratio
     public static final float menuLeftSpace = UI_WORLD_HEIGHT * 0.06f; // << space between elements
     public static final float iconSize = UI_WORLD_HEIGHT * 0.15f;
     private static final float labelPad = UI_WORLD_HEIGHT * 0.05f;

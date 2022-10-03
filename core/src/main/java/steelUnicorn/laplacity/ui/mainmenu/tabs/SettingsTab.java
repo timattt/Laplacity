@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.ui.mainmenu.tabs;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
@@ -119,6 +119,24 @@ public class SettingsTab extends MainMenuTab {
                     }
                 }, "lightingCheckbox");
 
+        settings.row();
+        addCheckbox(settings, "Hide food bar", skin, Settings.isHideFoodBar(),
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        LaplacityAssets.playSound(LaplacityAssets.clickSound);
+                        CheckBox box = (CheckBox) actor;
+                        Settings.setHideFoodBar(box.isChecked());
+                        if (GameProcess.gameUI != null &&
+                                (!box.isChecked() || GameProcess.gameUI.catFI.showing)) {
+                            //Если не скрывать, то нужно вызвать showHide чтобы показать панель
+                            //Если скрывать, то если панель показывается, то нужно вызвать чтобы скрыть
+                            GameProcess.gameUI.catFI.showHide();
+                        }
+                    }
+        }, "hideFoodCheckbox");
+
+
         if (Laplacity.isDebugEnabled()) {
             settings.row();
             addCheckbox(settings, "Show fps", skin, Settings.isShowFps(),
@@ -195,6 +213,8 @@ public class SettingsTab extends MainMenuTab {
                 .setChecked(Settings.getMusicVolume() == Settings.VOLUME.ON.ordinal());
         ((CheckBox)settings.findActor("lightingCheckbox"))
                 .setChecked(Settings.isLightingEnabled());
+        ((CheckBox)settings.findActor("hideFoodCheckbox"))
+                .setChecked(Settings.isHideFoodBar());
         if (Laplacity.isDebugEnabled()) {
             ((CheckBox) settings.findActor("fpsCheckbox"))
                     .setChecked(Settings.isShowFps());

@@ -53,6 +53,7 @@ public class GameProcess {
 	//========================================================================================
 	public static int levelNumber;
 	public static int sectionNumber;
+	public static boolean isPreviousFlight = false;
 	public static GameMode currentGameMode;
 	private static int totalStarts = 0;
 
@@ -226,6 +227,12 @@ public class GameProcess {
 	public static void updateLevel(float delta) {
 		if (levelWorld == null) {
 			return;
+		}
+		LaplacityAssets.elapsedTime += delta;
+		if (LaplacityAssets.elapsedTime > LaplacityAssets.changeDur) {
+			if (LaplacityAssets.music != null && LaplacityAssets.music.isLooping()) {
+				LaplacityAssets.music.setLooping(false);
+			}
 		}
 		
 		// update
