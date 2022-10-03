@@ -23,8 +23,8 @@ public class Tutorial4 extends Tutorial {
 		hand.slingshotHandler.setLocked(true);
 		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.HOME);
-		
-		Globals.catFood.addLaunches(-4);
+
+		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-4));
 
 		hand.unlockBtn(ButtonNames.REWARD);
 		hand.startFlashing(ButtonNames.REWARD, 0, 0.25f, 10000);
