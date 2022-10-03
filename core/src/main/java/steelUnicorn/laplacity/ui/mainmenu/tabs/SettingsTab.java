@@ -1,6 +1,5 @@
 package steelUnicorn.laplacity.ui.mainmenu.tabs;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -129,9 +128,9 @@ public class SettingsTab extends MainMenuTab {
                         CheckBox box = (CheckBox) actor;
                         Settings.setHideFoodBar(box.isChecked());
                         if (GameProcess.gameUI != null &&
-                                (!box.isChecked() || GameProcess.gameUI.catFI.isShown)) {
+                                (!box.isChecked() || GameProcess.gameUI.catFI.showing)) {
                             //Если не скрывать, то нужно вызвать showHide чтобы показать панель
-                            //Если скрывать, то если панель показана, то нужно вызвать чтобы скрыть
+                            //Если скрывать, то если панель показывается, то нужно вызвать чтобы скрыть
                             GameProcess.gameUI.catFI.showHide();
                         }
                     }

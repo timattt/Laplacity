@@ -34,38 +34,35 @@ public class CatFoodInterface extends Table {
     private final Label timerLabel;
 
     public static final float showHideDur = 10f;
-    private static final float fadeOutDur = 0.1f;
-    private static final float fadeInDur = 0.1f;
+    private static final float fadeOutDur = 0.2f;
+    private static final float fadeInDur = 0.2f;
 
-    public boolean isShown;
+    public boolean showing;
 
     private final Timer.Task hideTask = new Timer.Task() {
         @Override
         public void run() {
-            if (isShown) {
-                CatFoodInterface.this.addAction(
-                        Actions.sequence(
-                                Actions.fadeOut(fadeOutDur),
-                                Actions.visible(false),
-                                Actions.touchable(Touchable.disabled)
-                        ));
-                isShown = false;
-            }
+            CatFoodInterface.this.addAction(
+                    Actions.sequence(
+                            Actions.fadeOut(fadeOutDur * CatFoodInterface.this.getColor().a),
+                            Actions.visible(false),
+                            Actions.touchable(Touchable.disabled)
+                    ));
+            showing = false;
         }
     };
 
     private final Timer.Task showTask = new Timer.Task() {
         @Override
         public void run() {
-            if (!isShown) {
-                CatFoodInterface.this.addAction(
-                        Actions.sequence(
-                                Actions.visible(true),
-                                Actions.touchable(Touchable.enabled),
-                                Actions.fadeIn(fadeInDur)
-                        ));
-                isShown = true;
-            }
+            CatFoodInterface.this.addAction(
+                    Actions.sequence(
+                            Actions.visible(true),
+                            Actions.touchable(Touchable.enabled),
+                            Actions.fadeIn(fadeInDur
+                                    * (1 - CatFoodInterface.this.getColor().a))
+                    ));
+            showing = true;
         }
     };
 
@@ -74,7 +71,6 @@ public class CatFoodInterface extends Table {
      * @param skin скин с текстурами кнопок и лейблов.
      */
     public CatFoodInterface(Skin skin) {
-        isShown = true;
         defaults().pad(padSize);
 
         text = new Label("Food: 00", skin);
