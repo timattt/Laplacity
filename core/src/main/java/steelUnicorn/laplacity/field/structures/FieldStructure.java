@@ -247,4 +247,20 @@ public class FieldStructure implements CollisionListener {
 	public void collidedWithParticle() {
 	}
 
+	public float getWorldWidth() {
+		return worldWidth;
+	}
+
+	public float getWorldHeight() {
+		return worldHeight;
+	}
+
+	public float getCenterX() {
+		return centerX;
+	}
+
+	public float getCenterY() {
+		return centerY;
+	}
+
 }

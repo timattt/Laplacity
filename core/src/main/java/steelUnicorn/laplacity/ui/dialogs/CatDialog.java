@@ -18,8 +18,9 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
  * @see Dialog
  */
 public class CatDialog extends Dialog {
-    private static final float exitSize = 0.6f;
+    private static final float exitScale = 0.6f;
     private static final float buttonsPad = Globals.UI_WORLD_WIDTH * 0.03f;
+    private static final float foodScale = 1.2f;
 
     private enum HungryResult {
         INTER,
@@ -67,14 +68,16 @@ public class CatDialog extends Dialog {
         buttons.defaults().space(buttonsPad);
 
         Button btn = new Button(getSkin().get("ExitBtn", Button.ButtonStyle.class));
-        buttons.add(btn).size(btn.getPrefWidth() * exitSize, btn.getPrefHeight() * exitSize);
+        buttons.add(btn).size(btn.getPrefWidth() * exitScale, btn.getPrefHeight() * exitScale);
         setObject(btn, null);
 
         Button inter = new Button(getSkin().get("interstitial_bug", Button.ButtonStyle.class));
-        button(inter, HungryResult.INTER);
+        buttons.add(inter).size(inter.getPrefWidth() * foodScale, inter.getPrefHeight() * foodScale);
+        setObject(inter, HungryResult.INTER);
 
         Button reward = new Button(getSkin().get("rewarded_bug", Button.ButtonStyle.class));
-        button(reward, HungryResult.REWARD);
+        buttons.add(reward).size(reward.getPrefWidth() * foodScale, reward.getPrefHeight() * foodScale);
+        setObject(reward, HungryResult.REWARD);
 
         content.add(buttons).padTop(buttonsPad);
     }

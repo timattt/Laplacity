@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.utils.LevelsParamsParser;
 import steelUnicorn.laplacity.utils.Settings;
@@ -31,6 +32,14 @@ public class LaplacityAssets {
 	public static FileHandle[] levelTracks;
 	private static final Random trackRandomizer = new Random();
 	private static int currentTrack = 0;
+	public static float elapsedTime = 0;
+	public static final float changeDur = 60f * 3; //3 minutes
+	private static final OnCompletionListener randomChange = new OnCompletionListener() {
+		@Override
+		public void onCompletion(Music music) {
+			LaplacityAssets.setLevelTrack();
+		}
+	};
 
 	// SOUNDS
 	public static Sound clickSound; // звук нажатия на кнопки
@@ -368,6 +377,8 @@ public class LaplacityAssets {
 		} else {
 			loopTrackWithIntro(levelTracks[currentTrack].name());
 		}
+		elapsedTime = 0;
+		music.setOnCompletionListener(randomChange);
 	}
 
 	/**
