@@ -20,7 +20,7 @@ public class Tutorial4 extends Tutorial {
 	public void init() {
 		currentStatus = Status.press_food;
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-
+		hand.slingshotHandler.setLocked(true);
 		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.HOME);
 		

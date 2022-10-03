@@ -42,6 +42,7 @@ public class Tutorial2 extends Tutorial {
 		switch (currentStatus) {
 		case drag_sling:
 			if (hand.slingshotHandler.wasSlingshotSet()) {
+				hand.stopFlashing();
 				TutorialManager.pointer.hide();
 				currentStatus = Status.press_flight1;
 				hand.slingshotHandler.setLocked(true);
@@ -86,6 +87,7 @@ public class Tutorial2 extends Tutorial {
 			break;
 		case place_particle:
 			if (hand.particleHandler.wasParticlePlaced()) {
+				hand.stopFlashing();
 				currentStatus = Status.press_flight2;
 				GameProcess.tryToMoveStaticParticle(hand.particleHandler.particle, 100, 44);
 				FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
@@ -110,7 +112,6 @@ public class Tutorial2 extends Tutorial {
 			}
 			break;
 		case flight2:
-			hand.stopFlashing();
 			break;
 		default:
 			break;
