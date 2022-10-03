@@ -46,7 +46,6 @@ public class MainMenu extends Stage {
      */
     public MainMenu(Viewport viewport) {
         super(viewport);
-        setDebugAll(true);
 
         //background
         background = new Image(MAIN_MENU_BACKGROUND);
