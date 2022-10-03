@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.utils.Settings;
 
 /**
  * Интерфейс отображающий количество еды, таймер восстановления и кнопки для восполнения еды
@@ -36,7 +37,7 @@ public class CatFoodInterface extends Table {
     private static final float fadeOutDur = 0.1f;
     private static final float fadeInDur = 0.1f;
 
-    private boolean isShown;
+    public boolean isShown;
 
     private final Timer.Task hideTask = new Timer.Task() {
         @Override
@@ -132,6 +133,8 @@ public class CatFoodInterface extends Table {
         hideTask.cancel();
 
         Timer.schedule(showTask, 0);
-        Timer.schedule(hideTask, showHideDur);
+        if (Settings.isHideFoodBar()) {
+            Timer.schedule(hideTask, showHideDur);
+        }
     }
 }
