@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Timer;
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.utils.Settings;
 
@@ -141,9 +142,11 @@ public class CatFoodInterface extends Table {
         showTask.cancel();
         hideTask.cancel();
 
-        Timer.schedule(showTask, 0);
-        if (Settings.isHideFoodBar()) {
-            Timer.schedule(hideTask, showHideDur);
+        if (GameProcess.currentGameMode != GameMode.FLIGHT) {
+            Timer.schedule(showTask, 0);
+            if (Settings.isHideFoodBar()) {
+                Timer.schedule(hideTask, showHideDur);
+            }
         }
     }
 }
