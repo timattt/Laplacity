@@ -1,17 +1,21 @@
 package steelUnicorn.laplacity.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
+import steelUnicorn.laplacity.utils.Settings;
 
 /**
  * Интерфейс отображающий количество еды, таймер восстановления и кнопки для восполнения еды
@@ -33,6 +37,39 @@ public class CatFoodInterface extends Table {
 
     public Button interstitialBtn;
     public Button rewardedBtn;
+
+    public static final float showHideDur = 10f;
+    private static final float fadeOutDur = 0.2f;
+    private static final float fadeInDur = 0.2f;
+
+    public boolean showing;
+
+    private final Timer.Task hideTask = new Timer.Task() {
+        @Override
+        public void run() {
+            CatFoodInterface.this.addAction(
+                    Actions.sequence(
+                            Actions.fadeOut(fadeOutDur * CatFoodInterface.this.getColor().a),
+                            Actions.visible(false),
+                            Actions.touchable(Touchable.disabled)
+                    ));
+            showing = false;
+        }
+    };
+
+    private final Timer.Task showTask = new Timer.Task() {
+        @Override
+        public void run() {
+            CatFoodInterface.this.addAction(
+                    Actions.sequence(
+                            Actions.visible(true),
+                            Actions.touchable(Touchable.enabled),
+                            Actions.fadeIn(fadeInDur
+                                    * (1 - CatFoodInterface.this.getColor().a))
+                    ));
+            showing = true;
+        }
+    };
 
     /**
      * Создает надписи с количеством еды и временем таймера и кнопки для пополнения еды.
@@ -79,6 +116,7 @@ public class CatFoodInterface extends Table {
         add(timerLabel).size(timerLabel.getPrefWidth(), timerLabel.getPrefHeight());
 
         update(Globals.catFood.getLaunches());
+        showHide();
     }
 
     /**
@@ -91,5 +129,21 @@ public class CatFoodInterface extends Table {
 
     public Label getTimerLabel() {
         return timerLabel;
+    }
+
+    /**
+     * Показывает еду сразу и после {@link #showHideDur} скрывает блок.
+     *
+     * @see #showHideDur
+     */
+    public void showHide() {
+        clearActions();
+        showTask.cancel();
+        hideTask.cancel();
+
+        Timer.schedule(showTask, 0);
+        if (Settings.isHideFoodBar()) {
+            Timer.schedule(hideTask, showHideDur);
+        }
     }
 }
