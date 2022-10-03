@@ -114,8 +114,10 @@ public class CatFood {
         return launches;
     }
 
-    public void addLaunches(int newLaunches) {
+    public int addLaunches(int newLaunches) {
         launches += newLaunches;
+        checkBounds();
+        return launches;
     }
 
     public long getExitTime() {
