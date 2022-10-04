@@ -68,7 +68,8 @@ public class ModeEraser extends GameMode {
 	
 	@Override
 	public void replaced() {
-		touchUp(0, 0);
+		LaplacityAssets.stopSound(LaplacityAssets.eraserLoopSound);
+		isSoundLooping = false;
 	}
 
 }

@@ -82,7 +82,7 @@ public class ModeDirichlet extends GameMode {
 
 	@Override
 	public void replaced() {
-		touchUp(0, 0);
+		tryToStopSoundLooping();
 	}
 
 }
