@@ -80,4 +80,9 @@ public class ModeDirichlet extends GameMode {
 		TrajectoryRenderer.updateTrajectory();
 	}
 
+	@Override
+	public void replaced() {
+		touchUp(0, 0);
+	}
+
 }

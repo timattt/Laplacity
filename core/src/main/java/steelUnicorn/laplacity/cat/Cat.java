@@ -134,6 +134,14 @@ public class Cat implements CollisionListener {
 			slingshotY = y;
 		}
 	}
+
+	public float getSlingshotX() {
+		return slingshotX;
+	}
+
+	public float getSlingshotY() {
+		return slingshotY;
+	}
 	
 	public void makeParticleMoveWithStartVelocity() {
 		body.setLinearVelocity(-slingshotX * TRAJECTORY_VELOCITY_MULTIPLIER, -slingshotY * TRAJECTORY_VELOCITY_MULTIPLIER);

@@ -65,5 +65,10 @@ public class ModeEraser extends GameMode {
 		FieldCalculator.initPotentialCalculation(LaplacityField.tiles);
 		TrajectoryRenderer.updateTrajectory();
 	}
+	
+	@Override
+	public void replaced() {
+		touchUp(0, 0);
+	}
 
 }

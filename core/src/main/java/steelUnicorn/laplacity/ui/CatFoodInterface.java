@@ -11,8 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
 
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.gameModes.GameMode;
+import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.utils.Settings;
 
 /**
@@ -32,6 +35,9 @@ public class CatFoodInterface extends Table {
 
     private final Label text;
     private final Label timerLabel;
+
+    public Button interstitialBtn;
+    public Button rewardedBtn;
 
     public static final float showHideDur = 10f;
     private static final float fadeOutDur = 0.2f;
@@ -77,25 +83,33 @@ public class CatFoodInterface extends Table {
         text.setAlignment(Align.center);
         add(text).size(text.getPrefWidth(), text.getPrefHeight());
 
-        Button btn = new Button(skin.get("interstitial_bug", Button.ButtonStyle.class));
-        btn.addListener(new ChangeListener() {
+        interstitialBtn = new Button(skin.get("interstitial_bug", Button.ButtonStyle.class));
+        interstitialBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+                if (GameProcess.gameUI != null) {
+                    GameProcess.gameUI.guiHandler.pressButton(ButtonNames.INTER);
+                }
                 Globals.game.showInterstitial();
             }
         });
-        add(btn);
+        interstitialBtn.setName(ButtonNames.INTER);
+        add(interstitialBtn);
 
-        btn = new Button(skin.get("rewarded_bug", Button.ButtonStyle.class));
-        btn.addListener(new ChangeListener() {
+        rewardedBtn = new Button(skin.get("rewarded_bug", Button.ButtonStyle.class));
+        rewardedBtn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
+                if (GameProcess.gameUI != null) {
+                    GameProcess.gameUI.guiHandler.pressButton(ButtonNames.REWARD);
+                }
                 Globals.game.showRewarded();
             }
         });
-        add(btn);
+        rewardedBtn.setName(ButtonNames.REWARD);
+        add(rewardedBtn);
 
         timerLabel = new Label("00:00", skin);
         timerLabel.setVisible(false);
@@ -128,9 +142,11 @@ public class CatFoodInterface extends Table {
         showTask.cancel();
         hideTask.cancel();
 
-        Timer.schedule(showTask, 0);
-        if (Settings.isHideFoodBar()) {
-            Timer.schedule(hideTask, showHideDur);
+        if (GameProcess.currentGameMode != GameMode.FLIGHT) {
+            Timer.schedule(showTask, 0);
+            if (Settings.isHideFoodBar()) {
+                Timer.schedule(hideTask, showHideDur);
+            }
         }
     }
 }

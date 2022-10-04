@@ -34,6 +34,7 @@ public class GameScreen extends ManagedScreen {
 
 	@Override
 	public void resize(int width, int height){
+		gameUI.resize();
 	}
 
 	private static final Color back = new Color(46f/255f, 46f/255f, 46f/255f, 1f);

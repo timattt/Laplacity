@@ -96,7 +96,9 @@ public class CatFood {
      * @return количество запусков
      */
     public int launch() {
-        if (GameProcess.sectionNumber > 1) {
+        //First condition false only in 1st section. So the second condition will check in 1st section.
+        if (GameProcess.sectionNumber > 1 || GameProcess.levelNumber == 4) {
+            Gdx.app.log("Tutorial fixes", "launch decreased");
             launches--;
         }
         checkBounds();
@@ -108,6 +110,12 @@ public class CatFood {
      */
     public int reload() {
         launches++;
+        checkBounds();
+        return launches;
+    }
+
+    public int addLaunches(int newLaunches) {
+        launches += newLaunches;
         checkBounds();
         return launches;
     }
