@@ -68,7 +68,7 @@ public class Tutorial2 extends Tutorial {
 				currentStatus = Status.flight1;
 				
 				// TODO ELVEG ???
-				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 1f);
+				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 3f);
 				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
 				//
 			}
