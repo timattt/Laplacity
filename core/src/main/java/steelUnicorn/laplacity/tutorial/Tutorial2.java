@@ -71,6 +71,9 @@ public class Tutorial2 extends Tutorial {
 			}
 			break;
 		case flight1:
+			if (hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
+				hand.stopFlashing();
+			}
 			if (GameProcess.currentGameMode != GameMode.FLIGHT) {
 				hand.stopFlashing();
 				currentStatus = Status.select_particle;
@@ -115,6 +118,9 @@ public class Tutorial2 extends Tutorial {
 			}
 			break;
 		case flight2:
+			if (hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
+				hand.stopFlashing();
+			}
 			break;
 		default:
 			break;
