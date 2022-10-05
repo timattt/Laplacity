@@ -26,6 +26,7 @@ public class Tutorial3 extends Tutorial {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
 
 		hand.lockAllButtons();
+		hand.unlockBtn(ButtonNames.SPEED_UP);
 		hand.unlockBtn(ButtonNames.HOME);
 		hand.unlockBtn(ButtonNames.SETTINGS);
 		hand.unlockBtn(ButtonNames.ELECTRONS);

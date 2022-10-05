@@ -30,6 +30,7 @@ public class Tutorial2 extends Tutorial {
 		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.HOME);
 		hand.unlockBtn(ButtonNames.SETTINGS);
+		hand.unlockBtn(ButtonNames.SPEED_UP);
 		
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
@@ -65,7 +66,6 @@ public class Tutorial2 extends Tutorial {
 				
 				// TODO ELVEG ???
 				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 1f);
-				hand.unlockBtn(ButtonNames.SPEED_UP);
 				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
 				//
 			}
@@ -110,7 +110,6 @@ public class Tutorial2 extends Tutorial {
 				
 				// TODO ELVEG ???
 				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 1f);
-				hand.unlockBtn(ButtonNames.SPEED_UP);
 				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
 				//
 			}

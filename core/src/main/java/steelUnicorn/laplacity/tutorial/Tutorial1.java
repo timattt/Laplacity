@@ -21,8 +21,11 @@ public class Tutorial1 extends Tutorial {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
 
 		hand.lockAllButtons();
+		
 		hand.unlockBtn(ButtonNames.SETTINGS);
 		hand.unlockBtn(ButtonNames.HOME);
+		hand.unlockBtn(ButtonNames.SPEED_UP);
+		
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX() + 3f, GameProcess.cat.getY(), GameProcess.cat.getX() + 22f, GameProcess.cat.getY(), 2000);
 		GameProcess.gameUI.showMessage("Drag the slingshot\nto set start direction!");

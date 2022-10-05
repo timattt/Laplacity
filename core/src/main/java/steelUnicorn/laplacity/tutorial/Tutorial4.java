@@ -23,6 +23,7 @@ public class Tutorial4 extends Tutorial {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
 		hand.slingshotHandler.setLocked(true);
 		hand.lockAllButtons();
+		hand.unlockBtn(ButtonNames.SPEED_UP);
 		hand.unlockBtn(ButtonNames.HOME);
 		hand.unlockBtn(ButtonNames.SETTINGS);
 
