@@ -23,6 +23,7 @@ public class Tutorial4 extends Tutorial {
 		hand.slingshotHandler.setLocked(true);
 		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.HOME);
+		hand.unlockBtn(ButtonNames.SETTINGS);
 
 		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-4));
 

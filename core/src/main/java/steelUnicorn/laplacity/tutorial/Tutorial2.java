@@ -28,6 +28,7 @@ public class Tutorial2 extends Tutorial {
 
 		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.HOME);
+		hand.unlockBtn(ButtonNames.SETTINGS);
 		
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),

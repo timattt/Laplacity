@@ -26,6 +26,7 @@ public class Tutorial3 extends Tutorial {
 
 		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.HOME);
+		hand.unlockBtn(ButtonNames.SETTINGS);
 		hand.unlockBtn(ButtonNames.ELECTRONS);
 		hand.slingshotHandler.setLocked(true);
 		hand.startFlashing(ButtonNames.ELECTRONS, 0, 0.25f, 100000);
