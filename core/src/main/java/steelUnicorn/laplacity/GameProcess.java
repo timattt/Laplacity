@@ -226,7 +226,7 @@ public class GameProcess {
 		
 		TutorialManager.initLevel();
 	}
-	
+
 	public static void updateLevel(float delta) {
 		if (levelWorld == null) {
 			return;
@@ -235,6 +235,10 @@ public class GameProcess {
 		if (LaplacityAssets.elapsedTime > LaplacityAssets.changeDur) {
 			if (LaplacityAssets.music != null && LaplacityAssets.music.isLooping()) {
 				LaplacityAssets.music.setLooping(false);
+			}
+
+			if (LaplacityAssets.music != null && !LaplacityAssets.music.isPlaying()) {
+				LaplacityAssets.setLevelTrack();
 			}
 		}
 		

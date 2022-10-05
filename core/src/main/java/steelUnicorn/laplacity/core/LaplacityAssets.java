@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 
 import steelUnicorn.laplacity.utils.LevelsParamsParser;
 import steelUnicorn.laplacity.utils.Settings;
@@ -34,12 +33,6 @@ public class LaplacityAssets {
 	private static int currentTrack = 0;
 	public static float elapsedTime = 0;
 	public static final float changeDur = 60f * 3; //3 minutes
-	private static final OnCompletionListener randomChange = new OnCompletionListener() {
-		@Override
-		public void onCompletion(Music music) {
-			LaplacityAssets.setLevelTrack();
-		}
-	};
 
 	// SOUNDS
 	public static Sound clickSound; // звук нажатия на кнопки
@@ -372,13 +365,14 @@ public class LaplacityAssets {
 		while (index == currentTrack)
 			index = trackRandomizer.nextInt(levelTracks.length);
 		currentTrack = index;
+
 		if (levelTracks[currentTrack].name().charAt(0) == 'a') {
 			changeTrack("music/levels/" + levelTracks[currentTrack].name());
 		} else {
 			loopTrackWithIntro(levelTracks[currentTrack].name());
 		}
+
 		elapsedTime = 0;
-		music.setOnCompletionListener(randomChange);
 	}
 
 	/**
@@ -406,6 +400,7 @@ public class LaplacityAssets {
 		assetManager.load(currentMusic, Music.class);
 		OnCompletionListener fromIntroToDrop = a -> music.play();
 		assetManager.finishLoadingAsset(currentMusic);
+
 		music = assetManager.get(currentMusic);
 		music.setVolume(Settings.getMusicVolume());
 		music.setLooping(true);
