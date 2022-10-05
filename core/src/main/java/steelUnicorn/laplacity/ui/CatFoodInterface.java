@@ -39,9 +39,9 @@ public class CatFoodInterface extends Table {
     public Button interstitialBtn;
     public Button rewardedBtn;
 
-    public static final float showHideDur = 10f;
-    private static final float fadeOutDur = 0.2f;
-    private static final float fadeInDur = 0.2f;
+    public static final float showHideDur = 4f;
+    private static final float fadeOutDur = 1f;
+    private static final float fadeInDur = 1f;
 
     public boolean showing;
 
@@ -144,7 +144,10 @@ public class CatFoodInterface extends Table {
 
         if (GameProcess.currentGameMode != GameMode.FLIGHT) {
             Timer.schedule(showTask, 0);
-            if (Settings.isHideFoodBar()) {
+            if (Settings.isHideFoodBar() &&     //if hideFoodBar is on
+                    (GameProcess.sectionNumber != 1 || GameProcess.levelNumber != 4) && //4 level of 1 section
+                    (Globals.catFood.getLaunches() != 0 //If not 0 launches -> hide
+                            || Globals.catFood.timer.getTime() < 2 * showHideDur)) {    //if 0 launches but a little time for reload -> hide
                 Timer.schedule(hideTask, showHideDur);
             }
         }

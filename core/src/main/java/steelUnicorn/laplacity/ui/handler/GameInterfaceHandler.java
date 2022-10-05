@@ -34,7 +34,9 @@ public class GameInterfaceHandler {
      * @param btn кнопка помещаемая в словарь.
      */
     public void putButton(Button btn) {
-        buttonHandlers.put(btn.getName(), new ButtonHandler(btn));
+        if (btn != null && btn.getName() != null) {
+            buttonHandlers.put(btn.getName(), new ButtonHandler(btn));
+        }
     }
 
     /**
