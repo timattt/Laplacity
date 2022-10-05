@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.tutorial;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.ui.ParticleMover;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -31,6 +32,7 @@ public class Tutorial4 extends Tutorial {
 		hand.startFlashing(ButtonNames.REWARD, 0, 0.25f, 10000);
 		hand.unlockBtn(ButtonNames.REWARD);
 		GameProcess.gameUI.showMessage("Every flight consumes food.\nPress the flashing button to refill it.");
+		ParticleMover.setLocked(true);
 	}
 
 	@Override
@@ -72,6 +74,7 @@ public class Tutorial4 extends Tutorial {
 	@Override
 	public void cleanup() {
 		GameProcess.gameUI.hideMessage();
+		ParticleMover.setLocked(false);
 	}
 
 }

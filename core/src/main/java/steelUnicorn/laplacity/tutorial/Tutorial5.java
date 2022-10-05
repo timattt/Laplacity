@@ -5,6 +5,7 @@ import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
+import steelUnicorn.laplacity.ui.ParticleMover;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -33,6 +34,7 @@ public class Tutorial5 extends Tutorial {
 		hand.startFlashing(ButtonNames.DIRICHLET, 0, 0.25f, 100000);
 		
 		GameProcess.gameUI.showMessage("Press the flashing button\nto select spray spreading mode!\nIt will create a continuous attracting cloud.");
+		ParticleMover.setLocked(true);
 	}	
 	
 	private static float[][] targets = new float[][] {
@@ -165,5 +167,6 @@ public class Tutorial5 extends Tutorial {
 	@Override
 	public void cleanup() {
 		GameProcess.gameUI.hideMessage();
+		ParticleMover.setLocked(false);
 	}
 }

@@ -1,6 +1,7 @@
 package steelUnicorn.laplacity.tutorial;
 
 import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.ui.ParticleMover;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -25,6 +26,8 @@ public class Tutorial1 extends Tutorial {
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX() + 3f, GameProcess.cat.getY(), GameProcess.cat.getX() + 22f, GameProcess.cat.getY(), 2000);
 		GameProcess.gameUI.showMessage("Drag the slingshot\nto set start direction!");
+		
+		ParticleMover.setLocked(true);
 	}
 
 	@Override
@@ -57,6 +60,7 @@ public class Tutorial1 extends Tutorial {
 	@Override
 	public void cleanup() {
 		GameProcess.gameUI.hideMessage();
+		ParticleMover.setLocked(false);
 	}
 
 }

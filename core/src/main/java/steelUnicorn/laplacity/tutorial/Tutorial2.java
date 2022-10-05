@@ -4,6 +4,7 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
+import steelUnicorn.laplacity.ui.ParticleMover;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -34,6 +35,8 @@ public class Tutorial2 extends Tutorial {
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
 				GameProcess.cat.getX() - 10, GameProcess.cat.getY() + 10, 1000);
 		GameProcess.gameUI.showMessage("What are those strange red things?\nLets check. Drag the slingshot to fly!");
+	
+		ParticleMover.setLocked(true);
 	}
 	
 	@Override
@@ -122,7 +125,7 @@ public class Tutorial2 extends Tutorial {
 	@Override
 	public void cleanup() {
 		GameProcess.gameUI.hideMessage();
-		//GameProcess.timeSpeedUp = 1;
+		ParticleMover.setLocked(false);
 	}
 
 }
