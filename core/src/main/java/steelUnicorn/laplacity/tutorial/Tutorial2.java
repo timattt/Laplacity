@@ -40,10 +40,13 @@ public class Tutorial2 extends Tutorial {
 		ParticleMover.setLocked(true);
 	}
 	
+	boolean x2_pressed1 = false;
+	boolean x2_pressed2 = false;
+	
 	@Override
 	public void update() {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-				
+			
 		switch (currentStatus) {
 		case drag_sling:
 			if (hand.slingshotHandler.wasSlingshotSet()) {
@@ -71,8 +74,9 @@ public class Tutorial2 extends Tutorial {
 			}
 			break;
 		case flight1:
-			if (hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
+			if (!x2_pressed1 && hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
 				hand.stopFlashing();
+				x2_pressed1 = true;
 			}
 			if (GameProcess.currentGameMode != GameMode.FLIGHT) {
 				hand.stopFlashing();
@@ -118,8 +122,9 @@ public class Tutorial2 extends Tutorial {
 			}
 			break;
 		case flight2:
-			if (hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
+			if (!x2_pressed2 && hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
 				hand.stopFlashing();
+				x2_pressed2 = true;
 			}
 			break;
 		default:
