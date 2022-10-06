@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.eskalon.commons.core.ManagedGame;
@@ -23,6 +24,7 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.StartScreen;
 import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.utils.CatFood;
@@ -47,6 +49,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	public boolean interstitialJustShown = false;
 	public boolean rewardedJustShown = false;
+
+	public boolean entitiesCreated = false;
 	
 	public Laplacity(AdHandler adHand, AnalyticsCollector ac, DebugHandler db) {
 		adHandler = adHand;
@@ -54,23 +58,39 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		debugHandler = db;
 	}
 
+	//DEBUG
+	public long startTime;
+	public String TAG = "LoadingScreen";
+
+	public void printDebug(String text) {
+		Gdx.app.log(TAG, text + " : elapsed time ms " + (TimeUtils.millis() - startTime));
+	}
+
 	@Override
 	public void create() {
 		super.create();
+		startTime = TimeUtils.millis();
+		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
 		game = this;
-		gameViewport = CameraManager.createViewport();
+
 		loadAssets();
-		//TODO start screen
+		printDebug("Assets put to queue");
+
+		startScreen = new StartScreen(guiViewport);
+		this.screenManager.addScreen("startScreen", startScreen);
+		this.screenManager.pushScreen("startScreen", null);
+		printDebug("Screen was pushed");
 	}
 
 	public void createEntities() {
+		printDebug("Start creating entities");
 		LaplacityAssets.repackAssets(assetManager);
 		Settings.loadSettings();
 		catFood = new CatFood();
 		progress = new PlayerProgress();
 
 		CameraManager.init();
-		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
+		gameViewport = CameraManager.createViewport();
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();
@@ -100,9 +120,9 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 
 		this.screenManager.addScreenTransition(blendTransitionName, blend);
 		this.screenManager.addScreenTransition(storyTransitionName, story);
-		//TODO transfer to StartScreen after loading finished
-		LaplacityAssets.changeTrack("music/main theme_drop.ogg");
-		this.screenManager.pushScreen(nameMainMenuScreen, null);
+
+		printDebug("Finished creating entities");
+		entitiesCreated = true;
 	}
 
 	private void loadRec(String path, Class<?> cl) {
@@ -141,22 +161,24 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 
 		// music
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
-
-		// finish loading
-		//TODO transfer to LOADING SCREEN
-		assetManager.finishLoading();
 	}
 	
 	@Override
 	public void render () {
-		shapeRenderer.setProjectionMatrix(CameraManager.camMat());
+		if (entitiesCreated) {
+			shapeRenderer.setProjectionMatrix(CameraManager.camMat());
+		}
 		super.render();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		guiViewport.update(width, height, true);
-		gameViewport.update(width, height, false);
+		if (guiViewport != null) {
+			guiViewport.update(width, height, true);
+		}
+		if (gameViewport != null) {
+			gameViewport.update(width, height, false);
+		}
 		super.resize(width, height);
 	}
 

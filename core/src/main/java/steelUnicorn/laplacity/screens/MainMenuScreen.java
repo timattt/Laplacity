@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 
 import de.eskalon.commons.screen.ManagedScreen;
+import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.ui.mainmenu.MainMenu;
 
 /**
@@ -39,6 +40,16 @@ public class MainMenuScreen extends ManagedScreen {
 
 	@Override
 	public void hide() {}
+
+	@Override
+	public void show() {
+		super.show();
+		if (startScreen != null) {
+			game.getScreenManager().addScreen(nameStartScreen, loadingScreen);
+			startScreen.dispose();
+			startScreen = null;
+		}
+	}
 
 	@Override
 	public void dispose() {

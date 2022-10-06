@@ -105,17 +105,21 @@ public class LoadingScreen extends ManagedScreen {
     }
 
     public void resizeBackground() {
-        background.setSize(background.getPrefWidth() / background.getPrefHeight()
-                        * viewport.getWorldHeight(),
-                viewport.getWorldHeight());
-        background.setPosition(- background.getWidth() / 2 + viewport.getWorldWidth() / 2 , 0);
+        if (background != null) {
+            background.setSize(background.getPrefWidth() / background.getPrefHeight()
+                            * viewport.getWorldHeight(),
+                    viewport.getWorldHeight());
+            background.setPosition(-background.getWidth() / 2 + viewport.getWorldWidth() / 2, 0);
+        }
     }
 
     @Override
     public void resize(int width, int height) {
         resizeBackground();
-        loadingLabel.setPosition(loadingStage.getWidth() / 2 - loadingLabel.getWidth() * scale / 2,
-                loadingStage.getHeight() / 2 - loadingLabel.getHeight() * scale / 2);
+        if (loadingLabel != null) {
+            loadingLabel.setPosition(loadingStage.getWidth() / 2 - loadingLabel.getWidth() * scale / 2,
+                    loadingStage.getHeight() / 2 - loadingLabel.getHeight() * scale / 2);
+        }
     }
 
     @Override
