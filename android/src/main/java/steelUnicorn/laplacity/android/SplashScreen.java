@@ -2,24 +2,26 @@ package steelUnicorn.laplacity.android;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Window;
 import android.view.WindowInsets;
-import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
 import steelUnicorn.laplacity.R;
 
-public class SplashScreen extends Activity implements MediaPlayer.OnCompletionListener
-{
+public class SplashScreen extends Activity {
+    private VideoView introView;
+    private int position = 0;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.splash);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             getWindow().getAttributes().layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
         }
@@ -28,20 +30,27 @@ public class SplashScreen extends Activity implements MediaPlayer.OnCompletionLi
             // хуяк-хуяк и в продакшн
         }
 
-        setContentView(R.layout.splash);
 
-        String fileName = "android.resource://"+  getPackageName() +"/" + R.raw.intro;
-        VideoView vv = (VideoView) this.findViewById(R.id.surface);
-        vv.setVideoURI(Uri.parse(fileName));
-        vv.setOnCompletionListener(this);
-        vv.start();
+        introView = this.findViewById(R.id.video_view);
+        introView.setVideoURI(Uri.parse(
+                    "android.resource://" + getPackageName() + "/" + R.raw.intro));
+
+        introView.setOnPreparedListener(mp -> {
+            introView.seekTo(position);
+            introView.start();
+        });
+
+        introView.setOnCompletionListener(mp -> {
+            Intent intent = new Intent(SplashScreen.this, AndroidLauncher.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     @Override
-    public void onCompletion(MediaPlayer mp)
-    {
-        Intent intent = new Intent(this, AndroidLauncher.class);
-        startActivity(intent);
-        finish();
+    protected void onPause() {
+        super.onPause();
+        position = introView.getCurrentPosition();
+        introView.pause();
     }
 }
