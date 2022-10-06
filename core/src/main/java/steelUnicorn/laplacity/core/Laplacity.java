@@ -58,27 +58,32 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	public void create() {
 		super.create();
 		game = this;
+		gameViewport = CameraManager.createViewport();
 		loadAssets();
+		//TODO start screen
+	}
+
+	public void createEntities() {
+		LaplacityAssets.repackAssets(assetManager);
 		Settings.loadSettings();
 		catFood = new CatFood();
 		progress = new PlayerProgress();
 
 		CameraManager.init();
 		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
-		gameViewport = CameraManager.createViewport();
 		gameScreen = new GameScreen();
 		mainMenuScreen = new MainMenuScreen();
 		winScreen = new WinScreen();
 		levelsScreen = new LevelsScreen();
-		loadingScreen = new LoadingScreen();
+		loadingScreen = new LoadingScreen(guiViewport);
 		storyScreen = new StoryScreen[STORY_SIZE];
 		for (int i = 0; i < STORY_SIZE; i++) {
 			storyScreen[i] = new StoryScreen(i);
 		}
 		shapeRenderer = new ShapeRenderer();
 		inputMultiplexer = new InputMultiplexer();
-		
-		
+
+
 		// transition
 		this.transitionBatch = new SpriteBatch();
 		BlendingTransition blend = new BlendingTransition(transitionBatch, 1f);
@@ -89,13 +94,13 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		this.screenManager.addScreen(nameWinScreen, winScreen);
 		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
 		this.screenManager.addScreen(nameLoadingScreen, loadingScreen);
-		
+
 		for (int i = 0; i < STORY_SIZE; i++)
 			this.screenManager.addScreen(nameStoryScreen + i, storyScreen[i]);
-		
+
 		this.screenManager.addScreenTransition(blendTransitionName, blend);
 		this.screenManager.addScreenTransition(storyTransitionName, story);
-
+		//TODO transfer to StartScreen after loading finished
 		LaplacityAssets.changeTrack("music/main theme_drop.ogg");
 		this.screenManager.pushScreen(nameMainMenuScreen, null);
 	}
@@ -138,8 +143,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		LaplacityAssets.levelTracks = Gdx.files.internal("music/levels/").list();
 
 		// finish loading
+		//TODO transfer to LOADING SCREEN
 		assetManager.finishLoading();
-		LaplacityAssets.repackAssets(assetManager);
 	}
 	
 	@Override
