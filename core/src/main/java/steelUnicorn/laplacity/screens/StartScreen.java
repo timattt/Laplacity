@@ -8,21 +8,23 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
+import steelUnicorn.laplacity.utils.Debugger;
 
 public class StartScreen extends LoadingScreen {
     private Texture backTexture;
     private Skin skin;
 
-    private boolean callOnce = true;
-
-    //TODO async task for creation entities
+    private boolean callOnce;
 
     public StartScreen(Viewport viewport) {
         super(viewport);
 
         backTexture = new Texture(Gdx.files.internal("textures/backgrounds/LOAD_BACKGROUND.png"));
         skin = new Skin(Gdx.files.internal("ui/texskin/texskin.json"));
+
+        callOnce = true;
     }
 
     @Override
@@ -39,16 +41,13 @@ public class StartScreen extends LoadingScreen {
         loadingStage.draw();
         loadingStage.act();
 
-        //TODO checking for loading finishing and transition
-        if (Globals.game.assetManager.update() && callOnce) {
-            callOnce = false;
-            Globals.game.printDebug("Assets finished loading");
-
-            Globals.game.createEntities();
-            LaplacityAssets.changeTrack("music/main theme_drop.ogg");
-            Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen,
-                    Globals.blendTransitionName);
-            Globals.game.printDebug("MainMenu was pushed");
+        if (callOnce && Globals.game.assetManager.update(1000 / 60)) {
+            if (Globals.game.createEntities() == Laplacity.CreatingStatus.CREATING_FINISHED) {
+                callOnce = false;
+                LaplacityAssets.changeTrack("music/main theme_drop.ogg");
+                Globals.game.getScreenManager().pushScreen(Globals.nameMainMenuScreen,
+                        Globals.blendTransitionName);
+            }
         }
     }
 

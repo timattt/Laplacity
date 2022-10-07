@@ -285,8 +285,6 @@ public class LaplacityAssets {
 			HINTS.add(assetManager.get(hint.path(), Texture.class));
 		}
 
-		Gdx.app.log("Hints loaded", HINTS.toString());
-		
 		HINT_POINTER = assetManager.get("textures/hints/pointer.png", Texture.class);
 	}
 	

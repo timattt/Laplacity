@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 
 import de.eskalon.commons.core.ManagedGame;
@@ -31,6 +30,7 @@ import steelUnicorn.laplacity.utils.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.AnalyticsCollector;
 import steelUnicorn.laplacity.utils.DebugHandler;
+import steelUnicorn.laplacity.utils.Debugger;
 import steelUnicorn.laplacity.utils.NotificationHandler;
 import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
@@ -50,7 +50,23 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	public boolean interstitialJustShown = false;
 	public boolean rewardedJustShown = false;
 
-	public boolean entitiesCreated = false;
+	public enum CreatingStatus {
+		STARTED,
+		ASSETS_REPACKED,
+		SETTINGS_LOADED,
+		PROGRESS_LOADED,
+		GAME_INITIALIZED,
+		MENU_INITIALIZED,
+		WIN_INITIALIZED,
+		LEVELS_INITIALIZED,
+		LOADING_INITIALIZED,
+		STORY_INITIALIZED,
+		SHAPEREND_INPUTMULT,
+		TRANSITIONS_CREATED,
+		SCREENS_ADDED,
+		CREATING_FINISHED
+	}
+	public CreatingStatus currentStatus;
 	
 	public Laplacity(AdHandler adHand, AnalyticsCollector ac, DebugHandler db) {
 		adHandler = adHand;
@@ -58,71 +74,94 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		debugHandler = db;
 	}
 
-	//DEBUG
-	public long startTime;
-	public String TAG = "LoadingScreen";
-
-	public void printDebug(String text) {
-		Gdx.app.log(TAG, text + " : elapsed time ms " + (TimeUtils.millis() - startTime));
-	}
-
 	@Override
 	public void create() {
 		super.create();
-		startTime = TimeUtils.millis();
-		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
 		game = this;
-
 		loadAssets();
-		printDebug("Assets put to queue");
 
+		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
 		startScreen = new StartScreen(guiViewport);
 		this.screenManager.addScreen("startScreen", startScreen);
 		this.screenManager.pushScreen("startScreen", null);
-		printDebug("Screen was pushed");
+
+		currentStatus = CreatingStatus.STARTED;
 	}
 
-	public void createEntities() {
-		printDebug("Start creating entities");
-		LaplacityAssets.repackAssets(assetManager);
-		Settings.loadSettings();
-		catFood = new CatFood();
-		progress = new PlayerProgress();
-
-		CameraManager.init();
-		gameViewport = CameraManager.createViewport();
-		gameScreen = new GameScreen();
-		mainMenuScreen = new MainMenuScreen();
-		winScreen = new WinScreen();
-		levelsScreen = new LevelsScreen();
-		loadingScreen = new LoadingScreen(guiViewport);
-		storyScreen = new StoryScreen[STORY_SIZE];
-		for (int i = 0; i < STORY_SIZE; i++) {
-			storyScreen[i] = new StoryScreen(i);
+	public CreatingStatus createEntities() {
+		switch (currentStatus) {
+			case STARTED:
+				LaplacityAssets.repackAssets(assetManager);
+				currentStatus = CreatingStatus.ASSETS_REPACKED;
+				return currentStatus;
+			case ASSETS_REPACKED:
+				Settings.loadSettings();
+				currentStatus = CreatingStatus.SETTINGS_LOADED;
+				return currentStatus;
+			case SETTINGS_LOADED:
+				catFood = new CatFood();
+				progress = new PlayerProgress();
+				currentStatus = CreatingStatus.PROGRESS_LOADED;
+				return currentStatus;
+			case PROGRESS_LOADED:
+				CameraManager.init();
+				gameViewport = CameraManager.createViewport();
+				gameScreen = new GameScreen();
+				currentStatus = CreatingStatus.GAME_INITIALIZED;
+				return currentStatus;
+			case GAME_INITIALIZED:
+				mainMenuScreen = new MainMenuScreen();
+				currentStatus = CreatingStatus.MENU_INITIALIZED;
+				return currentStatus;
+			case MENU_INITIALIZED:
+				winScreen = new WinScreen();
+				currentStatus = CreatingStatus.WIN_INITIALIZED;
+				return currentStatus;
+			case WIN_INITIALIZED:
+				levelsScreen = new LevelsScreen();
+				currentStatus = CreatingStatus.LEVELS_INITIALIZED;
+				return currentStatus;
+			case LEVELS_INITIALIZED:
+				loadingScreen = new LoadingScreen(guiViewport);
+				currentStatus = CreatingStatus.LOADING_INITIALIZED;
+				return currentStatus;
+			case LOADING_INITIALIZED:
+				storyScreen = new StoryScreen[STORY_SIZE];
+				for (int i = 0; i < STORY_SIZE; i++) {
+					storyScreen[i] = new StoryScreen(i);
+				}
+				currentStatus = CreatingStatus.STORY_INITIALIZED;
+				return currentStatus;
+			case STORY_INITIALIZED:
+				shapeRenderer = new ShapeRenderer();
+				inputMultiplexer = new InputMultiplexer();
+				currentStatus = CreatingStatus.SHAPEREND_INPUTMULT;
+				return currentStatus;
+			case SHAPEREND_INPUTMULT:
+				// transition
+				this.transitionBatch = new SpriteBatch();
+				BlendingTransition blend = new BlendingTransition(transitionBatch, 1f);
+				BlendingTransition story = new BlendingTransition(transitionBatch, 1f);
+				this.screenManager.addScreenTransition(blendTransitionName, blend);
+				this.screenManager.addScreenTransition(storyTransitionName, story);
+				currentStatus = CreatingStatus.TRANSITIONS_CREATED;
+				return currentStatus;
+			case TRANSITIONS_CREATED:
+				this.screenManager.addScreen(nameGameScreen, gameScreen);
+				this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
+				this.screenManager.addScreen(nameWinScreen, winScreen);
+				this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
+				this.screenManager.addScreen(nameLoadingScreen, loadingScreen);
+				for (int i = 0; i < STORY_SIZE; i++)
+					this.screenManager.addScreen(nameStoryScreen + i, storyScreen[i]);
+				currentStatus = CreatingStatus.SCREENS_ADDED;
+				return currentStatus;
+			case SCREENS_ADDED:
+				currentStatus = CreatingStatus.CREATING_FINISHED;
+				return currentStatus;
+			default:
+				return currentStatus;
 		}
-		shapeRenderer = new ShapeRenderer();
-		inputMultiplexer = new InputMultiplexer();
-
-
-		// transition
-		this.transitionBatch = new SpriteBatch();
-		BlendingTransition blend = new BlendingTransition(transitionBatch, 1f);
-		BlendingTransition story = new BlendingTransition(transitionBatch, 1f);
-
-		this.screenManager.addScreen(nameGameScreen, gameScreen);
-		this.screenManager.addScreen(nameMainMenuScreen, mainMenuScreen);
-		this.screenManager.addScreen(nameWinScreen, winScreen);
-		this.screenManager.addScreen(nameLevelsScreen, levelsScreen);
-		this.screenManager.addScreen(nameLoadingScreen, loadingScreen);
-
-		for (int i = 0; i < STORY_SIZE; i++)
-			this.screenManager.addScreen(nameStoryScreen + i, storyScreen[i]);
-
-		this.screenManager.addScreenTransition(blendTransitionName, blend);
-		this.screenManager.addScreenTransition(storyTransitionName, story);
-
-		printDebug("Finished creating entities");
-		entitiesCreated = true;
 	}
 
 	private void loadRec(String path, Class<?> cl) {
@@ -165,7 +204,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	
 	@Override
 	public void render () {
-		if (entitiesCreated) {
+		if (currentStatus == CreatingStatus.CREATING_FINISHED) {
 			shapeRenderer.setProjectionMatrix(CameraManager.camMat());
 		}
 		super.render();
