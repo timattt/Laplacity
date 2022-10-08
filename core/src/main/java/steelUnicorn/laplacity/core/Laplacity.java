@@ -225,21 +225,25 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	@Override
 	public void pause() {
 		super.pause();
-		catFood.saveFoodPrefs();
+		if (catFood != null) {
+			catFood.saveFoodPrefs();
 
-		if (notificationHandler != null) {
-			Gdx.app.log("Notifications",
-					"Food remains: " + catFood.getLaunches() +
-					"\nTimer value: " + catFood.timer.getTime());
-			notificationHandler.setRestoreTime(catFood.timer.getRestoreTime());
+			if (notificationHandler != null) {
+				Gdx.app.log("Notifications",
+						"Food remains: " + catFood.getLaunches() +
+								"\nTimer value: " + catFood.timer.getTime());
+				notificationHandler.setRestoreTime(catFood.timer.getRestoreTime());
+			}
 		}
 	}
 
 	@Override
 	public void resume() {
 		super.resume();
-		catFood.timer.setTime(catFood.getTimerValue());
-		catFood.timer.entryUpdate(catFood.getExitTime());
+		if (catFood != null) {
+			catFood.timer.setTime(catFood.getTimerValue());
+			catFood.timer.entryUpdate(catFood.getExitTime());
+		}
 	}
 
 	@Override
