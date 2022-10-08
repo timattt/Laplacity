@@ -213,7 +213,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 
 	@Override
 	public void resize(int width, int height) {
-		Gdx.app.log("RESIZEBUG", height + " " + width);
 		if (guiViewport != null) {
 			guiViewport.update(width, height, true);
 		}
