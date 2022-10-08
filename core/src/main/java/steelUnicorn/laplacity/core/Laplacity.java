@@ -30,7 +30,6 @@ import steelUnicorn.laplacity.utils.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.AnalyticsCollector;
 import steelUnicorn.laplacity.utils.DebugHandler;
-import steelUnicorn.laplacity.utils.Debugger;
 import steelUnicorn.laplacity.utils.NotificationHandler;
 import steelUnicorn.laplacity.utils.PlayerProgress;
 import steelUnicorn.laplacity.utils.Settings;
@@ -81,6 +80,9 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		loadAssets();
 
 		guiViewport = new ExtendViewport(UI_WORLD_WIDTH, UI_WORLD_HEIGHT);
+		CameraManager.init();
+		gameViewport = CameraManager.createViewport();
+
 		startScreen = new StartScreen(guiViewport);
 		this.screenManager.addScreen("startScreen", startScreen);
 		this.screenManager.pushScreen("startScreen", null);
@@ -104,8 +106,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 				currentStatus = CreatingStatus.PROGRESS_LOADED;
 				return currentStatus;
 			case PROGRESS_LOADED:
-				CameraManager.init();
-				gameViewport = CameraManager.createViewport();
 				gameScreen = new GameScreen();
 				currentStatus = CreatingStatus.GAME_INITIALIZED;
 				return currentStatus;
@@ -158,6 +158,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 				return currentStatus;
 			case SCREENS_ADDED:
 				currentStatus = CreatingStatus.CREATING_FINISHED;
+				shapeRenderer.setProjectionMatrix(CameraManager.camMat());
 				return currentStatus;
 			default:
 				return currentStatus;
@@ -212,6 +213,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 
 	@Override
 	public void resize(int width, int height) {
+		Gdx.app.log("RESIZEBUG", height + " " + width);
 		if (guiViewport != null) {
 			guiViewport.update(width, height, true);
 		}

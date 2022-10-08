@@ -4,13 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import steelUnicorn.laplacity.core.Globals;
 import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.core.LaplacityAssets;
-import steelUnicorn.laplacity.utils.Debugger;
+
 
 public class StartScreen extends LoadingScreen {
     private Texture backTexture;
