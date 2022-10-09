@@ -21,15 +21,19 @@ public class Tutorial3 extends Tutorial {
 	
 	@Override
 	public void init() {
+		super.init();
 		currentStatus = Status.select_particle;
+		
+		// buttons
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-
-		hand.lockAllButtons();
-		hand.unlockBtn(ButtonNames.HOME);
+		hand.unlockBtn(ButtonNames.SPEED_UP);
 		hand.unlockBtn(ButtonNames.ELECTRONS);
-		hand.slingshotHandler.setLocked(true);
 		hand.startFlashing(ButtonNames.ELECTRONS, 0, 0.25f, 100000);
 		
+		// slingshot
+		hand.slingshotHandler.setLocked(true);
+		
+		// start message
 		GameProcess.gameUI.showMessage("Red particles repels the cat.\nPress the flashing button\nto select particle placer mode!");
 	}
 
@@ -87,11 +91,6 @@ public class Tutorial3 extends Tutorial {
 		default:
 			break;
 		}
-	}
-
-	@Override
-	public void cleanup() {
-		GameProcess.gameUI.hideMessage();
 	}
 
 }

@@ -23,22 +23,29 @@ public class Tutorial2 extends Tutorial {
 	
 	@Override
 	public void init() {
+		super.init();
 		currentStatus = Status.drag_sling;
-		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-
-		hand.lockAllButtons();
-		hand.unlockBtn(ButtonNames.HOME);
 		
+		// buttons
+		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
+		hand.unlockBtn(ButtonNames.SPEED_UP);
+		
+		// slingshot
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
 				GameProcess.cat.getX() - 10, GameProcess.cat.getY() + 10, 1000);
+		
+		// start message
 		GameProcess.gameUI.showMessage("What are those strange red things?\nLets check. Drag the slingshot to fly!");
 	}
+	
+	boolean x2_pressed1 = false;
+	boolean x2_pressed2 = false;
 	
 	@Override
 	public void update() {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-				
+			
 		switch (currentStatus) {
 		case drag_sling:
 			if (hand.slingshotHandler.wasSlingshotSet()) {
@@ -59,14 +66,16 @@ public class Tutorial2 extends Tutorial {
 				hand.stopFlashing();
 				currentStatus = Status.flight1;
 				
-				// TODO ELVEG ???
-				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 1f);
-				hand.unlockBtn(ButtonNames.SPEED_UP);
+				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 3f);
 				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
-				//
 			}
 			break;
 		case flight1:
+			if (!x2_pressed1 && hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
+				hand.stopFlashing();
+				GameProcess.gameUI.hideMessage();
+				x2_pressed1 = true;
+			}
 			if (GameProcess.currentGameMode != GameMode.FLIGHT) {
 				hand.stopFlashing();
 				currentStatus = Status.select_particle;
@@ -104,24 +113,20 @@ public class Tutorial2 extends Tutorial {
 				hand.stopFlashing();
 				currentStatus = Status.flight2;
 				
-				// TODO ELVEG ???
-				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 1f);
-				hand.unlockBtn(ButtonNames.SPEED_UP);
+				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 3f);
 				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
-				//
 			}
 			break;
 		case flight2:
+			if (!x2_pressed2 && hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
+				hand.stopFlashing();
+				GameProcess.gameUI.hideMessage();
+				x2_pressed2 = true;
+			}
 			break;
 		default:
 			break;
 		}
-	}
-
-	@Override
-	public void cleanup() {
-		GameProcess.gameUI.hideMessage();
-		//GameProcess.timeSpeedUp = 1;
 	}
 
 }

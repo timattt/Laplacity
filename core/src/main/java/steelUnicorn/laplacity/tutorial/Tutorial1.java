@@ -16,11 +16,10 @@ public class Tutorial1 extends Tutorial {
 	
 	@Override
 	public void init() {
+		super.init();
 		currentStatus = Status.drag_sling;
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-
-		hand.lockAllButtons();
-		hand.unlockBtn(ButtonNames.HOME);
+		
 		hand.slingshotHandler.setLocked(false);
 		TutorialManager.pointer.linearAnimation(GameProcess.cat.getX() + 3f, GameProcess.cat.getY(), GameProcess.cat.getX() + 22f, GameProcess.cat.getY(), 2000);
 		GameProcess.gameUI.showMessage("Drag the slingshot\nto set start direction!");
@@ -51,11 +50,6 @@ public class Tutorial1 extends Tutorial {
 		case flight:
 			break;
 		}
-	}
-
-	@Override
-	public void cleanup() {
-		GameProcess.gameUI.hideMessage();
 	}
 
 }

@@ -22,15 +22,20 @@ public class Tutorial5 extends Tutorial {
 
 	@Override
 	public void init() {
+		super.init();
 		currentStatus = Status.select_spray;
+		
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-
-		hand.lockAllButtons();
-		hand.unlockBtn(ButtonNames.HOME);
+		
+		// buttons
+		hand.unlockBtn(ButtonNames.SPEED_UP);
 		hand.unlockBtn(ButtonNames.DIRICHLET);
-		hand.slingshotHandler.setLocked(true);
 		hand.startFlashing(ButtonNames.DIRICHLET, 0, 0.25f, 100000);
 		
+		// sligshot
+		hand.slingshotHandler.setLocked(true);
+		
+		// start message
 		GameProcess.gameUI.showMessage("Press the flashing button\nto select spray spreading mode!\nIt will create a continuous attracting cloud.");
 	}	
 	
@@ -161,8 +166,4 @@ public class Tutorial5 extends Tutorial {
 		}
 	}
 
-	@Override
-	public void cleanup() {
-		GameProcess.gameUI.hideMessage();
-	}
 }
