@@ -2,7 +2,6 @@ package steelUnicorn.laplacity.tutorial;
 
 import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.core.Globals;
-import steelUnicorn.laplacity.ui.ParticleMover;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -19,21 +18,24 @@ public class Tutorial4 extends Tutorial {
 	
 	@Override
 	public void init() {
+		super.init();
 		currentStatus = Status.press_food;
+		
+		// buttons
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-		hand.slingshotHandler.setLocked(true);
-		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.SPEED_UP);
-		hand.unlockBtn(ButtonNames.HOME);
-		hand.unlockBtn(ButtonNames.SETTINGS);
-
-		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-4));
-
+		hand.unlockBtn(ButtonNames.REWARD);
 		hand.unlockBtn(ButtonNames.REWARD);
 		hand.startFlashing(ButtonNames.REWARD, 0, 0.25f, 10000);
-		hand.unlockBtn(ButtonNames.REWARD);
+		
+		// slingshot
+		hand.slingshotHandler.setLocked(true);
+
+		// launches
+		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-4));
+
+		// start message
 		GameProcess.gameUI.showMessage("Every flight consumes food.\nPress the flashing button to refill it.");
-		ParticleMover.setLocked(true);
 	}
 
 	@Override
@@ -70,12 +72,6 @@ public class Tutorial4 extends Tutorial {
 		case flight:
 			break;
 		}
-	}
-
-	@Override
-	public void cleanup() {
-		GameProcess.gameUI.hideMessage();
-		ParticleMover.setLocked(false);
 	}
 
 }

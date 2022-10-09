@@ -5,7 +5,6 @@ import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
-import steelUnicorn.laplacity.ui.ParticleMover;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -23,19 +22,21 @@ public class Tutorial5 extends Tutorial {
 
 	@Override
 	public void init() {
+		super.init();
 		currentStatus = Status.select_spray;
+		
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-
-		hand.lockAllButtons();
+		
+		// buttons
 		hand.unlockBtn(ButtonNames.SPEED_UP);
-		hand.unlockBtn(ButtonNames.HOME);
 		hand.unlockBtn(ButtonNames.DIRICHLET);
-		hand.unlockBtn(ButtonNames.SETTINGS);
-		hand.slingshotHandler.setLocked(true);
 		hand.startFlashing(ButtonNames.DIRICHLET, 0, 0.25f, 100000);
 		
+		// sligshot
+		hand.slingshotHandler.setLocked(true);
+		
+		// start message
 		GameProcess.gameUI.showMessage("Press the flashing button\nto select spray spreading mode!\nIt will create a continuous attracting cloud.");
-		ParticleMover.setLocked(true);
 	}	
 	
 	private static float[][] targets = new float[][] {
@@ -165,9 +166,4 @@ public class Tutorial5 extends Tutorial {
 		}
 	}
 
-	@Override
-	public void cleanup() {
-		GameProcess.gameUI.hideMessage();
-		ParticleMover.setLocked(false);
-	}
 }

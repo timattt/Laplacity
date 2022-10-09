@@ -4,7 +4,6 @@ import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.gameModes.GameMode;
-import steelUnicorn.laplacity.ui.ParticleMover;
 import steelUnicorn.laplacity.ui.handler.ButtonNames;
 import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 
@@ -22,19 +21,20 @@ public class Tutorial3 extends Tutorial {
 	
 	@Override
 	public void init() {
+		super.init();
 		currentStatus = Status.select_particle;
+		
+		// buttons
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-
-		hand.lockAllButtons();
 		hand.unlockBtn(ButtonNames.SPEED_UP);
-		hand.unlockBtn(ButtonNames.HOME);
-		hand.unlockBtn(ButtonNames.SETTINGS);
 		hand.unlockBtn(ButtonNames.ELECTRONS);
-		hand.slingshotHandler.setLocked(true);
 		hand.startFlashing(ButtonNames.ELECTRONS, 0, 0.25f, 100000);
 		
+		// slingshot
+		hand.slingshotHandler.setLocked(true);
+		
+		// start message
 		GameProcess.gameUI.showMessage("Red particles repels the cat.\nPress the flashing button\nto select particle placer mode!");
-		ParticleMover.setLocked(true);
 	}
 
 	@Override
@@ -91,12 +91,6 @@ public class Tutorial3 extends Tutorial {
 		default:
 			break;
 		}
-	}
-
-	@Override
-	public void cleanup() {
-		GameProcess.gameUI.hideMessage();
-		ParticleMover.setLocked(false);
 	}
 
 }
