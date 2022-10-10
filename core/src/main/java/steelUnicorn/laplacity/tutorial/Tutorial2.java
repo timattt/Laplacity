@@ -28,7 +28,6 @@ public class Tutorial2 extends Tutorial {
 		
 		// buttons
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
-		hand.unlockBtn(ButtonNames.SPEED_UP);
 		
 		// slingshot
 		hand.slingshotHandler.setLocked(false);
@@ -36,10 +35,10 @@ public class Tutorial2 extends Tutorial {
 				GameProcess.cat.getX() - 10, GameProcess.cat.getY() + 10, 1000);
 		
 		// start message
-		GameProcess.gameUI.showMessage("What are those strange red things?\nLets check. Drag the slingshot to fly!");
+		GameProcess.gameUI.showMessage("Strange red lines. What is this?\nLet's check!");
 	}
 	
-	boolean x2_pressed1 = false;
+	//boolean x2_pressed1 = false;
 	boolean x2_pressed2 = false;
 	
 	@Override
@@ -66,23 +65,24 @@ public class Tutorial2 extends Tutorial {
 				hand.stopFlashing();
 				currentStatus = Status.flight1;
 				
-				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 3f);
-				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
+				GameProcess.gameUI.hideMessage();
+				//GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 3f);
+				//hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
 			}
 			break;
 		case flight1:
-			if (!x2_pressed1 && hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
-				hand.stopFlashing();
-				GameProcess.gameUI.hideMessage();
-				x2_pressed1 = true;
-			}
+			//if (!x2_pressed1 && hand.wasButtonPressed(ButtonNames.SPEED_UP)) {
+			//	hand.stopFlashing();
+			//	GameProcess.gameUI.hideMessage();
+			//	x2_pressed1 = true;
+			//}
 			if (GameProcess.currentGameMode != GameMode.FLIGHT) {
 				hand.stopFlashing();
 				currentStatus = Status.select_particle;
 				hand.unlockBtn(ButtonNames.PROTONS);
 				hand.slingshotHandler.setLocked(true);
 				hand.startFlashing(ButtonNames.PROTONS, 0, 0.25f, 100000);
-				GameProcess.gameUI.showMessage("As you can see they are deadly.\nLet's fly around them.\nPress the flashing button\nto select particle placer mode!");
+				GameProcess.gameUI.showMessage("It's lasers! You need to avoid them!\n\nPress the flashing button\nto select blue particle!");
 			}
 			break;
 		case select_particle:
@@ -91,7 +91,7 @@ public class Tutorial2 extends Tutorial {
 				hand.lockBtn(ButtonNames.PROTONS);
 				hand.stopFlashing();
 				TutorialManager.pointer.linearAnimation(100, 44, 110, 54, 1000);
-				GameProcess.gameUI.changeMessageText("These particles attracts the cat.\n Place it in the specified place\nso that the cat reaches the exit!");
+				GameProcess.gameUI.changeMessageText("It attracts the cat.\n Place it here!");
 			}
 			break;
 		case place_particle:
@@ -104,16 +104,17 @@ public class Tutorial2 extends Tutorial {
 				GameProcess.changeGameMode(GameMode.NONE);
 				hand.unlockBtn(ButtonNames.FLIGHT);	
 				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 100000);
-				GameProcess.gameUI.changeMessageText("Flying trajectory has changed!\nPress the flight button to start flying!");
+				GameProcess.gameUI.changeMessageText("The trajectory has changed!\nPress the flight button to start!");
 			}
 			break;
 		case press_flight2:
 			if (hand.wasButtonPressed(ButtonNames.FLIGHT)) {
 				hand.lockBtn(ButtonNames.FLIGHT);
+				hand.unlockBtn(ButtonNames.SPEED_UP);
 				hand.stopFlashing();
 				currentStatus = Status.flight2;
 				
-				GameProcess.gameUI.showMessage("You can press X2 button to speed up!", 3f);
+				GameProcess.gameUI.showMessage("Press X2 button to speed up!", 2.5f);
 				hand.startFlashing(ButtonNames.SPEED_UP, 0, 0.25f, 10000);
 			}
 			break;
