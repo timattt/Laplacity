@@ -409,7 +409,9 @@ public class GameInterface extends Stage implements GestureListener {
 		CameraManager.getCameraWorldPos(x, y, TMP1);
 		
 		currentGameMode.tap(TMP1.x, TMP1.y);
-		
+
+		guiHandler.setTap(true);
+
 		return true;
 	}
 

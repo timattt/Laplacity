@@ -13,6 +13,7 @@ public class Tutorial2 extends Tutorial {
 		drag_sling,
 		press_flight1,
 		flight1,
+		laser_msg,
 		select_particle,
 		place_particle,
 		press_flight2,
@@ -20,6 +21,8 @@ public class Tutorial2 extends Tutorial {
 	};
 	
 	private Status currentStatus = null;
+
+	private float elapsedTime;
 	
 	@Override
 	public void init() {
@@ -42,7 +45,7 @@ public class Tutorial2 extends Tutorial {
 	boolean x2_pressed2 = false;
 	
 	@Override
-	public void update() {
+	public void update(float delta) {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
 			
 		switch (currentStatus) {
@@ -78,11 +81,21 @@ public class Tutorial2 extends Tutorial {
 			//}
 			if (GameProcess.currentGameMode != GameMode.FLIGHT) {
 				hand.stopFlashing();
-				currentStatus = Status.select_particle;
-				hand.unlockBtn(ButtonNames.PROTONS);
+				currentStatus = Status.laser_msg;
+				elapsedTime = 0;
 				hand.slingshotHandler.setLocked(true);
+				hand.setTap(false);
+				GameProcess.gameUI.showMessage("It's lasers! You need to avoid them!");
+			}
+			break;
+		case laser_msg:
+			elapsedTime += delta;
+			if (hand.wasTapped() || elapsedTime >= 3f) {
+				GameProcess.gameUI.changeMessageText("Press the flashing button to select blue particle!");
+				hand.unlockBtn(ButtonNames.PROTONS);
 				hand.startFlashing(ButtonNames.PROTONS, 0, 0.25f, 100000);
-				GameProcess.gameUI.showMessage("It's lasers! You need to avoid them!\n\nPress the flashing button\nto select blue particle!");
+
+				currentStatus = Status.select_particle;
 			}
 			break;
 		case select_particle:

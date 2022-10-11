@@ -38,7 +38,7 @@ public class Tutorial3 extends Tutorial {
 	}
 
 	@Override
-	public void update() {
+	public void update(float delta) {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
 		float sz = LaplacityField.tileSize;
 		
