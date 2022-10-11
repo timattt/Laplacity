@@ -39,10 +39,10 @@ public class TutorialManager {
 		pointer.draw();
 	}
 	
-	public static void update() {
+	public static void update(float delta) {
 		pointer.update();
 		if (currentTutorial != null) {
-			currentTutorial.update();
+			currentTutorial.update(delta);
 		}
 	}
 	

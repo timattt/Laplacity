@@ -269,7 +269,7 @@ public class GameProcess {
 				TrajectoryRenderer.updateTrajectory();
 			}
 		}
-		TutorialManager.update();
+		TutorialManager.update(delta);
 		//---------------------------------------------
 		
 		// ADS

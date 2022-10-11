@@ -21,12 +21,14 @@ public class GameInterfaceHandler {
     public ParticleHandler particleHandler;
     public SlingshotHandler slingshotHandler;
     public FlashingBtnHandler flashingBtnHandler;
+    private boolean wasTapped;
 
     public GameInterfaceHandler() {
         buttonHandlers = new OrderedMap<>();
         particleHandler = new ParticleHandler();
         slingshotHandler = new SlingshotHandler();
         flashingBtnHandler = new FlashingBtnHandler();
+        wasTapped = false;
     }
 
     /**
@@ -61,6 +63,25 @@ public class GameInterfaceHandler {
         }
 
         return false;
+    }
+
+    /**
+     * Проверяет нажатие на экран. Перед отловом нажатия нужно установить
+     * {@link #wasTapped} в false с помощью {@link #setTap(boolean)}
+     * @return true если нажатие было зарегистрировано
+     * @see #wasTapped
+     */
+    public boolean wasTapped() {
+        if (wasTapped) {
+            wasTapped = false;
+            return true;
+        }
+
+        return false;
+    }
+
+    public void setTap(boolean wasTapped) {
+        this.wasTapped = wasTapped;
     }
 
     /**
