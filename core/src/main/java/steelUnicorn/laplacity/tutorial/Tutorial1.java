@@ -26,7 +26,7 @@ public class Tutorial1 extends Tutorial {
 	}
 
 	@Override
-	public void update() {
+	public void update(float delta) {
 		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
 		
 		switch (currentStatus) {
