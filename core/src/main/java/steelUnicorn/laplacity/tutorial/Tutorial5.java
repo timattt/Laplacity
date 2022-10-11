@@ -36,7 +36,7 @@ public class Tutorial5 extends Tutorial {
 		hand.slingshotHandler.setLocked(true);
 		
 		// start message
-		GameProcess.gameUI.showMessage("Press the flashing button\nto select spray spreading mode!\nIt will create a continuous attracting cloud.");
+		GameProcess.gameUI.showMessage("Select spray!\nIt will create a cloud that attracts the cat!");
 	}	
 	
 	private static float[][] targets = new float[][] {
@@ -101,7 +101,7 @@ public class Tutorial5 extends Tutorial {
 				hand.lockBtn(ButtonNames.DIRICHLET);
 				hand.stopFlashing();
 				PathDragManager.newTask(targets);
-				GameProcess.gameUI.showMessage("Now you may spread some spray!", 2f);
+				GameProcess.gameUI.showMessage("Now you may spread some!", 2f);
 			}
 			break;
 		case spread_spray:
@@ -122,7 +122,7 @@ public class Tutorial5 extends Tutorial {
 				TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
 						GameProcess.cat.getX() - 5, GameProcess.cat.getY() - 10, 1000);
 				TutorialManager.pointer.setFlipped(true);
-				GameProcess.gameUI.showMessage("Drag the sling to set cat's\nstart flight direction!");
+				GameProcess.gameUI.showMessage("Set cat's start direction!");
 			}
 			break;
 		case drag_sling:
@@ -134,7 +134,7 @@ public class Tutorial5 extends Tutorial {
 				GameProcess.gameUI.changeMessageText("Press the flight button!");
 				hand.unlockBtn(ButtonNames.FLIGHT);
 				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 100000);
-				GameProcess.gameUI.changeMessageText("Press the start flight button\nto start flying!");
+				GameProcess.gameUI.changeMessageText("Press the flight button!");
 			}
 			break;
 		case press_flight:

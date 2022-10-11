@@ -35,7 +35,7 @@ public class Tutorial4 extends Tutorial {
 		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-4));
 
 		// start message
-		GameProcess.gameUI.showMessage("Every flight consumes food.\nPress the flashing button to refill it.");
+		GameProcess.gameUI.showMessage("Cat needs food to fly!\nPress the button to refill it.");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class Tutorial4 extends Tutorial {
 				hand.stopFlashing();
 				hand.slingshotHandler.setLocked(false);
 				TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(), GameProcess.cat.getX() - 17f, GameProcess.cat.getY() - 10f, 2000);
-				GameProcess.gameUI.changeMessageText("As you can see the food restores!\nNow drag the slingshot\nto set start direction!");
+				GameProcess.gameUI.changeMessageText("The food has been restored!\nNow Let's move on!");
 			}
 			break;
 		case drag_sling:
@@ -60,7 +60,7 @@ public class Tutorial4 extends Tutorial {
 				hand.slingshotHandler.changeSlingshot(-20, -10);
 				hand.slingshotHandler.setLocked(true);
 				TutorialManager.pointer.hide();
-				GameProcess.gameUI.changeMessageText("Press the flashing button to start flying!");
+				GameProcess.gameUI.hideMessage();
 			}
 			break;
 		case press_flight:

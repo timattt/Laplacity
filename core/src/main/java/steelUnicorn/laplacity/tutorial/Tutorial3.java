@@ -34,7 +34,7 @@ public class Tutorial3 extends Tutorial {
 		hand.slingshotHandler.setLocked(true);
 		
 		// start message
-		GameProcess.gameUI.showMessage("Red particles repels the cat.\nPress the flashing button\nto select particle placer mode!");
+		GameProcess.gameUI.showMessage("Red particles repels the cat!\nPress red button to select it!");
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class Tutorial3 extends Tutorial {
 				hand.stopFlashing();
 				TutorialManager.pointer.linearAnimation(75*sz, 40*sz, 70*sz, 35*sz, 1000);
 				TutorialManager.pointer.setFlipped(true);
-				GameProcess.gameUI.changeMessageText("Now put the particle in the specified place\nso that the cat reaches the exit!");
+				GameProcess.gameUI.changeMessageText("Now put the particle here!");
 			}
 			break;
 		case place_particle:
@@ -63,7 +63,7 @@ public class Tutorial3 extends Tutorial {
 				TutorialManager.pointer.hide();
 				TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(),
 						GameProcess.cat.getX() - 10, GameProcess.cat.getY() - 2, 1000);
-				GameProcess.gameUI.changeMessageText("Drag the sling to set cat's\nstart flight direction!");
+				GameProcess.gameUI.changeMessageText("Set cat's start direction!");
 			}
 			break;
 		case drag_sling:
@@ -75,7 +75,7 @@ public class Tutorial3 extends Tutorial {
 				
 				hand.unlockBtn(ButtonNames.FLIGHT);	
 				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 100000);
-				GameProcess.gameUI.changeMessageText("Press the flight button to start flight!");
+				GameProcess.gameUI.changeMessageText("Press the flight button!");
 			}
 			break;
 		case press_flight:
