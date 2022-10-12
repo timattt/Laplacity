@@ -29,7 +29,6 @@ public class MainMenuTab  extends Table {
     protected Cell<ImageButton> addReturnButton(ChangeListener listener) {
         ImageButton btn = new ImageButton(TEXSKIN, "Home");
         btn.addListener(listener);
-        Gdx.app.log("Return", "Created");
         return add(btn);
     }
 }

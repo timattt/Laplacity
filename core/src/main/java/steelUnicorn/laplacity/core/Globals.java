@@ -10,6 +10,7 @@ import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.LoadingScreen;
 import steelUnicorn.laplacity.screens.MainMenuScreen;
+import steelUnicorn.laplacity.screens.StartScreen;
 import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
 import steelUnicorn.laplacity.utils.CatFood;
@@ -36,6 +37,7 @@ public class Globals {
 	public static final String nameLevelsScreen = "levelsScreen";
 	public static final String nameLoadingScreen = "loadingScreen";
 	public static final String nameStoryScreen = "storyScreen";
+	public static final String nameStartScreen = "startScreen";
 
 	// Tramsition names
 	public static final String blendTransitionName = "blend";
@@ -65,7 +67,7 @@ public class Globals {
 	public static LevelsScreen levelsScreen;
 	public static LoadingScreen loadingScreen;
 	public static StoryScreen[] storyScreen;
-
+	public static StartScreen startScreen;
 	// TMP
 	public static final Vector2 TMP1 = new Vector2();
 	public static final Vector2 TMP2 = new Vector2();
