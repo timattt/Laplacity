@@ -45,6 +45,19 @@ public class PathDragManager {
 		}
 		
 	}
+	
+	public static boolean isTouchedCorrect(float x, float y) {
+		if (requested == null) {
+			return true;
+		}
+		for (RequestedPoint p : requested) {
+			tmp.set(x - p.x, y - p.y);
+			if (tmp.len2() < REACTION_RAD * REACTION_RAD) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public static void newTask(float[][] targets) {
 		requested = new RequestedPoint[targets.length];

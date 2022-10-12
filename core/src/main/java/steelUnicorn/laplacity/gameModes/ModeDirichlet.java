@@ -9,6 +9,7 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.LaplacityField;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.field.physics.FieldCalculator;
+import steelUnicorn.laplacity.tutorial.PathDragManager;
 
 public class ModeDirichlet extends GameMode {
 
@@ -19,6 +20,9 @@ public class ModeDirichlet extends GameMode {
 	}
 
 	private boolean makeSpray(float x, float y) {
+		if (!PathDragManager.isTouchedCorrect(x, y)) {
+			return false;
+		}
 		float totalChange = LaplacityField.fillCircleWithRandomDensity(x, y, BRUSH_RADIUS, BRUSH_DENSITY_POWER);
 		TrajectoryRenderer.updateTrajectory();
 		return totalChange > 0.001f;
