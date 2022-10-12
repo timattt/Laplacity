@@ -19,6 +19,7 @@ import de.eskalon.commons.screen.ManagedScreen;
 import de.eskalon.commons.screen.transition.ScreenTransition;
 import de.eskalon.commons.screen.transition.impl.BlendingTransition;
 import steelUnicorn.laplacity.CameraManager;
+import steelUnicorn.laplacity.GameProcess;
 import steelUnicorn.laplacity.screens.GameScreen;
 import steelUnicorn.laplacity.screens.LevelsScreen;
 import steelUnicorn.laplacity.screens.LoadingScreen;
@@ -183,14 +184,22 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	}
 	
 	public void showInterstitial() {
-		if (adHandler != null) {
-			adHandler.showOrLoadInterstital();
+		if (GameProcess.sectionNumber == 1 && GameProcess.levelNumber == 4) {
+			GameProcess.gameUI.catFI.update(catFood.interstitialShown());
+		} else {
+			if (adHandler != null) {
+				adHandler.showOrLoadInterstital();
+			}
 		}
 	}
 	
 	public void showRewarded() {
-		if (adHandler != null) {
-			adHandler.showOrLoadRewarded();
+		if (GameProcess.sectionNumber == 1 && GameProcess.levelNumber == 4) {
+			GameProcess.gameUI.catFI.update(catFood.rewardedShown());
+		} else {
+			if (adHandler != null) {
+				adHandler.showOrLoadRewarded();
+			}
 		}
 	}
 	

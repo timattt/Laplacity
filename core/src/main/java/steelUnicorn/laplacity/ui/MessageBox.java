@@ -21,10 +21,10 @@ import steelUnicorn.laplacity.core.Globals;
  * и закрывать его.
  */
 public class MessageBox extends Label {
-    private static final float boxWidth = Globals.UI_WORLD_WIDTH * 0.5f;
-    private static final float boxHeight = Globals.UI_WORLD_HEIGHT * 0.17f;
+    private static final float boxWidth = Globals.UI_WORLD_WIDTH * 0.65f;
+    private static final float boxHeight = Globals.UI_WORLD_HEIGHT * 0.18f;
     private static final float padBottom = Globals.UI_WORLD_HEIGHT * 0.03f;
-    private static final float fontScale = 1;
+    private static final float fontScale = 1.35f;
     private static final float fadeTime = 0.1f;
 
     private boolean isShown;
