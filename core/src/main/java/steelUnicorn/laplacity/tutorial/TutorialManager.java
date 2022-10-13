@@ -4,7 +4,7 @@ import steelUnicorn.laplacity.GameProcess;
 
 public class TutorialManager {
 
-	private static Tutorial currentTutorial;
+	public static Tutorial currentTutorial;
 	public static Pointer pointer = new Pointer();
 	
 	public static void initLevel() {
