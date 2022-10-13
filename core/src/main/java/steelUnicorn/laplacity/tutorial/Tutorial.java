@@ -33,7 +33,8 @@ public class Tutorial {
 
 	public void restoreFoodInfo() {
 		if (Globals.catFood != null && savedLaunches >= 0 && savedTimerValue >= 0) {
-			Globals.catFood.addLaunches(-(CatFood.MAX_LAUNCHES - savedLaunches));
+			Globals.catFood.addLaunches(-CatFood.MAX_LAUNCHES);
+			Globals.catFood.addLaunches(savedLaunches);
 			Globals.catFood.timer.setTime(savedTimerValue);
 			if (GameProcess.gameUI != null) {
 				GameProcess.gameUI.catFI.update(Globals.catFood.getLaunches());
