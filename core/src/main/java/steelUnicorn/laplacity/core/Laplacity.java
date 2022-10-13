@@ -300,7 +300,7 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	}
 	
 	public static boolean isDebugEnabled() {
-		if (Globals.game.debugHandler == null) {
+		if (Globals.game == null || Globals.game.debugHandler == null) {
 			return true;
 		}
 		return Globals.game.debugHandler.isDebugModeEnabled();
@@ -319,5 +319,6 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	 */
 	public void setNotificationHandler(NotificationHandler notificationHandler) {
 		this.notificationHandler = notificationHandler;
+		this.notificationHandler.updateRestoreValue();
 	}
 }
