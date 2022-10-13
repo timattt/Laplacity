@@ -32,7 +32,7 @@ public class Tutorial4 extends Tutorial {
 		hand.slingshotHandler.setLocked(true);
 
 		// launches
-		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-4));
+		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-10));
 
 		// start message
 		GameProcess.gameUI.showMessage("Cat needs food to fly!\nPress the button to refill it.");
