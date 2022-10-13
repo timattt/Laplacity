@@ -35,12 +35,6 @@ public class MainMenuScreen extends ManagedScreen {
 
 		menuStage.act();
 		menuStage.draw();
-
-		if (startScreen != null && !game.getScreenManager().inTransition()) {
-			game.getScreenManager().addScreen("startScreen", loadingScreen);
-			startScreen.dispose();
-			startScreen = null;
-		}
 	}
 
 	@Override
