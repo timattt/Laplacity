@@ -27,6 +27,8 @@ import steelUnicorn.laplacity.screens.MainMenuScreen;
 import steelUnicorn.laplacity.screens.StartScreen;
 import steelUnicorn.laplacity.screens.StoryScreen;
 import steelUnicorn.laplacity.screens.WinScreen;
+import steelUnicorn.laplacity.tutorial.Tutorial;
+import steelUnicorn.laplacity.tutorial.TutorialManager;
 import steelUnicorn.laplacity.utils.CatFood;
 import steelUnicorn.laplacity.utils.AdHandler;
 import steelUnicorn.laplacity.utils.AnalyticsCollector;
@@ -85,8 +87,8 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		gameViewport = CameraManager.createViewport();
 
 		startScreen = new StartScreen(guiViewport);
-		this.screenManager.addScreen("startScreen", startScreen);
-		this.screenManager.pushScreen("startScreen", null);
+		this.screenManager.addScreen(nameStartScreen, startScreen);
+		this.screenManager.pushScreen(nameStartScreen, null);
 
 		currentStatus = CreatingStatus.STARTED;
 	}
@@ -227,6 +229,9 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 	public void pause() {
 		super.pause();
 		if (catFood != null) {
+			if (TutorialManager.currentTutorial != null) {
+				TutorialManager.currentTutorial.restoreFoodInfo();
+			}
 			catFood.saveFoodPrefs();
 
 			if (notificationHandler != null) {
@@ -244,6 +249,10 @@ public class Laplacity extends ManagedGame<ManagedScreen, ScreenTransition> {
 		if (catFood != null) {
 			catFood.timer.setTime(catFood.getTimerValue());
 			catFood.timer.entryUpdate(catFood.getExitTime());
+
+			if (TutorialManager.currentTutorial != null) {
+				TutorialManager.currentTutorial.saveFoodInfo();
+			}
 		}
 	}
 

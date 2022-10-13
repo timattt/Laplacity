@@ -14,10 +14,35 @@ public class Tutorial {
 
 	public Tutorial() {
 		//Food values saving
-		savedLaunches = Globals.catFood.getLaunches();
-		savedTimerValue = Globals.catFood.timer.getTime();
-		GameProcess.gameUI.catFI.update(
-				Globals.catFood.addLaunches(CatFood.MAX_LAUNCHES));
+		savedLaunches = -1;
+		savedTimerValue = -1;
+		saveFoodInfo();
+	}
+
+	public void saveFoodInfo() {
+		if (Globals.catFood != null && savedLaunches == -1 && savedTimerValue == -1) {
+			savedLaunches = Globals.catFood.getLaunches();
+			savedTimerValue = Globals.catFood.timer.getTime();
+
+			if (GameProcess.gameUI != null) {
+				GameProcess.gameUI.catFI.update(
+						Globals.catFood.addLaunches(CatFood.MAX_LAUNCHES));
+			}
+		}
+	}
+
+	public void restoreFoodInfo() {
+		if (Globals.catFood != null && savedLaunches >= 0 && savedTimerValue >= 0) {
+			Globals.catFood.addLaunches(-CatFood.MAX_LAUNCHES);
+			Globals.catFood.addLaunches(savedLaunches);
+			Globals.catFood.timer.setTime(savedTimerValue);
+			if (GameProcess.gameUI != null) {
+				GameProcess.gameUI.catFI.update(Globals.catFood.getLaunches());
+			}
+
+			savedLaunches = -1;
+			savedTimerValue = -1;
+		}
 	}
 	
 	public void update(float delta) {
@@ -38,10 +63,7 @@ public class Tutorial {
 		GameProcess.gameUI.hideMessage();
 		ParticleMover.setLocked(false);
 
-		//Food values restore.
-		GameProcess.gameUI.catFI.update(
-				Globals.catFood.addLaunches(- (CatFood.MAX_LAUNCHES - savedLaunches)));
-		Globals.catFood.timer.setTime(savedTimerValue);
+		restoreFoodInfo();
 	}
 
 }

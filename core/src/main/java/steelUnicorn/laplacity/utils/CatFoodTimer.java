@@ -83,6 +83,7 @@ public class CatFoodTimer {
      */
     public void start() {
         if (!task.isScheduled()) {
+            setTime(MAX_VALUE); //Start вызывается когда еда только потратилась. Иначе таймер sceduled
             Timer.schedule(task, 0, 1);
         }
         checkLabelVisible();
