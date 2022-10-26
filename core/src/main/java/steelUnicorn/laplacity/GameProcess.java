@@ -36,6 +36,7 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 import steelUnicorn.laplacity.field.tiles.EmptyTile;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.particles.ParticlesManager;
+import steelUnicorn.laplacity.tutorial.TutorialManager;
 import steelUnicorn.laplacity.ui.GameInterface;
 import steelUnicorn.laplacity.utils.LevelParams;
 import steelUnicorn.laplacity.utils.Settings;
@@ -53,6 +54,7 @@ public class GameProcess {
 	//========================================================================================
 	public static int levelNumber;
 	public static int sectionNumber;
+	public static boolean isPreviousFlight = false;
 	public static GameMode currentGameMode;
 	private static int totalStarts = 0;
 
@@ -201,6 +203,7 @@ public class GameProcess {
 		rayHandler.setAmbientLight(AMBIENT_INTENSITY, AMBIENT_INTENSITY, AMBIENT_INTENSITY, 1f);
 		levelWorld.setContactListener(hitController);
 		
+		ParticlesManager.init();
 		LaplacityField.initField(level);
 		DensityRenderer.init();
 		TrajectoryRenderer.init();
@@ -220,11 +223,23 @@ public class GameProcess {
 		interpCoeff = 1f;
 		FieldCalculator.resetPotential();
 		CameraManager.setToMainParticle();
+		
+		TutorialManager.initLevel();
 	}
-	
+
 	public static void updateLevel(float delta) {
 		if (levelWorld == null) {
 			return;
+		}
+		LaplacityAssets.elapsedTime += delta;
+		if (LaplacityAssets.elapsedTime > LaplacityAssets.changeDur) {
+			if (LaplacityAssets.music != null && LaplacityAssets.music.isLooping()) {
+				LaplacityAssets.music.setLooping(false);
+			}
+
+			if (LaplacityAssets.music != null && !LaplacityAssets.music.isPlaying()) {
+				LaplacityAssets.setLevelTrack();
+			}
 		}
 		
 		// update
@@ -254,6 +269,7 @@ public class GameProcess {
 				TrajectoryRenderer.updateTrajectory();
 			}
 		}
+		TutorialManager.update(delta);
 		//---------------------------------------------
 		
 		// ADS
@@ -273,13 +289,14 @@ public class GameProcess {
 		//---------------------------------------------
 		BackgroundRenderer.render();
 		TilesRenderer.render();
-		DensityRenderer.render();
 		LaplacityField.renderStructuresCached(flightPhysicsTime * 1000f);
 		
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatched(flightPhysicsTime * 1000f);
 		ParticlesRenderer.render(delta);
 		gameBatch.end();
+		
+		DensityRenderer.render();
 		
 		TrajectoryRenderer.render();
 		
@@ -295,6 +312,7 @@ public class GameProcess {
 		
 		gameBatch.begin();
 		LaplacityField.renderStructuresBatchedForeground(flightPhysicsTime * 1000f);
+		TutorialManager.draw();
 		gameBatch.end();
 		
 		gameUI.draw();
@@ -314,6 +332,8 @@ public class GameProcess {
 			justFinished = false;
 		}
 		//---------------------------------------------
+
+		gameUI.guiHandler.render();
 	}
 
 	/**
@@ -335,6 +355,9 @@ public class GameProcess {
 		TrajectoryRenderer.cleanup();
 		DensityRenderer.cleanup();
 		TilesRenderer.cleanup();
+		TutorialManager.cleanup();
+		ParticlesManager.cleanup();
+
 		if (rayHandler != null) {
 			rayHandler.dispose();
 			rayHandler = null;
@@ -446,7 +469,7 @@ public class GameProcess {
 	
 	public static boolean tryToAddStaticParticle(ChargedParticle part) {
 		EmptyTile tl = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
-		if (tl != null && tl.isAllowDensityChange() && !isParticleTooClose(part)) {
+		if (tl != null && tl.isAllowDensityChange() && !isParticleTooClose(part) && LaplacityField.canPlaceParticle(part.getX(), part.getY())) {
 			LaplacityAssets.playSound(LaplacityAssets.placeSound);
 			tl.addInvisibleDensity(part.getCharge()*DELTA_FUNCTION_POINT_CHARGE_MULTIPLIER);
 			particles.add(part);
@@ -474,7 +497,7 @@ public class GameProcess {
 		EmptyTile from = LaplacityField.getTileFromWorldCoords(part.getX(), part.getY());
 		EmptyTile to = LaplacityField.getTileFromWorldCoords(x, y);
 		
-		if (to == null || from == null || !to.isAllowDensityChange()) {
+		if (to == null || from == null || !to.isAllowDensityChange() || !LaplacityField.canPlaceParticle(x, y)) {
 			return false;
 		}
 		

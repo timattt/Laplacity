@@ -26,6 +26,7 @@ public class Settings {
 	private static boolean showFps;
 	private static boolean showSkip;
 	private static boolean showGrid;
+	private static boolean hideFoodBar;
 
 	/**
 	 * Функция загружающая настройки используя prefs
@@ -39,6 +40,7 @@ public class Settings {
 		showFps = prefs.getBoolean("showFps", false);
 		showSkip = prefs.getBoolean("showSkip", false);
 		showGrid = prefs.getBoolean("showGrid", false);
+		hideFoodBar = prefs.getBoolean("hideFood", true);
 	}
 
 	//getters and setters
@@ -93,6 +95,15 @@ public class Settings {
 	public static void setShowGrid(boolean showGrid) {
 		Settings.showGrid = showGrid;
 		prefs.putBoolean("showGrid", showGrid);
+		prefs.flush();
+	}
+
+	public static boolean isHideFoodBar() {
+		return hideFoodBar;
+	}
+	public static void setHideFoodBar(boolean hideFoodBar) {
+		Settings.hideFoodBar = hideFoodBar;
+		prefs.putBoolean("hideFood", hideFoodBar);
 		prefs.flush();
 	}
 }

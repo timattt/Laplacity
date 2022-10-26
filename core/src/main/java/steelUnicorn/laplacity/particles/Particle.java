@@ -22,7 +22,13 @@ public class Particle {
 	
 	private float scale = 1f;
 	
+	private int randomToken;
+	
 	public Particle() {
+	}
+	
+	public void generateRandomToken() {
+		randomToken = (int) (Math.random() * 100000);
 	}
 	
 	public void update(float dt) {
@@ -107,6 +113,10 @@ public class Particle {
 
 	public void setAlive(boolean alive) {
 		this.alive = alive;
+	}
+
+	public int getRandomToken() {
+		return randomToken;
 	}
 
 }

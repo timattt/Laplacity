@@ -52,12 +52,12 @@ public class CreditsTab extends MainMenuTab {
         creditsTable.add(info).padTop(infoPad);
 
         creditsTable.row();
-        TextButton btn = new TextButton("steel-uni.com", skin, "link");
+        TextButton btn = new TextButton("steel-unicorn.com", skin, "link");
         btn.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
-                Gdx.net.openURI("http://steel-uni.com/");
+                Gdx.net.openURI("http://steel-unicorn.com/");
             }
         });
         creditsTable.add(btn).padBottom(infoPad);

@@ -29,6 +29,12 @@ com.badlogic.gdx.graphics.Color: {
 		b: 1
 		a: 1
 	}
+	messageboxred: {
+		r: 1
+		g: 0
+		b: 0
+		a: 1
+	}
 	textcolor: {
 		r: 0.59607846
 		g: 0.5568628
@@ -114,78 +120,97 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 	Home: {
 		imageUp: home
 		imageDown: home_pressed
+		imageDisabled: home
 	}
 	Protons: {
 		imageUp: proton
 		imageDown: proton_pressed
+		imageDisabled: proton
 	}
 	Electrons: {
 		imageUp: electron
 		imageDown: electron_pressed
+		imageDisabled: electron
 	}
 	Flight: {
 		imageUp: play
 		imageDown: play_pressed
+		imageDisabled: play
 	}
 	Eraser: {
 		imageUp: eraser
 		imageDown: eraser_pressed
+		imageDisabled: eraser
 	}
 	Dirichlet: {
 		imageUp: spray
 		imageDown: spray_pressed
+		imageDisabled: spray
 	}
 	Clear: {
 		imageUp: clear_pressed
 		imageDown: clear
+		imageDisabled: clear_pressed
 	}
 	settings: {
 		imageUp: settings
 		imageDown: settings_pressed
+		imageDisabled: settings
 	}
 	credits: {
 		imageUp: credits
 		imageDown: credits_pressed
+		imageDisabled: credits
 	}
 	leftarrow: {
 		imageUp: leftarrow
 		imageDown: leftarrow_pressed
+		imageDisabled: leftarrow
 	}
 	rightarrow: {
 		imageUp: rightarrow
 		imageDown: rightarrow_pressed
+		imageDisabled: rightarrow
 	}
 	Pause: {
 		imageUp: pause
 		imageDown: pause_pressed
+		imageDisabled: pause
 	}
 	Replay: {
 		imageUp: refresh
 		imageDown: refresh_pressed
+		imageDisabled: refresh
 	}
 	Next: {
 		imageUp: NextIcon
 		imageDown: NextIcon_On
+		imageDisabled: NextIcon
 	}
 	SquareNone: {
 		imageUp: square_btn
 		imageDown: square_btn_pressed
+		imageDisabled: square_btn
 	}
 	SquareProtons: {
 		imageUp: square_Protons
 		imageDown: square_protons_pressed
+		imageDisabled: square_Protons
 	}
 	SquareElectrons: {
 		imageUp: square_Electrons
 		imageDown: square_electrons_pressed
+		imageDisabled: square_Electrons
 	}
 	SquareEraser: {
 		imageUp: square_Eraser
 		imageDown: square_eraser_pressed
+		imageDisabled: square_Eraser
 	}
 	SquareDirichlet: {
 		imageUp: square_Dirichlet
 		imageDown: square_Dirichlet_pressed
+		imageDisabled: square_Dirichlet
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
@@ -197,6 +222,11 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	noback: {
 		font: RS_extrabold32
 		fontColor: textcolor
+	}
+	MessageBoxLabel: {
+		font: RS_extrabold32
+		fontColor: textcolor
+		background: label_back_short
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
@@ -231,6 +261,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		font: RS_extrabold32
 		fontColor: textcolor
 		up: btn
+		down: btn_pressed
 		checked: btn_pressed
 		pressedOffsetY: -2
 	}

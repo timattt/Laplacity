@@ -134,6 +134,14 @@ public class Cat implements CollisionListener {
 			slingshotY = y;
 		}
 	}
+
+	public float getSlingshotX() {
+		return slingshotX;
+	}
+
+	public float getSlingshotY() {
+		return slingshotY;
+	}
 	
 	public void makeParticleMoveWithStartVelocity() {
 		body.setLinearVelocity(-slingshotX * TRAJECTORY_VELOCITY_MULTIPLIER, -slingshotY * TRAJECTORY_VELOCITY_MULTIPLIER);
@@ -235,7 +243,7 @@ public class Cat implements CollisionListener {
 	}
 
 	private void genHitParts() {
-		ParticlesManager.createParticleInRandomCircle(interpX(), interpY(), CAT_SIZE, CAT_SIZE, 4*CAT_SIZE, 1000, LaplacityAssets.PARTICLES_BOOM_REGIONS, 90);
+		ParticlesManager.createParticleInRandomCircle(interpX(), interpY(), CAT_SIZE, CAT_SIZE, 4*CAT_SIZE, 1000, LaplacityAssets.PARTICLES_BOOM_REGIONS, 90).generateRandomToken();
 	}
 	
 	@Override

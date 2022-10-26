@@ -11,6 +11,7 @@ import steelUnicorn.laplacity.field.physics.FieldCalculator;
 public class ParticleMover {
 
 	public static ChargedParticle current;
+	public static boolean locked = false;
 
 	private static ChargedParticle findNear(float x, float y) {
 		for (ChargedParticle p : particles) {
@@ -24,6 +25,10 @@ public class ParticleMover {
 	}
 	
 	private static void tryToStartMoving(float x, float y) {
+		if (locked) {
+			stopMoving(0, 0);
+			return;
+		}
 		if (current != null) {
 			return;
 		}
@@ -37,6 +42,10 @@ public class ParticleMover {
 	}
 	
 	public static void tryToMove(float x, float y) {
+		if (locked) {
+			stopMoving(0, 0);
+			return;
+		}
 		tryToStartMoving(x, y);
 		
 		if (current != null) {
@@ -60,5 +69,9 @@ public class ParticleMover {
 	
 	public static boolean isMoving() {
 		return current != null;
+	}
+	
+	public static void setLocked(boolean v) {
+		locked = v;
 	}
 }

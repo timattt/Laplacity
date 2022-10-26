@@ -2,6 +2,7 @@ package steelUnicorn.laplacity.ui.levels;
 
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_HEIGHT;
 import static steelUnicorn.laplacity.core.Globals.UI_WORLD_WIDTH;
+import static steelUnicorn.laplacity.core.Globals.progress;
 import static steelUnicorn.laplacity.core.LaplacityAssets.sectionLevels;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -41,7 +42,7 @@ public class LevelsTab extends MainMenuTab {
      */
     public LevelsTab(Skin skin) {
         super();
-        currentSection = 1;
+        currentSection = progress.getLastAvailableSection();
 
         sectionCell = addSections(skin);
 

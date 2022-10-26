@@ -176,4 +176,13 @@ public class ChargedParticle implements CollisionListener {
 	public void collidedWithParticle() {
 	}
 
+
+	@Override
+	public String toString() {
+		return "ChargedParticle{" +
+				"charge=" + charge +
+				", virtualX=" + virtualX +
+				", virtualY=" + virtualY +
+				'}';
+	}
 }
