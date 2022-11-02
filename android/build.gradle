@@ -89,7 +89,6 @@ repositories {
 	maven {url 'https://android-sdk.is.com/'}
 
 	maven{ url "https://imobile-maio.github.io/maven" }
-	maven {url 'https://artifact.bytedance.com/repository/pangle'}
 	maven { url "https://aa-sdk.s3-eu-west-1.amazonaws.com/android_repo" }
 	maven { url "https://sdk.tapjoy.com/"}
 	maven { url 'https://artifactory.yahooinc.com/artifactory/maven/'}
@@ -192,9 +191,6 @@ dependencies {
 	implementation 'com.my.target:mytarget-sdk:5.15.3'
 	implementation 'com.google.android.exoplayer:exoplayer:2.17.1'
 //	implementation 'com.my.tracker:mytracker-sdk:3.0.0'
-// Add Pangle Network
-	implementation 'com.ironsource.adapters:pangleadapter:4.3.14'
-	implementation 'com.pangle.global:ads-sdk:4.5.0.4'
 // Add SuperAwesome Network
 	implementation 'com.ironsource.adapters:superawesomeadapter:4.1.2'
 	implementation 'tv.superawesome.sdk.publisher:superawesome:8.2.1'

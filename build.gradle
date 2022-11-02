@@ -12,6 +12,7 @@ buildscript {
 	dependencies {
 		classpath "com.android.tools.build:gradle:$androidPluginVersion"
 		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
+		classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.16'
 
 
 		// This follows advice from https://blog.gradle.org/log4j-vulnerability
@@ -29,15 +30,18 @@ buildscript {
 
 allprojects {
 	repositories {
-        maven { 
-			url 'https://jitpack.io'
-			url 'https://android-sdk.is.com/'
-		}
+        maven { url 'https://jitpack.io' }
+		maven {	url 'https://android-sdk.is.com/' }
         google()
         mavenCentral()
     }
 	apply plugin: 'eclipse'
 	apply plugin: 'idea'
+
+	ext {
+		roboVMVersion = '2.3.18'
+		gdxVersion = '1.11.0'
+	}
 }
 
 configure(subprojects - project(':android')) {
@@ -64,6 +68,20 @@ configure(subprojects - project(':android')) {
 project(':core') {
 	dependencies {
 		implementation "com.github.crykn:libgdx-screenmanager:0.6.8"
+	}
+}
+
+project(":ios") {
+	apply plugin: "java-library"
+	apply plugin: "robovm"
+
+	dependencies {
+		implementation project(":core")
+		api "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
+		api "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
+		api "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+		api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+
 	}
 }
 
