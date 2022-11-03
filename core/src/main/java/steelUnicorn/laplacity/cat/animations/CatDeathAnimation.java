@@ -30,7 +30,7 @@ public class CatDeathAnimation extends CatAnimation {
 					GameProcess.CAT_SIZE/2,
 					GameProcess.CAT_SIZE/2,
 					GameProcess.DEAD_ANIMATION_TIME,
-					LaplacityAssets.PARTICLES_STARS1_REGIONS,(float)Math.random() * 360);
+					LaplacityAssets.PARTICLES_STARS1_REGIONS,(float)Math.random() * 360).generateRandomToken();
 		}
 	}
 

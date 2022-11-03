@@ -21,11 +21,11 @@ public class CatFood {
     private final Preferences foodPrefs;
     public CatFoodTimer timer;
 
-    public static final int MAX_LAUNCHES = 20;
+    public static final int MAX_LAUNCHES = 25;
     private int launches;
 
     private static final int REWARDED_LAUNCHES = 10;
-    private static final int INTERSTITIAL_LAUNCHES = 2;
+    private static final int INTERSTITIAL_LAUNCHES = 3;
 
     /**
      * Подгружает из Preferences количество еды, создает таймер и вызывает {@link #checkBounds()}
@@ -96,7 +96,9 @@ public class CatFood {
      * @return количество запусков
      */
     public int launch() {
-        if (GameProcess.sectionNumber > 1) {
+        //First condition false only in 1st section. So the second condition will check in 1st section.
+        if (GameProcess.sectionNumber > 1 || GameProcess.levelNumber == 4) {
+            Gdx.app.log("Tutorial fixes", "launch decreased");
             launches--;
         }
         checkBounds();
@@ -108,6 +110,12 @@ public class CatFood {
      */
     public int reload() {
         launches++;
+        checkBounds();
+        return launches;
+    }
+
+    public int addLaunches(int newLaunches) {
+        launches += newLaunches;
         checkBounds();
         return launches;
     }

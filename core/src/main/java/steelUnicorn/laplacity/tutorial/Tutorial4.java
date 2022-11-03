@@ -1,0 +1,77 @@
+package steelUnicorn.laplacity.tutorial;
+
+import steelUnicorn.laplacity.GameProcess;
+import steelUnicorn.laplacity.core.Globals;
+import steelUnicorn.laplacity.ui.handler.ButtonNames;
+import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
+
+public class Tutorial4 extends Tutorial {
+
+	private enum Status {
+		press_food,
+		drag_sling,
+		press_flight,
+		flight
+	};
+	
+	private Status currentStatus = null;
+	
+	@Override
+	public void init() {
+		super.init();
+		currentStatus = Status.press_food;
+		
+		// buttons
+		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
+		hand.unlockBtn(ButtonNames.SPEED_UP);
+		hand.unlockBtn(ButtonNames.REWARD);
+		hand.unlockBtn(ButtonNames.REWARD);
+		hand.startFlashing(ButtonNames.REWARD, 0, 0.25f, 10000);
+		
+		// slingshot
+		hand.slingshotHandler.setLocked(true);
+
+		// launches
+		GameProcess.gameUI.catFI.update(Globals.catFood.addLaunches(-10));
+
+		// start message
+		GameProcess.gameUI.showMessage("Cat needs food to fly!\nPress the button to refill it.");
+	}
+
+	@Override
+	public void update(float delta) {
+		GameInterfaceHandler hand = GameProcess.gameUI.guiHandler;
+		
+		switch (currentStatus) {
+		case press_food:
+			if (hand.wasButtonPressed(ButtonNames.INTER) || hand.wasButtonPressed(ButtonNames.REWARD)) {
+				currentStatus = Status.drag_sling;
+				hand.stopFlashing();
+				hand.slingshotHandler.setLocked(false);
+				TutorialManager.pointer.linearAnimation(GameProcess.cat.getX(), GameProcess.cat.getY(), GameProcess.cat.getX() - 17f, GameProcess.cat.getY() - 10f, 2000);
+				GameProcess.gameUI.changeMessageText("The food has been restored!\nNow Let's move on!");
+			}
+			break;
+		case drag_sling:
+			if (hand.slingshotHandler.wasSlingshotSet()) {
+				currentStatus = Status.press_flight;
+				hand.unlockBtn(ButtonNames.FLIGHT);
+				hand.startFlashing(ButtonNames.FLIGHT, 0, 0.25f, 10000);
+				hand.slingshotHandler.changeSlingshot(-20, -10);
+				hand.slingshotHandler.setLocked(true);
+				TutorialManager.pointer.hide();
+				GameProcess.gameUI.hideMessage();
+			}
+			break;
+		case press_flight:
+			if (hand.wasButtonPressed(ButtonNames.FLIGHT)) {
+				currentStatus = Status.flight;
+				GameProcess.gameUI.hideMessage();
+			}
+			break;
+		case flight:
+			break;
+		}
+	}
+
+}

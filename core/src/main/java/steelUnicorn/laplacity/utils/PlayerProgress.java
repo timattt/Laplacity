@@ -24,11 +24,13 @@ public class PlayerProgress {
     private final Json json;
     private final Preferences prefs;
 
-    private static final int[] starsToOpenSection = new int[]{0, 4, 24, 44, 66, 88, 106};
+    private static final int[] starsToOpenSection = new int[]{0, 9, 30, 52, 74, 96, 120};
     public int starsCollected = 0;
 
     private Array<SectionProgress> progress;
     private boolean isNewUser;
+
+    private int lastAvailableSection = 1;
 
     /**
      * Создание полей, подгрузка и сохранение прогресса
@@ -80,6 +82,9 @@ public class PlayerProgress {
                 for (int sec = 1; sec <= previousProgress.size && sec <= progress.size; sec++) {
                     progress.get(sec - 1).copy(previousProgress.get(sec - 1));
                     starsCollected += progress.get(sec - 1).getStars();
+                    if (progress.get(sec - 1).isOpened) {
+                        lastAvailableSection = sec;
+                    }
                 }
             } catch (Exception ex) {
                 Gdx.app.error("Progress", "Old progress not valid: " + ex);
@@ -149,6 +154,10 @@ public class PlayerProgress {
      */
     public SectionProgress getSectionProgress(int section) {
         return progress.get(section - 1);
+    }
+
+    public int getLastAvailableSection() {
+        return lastAvailableSection;
     }
 
     /**

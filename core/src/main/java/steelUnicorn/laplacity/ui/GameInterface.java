@@ -5,6 +5,7 @@ import static steelUnicorn.laplacity.core.Globals.*;
 import static steelUnicorn.laplacity.core.LaplacityAssets.TEXSKIN;
 import static steelUnicorn.laplacity.core.LaplacityAssets.clickSound;
 import static steelUnicorn.laplacity.core.LaplacityAssets.lightClickSound;
+import static steelUnicorn.laplacity.ui.handler.ButtonNames.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -33,8 +35,10 @@ import steelUnicorn.laplacity.core.LaplacityAssets;
 import steelUnicorn.laplacity.field.graphics.TrajectoryRenderer;
 import steelUnicorn.laplacity.gameModes.GameMode;
 import steelUnicorn.laplacity.ui.dialogs.CatDialog;
+import steelUnicorn.laplacity.ui.dialogs.ClearDialog;
 import steelUnicorn.laplacity.ui.dialogs.ReturnDialog;
 import steelUnicorn.laplacity.ui.dialogs.SettingsDialog;
+import steelUnicorn.laplacity.ui.handler.GameInterfaceHandler;
 import steelUnicorn.laplacity.utils.Settings;
 
 
@@ -53,6 +57,8 @@ public class GameInterface extends Stage implements GestureListener {
 	private ReturnDialog returnDialog;
 	private SettingsDialog settingsDialog;
 	private CatDialog catDialog;
+	private ClearDialog clearDialog;
+	private MessageBox msgBox;
 
 	public CatFoodInterface catFI;
 
@@ -69,13 +75,18 @@ public class GameInterface extends Stage implements GestureListener {
 	/** кнопка ускорения времени в режиме полета */
 	private TextButton speedUpBtn;
 
+
+	/** Управление интерфейсом (флаги) */
+	public GameInterfaceHandler guiHandler;
+
+
 	/**
 	 * Создает сцену и интерфейс.
 	 * @param viewport вьюпорт сцены.
 	 */
 	public GameInterface(Viewport viewport) {
 		super(viewport);
-
+		guiHandler = new GameInterfaceHandler();
 		createInterface(TEXSKIN);
 	}
 
@@ -110,6 +121,8 @@ public class GameInterface extends Stage implements GestureListener {
 			}
 		});
 		catDialog = new CatDialog(skin, "cat_hungry");
+		clearDialog = new ClearDialog(skin);
+		msgBox = new MessageBox("", skin, "MessageBoxLabel");
 		//FpsCounter
 		if (Laplacity.isDebugEnabled()) {
 			FpsCounter fpsCounter = new FpsCounter(skin, "noback");
@@ -123,30 +136,32 @@ public class GameInterface extends Stage implements GestureListener {
 
 		//left layout
 		Table leftLayout = new Table();
-		leftLayout.add(createIcon(skin, "Home", new ClickListener(){
+		leftLayout.add(createIcon(skin, HOME, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
+				guiHandler.pressButton(HOME);
 				returnDialog.show(GameInterface.this);
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
 
-		leftLayout.add(createIcon(skin, "Clear", new ClickListener(){
+		leftLayout.add(createIcon(skin, CLEAR, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.annihilationSound);
-				GameProcess.clearLevel();
+				clearDialog.show(GameInterface.this);
+				guiHandler.pressButton(CLEAR);
 			}
 		})).expandY().top().size(iconSize).space(iconSpace);
 
 		leftLayout.row();
-		leftLayout.add(createIcon(skin, "settings", new ClickListener(){
+		leftLayout.add(createIcon(skin, SETTINGS, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.popupSound);
 				updateCurMode();
-				Gdx.app.log("GameInterface", "settings pressed");
+				guiHandler.pressButton(SETTINGS);
 				settingsDialog.show(GameInterface.this);
 			}
 		})).expandY().bottom().size(settingsSize);
@@ -161,6 +176,9 @@ public class GameInterface extends Stage implements GestureListener {
 		centerLayout.add(catFI).expandY().top();
 		catFood.timer.setCurrentInterface(catFI);
 		visibleActors.add(catFI);
+		guiHandler.putButton(catFI.interstitialBtn);
+		guiHandler.putButton(catFI.rewardedBtn);
+
 
 		if (Laplacity.isDebugEnabled()) {
 			TextButton skip = new TextButton("Skip", skin);
@@ -183,7 +201,7 @@ public class GameInterface extends Stage implements GestureListener {
 		root.add(rightLayout).expandX().growY().right().uniform().pad(iconSpace);
 
 		//flight and pause buttons
-		flightBtn = createIcon(skin, "Flight", new ClickListener(){
+		flightBtn = createIcon(skin, FLIGHT, new ClickListener(){
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(LaplacityAssets.lightClickSound);
@@ -194,22 +212,28 @@ public class GameInterface extends Stage implements GestureListener {
 					catDialog.show(GameInterface.this);
 					changeGameMode(GameMode.NONE);
 				}
+				guiHandler.pressButton(FLIGHT);
 			}
 		});
-		pauseBtn = createModeIcon(skin, "Pause", GameMode.NONE, LaplacityAssets.lightClickSound);
+		pauseBtn = createModeIcon(skin, PAUSE, GameMode.NONE, LaplacityAssets.lightClickSound);
 		flightCell = rightLayout.add(flightBtn)
 				.size(iconSize).space(iconSpace);
 
 
 		rightLayout.row();
 		selectedMode = new ImageButton(skin, "SquareNone");
-		selectedMode.addListener(new ChangeListener() {
+		selectedMode.setName(MODE_SELECTOR);
+		guiHandler.putButton(selectedMode);
+		selectedMode.addListener(new ClickListener() {
 			@Override
-			public void changed(ChangeEvent event, Actor actor) {
+			public void clicked(InputEvent event, float x, float y) {
+				super.clicked(event, x, y);
 				LaplacityAssets.playSound(clickSound);
 				modes.setVisible(!modes.isVisible());
+				guiHandler.pressButton(MODE_SELECTOR);
 			}
 		});
+
 		rightLayout.add(selectedMode).width(iconSize)
 				.height(skin.getDrawable("square_btn").getMinHeight()
 						/ skin.getDrawable("square_btn").getMinWidth() * iconSize);
@@ -221,25 +245,30 @@ public class GameInterface extends Stage implements GestureListener {
 		modes.defaults().size(iconSize).space(iconSpace);
 
 		modes.row();
-		modes.add(createModeIcon(skin, "Protons", GameMode.PROTONS, LaplacityAssets.genStartSound));
+		modes.add(createModeIcon(skin, PROTONS, GameMode.PROTONS, LaplacityAssets.genStartSound));
 		modes.row();
-		modes.add(createModeIcon(skin, "Electrons", GameMode.ELECTRONS, LaplacityAssets.genStartSound));
+		modes.add(createModeIcon(skin, ELECTRONS, GameMode.ELECTRONS, LaplacityAssets.genStartSound));
 		modes.row();
-		modes.add(createModeIcon(skin, "Dirichlet", GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
+		modes.add(createModeIcon(skin, DIRICHLET, GameMode.DIRICHLET, LaplacityAssets.sprayStartSound));
 		modes.row();
-		modes.add(createModeIcon(skin, "Eraser", GameMode.ERASER, LaplacityAssets.lightClickSound));
+		modes.add(createModeIcon(skin, ERASER, GameMode.ERASER, LaplacityAssets.lightClickSound));
 
 		rightLayout.row();
 		speedUpBtn = new TextButton("x2", skin, "checked");
 		speedUpBtn.setVisible(false);
+		speedUpBtn.setName(SPEED_UP);
+		guiHandler.putButton(speedUpBtn);
 		speedUpBtn.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				super.clicked(event, x, y);
 				LaplacityAssets.playSound(lightClickSound);
 				timeSpeedUp = speedUpBtn.isChecked() ? 2 : 1;
+				guiHandler.pressButton(SPEED_UP);
 			}
 		});
+
+
 		rightLayout.add(speedUpBtn).expandY().bottom();
 	}
 
@@ -255,6 +284,11 @@ public class GameInterface extends Stage implements GestureListener {
 		if (currentGameMode != GameMode.FLIGHT) {
 			selectedMode.setStyle(selectedMode.getSkin().get("Square" + currentGameMode.getName(),
 					ImageButton.ImageButtonStyle.class));
+
+			if (isPreviousFlight) {
+				catFI.showHide();
+				isPreviousFlight = false;
+			}
 		}
 		modes.setVisible(currentGameMode == GameMode.NONE);	//сразу видимы если не выбран мод
 
@@ -264,6 +298,7 @@ public class GameInterface extends Stage implements GestureListener {
 				actor.setVisible(false);
 			}
 			speedUpBtn.setVisible(true);
+			isPreviousFlight = true;
 		} else {
 			flightCell.setActor(flightBtn);
 			for (Actor actor : visibleActors) {
@@ -285,9 +320,12 @@ public class GameInterface extends Stage implements GestureListener {
 	 */
 	private ImageButton createIcon(Skin skin, String styleName, ClickListener listener) {
 		ImageButton btn = new ImageButton(skin, styleName);
-		if (!styleName.equals("Flight") && !styleName.equals("Pause")) {
+		if (!styleName.equals(FLIGHT) && !styleName.equals(PAUSE)) {
 			visibleActors.add(btn);
 		}
+
+		btn.setName(styleName);
+		guiHandler.putButton(btn);
 
 		btn.getImageCell().grow();
 		btn.addListener(listener);
@@ -308,6 +346,12 @@ public class GameInterface extends Stage implements GestureListener {
 			@Override
 			public void clicked (InputEvent event, float x, float y) {
 				LaplacityAssets.playSound(sound);
+
+				Actor targetActor = event.getTarget();
+				Button targetBtn = targetActor instanceof Button ? (Button) targetActor :
+						targetActor.getParent() instanceof Button ? ((Button) targetActor.getParent()) : null;
+				guiHandler.pressButton(targetBtn == null ? null : targetBtn.getName());
+
 				if (currentGameMode == mode) {
 					changeGameMode(GameMode.NONE);
 				} else {
@@ -315,6 +359,40 @@ public class GameInterface extends Stage implements GestureListener {
 				}
 			}
 		});
+	}
+
+	/**
+	 * Показывает сообщение с текстом text.
+	 * @param text текст сообщения
+	 */
+	public void showMessage(String text) {
+		msgBox.show(this, text);
+	}
+	/**
+	 * Показывает сообщение с текстом text на showTime секунд.
+	 * @param text текст сообщения
+	 * @param showTime время показа
+	 */
+	public void showMessage(String text, float showTime) {
+		msgBox.show(this, text, showTime);
+	}
+
+	/**
+	 * Меняет текст сообщения.
+	 * @param text новый текст сообщения
+	 */
+	public void changeMessageText(String text) {
+		msgBox.setText(text);
+	}
+	/**
+	 * Скрывает сообщение.
+	 */
+	public void hideMessage() {
+		msgBox.hide();
+	}
+
+	public void resize() {
+		msgBox.stageResized(this);
 	}
 
 	@Override
@@ -331,7 +409,9 @@ public class GameInterface extends Stage implements GestureListener {
 		CameraManager.getCameraWorldPos(x, y, TMP1);
 		
 		currentGameMode.tap(TMP1.x, TMP1.y);
-		
+
+		guiHandler.setTap(true);
+
 		return true;
 	}
 
@@ -384,9 +464,8 @@ public class GameInterface extends Stage implements GestureListener {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		float len2 = getlen2ToMainParticle(screenX, screenY);
 
-		if (len2 < 4 * PARTICLE_SIZE * PARTICLE_SIZE) {
+		if (len2 < 4 * PARTICLE_SIZE * PARTICLE_SIZE && !guiHandler.slingshotHandler.getLocked()) {
 			TrajectoryRenderer.changingDir = true;
-			touchDragged(screenX, screenY, pointer);
 			return true;
 		} else {
 			TrajectoryRenderer.changingDir = false;
@@ -400,7 +479,10 @@ public class GameInterface extends Stage implements GestureListener {
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		TrajectoryRenderer.changingDir = false;
+		if (TrajectoryRenderer.changingDir) {
+			guiHandler.slingshotHandler.setSlingshot(cat, cat.getSlingshotX(), cat.getSlingshotY());
+			TrajectoryRenderer.changingDir = false;
+		}
 		
 		//
 		CameraManager.getCameraWorldPos(screenX, screenY, TMP1);

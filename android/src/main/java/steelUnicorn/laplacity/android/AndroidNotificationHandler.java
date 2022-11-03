@@ -8,9 +8,11 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import steelUnicorn.laplacity.R;
+import steelUnicorn.laplacity.core.Laplacity;
 import steelUnicorn.laplacity.utils.NotificationHandler;
 
 public class AndroidNotificationHandler implements NotificationHandler {
+    int RESTORE_LOWER_BOUND = 30 * 60;
     private int restoreTime;
     private final Context context;
 
@@ -37,6 +39,11 @@ public class AndroidNotificationHandler implements NotificationHandler {
             alarmManager.cancel(pendingIntent);
             Log.i("Notifications", "Alarms canceled");
         }
+    }
+
+    @Override
+    public void updateRestoreValue() {
+        RESTORE_LOWER_BOUND = Laplacity.isDebugEnabled() ? 10 * 60 : 30 * 60;
     }
 
     @Override

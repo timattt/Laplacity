@@ -31,6 +31,8 @@ public class LaplacityAssets {
 	public static FileHandle[] levelTracks;
 	private static final Random trackRandomizer = new Random();
 	private static int currentTrack = 0;
+	public static float elapsedTime = 0;
+	public static final float changeDur = 60f * 3; //3 minutes
 
 	// SOUNDS
 	public static Sound clickSound; // звук нажатия на кнопки
@@ -79,6 +81,7 @@ public class LaplacityAssets {
 	
 	//HINTS
 	public static Array<Texture> HINTS;
+	public static Texture HINT_POINTER;
 
 	// CHARGED PARTICLES
 	public static Texture ELECTRON_TEXTURE;
@@ -282,7 +285,7 @@ public class LaplacityAssets {
 			HINTS.add(assetManager.get(hint.path(), Texture.class));
 		}
 
-		Gdx.app.log("Hints loaded", HINTS.toString());
+		HINT_POINTER = assetManager.get("textures/hints/pointer.png", Texture.class);
 	}
 	
 	private static void cut(Texture from, TextureRegion[] result) {
@@ -360,11 +363,14 @@ public class LaplacityAssets {
 		while (index == currentTrack)
 			index = trackRandomizer.nextInt(levelTracks.length);
 		currentTrack = index;
+
 		if (levelTracks[currentTrack].name().charAt(0) == 'a') {
 			changeTrack("music/levels/" + levelTracks[currentTrack].name());
 		} else {
 			loopTrackWithIntro(levelTracks[currentTrack].name());
 		}
+
+		elapsedTime = 0;
 	}
 
 	/**
@@ -392,6 +398,7 @@ public class LaplacityAssets {
 		assetManager.load(currentMusic, Music.class);
 		OnCompletionListener fromIntroToDrop = a -> music.play();
 		assetManager.finishLoadingAsset(currentMusic);
+
 		music = assetManager.get(currentMusic);
 		music.setVolume(Settings.getMusicVolume());
 		music.setLooping(true);
