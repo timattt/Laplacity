@@ -6,10 +6,4 @@
 
 * [**Сборка**](https://github.com/timattt/Laplacity/blob/master/about/build.md)
 * [**Коды тайлов**](https://github.com/timattt/Laplacity/blob/master/about/tileCodes.md)
-* [**Текущие игровые механики**](https://github.com/timattt/Laplacity/blob/master/about/currentGameMechanics.md)
-* [**Старое ТЗ**](https://github.com/timattt/Steel-unicorn/blob/master/About/Laplacity.md)
-* [**Дополнительные механики**](https://github.com/timattt/Steel-unicorn/blob/master/About/LaplacityMoreMechanics.md)
-* [**GDD**](https://github.com/timattt/Laplacity/edit/master/about/GDD.md)
-* [**Хранилище ассетов**](https://drive.google.com/drive/u/0/folders/1E0IV_L6WAYiBOKYgj_Xhywas_ahaB1rz)
-
-**[Вернуться](https://github.com/timattt/Steel-unicorn) к корневому репозиторию**
+* [**GDD**](https://github.com/timattt/Laplacity/blob/master/about/GDD.md)
