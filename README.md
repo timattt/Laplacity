@@ -7,3 +7,4 @@
 * [**Сборка**](https://github.com/timattt/Laplacity/blob/master/about/build.md)
 * [**Коды тайлов**](https://github.com/timattt/Laplacity/blob/master/about/tileCodes.md)
 * [**GDD**](https://github.com/timattt/Laplacity/blob/master/about/GDD.md)
+* [**Google play**](https://play.google.com/store/apps/details?id=steelUnicorn.laplacity)
